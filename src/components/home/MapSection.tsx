@@ -1,11 +1,33 @@
 "use client";
 
+import type { JSX } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
+import type { MapStatistic, MapStatisticVariant } from "@/types/home.types";
+
 const MapChart = dynamic(() => import("./MapChart"), { ssr: false });
 
-export default function MapSection() {
+const MAP_DESCRIPTION =
+  "O Projeto está em seu desenvolvimento inicial, dessa maneira, o banco de dados e mapeamento está ainda com poucas informações. Ajude esse movimento a crescer, faça parte dele registrando os dados do seu abrigo/lar temporário!!";
+
+const MAP_STATISTICS: MapStatistic[] = [
+  { value: "288", label: "Abrigos", variant: "primary" },
+  { value: "29", label: "Públicos" },
+  { value: "185", label: "Privados" },
+  { value: "16", label: "Mistos" },
+  { value: "58", label: "LT/P.I" },
+];
+
+const STAT_VALUE_BASE_CLASS = "font-600 font-45 leading-none";
+const STAT_LABEL_BASE_CLASS = "font-20 font-600";
+
+const STAT_VARIANT_CLASS: Record<MapStatisticVariant, { value: string; label: string }> = {
+  primary: { value: " color-primary", label: " color-primary" },
+  secondary: { value: " text-color-secondary", label: " text-color-secondary" },
+};
+
+export default function MapSection(): JSX.Element {
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
@@ -22,10 +44,7 @@ export default function MapSection() {
         <div className="mt-12 rounded-2xl bg-light p-6 shadow-sm">
           <div className="text-center text-color-secondary">
             <p className="text-base md:text-lg">
-              O Projeto está em seu desenvolvimento inicial, dessa maneira, o
-              banco de dados e mapeamento está ainda com poucas informações.
-              Ajude esse movimento a crescer, faça parte dele registrando os
-              dados do seu abrigo/lar temporário!!
+              {MAP_DESCRIPTION}
             </p>
           </div>
 
@@ -39,44 +58,20 @@ export default function MapSection() {
             </div>
 
             <div className="grid grid-cols-2 gap-6 text-center md:grid-cols-5 md:gap-8">
-              <div>
-                <h3 className="font-600 font-45 color-primary leading-none">
-                  288
-                </h3>
-                <span className="font-20 font-600 color-primary">Abrigos</span>
-              </div>
-              <div>
-                <h3 className="font-600 font-45 leading-none text-color-secondary">
-                  29
-                </h3>
-                <span className="font-20 font-600 text-color-secondary">
-                  Públicos
-                </span>
-              </div>
-              <div>
-                <h3 className="font-600 font-45 leading-none text-color-secondary">
-                  185
-                </h3>
-                <span className="font-20 font-600 text-color-secondary">
-                  Privados
-                </span>
-              </div>
-              <div>
-                <h3 className="font-600 font-45 leading-none text-color-secondary">
-                  16
-                </h3>
-                <span className="font-20 font-600 text-color-secondary">
-                  Mistos
-                </span>
-              </div>
-              <div>
-                <h3 className="font-600 font-45 leading-none text-color-secondary">
-                  58
-                </h3>
-                <span className="font-20 font-600 text-color-secondary">
-                  LT/P.I
-                </span>
-              </div>
+              {MAP_STATISTICS.map(({ value, label, variant = "secondary" }) => {
+                const variantClass = STAT_VARIANT_CLASS[variant];
+
+                return (
+                  <div key={label}>
+                    <h3 className={`${STAT_VALUE_BASE_CLASS}${variantClass.value}`}>
+                      {value}
+                    </h3>
+                    <span className={`${STAT_LABEL_BASE_CLASS}${variantClass.label}`}>
+                      {label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="flex justify-center md:justify-end">

@@ -1,8 +1,35 @@
+import type { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BarChart3, Home, UserCheck2 } from "lucide-react";
 
-export default function WelcomeSection() {
+import type { WelcomeLink } from "@/types/home.types";
+
+const WELCOME_LINKS: WelcomeLink[] = [
+  {
+    label: "Quem Somos",
+    href: "/quem-somos",
+    icon: Home,
+  },
+  {
+    label: "Banco de Dados",
+    href: "/banco-de-dados",
+    icon: BarChart3,
+  },
+  {
+    label: "Entrar/Cadastrar",
+    href: "/login",
+    icon: UserCheck2,
+  },
+];
+
+const WELCOME_PARAGRAPHS = [
+  "A Medicina de Abrigos Brasil - Infodados de Abrigos de Animais é uma iniciativa para promover a ciência da medicina de abrigos no Brasil e ser um banco de dados nacional centralizado e padronizado para estatísticas de abrigos de animais.",
+  "Dados representativos com base em estatísticas nacionais para o desenvolvimento de políticas públicas podem reduzir o abandono de animais de estimação e promover a adoção.",
+  "Venha fazer parte desse movimento, se você é um abrigo/lar temporário colabore com o registro desses números, eles podem salvar e melhorar a vida dos animais!",
+];
+
+export default function WelcomeSection(): JSX.Element {
   return (
     <section className="bg-light py-16 md:py-24">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 md:flex-row md:items-center md:gap-12">
@@ -14,42 +41,19 @@ export default function WelcomeSection() {
             1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e
             gatos do Brasil
           </h2>
-          <p>
-            A Medicina de Abrigos Brasil - Infodados de Abrigos de Animais é uma
-            iniciativa para promover a ciência da medicina de abrigos no Brasil
-            e ser um banco de dados nacional centralizado e padronizado para
-            estatísticas de abrigos de animais.
-          </p>
-          <p>
-            Dados representativos com base em estatísticas nacionais para o
-            desenvolvimento de políticas públicas podem reduzir o abandono de
-            animais de estimação e promover a adoção.
-          </p>
-          <p>
-            Venha fazer parte desse movimento, se você é um abrigo/lar
-            temporário colabore com o registro desses números, eles podem salvar
-            e melhorar a vida dos animais!
-          </p>
+          {WELCOME_PARAGRAPHS.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
 
           <ul className="mt-6 flex flex-wrap items-center gap-5 text-brand-primary">
-            <li className="flex items-center gap-2">
-              <Home size={18} />
-              <Link className="color-primary" href="/quem-somos">
-                Quem Somos
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <BarChart3 size={18} />
-              <Link className="color-primary" href="/banco-de-dados">
-                Banco de Dados
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <UserCheck2 size={18} />
-              <Link className="color-primary" href="/login">
-                Entrar/Cadastrar
-              </Link>
-            </li>
+            {WELCOME_LINKS.map(({ label, href, icon: Icon }) => (
+              <li key={href} className="flex items-center gap-2">
+                <Icon size={18} />
+                <Link className="color-primary" href={href}>
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </article>
 

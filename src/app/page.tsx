@@ -1,9 +1,11 @@
-import HeroSection from "../components/home/HeroSection";
-import WelcomeSection from "../components/home/WelcomeSection";
-import MapSection from "../components/home/MapSection";
-import BenefitsSection from "../components/home/BenefitsSection";
+import type { JSX } from "react";
 
-export default function HomePage() {
+import BenefitsSection from "@/components/home/BenefitsSection";
+import HeroSection from "@/components/home/HeroSection";
+import MapSection from "@/components/home/MapSection";
+import WelcomeSection from "@/components/home/WelcomeSection";
+
+export default function HomePage(): JSX.Element {
   return (
     <main>
       <HeroSection />

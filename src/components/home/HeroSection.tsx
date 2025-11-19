@@ -1,7 +1,29 @@
+import type { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function HeroSection() {
+import type { CtaLink } from "@/types/home.types";
+
+const CTA_LINKS: CtaLink[] = [
+  {
+    label: "Cadastro Voluntário",
+    href: "/register?tipo=voluntario",
+    variant: "secondary",
+  },
+  {
+    label: "Cadastro Abrigo",
+    href: "/register?tipo=abrigo",
+  },
+];
+
+const CTA_BASE_CLASS = "btn-sample-lg";
+
+const CTA_VARIANT_CLASS: Record<NonNullable<CtaLink["variant"]>, string> = {
+  primary: "",
+  secondary: " bg-secondary",
+};
+
+export default function HeroSection(): JSX.Element {
   return (
     <section className="intro relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)]">
       <Image
@@ -20,15 +42,17 @@ export default function HeroSection() {
           desse movimento
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 md:flex-row">
-          <Link
-            className="btn-sample-lg bg-secondary"
-            href="/register?tipo=voluntario"
-          >
-            Cadastro Voluntário
-          </Link>
-          <Link className="btn-sample-lg" href="/register?tipo=abrigo">
-            Cadastro Abrigo
-          </Link>
+          {CTA_LINKS.map(({ label, href, variant }) => (
+            <Link
+              key={href}
+              className={`${CTA_BASE_CLASS}${
+                variant ? CTA_VARIANT_CLASS[variant] : ""
+              }`}
+              href={href}
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
     </section>

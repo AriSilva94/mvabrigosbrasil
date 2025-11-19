@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { useState } from "react";
 import {
   BarChart3,
@@ -16,47 +17,40 @@ import {
   CheckSquare,
 } from "lucide-react";
 
-type BenefitItem = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-};
+import type { BenefitItem } from "@/types/home.types";
 
-const nationalBenefits: BenefitItem[] = [
+const NATIONAL_BENEFITS: BenefitItem[] = [
   {
     title: "Políticas Públicas Eficazes",
-    description: "Ajuda a promover políticas públicas mais eficazes para os animais.",
-    icon: <BarChart3 className="h-8 w-8 text-brand-accent" />,
+    description:
+      "Ajuda a promover políticas públicas mais eficazes para os animais.",
   },
   {
     title: "Estimativa Populacional",
     description: "Ajuda a estimar o número de animais abandonados e em risco.",
-    icon: <Activity className="h-8 w-8 text-brand-accent" />,
   },
   {
     title: "Melhores Operações",
     description: "Auxilia a promover melhores práticas e operações.",
-    icon: <Settings className="h-8 w-8 text-brand-accent" />,
   },
   {
     title: "Banco de Dados Nacional",
-    description: "Promove um conjunto completo, real e atualizado de dados nacional anual.",
-    icon: <Database className="h-8 w-8 text-brand-accent" />,
+    description:
+      "Promove um conjunto completo, real e atualizado de dados nacional anual.",
   },
   {
     title: "Avaliação de Resultados",
     description:
       "Auxilia na avaliação dos resultados das estratégias de manejo de cães e gatos abandonados ou em situação de rua.",
-    icon: <ClipboardCheck className="h-8 w-8 text-brand-accent" />,
   },
   {
     title: "Melhor Alocação de Recursos",
-    description: "Facilita a alocação eficaz de recursos do governo e organizações de bem-estar animal.",
-    icon: <Gauge className="h-8 w-8 text-brand-accent" />,
+    description:
+      "Facilita a alocação eficaz de recursos do governo e organizações de bem-estar animal.",
   },
 ];
 
-const shelterBenefits: BenefitItem[] = [
+const SHELTER_BENEFITS: BenefitItem[] = [
   {
     title: "Estatística",
     description: "Analisar tendências de resgates ao longo dos meses e anos.",
@@ -64,12 +58,14 @@ const shelterBenefits: BenefitItem[] = [
   },
   {
     title: "Avaliação",
-    description: "Avaliar padrões de doações de recursos por períodos temporais.",
+    description:
+      "Avaliar padrões de doações de recursos por períodos temporais.",
     icon: <ClipboardCheck className="h-10 w-10 text-brand-accent" />,
   },
   {
     title: "Identificação",
-    description: "Identificar épocas de pico em adoções através de análise temporal.",
+    description:
+      "Identificar épocas de pico em adoções através de análise temporal.",
     icon: <Activity className="h-10 w-10 text-brand-accent" />,
   },
   {
@@ -79,12 +75,14 @@ const shelterBenefits: BenefitItem[] = [
   },
   {
     title: "Mapeamento",
-    description: "Mapear prevalência de doenças na população abrigada por épocas.",
+    description:
+      "Mapear prevalência de doenças na população abrigada por épocas.",
     icon: <MapSectionIcon />,
   },
   {
     title: "Conhecimento",
-    description: "Estudar incidência e períodos de devolução de animais adotados.",
+    description:
+      "Estudar incidência e períodos de devolução de animais adotados.",
     icon: <BookOpen className="h-10 w-10 text-brand-accent" />,
   },
   {
@@ -104,7 +102,8 @@ const shelterBenefits: BenefitItem[] = [
   },
   {
     title: "Estratégia",
-    description: "Verificar efetividade de planos estratégicos ao longo do tempo.",
+    description:
+      "Verificar efetividade de planos estratégicos ao longo do tempo.",
     icon: <Workflow className="h-10 w-10 text-brand-accent" />,
   },
   {
@@ -119,16 +118,32 @@ const shelterBenefits: BenefitItem[] = [
   },
 ];
 
-export default function BenefitsSection() {
+const NATIONAL_HEADING =
+  "Por que é importante a NÍVEL NACIONAL mapear e coletar os dados da dinâmica populacional de abrigos de animais?";
+const SHELTER_HEADING =
+  "Por que é importante PARA O ABRIGO registrar e coletar os dados da dinâmica populacional?";
+
+const SLIDER_CONTROL_CLASS =
+  "rounded-full border border-slate-300 px-3 py-2 text-brand-primary transition hover:border-brand-primary";
+const SLIDER_DOT_ACTIVE = "w-6 bg-brand-accent";
+const SLIDER_DOT_INACTIVE = "w-3 bg-slate-300";
+
+const SLIDER_ICONS = {
+  previous: "‹",
+  next: "›",
+} as const;
+
+export default function BenefitsSection(): JSX.Element {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const current = shelterBenefits[activeIndex];
+  const current = SHELTER_BENEFITS[activeIndex];
 
   const handleNext = () =>
-    setActiveIndex((prev) => (prev + 1) % shelterBenefits.length);
+    setActiveIndex((prevIndex) => (prevIndex + 1) % SHELTER_BENEFITS.length);
   const handlePrev = () =>
     setActiveIndex(
-      (prev) => (prev - 1 + shelterBenefits.length) % shelterBenefits.length
+      (prevIndex) =>
+        (prevIndex - 1 + SHELTER_BENEFITS.length) % SHELTER_BENEFITS.length
     );
 
   return (
@@ -139,19 +154,17 @@ export default function BenefitsSection() {
             Nossos Benefícios
           </p>
           <h2 className="font-600 font-34 text-brand-primary">
-            Por que é importante a NÍVEL NACIONAL mapear e coletar os dados da dinâmica populacional de abrigos de
-            animais?
+            {NATIONAL_HEADING}
           </h2>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {nationalBenefits.map(({ title, icon, description }, index) => (
+          {NATIONAL_BENEFITS.map(({ title, description }) => (
             <article
-              key={title || index}
+              key={title}
               className="flex h-full flex-col gap-2 rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
             >
               <div className="flex items-center gap-3">
-                {icon}
                 <h3 className="font-600 font-20 text-brand-primary">{title}</h3>
               </div>
               <p className="font-16 text-color-secondary">{description}</p>
@@ -161,7 +174,7 @@ export default function BenefitsSection() {
 
         <div className="text-center space-y-3">
           <h2 className="font-600 font-34 text-brand-primary">
-            Por que é importante PARA O ABRIGO registrar e coletar os dados da dinâmica populacional?
+            {SHELTER_HEADING}
           </h2>
         </div>
 
@@ -171,9 +184,9 @@ export default function BenefitsSection() {
               type="button"
               onClick={handlePrev}
               aria-label="Previous benefit"
-              className="rounded-full border border-slate-300 px-3 py-2 text-brand-primary transition hover:border-brand-primary"
+              className={SLIDER_CONTROL_CLASS}
             >
-              ‹
+              {SLIDER_ICONS.previous}
             </button>
             <div className="text-center">
               <div className="flex justify-center">{current.icon}</div>
@@ -195,14 +208,12 @@ export default function BenefitsSection() {
           </div>
 
           <div className="flex items-center gap-2">
-            {shelterBenefits.map((_, idx) => (
+            {SHELTER_BENEFITS.map((_, idx) => (
               <span
                 key={idx}
                 aria-label={`Slide ${idx + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
-                  idx === activeIndex
-                    ? "w-6 bg-brand-accent"
-                    : "w-3 bg-slate-300"
+                  idx === activeIndex ? SLIDER_DOT_ACTIVE : SLIDER_DOT_INACTIVE
                 }`}
               />
             ))}
@@ -213,7 +224,7 @@ export default function BenefitsSection() {
   );
 }
 
-function MapSectionIcon() {
+function MapSectionIcon(): JSX.Element {
   return (
     <svg
       className="h-10 w-10 text-brand-accent"
