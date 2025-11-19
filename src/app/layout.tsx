@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Medicina de Abrigos Brasil - Infodados de Abrigos de Animais",
   description:
     "Plataforma nacional de mapeamento de abrigos brasileiros de animais e estatísticas populacionais.",
+  icons: {
+    icon: "/fav.png",
+  },
 };
 
 export default function RootLayout({
