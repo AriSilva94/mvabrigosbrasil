@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 
 export type CtaLink = {
@@ -19,8 +20,6 @@ export type MapStatistic = {
   value: string;
   variant?: MapStatisticVariant;
 };
-
-import type { ReactNode } from "react";
 
 export type BenefitItem = {
   title: string;

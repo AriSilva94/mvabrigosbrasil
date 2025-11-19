@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { BarChart3, Home, UserCheck2 } from "lucide-react";
 
+import IconLink from "@/components/ui/IconLink";
+import { Heading, Text } from "@/components/ui/typography";
 import type { WelcomeLink } from "@/types/home.types";
 
 const WELCOME_LINKS: WelcomeLink[] = [
@@ -34,24 +36,22 @@ export default function WelcomeSection(): JSX.Element {
     <section className="bg-light py-16 md:py-24">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 md:flex-row md:items-center md:gap-12">
         <article className="md:w-1/2 space-y-4 text-color-secondary">
-          <p className="font-600 font-20 uppercase text-brand-accent tracking-[0.03em]">
+          <Text className="font-600 font-20 uppercase text-brand-accent tracking-[0.03em]">
             Boas Vindas
-          </p>
-          <h2 className="font-600 font-36 text-brand-primary">
-            1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e
-            gatos do Brasil
-          </h2>
+          </Text>
+          <Heading as="h2" className="font-36 text-brand-primary">
+            1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e gatos do Brasil
+          </Heading>
           {WELCOME_PARAGRAPHS.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+            <Text key={paragraph}>{paragraph}</Text>
           ))}
 
           <ul className="mt-6 flex flex-wrap items-center gap-5 text-brand-primary">
             {WELCOME_LINKS.map(({ label, href, icon: Icon }) => (
               <li key={href} className="flex items-center gap-2">
-                <Icon size={18} />
-                <Link className="color-primary" href={href}>
+                <IconLink href={href} icon={Icon}>
                   {label}
-                </Link>
+                </IconLink>
               </li>
             ))}
           </ul>
