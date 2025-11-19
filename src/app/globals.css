@@ -1,26 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
+  --color-brand-primary: #108259;
+  --color-brand-secondary: #5e782a;
+  --color-brand-accent: #f2a400;
+  --color-text-default: #696b7e;
+  --color-bg-light: #f5f5f6;
+
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: var(--color-text-default);
+
+  --font-sans: "Poppins", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
-@theme inline {
+@theme {
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-secondary: var(--color-brand-secondary);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-text-default: var(--color-text-default);
+  --color-bg-light: var(--color-bg-light);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--color-text-default);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  a {
+    color: var(--color-brand-primary);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-sample {
+    @apply inline-flex items-center justify-center rounded-[20px] border border-brand-primary bg-brand-primary px-4 py-2 text-[13px] font-medium text-white transition-colors duration-200;
+  }
+
+  .btn-sample:hover,
+  .btn-sample:focus,
+  .btn-sample:active,
+  .btn-sample.active {
+    @apply bg-brand-primary border-brand-primary text-white;
+  }
+
+  .btn-sample-y {
+    @apply inline-flex items-center justify-center rounded-[30px] border border-brand-accent bg-brand-accent px-5 py-2 text-[1.1rem] font-medium text-white transition-colors duration-200;
+  }
+
+  .btn-sample-y:hover,
+  .btn-sample-y:focus,
+  .btn-sample-y:active,
+  .btn-sample-y.active {
+    @apply bg-brand-accent border-brand-accent text-white;
+  }
+
+  .btn-sample-lg {
+    @apply inline-flex items-center justify-center rounded-[26px] border border-brand-primary bg-brand-primary px-5 py-2 text-[1.1rem] font-medium text-white transition-colors duration-200;
+  }
+
+  .btn-sample-lg:hover,
+  .btn-sample-lg:focus,
+  .btn-sample-lg:active,
+  .btn-sample-lg.active {
+    @apply bg-brand-primary border-brand-primary text-white;
+  }
+}
+
+@layer utilities {
+  .color-primary {
+    color: var(--color-brand-primary) !important;
+  }
+
+  .color-secondary {
+    color: var(--color-text-default) !important;
+  }
+
+  .color-tertiary {
+    color: var(--color-brand-accent) !important;
+  }
+
+  .color-light {
+    color: #fff !important;
+  }
+
+  .bg-primary {
+    background: var(--color-brand-primary) !important;
+  }
+
+  .bg-secondary {
+    background: var(--color-brand-secondary) !important;
+    border-color: var(--color-brand-secondary) !important;
+  }
+
+  .bg-light,
+  .bg-redes {
+    background: var(--color-bg-light) !important;
+  }
+
+  .font-60 { font-size: 60px; }
+  .font-50 { font-size: 50px; }
+  .font-45 { font-size: 45px; }
+  .font-36 { font-size: 36px; }
+  .font-34 { font-size: 34px; }
+  .font-30 { font-size: 30px; }
+  .font-28 { font-size: 28px; }
+  .font-26 { font-size: 26px; }
+  .font-24 { font-size: 24px; }
+  .font-22 { font-size: 22px; }
+  .font-20 { font-size: 20px; }
+  .font-18 { font-size: 18px; }
+  .font-16 { font-size: 16px; }
+  .font-15 { font-size: 15px; }
+  .font-14 { font-size: 14px; }
+  .font-13 { font-size: 13px; }
+  .font-12 { font-size: 12px; }
 }
