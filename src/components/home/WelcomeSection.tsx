@@ -4,10 +4,10 @@ import { BarChart3, Home, UserCheck2 } from "lucide-react";
 
 export default function WelcomeSection() {
   return (
-    <section className="bg-[var(--color-bg-light)] py-16 md:py-24">
+    <section className="bg-(--color-bg-light) py-16 md:py-24">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 md:flex-row md:items-center md:gap-12">
-        <article className="md:w-1/2 space-y-4 text-[var(--color-text-default)]">
-          <p className="font-600 font-20 uppercase text-[var(--color-brand-accent)] tracking-[0.03em]">
+        <article className="md:w-1/2 space-y-4 text-(--color-text-default)">
+          <p className="font-600 font-20 uppercase text-(--color-brand-accent) tracking-[0.03em]">
             Boas Vindas
           </p>
           <h2 className="font-600 font-36 text-brand-primary">
