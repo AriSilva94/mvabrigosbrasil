@@ -105,7 +105,7 @@ export default function Header() {
                 <p className="text-lg font-semibold">
                   Medicina de Abrigos Brasil
                 </p>
-                <p className="text-xs text-[var(--color-text-default)]">
+                <p className="text-xs text-color-secondary">
                   Infodados de Abrigos de Animais
                 </p>
               </div>

@@ -15,12 +15,12 @@ export default function MapSection() {
           </h2>
         </header>
 
-        <div className="mt-10 rounded-2xl border border-slate-200 bg-(--color-bg-light) p-4 shadow-sm">
+        <div className="mt-10 rounded-2xl border border-slate-200 bg-light p-4 shadow-sm">
           <MapChart />
         </div>
 
-        <div className="mt-12 rounded-2xl bg-(--color-bg-light) p-6 shadow-sm">
-          <div className="text-center text-(--color-text-default)">
+        <div className="mt-12 rounded-2xl bg-light p-6 shadow-sm">
+          <div className="text-center text-color-secondary">
             <p className="text-base md:text-lg">
               O Projeto está em seu desenvolvimento inicial, dessa maneira, o
               banco de dados e mapeamento está ainda com poucas informações.
@@ -46,34 +46,34 @@ export default function MapSection() {
                 <span className="font-20 font-600 color-primary">Abrigos</span>
               </div>
               <div>
-                <h3 className="font-600 font-45 leading-none text-(--color-text-default)">
+                <h3 className="font-600 font-45 leading-none text-color-secondary">
                   29
                 </h3>
-                <span className="font-20 font-600 text-(--color-text-default)">
+                <span className="font-20 font-600 text-color-secondary">
                   Públicos
                 </span>
               </div>
               <div>
-                <h3 className="font-600 font-45 leading-none text-(--color-text-default)">
+                <h3 className="font-600 font-45 leading-none text-color-secondary">
                   185
                 </h3>
-                <span className="font-20 font-600 text-(--color-text-default)">
+                <span className="font-20 font-600 text-color-secondary">
                   Privados
                 </span>
               </div>
               <div>
-                <h3 className="font-600 font-45 leading-none text-(--color-text-default)">
+                <h3 className="font-600 font-45 leading-none text-color-secondary">
                   16
                 </h3>
-                <span className="font-20 font-600 text-(--color-text-default)">
+                <span className="font-20 font-600 text-color-secondary">
                   Mistos
                 </span>
               </div>
               <div>
-                <h3 className="font-600 font-45 leading-none text-(--color-text-default)">
+                <h3 className="font-600 font-45 leading-none text-color-secondary">
                   58
                 </h3>
-                <span className="font-20 font-600 text-(--color-text-default)">
+                <span className="font-20 font-600 text-color-secondary">
                   LT/P.I
                 </span>
               </div>
