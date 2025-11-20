@@ -83,6 +83,12 @@
 }
 
 @layer utilities {
+  .container {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
   .color-primary {
     color: var(--color-brand-primary) !important;
   }

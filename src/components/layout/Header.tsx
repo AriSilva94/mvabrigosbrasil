@@ -1,16 +1,11 @@
-'use client';
+"use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import {
-  Facebook,
-  Instagram,
-  Search,
-  Menu,
-  X,
-  ChevronDown,
-  MessageCircle,
-} from "lucide-react";
+import { Search, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
+
+import SocialIcon from "@/components/ui/SocialIcon";
 
 const topNavLinks = [
   { href: "/", label: "Inicial" },
@@ -41,7 +36,7 @@ export default function Header() {
   return (
     <header className="w-full border-b border-slate-200">
       <div className="bg-white text-sm text-brand-primary">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
+        <div className="container flex items-center justify-between px-4 py-2">
           <nav className="hidden items-center gap-2 md:flex">
             {topNavLinks.map((item, index) => (
               <div key={item.href} className="flex items-center gap-2">
@@ -70,7 +65,7 @@ export default function Header() {
               target="_blank"
               rel="noreferrer"
             >
-              <Facebook size={18} />
+              <SocialIcon name="facebook" />
             </a>
             <a
               href="https://instagram.com"
@@ -79,7 +74,7 @@ export default function Header() {
               target="_blank"
               rel="noreferrer"
             >
-              <Instagram size={18} />
+              <SocialIcon name="instagram" />
             </a>
             <a
               href="https://wa.me/"
@@ -88,27 +83,23 @@ export default function Header() {
               target="_blank"
               rel="noreferrer"
             >
-              <MessageCircle size={18} />
+              <SocialIcon name="whatsapp" />
             </a>
           </div>
         </div>
       </div>
 
       <div className="bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:gap-6">
+        <div className="container flex flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:gap-6">
           <div className="flex items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-brand-primary text-2xl font-bold text-brand-primary">
-                MB
-              </div>
-              <div className="leading-tight text-brand-primary">
-                <p className="text-lg font-semibold">
-                  Medicina de Abrigos Brasil
-                </p>
-                <p className="text-xs text-color-secondary">
-                  Infodados de Abrigos de Animais
-                </p>
-              </div>
+              <Image
+                src="/assets/img/logo-medicina-de-abrigos-brasil.svg"
+                alt="Medicina de Abrigos Brasil"
+                width={252}
+                height={85}
+                className="h-12 w-auto md:h-20"
+              />
             </Link>
             <div className="flex items-center gap-3 md:hidden">
               <a
@@ -118,7 +109,7 @@ export default function Header() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Facebook size={18} />
+                <SocialIcon name="facebook" />
               </a>
               <a
                 href="https://instagram.com"
@@ -127,7 +118,7 @@ export default function Header() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Instagram size={18} />
+                <SocialIcon name="instagram" />
               </a>
               <a
                 href="https://wa.me/"
@@ -136,12 +127,12 @@ export default function Header() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <MessageCircle size={18} />
+                <SocialIcon name="whatsapp" />
               </a>
             </div>
           </div>
 
-          <nav className="flex w-full flex-1 flex-col items-start gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+          <nav className="flex w-full flex-1 flex-col items-start gap-4 md:flex-row md:items-center md:justify-end md:gap-6">
             <ul
               className={`flex flex-col gap-3 text-[15px] font-medium text-brand-primary md:flex-row md:items-center md:gap-4 ${
                 isMobileOpen ? "block" : "hidden md:flex"
@@ -152,7 +143,10 @@ export default function Header() {
                 if (!isDropdown) {
                   return (
                     <li key={item.href}>
-                      <Link href={item.href} className="hover:text-brand-accent">
+                      <Link
+                        href={item.href}
+                        className="hover:text-brand-accent"
+                      >
                         {item.label}
                       </Link>
                     </li>

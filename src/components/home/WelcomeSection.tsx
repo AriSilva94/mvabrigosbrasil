@@ -34,13 +34,14 @@ const WELCOME_PARAGRAPHS = [
 export default function WelcomeSection(): JSX.Element {
   return (
     <section className="bg-light py-16 md:py-24">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 md:flex-row md:items-center md:gap-12">
+      <div className="container flex flex-col gap-10 px-6 md:flex-row md:items-center md:gap-12">
         <article className="md:w-1/2 space-y-4 text-color-secondary">
           <Text className="font-600 font-20 uppercase text-brand-accent tracking-[0.03em]">
             Boas Vindas
           </Text>
           <Heading as="h2" className="font-36 text-brand-primary">
-            1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e gatos do Brasil
+            1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e
+            gatos do Brasil
           </Heading>
           {WELCOME_PARAGRAPHS.map((paragraph) => (
             <Text key={paragraph}>{paragraph}</Text>
@@ -67,6 +68,7 @@ export default function WelcomeSection(): JSX.Element {
               alt="Profissional cuidando de cachorro em abrigo"
               width={640}
               height={720}
+              quality={85}
               className="h-full w-full object-cover"
             />
           </Link>

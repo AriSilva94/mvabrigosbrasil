@@ -24,7 +24,7 @@ export default function HeroSection(): JSX.Element {
         src="/assets/img/bg_intro.jpg"
         alt="Plano de fundo de animais"
         fill
-        priority
+        quality={85}
         className="-z-10 object-cover"
       />
       <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-6xl flex-col items-center justify-center px-6 text-center text-white md:px-8">

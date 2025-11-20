@@ -24,14 +24,14 @@ const MAP_STATISTICS: MapStatistic[] = [
 export default function MapSection(): JSX.Element {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+      <div className="mx-auto px-4 py-16 md:px-6 md:py-20">
         <header className="text-center">
           <Heading as="h2" className="font-34 text-brand-primary">
             Confira o Mapeamento <br /> de Abrigos pelo Brasil
           </Heading>
         </header>
 
-        <div className="mt-10 rounded-2xl border border-slate-200 bg-light p-4 shadow-sm">
+        <div className="mt-10 rounded-2xl flex items-center justify-center">
           <MapChart />
         </div>
 
