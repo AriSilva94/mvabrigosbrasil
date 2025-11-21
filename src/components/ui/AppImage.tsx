@@ -2,6 +2,7 @@
 
 import NextImage, { type ImageProps as NextImageProps } from "next/image";
 import { Image as ImageKitImage, type IKImageProps } from "@imagekit/next";
+import type { Transformation } from "@imagekit/javascript";
 
 import { imageKitConfig } from "@/lib/imagekit";
 
@@ -59,6 +60,14 @@ export default function AppImage(props: AppImageProps) {
   const finalSrc: typeof props.src = normalizedStringSrc ?? props.src;
   const shouldUseImageKit = enabled && defaultEndpoint && normalizedStringSrc;
 
+  const hasCustomTransformation =
+    Array.isArray(transformation) && transformation.length > 0;
+  const defaultTransformation: Transformation[] = [{ format: "auto" }];
+  const effectiveTransformation: Transformation[] | undefined =
+    shouldUseImageKit && !hasCustomTransformation
+      ? defaultTransformation
+      : transformation;
+
   if (!shouldUseImageKit) {
     return <NextImage {...nextImageProps} src={finalSrc} unoptimized />;
   }
@@ -68,7 +77,7 @@ export default function AppImage(props: AppImageProps) {
       {...nextImageProps}
       src={normalizedStringSrc}
       urlEndpoint={urlEndpoint ?? defaultEndpoint}
-      transformation={transformation}
+      transformation={effectiveTransformation}
       transformationPosition={transformationPosition ?? defaultPosition}
       queryParameters={queryParameters}
       responsive={responsive}

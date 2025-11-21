@@ -190,7 +190,9 @@ export default function Header() {
                       <ChevronDown
                         size={14}
                         className={`origin-center transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                          isInstitutionalOpen ? "rotate-180 -translate-y-0.5" : "translate-y-0"
+                          isInstitutionalOpen
+                            ? "rotate-180 -translate-y-0.5"
+                            : "translate-y-0"
                         }`}
                       />
                     </button>
