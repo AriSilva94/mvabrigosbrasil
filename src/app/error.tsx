@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AlertTriangle, Home, Mail, RefreshCcw } from "lucide-react";
+import { AlertTriangle, Home, Mail } from "lucide-react";
 
 import ButtonLink from "@/components/ui/ButtonLink";
 import { Heading, Text } from "@/components/ui/typography";

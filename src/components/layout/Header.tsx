@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Search, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
+import { Search, Menu, X, ChevronDown } from "lucide-react";
 
 import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";

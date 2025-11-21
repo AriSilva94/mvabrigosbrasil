@@ -1,4 +1,9 @@
 export function useFilters<TFilters>() {
   // TODO: gerenciar estado de filtros reutilizável
-  return { filters: {} as TFilters, setFilters: (_: Partial<TFilters>) => {} };
+  return {
+    filters: {} as TFilters,
+    setFilters: (filters: Partial<TFilters>) => {
+      void filters;
+    },
+  };
 }

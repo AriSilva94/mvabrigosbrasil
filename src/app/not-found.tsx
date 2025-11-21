@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, BookOpen, LifeBuoy, MapPin, PawPrint } from "lucide-react";
+import { BookOpen, LifeBuoy, MapPin, PawPrint } from "lucide-react";
 
 import ButtonLink from "@/components/ui/ButtonLink";
 import { Heading, Text } from "@/components/ui/typography";
