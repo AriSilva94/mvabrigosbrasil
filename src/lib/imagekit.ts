@@ -3,7 +3,11 @@ type TransformationPosition = "path" | "query";
 const envFlag =
   process.env.NEXT_PUBLIC_IMAGEKIT_ENABLED ??
   process.env.NEXT_PUBLIC_ENABLE_IMAGEKIT;
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
+const rawUrlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
+const urlEndpoint =
+  rawUrlEndpoint?.endsWith("/")
+    ? rawUrlEndpoint.slice(0, -1)
+    : rawUrlEndpoint;
 
 const transformationPosition: TransformationPosition =
   process.env.NEXT_PUBLIC_IMAGEKIT_TRANSFORMATION_POSITION === "path"
