@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local folders to skip
+    "node_modules_old/**",
   ]),
 ]);
 
