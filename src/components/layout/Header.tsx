@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Search, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 
+import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
 
 const topNavLinks = [
@@ -113,7 +113,7 @@ export default function Header() {
         <div className="container flex flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:gap-6">
           <div className="flex items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <Image
+              <AppImage
                 src="/assets/img/logo-medicina-de-abrigos-brasil.svg"
                 alt="Medicina de Abrigos Brasil"
                 width={252}

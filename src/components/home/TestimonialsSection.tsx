@@ -2,11 +2,11 @@
 
 import type { JSX, PointerEvent } from "react";
 import { useRef, useState } from "react";
-import Image from "next/image";
 import clsx from "clsx";
 
 import SliderDots from "@/components/ui/SliderDots";
 import { Heading, Text } from "@/components/ui/typography";
+import AppImage from "@/components/ui/AppImage";
 
 type Testimonial = {
   quote: string;
@@ -83,7 +83,7 @@ export default function TestimonialsSection(): JSX.Element {
 
   return (
     <section className="relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)]">
-      <Image
+      <AppImage
         src="/assets/img/bg_intro.jpg"
         alt="Plano de fundo de animais"
         fill
@@ -123,7 +123,7 @@ export default function TestimonialsSection(): JSX.Element {
                   aria-hidden={index !== activeIndex}
                 >
                   <div className="h-24 w-24 overflow-hidden rounded-full shadow-lg md:h-28 md:w-28">
-                    <Image
+                    <AppImage
                       src={testimonial.avatar}
                       alt={`Retrato de ${testimonial.name}`}
                       width={128}

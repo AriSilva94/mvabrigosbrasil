@@ -1,8 +1,8 @@
 import type { JSX } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { BarChart3, Home, UserCheck2 } from "lucide-react";
 
+import AppImage from "@/components/ui/AppImage";
 import IconLink from "@/components/ui/IconLink";
 import { Heading, Text } from "@/components/ui/typography";
 import type { WelcomeLink } from "@/types/home.types";
@@ -63,7 +63,7 @@ export default function WelcomeSection(): JSX.Element {
             href="/quem-somos"
             className="block overflow-hidden rounded-2xl shadow-lg"
           >
-            <Image
+            <AppImage
               src="/assets/img/sobre-mvabrigos.png"
               alt="Profissional cuidando de cachorro em abrigo"
               width={640}

@@ -1,7 +1,7 @@
 import type { JSX } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
+import AppImage from "@/components/ui/AppImage";
 import { Text } from "@/components/ui/typography";
 import type { LibraryItem } from "@/data/libraryItems";
 
@@ -25,7 +25,7 @@ export default function LibraryItemsShowcase({
             className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
           >
             <Link href={`/biblioteca/${slug}`}>
-              <Image
+              <AppImage
                 src={imageSrc}
                 alt={title}
                 width={600}

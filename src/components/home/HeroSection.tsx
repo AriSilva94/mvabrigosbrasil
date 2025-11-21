@@ -1,6 +1,6 @@
 import type { JSX } from "react";
-import Image from "next/image";
 
+import AppImage from "@/components/ui/AppImage";
 import ButtonLink from "@/components/ui/ButtonLink";
 import { Heading, Text } from "@/components/ui/typography";
 import type { CtaLink } from "@/types/home.types";
@@ -20,7 +20,7 @@ const CTA_LINKS: CtaLink[] = [
 export default function HeroSection(): JSX.Element {
   return (
     <section className="intro relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)]">
-      <Image
+      <AppImage
         src="/assets/img/bg_intro.jpg"
         alt="Plano de fundo de animais"
         fill

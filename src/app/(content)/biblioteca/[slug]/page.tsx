@@ -1,13 +1,13 @@
 import type { JSX } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FileText } from "lucide-react";
 
+import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
 import PageHeader from "@/components/layout/PageHeader";
+import AppImage from "@/components/ui/AppImage";
 import { Heading, Text } from "@/components/ui/typography";
 import { libraryItems } from "@/data/libraryItems";
-import { FileText } from "lucide-react";
-import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -43,7 +43,7 @@ export default async function LibraryDetailPage({
           <div className="mx-auto flex max-w-6xl flex-col gap-10 md:flex-row md:items-start md:gap-12 lg:gap-14">
             <div className="flex justify-start md:shrink-0">
               <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
-                <Image
+                <AppImage
                   src={item.imageSrc}
                   alt={item.title}
                   width={400}

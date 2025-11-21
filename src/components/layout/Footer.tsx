@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
 
 const SOCIAL_LINKS = [
@@ -67,7 +67,7 @@ export default function Footer() {
       <div className="bg-brand-primary text-white">
         <div className="container px-6 py-12 text-center">
           <Link href="/" className="inline-flex justify-center">
-            <Image
+            <AppImage
               src="/assets/img/logo-medicina-de-abrigos-brasil.svg"
               alt="Medicina de Abrigos Brasil"
               width={260}
