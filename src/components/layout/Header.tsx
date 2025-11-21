@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 
 import SocialIcon from "@/components/ui/SocialIcon";
@@ -32,9 +32,27 @@ const mainNavLinks = [
 export default function Header() {
   const [isInstitutionalOpen, setInstitutionalOpen] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
+  const institutionalRef = useRef<HTMLLIElement | null>(null);
+  const isDropdownVisible = isInstitutionalOpen || isMobileOpen;
+
+  useEffect(() => {
+    if (!isInstitutionalOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        institutionalRef.current &&
+        !institutionalRef.current.contains(event.target as Node)
+      ) {
+        setInstitutionalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isInstitutionalOpen]);
 
   return (
-    <header className="w-full border-b border-slate-200">
+    <header className="relative z-20 w-full border-b border-slate-200">
       <div className="bg-white text-sm text-brand-primary">
         <div className="container flex items-center justify-between px-4 py-2">
           <nav className="hidden items-center gap-2 md:flex">
@@ -88,6 +106,8 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      <div className="h-px w-full bg-slate-200" />
 
       <div className="bg-white">
         <div className="container flex flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:gap-6">
@@ -156,38 +176,47 @@ export default function Header() {
                 return (
                   <li
                     key={item.href}
+                    ref={institutionalRef}
                     className="relative"
-                    onMouseEnter={() => setInstitutionalOpen(true)}
-                    onMouseLeave={() => setInstitutionalOpen(false)}
                   >
                     <button
                       type="button"
-                      className="flex items-center gap-1 text-brand-accent hover:text-brand-accent"
+                      className="flex items-center gap-1 text-brand-accent hover:text-brand-accent cursor-pointer"
                       aria-haspopup="true"
                       aria-expanded={isInstitutionalOpen}
                       onClick={() => setInstitutionalOpen((prev) => !prev)}
                     >
                       {item.label}
-                      <ChevronDown size={14} />
+                      <ChevronDown
+                        size={14}
+                        className={`origin-center transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                          isInstitutionalOpen ? "rotate-180 -translate-y-0.5" : "translate-y-0"
+                        }`}
+                      />
                     </button>
 
-                    {(isInstitutionalOpen || isMobileOpen) && (
-                      <div className="absolute left-0 top-full mt-2 w-52 rounded-md border border-brand-primary bg-white shadow-lg md:mt-3">
-                        <ul className="py-2 text-sm text-brand-primary">
-                          {institutionalLinks.map((subItem) => (
-                            <li key={subItem.href}>
-                              <Link
-                                href={subItem.href}
-                                className="block px-4 py-2 hover:bg-brand-primary hover:text-white"
-                                onClick={() => setInstitutionalOpen(false)}
-                              >
-                                {subItem.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    <div
+                      className={`absolute left-0 top-full z-30 mt-2 w-52 rounded-md border border-brand-primary bg-white shadow-lg transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] md:mt-3 ${
+                        isDropdownVisible
+                          ? "translate-y-0 opacity-100 visible"
+                          : "-translate-y-2 opacity-0 invisible"
+                      }`}
+                      aria-hidden={!isDropdownVisible}
+                    >
+                      <ul className="py-2 text-sm text-brand-primary">
+                        {institutionalLinks.map((subItem) => (
+                          <li key={subItem.href}>
+                            <Link
+                              href={subItem.href}
+                              className="block px-4 py-2 hover:bg-brand-primary hover:text-white"
+                              onClick={() => setInstitutionalOpen(false)}
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </li>
                 );
               })}

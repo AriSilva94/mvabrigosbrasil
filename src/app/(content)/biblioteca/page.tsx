@@ -2,9 +2,7 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import LibraryItemCard from "@/components/content/LibraryItemCard";
-import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
 import { libraryItems } from "@/data/libraryItems";
-import { Heading } from "@/components/ui/typography";
 
 const CATEGORIES = [
   {
