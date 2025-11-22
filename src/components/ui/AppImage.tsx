@@ -68,8 +68,17 @@ export default function AppImage(props: AppImageProps) {
       ? defaultTransformation
       : transformation;
 
+  const shouldUnoptimize =
+    !shouldUseImageKit && process.env.NODE_ENV !== "production";
+
   if (!shouldUseImageKit) {
-    return <NextImage {...nextImageProps} src={finalSrc} unoptimized />;
+    return (
+      <NextImage
+        {...nextImageProps}
+        src={finalSrc}
+        unoptimized={shouldUnoptimize}
+      />
+    );
   }
 
   return (
