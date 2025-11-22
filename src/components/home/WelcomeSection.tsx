@@ -69,6 +69,7 @@ export default function WelcomeSection(): JSX.Element {
               width={640}
               height={720}
               quality={85}
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 480px"
               className="h-full w-full object-cover"
             />
           </Link>
