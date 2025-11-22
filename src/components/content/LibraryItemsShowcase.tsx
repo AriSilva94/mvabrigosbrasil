@@ -30,6 +30,7 @@ export default function LibraryItemsShowcase({
                 alt={title}
                 width={600}
                 height={840}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 className="h-full w-full object-contain"
               />
             </Link>
