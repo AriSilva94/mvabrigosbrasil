@@ -4,18 +4,12 @@ import Link from "next/link";
 import { AlertTriangle, Home, Mail } from "lucide-react";
 
 import ButtonLink from "@/components/ui/ButtonLink";
+import PawsBackgroundSection from "@/components/ui/PawsBackgroundSection";
 import { Heading, Text } from "@/components/ui/typography";
 
 export default function ErrorPage() {
   return (
-    <main
-      className="relative overflow-hidden bg-brand-primary text-white"
-      style={{
-        backgroundImage: "url('/assets/img/bg_paws.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "inherit",
-      }}
-    >
+    <PawsBackgroundSection as="main" className="relative overflow-hidden">
       <section className="container px-6 py-16 md:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-5">
@@ -91,6 +85,6 @@ export default function ErrorPage() {
           </div>
         </div>
       </section>
-    </main>
+    </PawsBackgroundSection>
   );
 }
