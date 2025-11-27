@@ -1,8 +1,27 @@
-export default function Page() {
+import type { JSX } from "react";
+
+import PageHeader from "@/components/layout/PageHeader";
+import {
+  WhoWeAreFoundersSection,
+  WhoWeAreHeroSection,
+  WhoWeAreJustificationSection,
+  WhoWeAreMissionSection,
+  WhoWeAreSupportersCtaSection,
+} from "@/components/institutional/who-we-are";
+
+export default function Page(): JSX.Element {
   return (
     <main>
-      <h1>TODO: Conteúdo de Quem Somos</h1>
-      <p>Página institucional em construção.</p>
+      <PageHeader
+        title="Quem Somos"
+        breadcrumbs={[{ label: "Inicial", href: "/" }, { label: "Quem Somos" }]}
+      />
+
+      <WhoWeAreHeroSection />
+      <WhoWeAreMissionSection />
+      <WhoWeAreJustificationSection />
+      <WhoWeAreFoundersSection />
+      <WhoWeAreSupportersCtaSection />
     </main>
   );
 }

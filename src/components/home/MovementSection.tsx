@@ -3,18 +3,11 @@ import Link from "next/link";
 import { Home, UserCheck2 } from "lucide-react";
 
 import { Heading, Text } from "@/components/ui/typography";
+import PawsBackgroundSection from "@/components/ui/PawsBackgroundSection";
 
 export default function MovementSection(): JSX.Element {
   return (
-    <section
-      className="bg-brand-primary text-white"
-      style={{
-        backgroundImage: "url('/assets/img/bg_paws.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "inherit",
-      }}
-      aria-labelledby="movimento-title"
-    >
+    <PawsBackgroundSection aria-labelledby="movimento-title">
       <div className="container px-6 py-16 md:py-24">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <article className="flex flex-col items-center text-center md:border-r md:border-white/30 md:pr-12">
@@ -76,6 +69,6 @@ export default function MovementSection(): JSX.Element {
           </article>
         </div>
       </div>
-    </section>
+    </PawsBackgroundSection>
   );
 }
