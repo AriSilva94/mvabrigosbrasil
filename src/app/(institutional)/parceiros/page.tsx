@@ -1,8 +1,15 @@
+import PageHeader from "@/components/layout/PageHeader";
+
 export default function Page() {
   return (
     <main>
-      <h1>TODO: Conteúdo de Parceiros</h1>
-      <p>Página institucional em construção.</p>
+      <PageHeader
+        title="Parceiros do Projeto"
+        breadcrumbs={[
+          { label: "Inicial", href: "/" },
+          { label: "Parceiros do Projeto" },
+        ]}
+      />
     </main>
   );
 }

@@ -21,7 +21,7 @@ export default function LibrarySection(): JSX.Element {
           </Heading>
         </header>
 
-        <LibraryItemsShowcase items={libraryItems} />
+        <LibraryItemsShowcase items={libraryItems.slice(0, 4)} />
       </div>
     </section>
   );
