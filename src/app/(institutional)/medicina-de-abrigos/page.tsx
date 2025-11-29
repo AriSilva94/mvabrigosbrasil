@@ -1,8 +1,19 @@
-export default function Page() {
+import type { JSX } from "react";
+
+import PageHeader from "@/components/layout/PageHeader";
+import { ShelterMedicineSection } from "@/components/institutional/shelter-medicine";
+
+export default function Page(): JSX.Element {
   return (
     <main>
-      <h1>TODO: Conteúdo de Medicina de Abrigos</h1>
-      <p>Página institucional em construção.</p>
+      <PageHeader
+        title="Medicina de Abrigos"
+        breadcrumbs={[
+          { label: "Inicial", href: "/" },
+          { label: "Medicina de Abrigos" },
+        ]}
+      />
+      <ShelterMedicineSection />
     </main>
   );
 }
