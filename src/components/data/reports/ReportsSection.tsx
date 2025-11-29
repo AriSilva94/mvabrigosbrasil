@@ -13,7 +13,7 @@ type ReportsSectionProps = {
 
 export default function ReportsSection({
   reports,
-}: ReportsSectionProps): JSX.Element {
+}: ReportsSectionProps): JSX.Element | null {
   if (reports.length === 0) {
     return null;
   }
