@@ -7,6 +7,7 @@ import { Heading } from "@/components/ui/typography";
 type Breadcrumb = {
   label: string;
   href?: string;
+  allowActiveLink?: boolean;
 };
 
 type PageHeaderProps = {
@@ -52,19 +53,23 @@ export default function PageHeader({
               <ol className="flex flex-wrap items-center justify-center gap-2 text-sm font-medium text-white md:text-base">
                 {breadcrumbs.map((crumb, index) => {
                   const isLast = index === breadcrumbs.length - 1;
-                  const content =
-                    crumb.href && !isLast ? (
-                      <Link
-                        href={crumb.href}
-                        className="transition text-white hover:text-brand-accent"
-                      >
-                        {crumb.label}
-                      </Link>
-                    ) : (
-                      <span aria-current={isLast ? "page" : undefined}>
-                        {crumb.label}
-                      </span>
-                    );
+                  const shouldLink =
+                    Boolean(crumb.href) &&
+                    (!isLast || crumb.allowActiveLink === true);
+
+                  const content = shouldLink ? (
+                    <Link
+                      href={crumb.href as string}
+                      className="transition text-white hover:text-brand-accent"
+                      aria-current={isLast ? "page" : undefined}
+                    >
+                      {crumb.label}
+                    </Link>
+                  ) : (
+                    <span aria-current={isLast ? "page" : undefined}>
+                      {crumb.label}
+                    </span>
+                  );
 
                   return (
                     <li

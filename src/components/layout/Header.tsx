@@ -1,39 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Search, Menu, X, ChevronDown } from "lucide-react";
 
 import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
-
-const topNavLinks = [
-  { href: "/", label: "Inicial" },
-  { href: "/quem-somos", label: "Quem Somos" },
-  { href: "/contato", label: "Contato" },
-];
-
-const institutionalLinks = [
-  { href: "/quem-somos", label: "Quem Somos" },
-  { href: "/equipe-mv", label: "Equipe" },
-  { href: "/medicina-de-abrigos", label: "Medicina de Abrigos" },
-  { href: "/parceiros", label: "Parceiros" },
-];
-
-const mainNavLinks = [
-  { href: "/quem-somos", label: "Institucional", hasDropdown: true },
-  { href: "/banco-de-dados", label: "Banco de Dados" },
-  { href: "/programa-de-voluntarios", label: "Voluntários" },
-  { href: "/biblioteca", label: "Biblioteca" },
-  { href: "/materias", label: "Matérias" },
-  { href: "/relatorios", label: "Relatórios" },
-];
+import {
+  INSTITUTIONAL_LINKS,
+  MAIN_NAV_LINKS,
+  TOP_NAV_LINKS,
+} from "@/constants/navigation";
 
 export default function Header() {
   const [isInstitutionalOpen, setInstitutionalOpen] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
   const institutionalRef = useRef<HTMLLIElement | null>(null);
   const isDropdownVisible = isInstitutionalOpen || isMobileOpen;
+  const pathname = usePathname();
+
+  const isLinkActive = (href: string): boolean => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    if (href === "/biblioteca" && pathname.startsWith("/clipping")) {
+      return true;
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const isInstitutionalActive = INSTITUTIONAL_LINKS.some((link) =>
+    isLinkActive(link.href),
+  );
 
   useEffect(() => {
     if (!isInstitutionalOpen) return;
@@ -56,10 +57,15 @@ export default function Header() {
       <div className="bg-white text-sm text-brand-primary">
         <div className="container flex items-center justify-between px-4 py-2">
           <nav className="hidden items-center gap-2 md:flex">
-            {topNavLinks.map((item, index) => (
+            {TOP_NAV_LINKS.map((item, index) => (
               <div key={item.href} className="flex items-center gap-2">
                 {index > 0 && <span className="text-brand-accent">•</span>}
-                <Link href={item.href} className="hover:text-brand-accent">
+                <Link
+                  href={item.href}
+                  className={`hover:text-brand-accent ${
+                    isLinkActive(item.href) ? "text-brand-accent" : ""
+                  }`}
+                >
                   {item.label}
                 </Link>
               </div>
@@ -158,14 +164,17 @@ export default function Header() {
                 isMobileOpen ? "block" : "hidden md:flex"
               }`}
             >
-              {mainNavLinks.map((item) => {
+              {MAIN_NAV_LINKS.map((item) => {
                 const isDropdown = item.hasDropdown;
                 if (!isDropdown) {
+                  const isActive = isLinkActive(item.href);
                   return (
                     <li key={item.href}>
                       <Link
                         href={item.href}
-                        className="hover:text-brand-accent"
+                        className={`hover:text-brand-accent ${
+                          isActive ? "text-brand-accent" : ""
+                        }`}
                       >
                         {item.label}
                       </Link>
@@ -181,7 +190,11 @@ export default function Header() {
                   >
                     <button
                       type="button"
-                      className="flex items-center gap-1 text-brand-accent hover:text-brand-accent cursor-pointer"
+                      className={`flex cursor-pointer items-center gap-1 hover:text-brand-accent ${
+                        isInstitutionalActive
+                          ? "text-brand-accent"
+                          : "text-brand-primary"
+                      }`}
                       aria-haspopup="true"
                       aria-expanded={isInstitutionalOpen}
                       onClick={() => setInstitutionalOpen((prev) => !prev)}
@@ -206,17 +219,24 @@ export default function Header() {
                       aria-hidden={!isDropdownVisible}
                     >
                       <ul className="py-2 text-sm text-brand-primary">
-                        {institutionalLinks.map((subItem) => (
-                          <li key={subItem.href}>
-                            <Link
-                              href={subItem.href}
-                              className="block px-4 py-2 hover:bg-brand-primary hover:text-white"
-                              onClick={() => setInstitutionalOpen(false)}
-                            >
-                              {subItem.label}
-                            </Link>
-                          </li>
-                        ))}
+                        {INSTITUTIONAL_LINKS.map((subItem) => {
+                          const isSubActive = isLinkActive(subItem.href);
+                          return (
+                            <li key={subItem.href}>
+                              <Link
+                                href={subItem.href}
+                                className={`block px-4 py-2 transition ${
+                                  isSubActive
+                                    ? "bg-brand-primary text-white"
+                                    : "hover:bg-brand-primary hover:text-white"
+                                }`}
+                                onClick={() => setInstitutionalOpen(false)}
+                              >
+                                {subItem.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </li>
