@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import FiltersPanel from "@/components/data/FiltersPanel";
 import IndicatorsGrid from "@/components/data/IndicatorsGrid";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import {
   ALL_STATES_VALUE,
   computeMonthlyAnimalFlow,
@@ -108,11 +109,18 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
     <section className="bg-white pb-16 pt-12">
       <div className="container px-6 space-y-10">
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <p className="text-sm text-slate-700">
               Abaixo são mostrados os dados e infográficos coletados pelos
-              abrigos e lares temporários do Brasil. Use os filtros para
-              explorar por ano e estado. Os painéis são atualizados mensalmente.
+              abrigos e lares temporários do Brasil.
+            </p>
+            <p className="text-sm text-slate-700">
+              Use os filtros para descobrir insights de dados nos níveis
+              nacional, estadual e municipal, por organizações individuais,
+              espécie e indicador da dinâmica populacional analisado.
+            </p>
+            <p className="text-sm text-slate-700">
+              Os painéis são atualizados mensalmente.
             </p>
 
             <FiltersPanel
@@ -142,6 +150,13 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
           stateLabel={stateLabel}
         />
 
+        <div className="flex items-center gap-2 text-slate-700">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
+            <ArrowUp size={16} strokeWidth={2.5} />
+          </span>
+          <span className="font-18 font-semibold">Entradas de Animais</span>
+        </div>
+
         <MonthlyEntriesChart data={speciesEntries} />
 
         <div className="grid gap-4 lg:grid-cols-2">
@@ -153,6 +168,13 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
             title="Entrada por Tipo de Abrigo - Gato"
             data={monthlyTypeEntriesCats}
           />
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-700">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-red text-white">
+            <ArrowDown size={16} strokeWidth={2.5} />
+          </span>
+          <span className="font-18 font-semibold">Saída de Animais</span>
         </div>
 
         <SpeciesEntriesChart data={exitsBySpecies} />

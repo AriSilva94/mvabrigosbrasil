@@ -15,7 +15,10 @@ type TypeEntriesChartProps = {
   }>;
 };
 
-export default function TypeEntriesChart({ title, data }: TypeEntriesChartProps) {
+export default function TypeEntriesChart({
+  title,
+  data,
+}: TypeEntriesChartProps) {
   const options = useMemo<Highcharts.Options>(() => {
     return {
       chart: { type: "column", backgroundColor: "transparent" },
@@ -33,10 +36,9 @@ export default function TypeEntriesChart({ title, data }: TypeEntriesChartProps)
         formatter: function () {
           return [
             `<span style="font-weight:600">${this.key}</span>`,
-            `<span style="color:${this.color}">\u25A0</span> ${this.series.name}: <b>${Highcharts.numberFormat(
-              this.y as number,
-              0
-            )}</b>`,
+            `<span style="color:${this.color}">\u25A0</span> ${
+              this.series.name
+            }: <b>${Highcharts.numberFormat(this.y as number, 0)}</b>`,
           ].join("<br/>");
         },
       },
@@ -79,7 +81,7 @@ export default function TypeEntriesChart({ title, data }: TypeEntriesChartProps)
 
   return (
     <section className="h-full rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 bg-slate-100 px-4 py-3">
+      <div className="border-b border-slate-200 bg-slate-100 px-4 py-3 text-center">
         <h3 className="font-20 font-semibold text-brand-primary">{title}</h3>
       </div>
       <div className="p-4">
