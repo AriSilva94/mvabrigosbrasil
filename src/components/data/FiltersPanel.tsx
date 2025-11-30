@@ -30,7 +30,7 @@ export default function FiltersPanel({
   }
 
   return (
-    <div className="flex flex-wrap items-end gap-4">
+    <div className="pt-6 flex flex-wrap items-end gap-4">
       <label className="flex min-w-[180px] flex-col gap-2 text-sm font-semibold text-slate-700">
         <span className="font-600 text-slate-800">Ano</span>
         <select
@@ -46,7 +46,7 @@ export default function FiltersPanel({
         </select>
       </label>
 
-      <label className="flex min-w-[240px] flex-col gap-2 text-sm font-semibold text-slate-700">
+      <label className="flex min-w-60 flex-col gap-2 text-sm font-semibold text-slate-700">
         <span className="font-600 text-slate-800">Estado</span>
         <select
           value={selectedState}
