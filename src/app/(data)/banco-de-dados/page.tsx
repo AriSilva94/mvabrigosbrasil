@@ -1,8 +1,22 @@
-export default function Page() {
+import type { JSX } from "react";
+
+import DatabaseDashboard from "@/components/data/database/DatabaseDashboard";
+import PageHeader from "@/components/layout/PageHeader";
+import { loadDatabaseDataset } from "@/lib/database/dataLoader";
+
+export default function Page(): JSX.Element {
+  const dataset = loadDatabaseDataset();
+
   return (
     <main>
-      <h1>TODO: Banco de Dados</h1>
-      <p>Visualização de dados em construção.</p>
+      <PageHeader
+        title="Banco de Dados"
+        breadcrumbs={[
+          { label: "Inicial", href: "/" },
+          { label: "Banco de Dados" },
+        ]}
+      />
+      <DatabaseDashboard dataset={dataset} />
     </main>
   );
 }
