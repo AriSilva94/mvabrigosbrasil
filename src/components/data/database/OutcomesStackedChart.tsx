@@ -11,6 +11,8 @@ type OutcomesStackedChartProps = {
     adocoes: number;
     mortesNaturais: number;
     eutanasias: number;
+    retornoTutor: number;
+    retornoLocal: number;
   }>;
 };
 
