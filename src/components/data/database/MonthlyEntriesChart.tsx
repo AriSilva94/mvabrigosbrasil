@@ -15,7 +15,9 @@ type MonthlyEntriesChartProps = {
   data: SpeciesSeries[];
 };
 
-export default function MonthlyEntriesChart({ data }: MonthlyEntriesChartProps) {
+export default function MonthlyEntriesChart({
+  data,
+}: MonthlyEntriesChartProps) {
   const options = useMemo<Highcharts.Options>(() => {
     return {
       chart: { type: "spline", backgroundColor: "transparent" },
@@ -36,10 +38,9 @@ export default function MonthlyEntriesChart({ data }: MonthlyEntriesChartProps) 
         formatter: function () {
           return [
             `<span style="font-weight:600">${this.key}</span>`,
-            `<span style="color:${this.color}">\u25A0</span> ${this.series.name}: <b>${Highcharts.numberFormat(
-              this.y as number,
-              0
-            )}</b>`,
+            `<span style="color:${this.color}">\u25A0</span> ${
+              this.series.name
+            }: <b>${Highcharts.numberFormat(this.y as number, 0)}</b>`,
           ].join("<br/>");
         },
       },
@@ -77,9 +78,15 @@ export default function MonthlyEntriesChart({ data }: MonthlyEntriesChartProps) 
   }, [data]);
 
   return (
-    <section aria-labelledby="entries-title" className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 bg-slate-100 px-5 py-3">
-        <h3 id="entries-title" className="font-20 font-semibold text-brand-primary">
+    <section
+      aria-labelledby="entries-title"
+      className="rounded-xl border border-slate-200 bg-white shadow-sm"
+    >
+      <div className="border-b border-slate-200 bg-slate-100 px-5 py-3 text-center">
+        <h3
+          id="entries-title"
+          className="font-20 font-semibold text-brand-primary"
+        >
           Entradas de Animais
         </h3>
       </div>

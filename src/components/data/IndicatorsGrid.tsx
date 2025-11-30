@@ -1,6 +1,8 @@
 import { Info, Home } from "lucide-react";
+import { useState } from "react";
 
 import type { OverviewMetrics } from "@/types/database.types";
+import ShelterTypesModal from "./ShelterTypesModal";
 
 type IndicatorsGridProps = {
   metrics: OverviewMetrics;
@@ -25,8 +27,11 @@ export default function IndicatorsGrid({
   year,
   stateLabel,
 }: IndicatorsGridProps) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <section aria-labelledby="overview-title" className="mt-6">
+      <div className="mt-8 border-t border-gray-300 pt-4"></div>
       <div className="flex items-center gap-2 text-brand-secondary">
         <Home size={18} />
         <h3 id="overview-title" className="font-18 font-semibold">
@@ -59,11 +64,14 @@ export default function IndicatorsGrid({
                 >
                   {card.label}{" "}
                   {!isPrimary && (
-                    <Info
-                      size={16}
-                      className="inline align-text-bottom text-slate-500"
-                      aria-hidden
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowModal(true)}
+                      aria-label={`Mais informações sobre ${card.label}`}
+                      className="inline-flex items-center align-text-bottom text-slate-500 transition hover:text-brand-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
+                    >
+                      <Info size={16} aria-hidden />
+                    </button>
                   )}
                 </p>
               </div>
@@ -71,6 +79,8 @@ export default function IndicatorsGrid({
           );
         })}
       </div>
+
+      <ShelterTypesModal open={showModal} onClose={() => setShowModal(false)} />
     </section>
   );
 }

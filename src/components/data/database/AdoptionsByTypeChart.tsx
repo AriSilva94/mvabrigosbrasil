@@ -79,8 +79,8 @@ export default function AdoptionsByTypeChart({
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 bg-slate-100 px-4 py-3">
-        <h3 className="font-20 font-semibold text-brand-primary">
+      <div className="border-b border-slate-200 bg-slate-100 px-4 py-3 text-center">
+        <h3 className="font-20 font-semibold text-brand-red">
           Saída por Tipo de Abrigo
         </h3>
       </div>
