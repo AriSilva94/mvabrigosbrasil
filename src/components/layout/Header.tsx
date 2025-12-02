@@ -17,7 +17,7 @@ export default function Header() {
   const [isInstitutionalOpen, setInstitutionalOpen] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
   const institutionalRef = useRef<HTMLLIElement | null>(null);
-  const isDropdownVisible = isInstitutionalOpen || isMobileOpen;
+  const isDropdownVisible = isInstitutionalOpen;
   const pathname = usePathname();
 
   const isLinkActive = (href: string): boolean => {
@@ -33,7 +33,7 @@ export default function Header() {
   };
 
   const isInstitutionalActive = INSTITUTIONAL_LINKS.some((link) =>
-    isLinkActive(link.href),
+    isLinkActive(link.href)
   );
 
   useEffect(() => {
@@ -76,7 +76,10 @@ export default function Header() {
             type="button"
             aria-label="Menu"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-primary text-brand-primary md:hidden"
-            onClick={() => setMobileOpen((prev) => !prev)}
+            onClick={() => {
+              setMobileOpen((prev) => !prev);
+              setInstitutionalOpen(false);
+            }}
           >
             {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
