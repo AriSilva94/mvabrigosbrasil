@@ -90,11 +90,7 @@ export default function MapChart() {
         },
         dataLabels: {
           enabled: true,
-          formatter() {
-            const point = this.point as Highcharts.Point & { value?: number };
-            const value = typeof point.value === "number" ? point.value : 0;
-            return `${point.name} (${value})`;
-          },
+          format: "{point.name} ({point.value})",
           style: { fontSize: "10px" },
           allowOverlap: false,
         },
@@ -116,6 +112,7 @@ export default function MapChart() {
                 type: "map",
                 dataLabels: {
                   enabled: true,
+                  format: "{point.name} ({point.value})",
                   style: { fontSize: "8px" },
                 },
               },
