@@ -1,6 +1,5 @@
 import type { HTMLAttributes } from "react";
 import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
 
 type HeadingLevel = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -17,7 +16,7 @@ export default function Heading({
   ...rest
 }: HeadingProps) {
   const Component = as;
-  const mergedClassName = twMerge(clsx(BASE_CLASS, className));
+  const mergedClassName = clsx(BASE_CLASS, className);
 
   return (
     <Component className={mergedClassName} {...rest}>

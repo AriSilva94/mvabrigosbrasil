@@ -9,7 +9,7 @@ export default function MovementSection(): JSX.Element {
   return (
     <PawsBackgroundSection aria-labelledby="movimento-title">
       <div className="container px-6 py-16 md:py-24">
-        <div className="grid gap-12 md:grid-cols-2 md:items-center">
+        <div className="grid gap-12 md:grid-cols-2 md:items-start">
           <article className="flex flex-col items-center text-center md:border-r md:border-white/30 md:pr-12">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
               <Home className="h-10 w-10 text-white" aria-hidden />
