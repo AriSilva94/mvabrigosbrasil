@@ -11,7 +11,7 @@ import { Heading, Text } from "@/components/ui/typography";
 const MapChart = dynamic(() => import("./MapChart"), { ssr: false });
 
 const MAP_DESCRIPTION =
-  "O Projeto está em seu desenvolvimento inicial, dessa maneira, o banco de dados e mapeamento está ainda com poucas informações. Ajude esse movimento a crescer, faça parte dele registrando os dados do seu abrigo/lar temporário!!";
+  "O Projeto está em seu desenvolvimento inicial, dessa maneira, o banco de dados e mapeamento está ainda com poucas informações.\nAjude esse movimento a crescer, faça parte dele registrando os dados do seu abrigo/lar temporário!!";
 
 const MAP_STATISTICS: MapStatistic[] = [
   { value: "288", label: "Abrigos", variant: "primary" },
@@ -31,18 +31,22 @@ export default function MapSection(): JSX.Element {
           </Heading>
         </header>
 
-        <div className="mt-10 rounded-2xl flex items-center justify-center">
-          <MapChart />
+        <div className="mt-10 flex w-full justify-center">
+          <div className="w-full max-w-5xl">
+            <MapChart />
+          </div>
         </div>
 
         <div className="mt-12 rounded-2xl bg-light p-6 shadow-sm">
           <div className="text-center text-color-secondary">
-            <Text className="text-base md:text-lg">{MAP_DESCRIPTION}</Text>
+            <Text className="whitespace-pre-line font-16 font-normal md:text-lg">
+              {MAP_DESCRIPTION}
+            </Text>
           </div>
 
           <div className="my-6 border-t border-slate-200" />
 
-          <div className="flex flex-col items-center gap-10 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col items-center gap-10 md:flex-row md:items-center md:justify-around">
             <div className="text-center md:text-left">
               <Text className="color-primary font-24 font-600 leading-tight">
                 Nosso Banco <br /> de Dados

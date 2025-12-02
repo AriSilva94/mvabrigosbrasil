@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
 
 import type { MapStatistic, MapStatisticVariant } from "@/types/home.types";
 
@@ -21,8 +20,8 @@ export default function StatCard({
 }: StatCardProps): ReactElement {
   const variantClass = VARIANT_CLASSES[variant];
 
-  const valueClassName = twMerge(clsx(VALUE_BASE_CLASS, variantClass.value));
-  const labelClassName = twMerge(clsx(LABEL_BASE_CLASS, variantClass.label));
+  const valueClassName = clsx(VALUE_BASE_CLASS, variantClass.value);
+  const labelClassName = clsx(LABEL_BASE_CLASS, variantClass.label);
 
   return (
     <div className="text-center">
