@@ -39,7 +39,7 @@ export default function WelcomeSection(): JSX.Element {
           <Text className="font-600 font-20 uppercase text-brand-accent tracking-[0.03em]">
             Boas Vindas
           </Text>
-          <Heading as="h2" className="font-36 text-brand-primary">
+          <Heading as="h2" className="font-600 font-36 text-text-default">
             1ª iniciativa de mapeamento e coleta de dados dos abrigos de cães e
             gatos do Brasil
           </Heading>

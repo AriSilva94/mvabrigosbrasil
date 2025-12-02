@@ -2,7 +2,6 @@ import type { AnchorHTMLAttributes } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
-import { twMerge } from "tailwind-merge";
 
 type IconLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -20,7 +19,7 @@ export default function IconLink({
   children,
   ...rest
 }: IconLinkProps) {
-  const mergedClasses = twMerge(clsx(BASE_CLASS, className));
+  const mergedClasses = clsx(BASE_CLASS, className);
 
   return (
     <Link href={href} className={mergedClasses} {...rest}>

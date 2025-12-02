@@ -44,8 +44,8 @@ export default function MapChart() {
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: "transparent",
-      width: 1500,
-      height: 800,
+      spacing: [0, 0, 0, 0],
+      height: 420,
       animation: { duration: 50 },
     },
     title: { text: undefined },
@@ -90,14 +90,41 @@ export default function MapChart() {
         },
         dataLabels: {
           enabled: true,
-          format: "{point.name}",
+          format: "{point.name} ({point.value})",
+          style: { fontSize: "10px" },
+          allowOverlap: false,
         },
       },
     ],
+    responsive: {
+      rules: [
+        {
+          condition: { maxWidth: 768 },
+          chartOptions: {
+            chart: { height: 360 },
+            legend: {
+              align: "center",
+              verticalAlign: "bottom",
+              layout: "horizontal",
+            },
+            series: [
+              {
+                type: "map",
+                dataLabels: {
+                  enabled: true,
+                  format: "{point.name} ({point.value})",
+                  style: { fontSize: "8px" },
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
   };
 
   return (
-    <div className="overflow-hidden rounded-xl bg-white">
+    <div className="w-full overflow-hidden rounded-xl bg-white shadow-sm">
       <HighchartsReact
         highcharts={Highcharts}
         constructorType="mapChart"
