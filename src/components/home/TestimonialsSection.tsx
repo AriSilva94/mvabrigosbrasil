@@ -95,7 +95,7 @@ export default function TestimonialsSection(): JSX.Element {
         <Text className="font-20 font-600 uppercase tracking-[0.04em] text-brand-accent">
           Depoimentos
         </Text>
-        <Heading as="h2" className="mt-2 font-600 font-34 md:font-36">
+        <Heading as="h2" className="max-w-md mt-2 font-600 font-34 md:font-36">
           Confira o que estão falando da gente
         </Heading>
 
@@ -133,7 +133,7 @@ export default function TestimonialsSection(): JSX.Element {
                     />
                   </div>
 
-                  <p className="text-base leading-relaxed text-white md:text-lg">
+                  <p className="text-sm leading-relaxed text-white">
                     &quot;{testimonial.quote}&quot;
                   </p>
 
