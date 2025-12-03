@@ -70,8 +70,14 @@ export default function SpeciesEntriesChart({
           Saídas de Animais
         </h3>
       </div>
-      <div className="p-4">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="p-1">
+        <div className="w-full overflow-x-auto">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            containerProps={{ className: "w-full min-w-full" }}
+          />
+        </div>
       </div>
     </section>
   );

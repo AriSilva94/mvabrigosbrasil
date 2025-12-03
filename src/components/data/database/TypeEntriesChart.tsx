@@ -84,8 +84,14 @@ export default function TypeEntriesChart({
       <div className="border-b border-slate-200 bg-slate-100 px-4 py-3 text-center">
         <h3 className="font-20 font-semibold text-brand-primary">{title}</h3>
       </div>
-      <div className="p-4">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="p-1">
+        <div className="w-full overflow-x-auto">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            containerProps={{ className: "w-full min-w-full" }}
+          />
+        </div>
       </div>
     </section>
   );

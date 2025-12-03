@@ -138,8 +138,14 @@ export default function AnimalFlowChart({
         </p>
       </div>
 
-      <div className="p-5">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="p-1">
+        <div className="w-full overflow-x-auto">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            containerProps={{ className: "w-full min-w-full" }}
+          />
+        </div>
       </div>
     </section>
   );
