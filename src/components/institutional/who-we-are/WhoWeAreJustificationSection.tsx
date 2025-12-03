@@ -25,10 +25,10 @@ const PROJECT_LINKS: ProjectLink[] = [
 
 export default function WhoWeAreJustificationSection(): JSX.Element {
   return (
-    <section className="bg-white pb-20 pt-10 md:pb-24 md:pt-12">
-      <div className="container px-6">
+    <section className="flex justify-center items-center bg-white pb-20 pt-10 md:pb-24 md:pt-12">
+      <div className="max-w-5xl px-6">
         <article className="mx-auto max-w-4xl space-y-4 text-color-secondary">
-          <Heading as="h2" className="font-28 text-brand-primary">
+          <Heading as="h2" className="font-22 text-text-default">
             Justificativa
           </Heading>
           <Text>
@@ -48,7 +48,7 @@ export default function WhoWeAreJustificationSection(): JSX.Element {
           </Text>
         </article>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-4 text-brand-primary">
+        <div className="mt-10 flex flex-wrap justify-start gap-4 text-brand-primary">
           {PROJECT_LINKS.map(({ label, href, icon }) => (
             <IconLink
               key={href}
