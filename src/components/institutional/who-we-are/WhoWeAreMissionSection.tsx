@@ -11,15 +11,15 @@ const PROJECT_OBJECTIVES = [
 
 export default function WhoWeAreMissionSection(): JSX.Element {
   return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="container px-6">
-        <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+    <section className="flex justify-center items-center bg-white pt-10">
+      <div className="max-w-5xl px-6">
+        <div className="grid gap-10 md:grid-cols-2 md:items-start">
           <div className="flex justify-center md:justify-start">
             <AppImage
               src="/assets/img/about-us/quemsomos3.png"
               alt="Profissional cuidando de cachorro em abrigo"
-              width={520}
-              height={520}
+              width={300}
+              height={300}
               className="h-auto w-full max-w-[420px] rounded-2xl object-cover shadow-lg"
               sizes="(max-width: 768px) 100vw, 460px"
             />
@@ -27,7 +27,7 @@ export default function WhoWeAreMissionSection(): JSX.Element {
 
           <article className="space-y-6 text-color-secondary">
             <div className="space-y-3">
-              <Heading as="h2" className="font-28 text-brand-primary">
+              <Heading as="h2" className="font-22 text-text-default">
                 Missão
               </Heading>
               <Text>
@@ -38,7 +38,7 @@ export default function WhoWeAreMissionSection(): JSX.Element {
             </div>
 
             <div className="space-y-3">
-              <Heading as="h2" className="font-28 text-brand-primary">
+              <Heading as="h2" className="font-22 text-text-default">
                 Como funciona o projeto?
               </Heading>
               <Text>A iniciativa tem três objetivos:</Text>
