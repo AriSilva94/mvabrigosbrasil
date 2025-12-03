@@ -1,27 +1,8 @@
 import type { JSX } from "react";
-import { BarChart3, FileText, UserCheck2 } from "lucide-react";
 
-import IconLink from "@/components/ui/IconLink";
+import ProjectLinksList from "@/components/institutional/ProjectLinksList";
 import { Heading, Text } from "@/components/ui/typography";
-import type { ProjectLink } from "@/types/who-we-are.types";
-
-const PROJECT_LINKS: ProjectLink[] = [
-  {
-    label: "Banco de Dados",
-    href: "/banco-de-dados",
-    icon: BarChart3,
-  },
-  {
-    label: "Cadastre-se",
-    href: "/login",
-    icon: UserCheck2,
-  },
-  {
-    label: "Biblioteca",
-    href: "/biblioteca",
-    icon: FileText,
-  },
-];
+import { PROJECT_LINKS } from "@/constants/projectLinks";
 
 export default function WhoWeAreJustificationSection(): JSX.Element {
   return (
@@ -48,19 +29,7 @@ export default function WhoWeAreJustificationSection(): JSX.Element {
           </Text>
         </article>
 
-        <div className="mt-10 flex flex-wrap justify-start gap-4 text-brand-primary">
-          {PROJECT_LINKS.map(({ label, href, icon }) => (
-            <IconLink
-              key={href}
-              href={href}
-              icon={icon}
-              className="rounded-full bg-brand-primary/5 px-4 py-2 font-semibold transition hover:bg-brand-primary/10"
-              iconSize={20}
-            >
-              {label}
-            </IconLink>
-          ))}
-        </div>
+        <ProjectLinksList links={PROJECT_LINKS} className="mt-10" />
       </div>
     </section>
   );
