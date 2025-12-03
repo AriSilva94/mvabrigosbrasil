@@ -1,17 +1,25 @@
-import type { JSX } from "react";
+import type { ComponentType, JSX, SVGProps } from "react";
 import Link from "next/link";
-import { GraduationCap, Instagram } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 import PawsBackgroundSection from "@/components/ui/PawsBackgroundSection";
 import AppImage from "@/components/ui/AppImage";
 import { Heading, Text } from "@/components/ui/typography";
-import type {
-  Founder,
-  FounderSocialType,
-} from "@/types/who-we-are.types";
+import type { Founder, FounderSocialType } from "@/types/who-we-are.types";
+import SocialIcon from "@/components/ui/SocialIcon";
 
-const FOUNDER_SOCIAL_ICONS: Record<FounderSocialType, typeof Instagram> = {
-  instagram: Instagram,
+const InstagramIcon = ({
+  className,
+  ...rest
+}: Omit<SVGProps<SVGSVGElement>, "name">): JSX.Element => (
+  <SocialIcon name="instagram" size={20} className={className} {...rest} />
+);
+
+const FOUNDER_SOCIAL_ICONS: Record<
+  FounderSocialType,
+  ComponentType<SVGProps<SVGSVGElement>>
+> = {
+  instagram: InstagramIcon,
   lattes: GraduationCap,
 };
 
@@ -110,7 +118,7 @@ function FounderCard({
   socials,
 }: Founder) {
   return (
-    <article className="flex flex-col rounded-4x1 bg-white/5 p-6 text-center shadow-xl">
+    <article className="flex flex-col rounded-4xl bg-white/5 p-6 text-center shadow-xl">
       <AppImage
         src={image}
         alt={alt}
