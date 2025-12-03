@@ -1,6 +1,9 @@
-import PageHeader from "@/components/layout/PageHeader";
+import type { JSX } from "react";
 
-export default function Page() {
+import PageHeader from "@/components/layout/PageHeader";
+import { PartnersContentSection } from "@/components/institutional/partners";
+
+export default function Page(): JSX.Element {
   return (
     <main>
       <PageHeader
@@ -10,6 +13,8 @@ export default function Page() {
           { label: "Parceiros do Projeto" },
         ]}
       />
+
+      <PartnersContentSection />
     </main>
   );
 }
