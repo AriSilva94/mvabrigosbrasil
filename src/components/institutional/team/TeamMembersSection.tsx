@@ -85,26 +85,24 @@ function TeamMemberCard({
   alt,
 }: TeamMember): JSX.Element {
   return (
-    <article className="flex flex-col gap-5 rounded-4x1 bg-white p-6 md:flex-row md:items-start">
+    <article className="flex flex-col items-center gap-5 rounded-4x1 bg-white md:p-6 md:flex-row">
       <AppImage
         src={image}
         alt={alt}
-        width={120}
-        height={120}
-        className="h-24 w-24 rounded-full object-cover"
-        sizes="(max-width: 768px) 96px, 120px"
+        width={160}
+        height={160}
+        className="h-40 w-40 rounded-full object-cover"
+        sizes="(max-width: 768px) 160px, 160px"
       />
 
       <div className="text-center md:text-left">
         <Heading as="h3" className="font-20 text-brand-primary">
           {name}
         </Heading>
-        <Text className="text-sm font-semibold text-brand-primary/80">
+        <Text className="text-base font-semibold text-text-default">
           {role}
         </Text>
-        <Text className="mt-3 text-base text-brand-primary/80">
-          {description}
-        </Text>
+        <Text className="mt-3 text-base text-text-default">{description}</Text>
       </div>
     </article>
   );
@@ -112,12 +110,12 @@ function TeamMemberCard({
 
 export default function TeamMembersSection(): JSX.Element {
   return (
-    <section className="bg-white py-16">
-      <div className="container px-6">
+    <section className="bg-white py-16 flex justify-center items-center">
+      <div className="max-w-4xl px-6">
         <Heading as="h2" className="text-center font-28 text-brand-primary">
           Conheça nossa equipe
         </Heading>
-        <Text className="mx-auto mt-2 max-w-3xl text-center text-base text-brand-primary/70">
+        <Text className="mx-auto mt-2 max-w-3xl text-center text-base text-text-default">
           Profissionais e voluntários que dedicam seus talentos para impulsionar
           a Medicina de Abrigos Brasil e transformar a vida dos animais em todo
           o país.
