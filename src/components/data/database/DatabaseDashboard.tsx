@@ -43,7 +43,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
 
   return (
     <section className="bg-white pb-16 pt-12">
-      <div className="container px-6 space-y-10">
+      <div className="container px-6 space-y-10 min-w-0">
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-2">
             <p className="text-sm text-slate-700">
@@ -92,7 +92,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
 
         <MonthlyEntriesChart data={speciesEntries} />
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2 min-w-0 [&>*]:min-w-0">
           <TypeEntriesChart
             title="Entrada por Tipo de Abrigo - Cão"
             data={monthlyTypeEntriesDogs}
@@ -112,7 +112,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
 
         <SpeciesEntriesChart data={exitsBySpecies} />
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2 min-w-0 [&>*]:min-w-0">
           <OutcomesStackedChart
             title="Saída por Classificação (cão)"
             data={outcomesDogs}
