@@ -39,7 +39,7 @@ export default function IndicatorsGrid({
         </h3>
       </div>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-5">
+      <div className="mt-4 grid gap-3 md:grid-cols-5">
         {cards.map((card, index) => {
           const isPrimary = index === 0;
           return (
