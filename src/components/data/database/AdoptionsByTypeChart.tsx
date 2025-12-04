@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+
+import { useChartReflow } from "./hooks/useChartReflow";
 
 type AdoptionsByTypeChartProps = {
   data: Array<{
@@ -17,6 +19,9 @@ type AdoptionsByTypeChartProps = {
 export default function AdoptionsByTypeChart({
   data,
 }: AdoptionsByTypeChartProps) {
+  const chartRef = useRef<HighchartsReact.RefObject | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const options = useMemo<Highcharts.Options>(() => {
     return {
       chart: { type: "column", backgroundColor: "transparent" },
@@ -77,15 +82,23 @@ export default function AdoptionsByTypeChart({
     };
   }, [data]);
 
+  useChartReflow(chartRef, containerRef, [data]);
+
   return (
-    <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
+    <section className="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 bg-slate-100 px-4 py-3 text-center">
         <h3 className="font-20 font-semibold text-brand-red">
           Saída por Tipo de Abrigo
         </h3>
       </div>
-      <div className="p-4">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="p-1">
+        <div ref={containerRef} className="w-full min-w-0 overflow-x-auto">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            ref={chartRef}
+          />
+        </div>
       </div>
     </section>
   );
