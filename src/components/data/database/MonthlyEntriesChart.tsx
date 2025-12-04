@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+
+import { useChartReflow } from "./hooks/useChartReflow";
 
 type SpeciesSeries = {
   label: string;
@@ -18,6 +20,9 @@ type MonthlyEntriesChartProps = {
 export default function MonthlyEntriesChart({
   data,
 }: MonthlyEntriesChartProps) {
+  const chartRef = useRef<HighchartsReact.RefObject | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const options = useMemo<Highcharts.Options>(() => {
     return {
       chart: { type: "spline", backgroundColor: "transparent" },
@@ -77,10 +82,12 @@ export default function MonthlyEntriesChart({
     };
   }, [data]);
 
+  useChartReflow(chartRef, containerRef, [data]);
+
   return (
     <section
       aria-labelledby="entries-title"
-      className="rounded-xl border border-slate-200 bg-white shadow-sm"
+      className="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm"
     >
       <div className="border-b border-slate-200 bg-slate-100 px-5 py-3 text-center">
         <h3
@@ -90,8 +97,14 @@ export default function MonthlyEntriesChart({
           Entradas de Animais
         </h3>
       </div>
-      <div className="p-5">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <div className="p-1">
+        <div ref={containerRef} className="w-full min-w-0 overflow-x-auto">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            ref={chartRef}
+          />
+        </div>
       </div>
     </section>
   );
