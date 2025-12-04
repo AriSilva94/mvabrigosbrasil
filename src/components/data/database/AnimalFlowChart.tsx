@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 import type { MonthlyAnimalFlow } from "@/types/database.types";
+import { useChartReflow } from "./hooks/useChartReflow";
 
 type AnimalFlowChartProps = {
   data: MonthlyAnimalFlow[];
@@ -27,6 +28,9 @@ export default function AnimalFlowChart({
   year,
   stateLabel,
 }: AnimalFlowChartProps) {
+  const chartRef = useRef<HighchartsReact.RefObject | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const options = useMemo<Highcharts.Options>(() => {
     const categories = data.map((item) => item.label);
 
@@ -121,10 +125,12 @@ export default function AnimalFlowChart({
     };
   }, [data]);
 
+  useChartReflow(chartRef, containerRef, [data]);
+
   return (
     <section
       aria-labelledby="animal-flow-title"
-      className="rounded-xl border border-slate-200 bg-white shadow-sm"
+      className="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm"
     >
       <div className="border-b border-slate-200 bg-slate-100 px-5 py-3 text-center">
         <h3
@@ -139,11 +145,11 @@ export default function AnimalFlowChart({
       </div>
 
       <div className="p-1">
-        <div className="w-full overflow-x-auto">
+        <div ref={containerRef} className="w-full min-w-0 overflow-x-auto">
           <HighchartsReact
             highcharts={Highcharts}
             options={options}
-            containerProps={{ className: "w-full min-w-full" }}
+            ref={chartRef}
           />
         </div>
       </div>
