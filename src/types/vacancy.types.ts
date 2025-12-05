@@ -1,5 +1,8 @@
-// TODO: tipos para vagas
-export interface Vacancy {
+export type VacancyCard = {
   id: string;
-  title?: string;
-}
+  title: string;
+  slug: string;
+  location?: string;
+  period?: string;
+  workload?: string;
+};
