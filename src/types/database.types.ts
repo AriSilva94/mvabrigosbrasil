@@ -31,6 +31,12 @@ export type WpPostMeta = {
   meta_value: string | null;
 };
 
+export type WpTable<T> = {
+  type: "table";
+  name: string;
+  data: T[];
+};
+
 export type ShelterRecord = {
   id: number;
   title: string;
