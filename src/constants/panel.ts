@@ -35,7 +35,7 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     id: "volunteers",
     title: "Ver Voluntários",
     subtitle: "Lista completa",
-    href: "/programa-de-voluntarios",
+    href: "/voluntarios",
     icon: Users,
   },
   {

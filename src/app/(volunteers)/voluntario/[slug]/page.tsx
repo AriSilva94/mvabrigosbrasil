@@ -7,13 +7,22 @@ import { getVolunteerProfileBySlug } from "@/services/volunteersService";
 
 interface VolunteerPageProps {
   params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ from?: string }>;
 }
 
 export default async function Page({
   params,
+  searchParams,
 }: VolunteerPageProps): Promise<JSX.Element> {
   const { slug } = await params;
+  const { from } = (await searchParams) ?? {};
   const profile = getVolunteerProfileBySlug(slug);
+
+  const cameFromProgram = from === "programa-de-voluntarios";
+  const backHref = cameFromProgram ? "/programa-de-voluntarios" : "/voluntarios";
+  const breadcrumbLabel = cameFromProgram
+    ? "Programa de Voluntários"
+    : "Voluntários";
 
   const displayName = profile?.name || "Perfil de voluntário";
   const location =
@@ -28,8 +37,8 @@ export default async function Page({
         breadcrumbs={[
           { label: "Inicial", href: "/" },
           {
-            label: "Programa de Voluntários",
-            href: "/programa-de-voluntarios",
+            label: breadcrumbLabel,
+            href: backHref,
           },
           { label: displayName },
         ]}
@@ -38,7 +47,7 @@ export default async function Page({
       <section className="container px-6 py-10">
         <div className="mx-auto max-w-4xl space-y-6">
           <Link
-            href="/programa-de-voluntarios"
+            href={backHref}
             className="inline-flex items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline"
           >
             ← Voltar
