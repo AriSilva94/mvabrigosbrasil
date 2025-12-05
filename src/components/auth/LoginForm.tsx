@@ -1,7 +1,79 @@
-export default function LoginForm() {
+// Client-side navigation placeholder until authentication is wired
+"use client";
+
+import type { FormEvent, JSX } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
+
+import Input from "@/components/ui/Input";
+import { ROUTES } from "@/constants/routes";
+
+type LoginFormProps = {
+  className?: string;
+};
+
+export default function LoginForm({ className }: LoginFormProps): JSX.Element {
+  const router = useRouter();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    router.push(ROUTES.panel);
+  }
+
   return (
-    <form>
-      <p>TODO: Formulário de login</p>
+    <form className={clsx("mt-8 w-full max-w-md space-y-5", className)} onSubmit={handleSubmit}>
+      <div className="space-y-2 text-left">
+        <label
+          htmlFor="user_login"
+          className="text-sm font-semibold text-[#4f5464]"
+        >
+          E-mail
+        </label>
+        <Input
+          id="user_login"
+          name="log"
+          type="email"
+          required
+          autoComplete="email"
+          className="bg-[#f2f2f2]"
+        />
+      </div>
+
+      <div className="space-y-2 text-left">
+        <label
+          htmlFor="user_pass"
+          className="text-sm font-semibold text-[#4f5464]"
+        >
+          Senha
+        </label>
+        <Input
+          id="user_pass"
+          name="pwd"
+          type="password"
+          required
+          autoComplete="current-password"
+          className="bg-[#f2f2f2]"
+        />
+      </div>
+
+      <div className="pt-2 text-center">
+        <button
+          type="submit"
+          className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+        >
+          Acessar
+        </button>
+      </div>
+
+      <div className="text-center">
+        <Link
+          href="/alterar-senha"
+          className="text-sm font-semibold text-brand-primary underline-offset-4 hover:underline"
+        >
+          Perdeu a senha?
+        </Link>
+      </div>
     </form>
   );
 }
