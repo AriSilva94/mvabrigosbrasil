@@ -4,7 +4,7 @@ import type { JSX } from "react";
 import { useMemo, useState } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
-import { Heading, Text } from "@/components/ui/typography";
+import { Text } from "@/components/ui/typography";
 import VolunteerCard from "./components/VolunteerCard";
 import VolunteerFilters from "./components/VolunteerFilters";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";

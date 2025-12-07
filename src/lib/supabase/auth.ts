@@ -1,8 +1,21 @@
-// TODO: funções auxiliares de autenticação com Supabase
+import { getServerSupabaseClient } from './clientServer';
+
 export async function getSessionFromSupabase() {
-  return null;
+  const supabase = await getServerSupabaseClient({ readOnly: true });
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    throw error;
+  }
+
+  return data.session;
 }
 
 export async function signOutFromSupabase() {
-  return null;
+  const supabase = await getServerSupabaseClient({ readOnly: true });
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw error;
+  }
 }
