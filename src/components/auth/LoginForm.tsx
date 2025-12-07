@@ -51,9 +51,14 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         throw new Error(result?.error || "Não foi possível autenticar.");
       }
 
-       // Garante sessão no client após migração/login no servidor.
-      const supabase = getBrowserSupabaseClient();
-      await supabase.auth.signInWithPassword({ email, password });
+      // Replica a sessão no client sem reenviar senha ao Supabase.
+      if (result?.accessToken && result?.refreshToken) {
+        const supabase = getBrowserSupabaseClient();
+        await supabase.auth.setSession({
+          access_token: result.accessToken,
+          refresh_token: result.refreshToken,
+        });
+      }
 
       router.push(ROUTES.panel);
     } catch (error) {

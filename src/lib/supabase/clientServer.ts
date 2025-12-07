@@ -6,8 +6,15 @@ import type { Database, SupabaseClientType } from './types';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export async function getServerSupabaseClient(): Promise<SupabaseClientType> {
+type GetServerSupabaseClientOptions = {
+  readOnly?: boolean;
+};
+
+export async function getServerSupabaseClient(
+  options?: GetServerSupabaseClientOptions,
+): Promise<SupabaseClientType> {
   const cookieStore = await cookies();
+  const readOnly = options?.readOnly ?? false;
 
   return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {
@@ -15,8 +22,13 @@ export async function getServerSupabaseClient(): Promise<SupabaseClientType> {
         return cookieStore.getAll().map(({ name, value }) => ({ name, value }));
       },
       setAll(cookiesToSet) {
+        if (readOnly) return;
         cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set({ name, value, ...options });
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            console.error("supabase setAll cookies failed", error);
+          }
         });
       },
     },

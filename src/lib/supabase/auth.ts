@@ -1,7 +1,7 @@
 import { getServerSupabaseClient } from './clientServer';
 
 export async function getSessionFromSupabase() {
-  const supabase = await getServerSupabaseClient();
+  const supabase = await getServerSupabaseClient({ readOnly: true });
   const { data, error } = await supabase.auth.getSession();
 
   if (error) {
@@ -12,7 +12,7 @@ export async function getSessionFromSupabase() {
 }
 
 export async function signOutFromSupabase() {
-  const supabase = await getServerSupabaseClient();
+  const supabase = await getServerSupabaseClient({ readOnly: true });
   const { error } = await supabase.auth.signOut();
 
   if (error) {
