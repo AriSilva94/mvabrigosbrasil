@@ -67,6 +67,8 @@ function buildVolunteerCards(): VolunteerCard[] {
         id: post.ID,
         name: post.post_title ?? "Voluntário",
         slug: post.post_name ?? "",
+        city,
+        state,
         location:
           city && state ? `${city} - ${state}` : city || state || undefined,
       };
