@@ -7,11 +7,12 @@ import { Heading, Text } from "@/components/ui/typography";
 import { PANEL_SHORTCUTS, TRAINING_URL } from "@/constants/panel";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 
 const VOLUNTEER_SHORTCUTS = [
   {
     id: "vacancies",
-    title: "Vagas Disponíveis",
+    title: "Vagas Disponiveis",
     href: "/programa-de-voluntarios",
     icon: BadgeCheck,
     emphasize: false,
@@ -32,87 +33,18 @@ const VOLUNTEER_SHORTCUTS = [
   },
 ] as const;
 
-async function getPostTypeFromWpPosts(
-  supabaseAdmin: ReturnType<typeof getSupabaseAdminClient>,
-  postAuthorId: number | null,
-): Promise<string | null> {
-  if (!postAuthorId) return null;
+async function loadUserPostType(): Promise<string | null> {
+  const supabase = await getServerSupabaseClient({ readOnly: true });
+  const { data, error } = await supabase.auth.getUser();
 
-  const { data: wpPost, error } = await supabaseAdmin
-    .from("wp_posts_raw")
-    .select("post_type")
-    .eq("post_author", postAuthorId)
-    .not("post_type", "is", null)
-    .maybeSingle();
-
-  if (error) {
-    console.error("painel: erro ao buscar post_type em wp_posts_raw", {
-      postAuthorId,
-      error,
-    });
-  }
-
-  console.log("painel: wp_posts_raw result", { postAuthorId, wpPost });
-
-  return wpPost?.post_type ?? null;
-}
-
-async function getUserPostType(): Promise<string | null> {
-  const supabase = await getServerSupabaseClient();
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !authData.user) return null;
+  if (error || !data.user) return null;
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data: profile, error: profileError } = await supabaseAdmin
-    .from("profiles")
-    .select("wp_user_id, email")
-    .eq("id", authData.user.id)
-    .maybeSingle();
-
-  if (profileError) {
-    console.error("painel: erro ao buscar perfil do usuário", profileError);
-    return null;
-  }
-
-  console.log("painel: perfil supabase", { profile, authUserId: authData.user.id });
-
-  const postAuthorId = profile?.wp_user_id ?? null;
-  const email = profile?.email ?? authData.user.email ?? null;
-
-  const postTypeFromProfile = await getPostTypeFromWpPosts(supabaseAdmin, postAuthorId);
-  console.log("painel: post_type por wp_posts_raw via profile", {
-    postAuthorId,
-    postTypeFromProfile,
+  return resolvePostTypeForUser(supabaseAdmin, {
+    supabaseUserId: data.user.id,
+    email: data.user.email ?? null,
   });
-  if (postTypeFromProfile) return postTypeFromProfile;
-
-  if (email) {
-    const { data: legacyUser, error: legacyError } = await supabaseAdmin
-      .from("wp_users_legacy")
-      .select("id")
-      .ilike("user_email", email)
-      .maybeSingle();
-
-    if (legacyError) {
-      console.error("painel: erro ao buscar legacy por email", { email, legacyError });
-    }
-
-    const legacyUserId = legacyUser?.id ?? null;
-
-    const postType = await getPostTypeFromWpPosts(supabaseAdmin, legacyUserId);
-
-    console.log("painel: post_type via legacy lookup", {
-      email,
-      legacyUserId,
-      postType,
-    });
-
-    if (postType) return postType;
-  }
-
-  return null;
 }
 
 function VolunteerPanel(): JSX.Element {
@@ -216,7 +148,7 @@ function ShelterPanel(): JSX.Element {
 }
 
 export default async function Page(): Promise<JSX.Element> {
-  const postType = await getUserPostType();
+  const postType = await loadUserPostType();
   const isVolunteer = postType === "voluntario";
 
   return (
