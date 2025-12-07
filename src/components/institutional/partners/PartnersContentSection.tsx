@@ -2,7 +2,6 @@ import type { JSX } from "react";
 import Link from "next/link";
 
 import AppImage from "@/components/ui/AppImage";
-import ButtonLink from "@/components/ui/ButtonLink";
 import { Heading, Text } from "@/components/ui/typography";
 import type { PartnerLogo } from "@/constants/partners";
 import {
