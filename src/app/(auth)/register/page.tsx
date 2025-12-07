@@ -1,8 +1,59 @@
-export default function Page() {
+import type { JSX } from "react";
+
+import RegisterForm from "@/components/auth/RegisterForm";
+import PageHeader from "@/components/layout/PageHeader";
+import type { RegisterType } from "@/types/auth.types";
+
+export const dynamic = "force-dynamic";
+
+type PageSearchParams = {
+  tipo?: string | string[];
+};
+
+type PageProps = {
+  searchParams?: PageSearchParams | Promise<PageSearchParams | undefined>;
+};
+
+function parseRegisterType(rawType?: string | string[]): RegisterType | undefined {
+  if (!rawType) return undefined;
+
+  const value = Array.isArray(rawType) ? rawType[0] : rawType;
+  const normalized = value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+
+  if (normalized === "abrigo" || normalized === "voluntario") {
+    return normalized as RegisterType;
+  }
+
+  return undefined;
+}
+
+export default async function Page({ searchParams }: PageProps): Promise<JSX.Element> {
+  const resolvedSearchParams = await searchParams;
+  const parsedType = parseRegisterType(resolvedSearchParams?.tipo);
+  const registerType: RegisterType = parsedType ?? "abrigo";
+
   return (
     <main>
-      <h1>TODO: Registro</h1>
-      <p>Formulário de cadastro em construção.</p>
+      <PageHeader
+        title="Cadastro"
+        breadcrumbs={[
+          { label: "Inicial", href: "/" },
+          { label: "Cadastro" },
+        ]}
+      />
+
+      <section className="bg-white">
+        <div className="container px-6 py-16">
+          <div className="mx-auto flex max-w-xl flex-col items-center">
+            <RegisterForm registerType={registerType} />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
+
