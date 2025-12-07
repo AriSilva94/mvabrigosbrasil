@@ -12,8 +12,10 @@ import {
   MAIN_NAV_LINKS,
   TOP_NAV_LINKS,
 } from "@/constants/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
+  const { user, isLoading, logout } = useAuth();
   const [isInstitutionalOpen, setInstitutionalOpen] = useState(false);
   const [isMobileOpen, setMobileOpen] = useState(false);
   const institutionalRef = useRef<HTMLLIElement | null>(null);
@@ -248,12 +250,60 @@ export default function Header() {
             </ul>
 
             <div className="flex items-center gap-3">
-              <Link
-                href="/login"
-                className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white hover:bg-brand-secondary"
-              >
-                Entrar/Cadastrar
-              </Link>
+              {!isLoading && user ? (
+                <div className="relative">
+                  <details className="group">
+                    <summary className="flex cursor-pointer list-none items-center gap-2 rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary">
+                      Área Restrita
+                      <ChevronDown
+                        size={14}
+                        className="transition-transform duration-200 group-open:rotate-180"
+                        aria-hidden
+                      />
+                    </summary>
+                    <div className="absolute right-0 z-30 mt-2 w-40 rounded-md border border-brand-primary bg-white text-sm shadow-lg">
+                      <Link
+                        href="/painel"
+                        className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
+                        onClick={(e) => {
+                          const detailsEl = (e.currentTarget.closest('details') as HTMLDetailsElement | null);
+                          if (detailsEl) detailsEl.open = false;
+                        }}
+                      >
+                        Painel
+                      </Link>
+                      <Link
+                        href="/alterar-senha"
+                        className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
+                        onClick={(e) => {
+                          const detailsEl = (e.currentTarget.closest('details') as HTMLDetailsElement | null);
+                          if (detailsEl) detailsEl.open = false;
+                        }}
+                      >
+                        Alterar Senha
+                      </Link>
+                      <Link
+                        href="/login"
+                        onClick={async (e) => {
+                          const detailsEl = (e.currentTarget.closest('details') as HTMLDetailsElement | null);
+                          if (detailsEl) detailsEl.open = false;
+                          await logout();
+                        }}
+                        className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
+                      >
+                        Sair
+                      </Link>
+                    </div>
+                  </details>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white hover:bg-brand-secondary"
+                >
+                  Entrar/Cadastrar
+                </Link>
+              )}
               <Link
                 href="/buscar"
                 aria-label="Buscar"

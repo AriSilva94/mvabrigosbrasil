@@ -2,12 +2,14 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
 import { ROUTES } from "@/constants/routes";
+import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
 type LoginFormProps = {
   className?: string;
@@ -15,10 +17,56 @@ type LoginFormProps = {
 
 export default function LoginForm({ className }: LoginFormProps): JSX.Element {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    router.push(ROUTES.panel);
+
+    if (isSubmitting) return;
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("log") ?? "").trim();
+    const password = String(formData.get("pwd") ?? "");
+
+    if (!email || !password) {
+      alert("Preencha e-mail e senha.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const isJson = response.headers.get("content-type")?.includes("application/json");
+      const result = isJson ? await response.json() : null;
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Não foi possível autenticar.");
+      }
+
+      // Replica a sessão no client sem reenviar senha ao Supabase.
+      if (result?.accessToken && result?.refreshToken) {
+        const supabase = getBrowserSupabaseClient();
+        await supabase.auth.setSession({
+          access_token: result.accessToken,
+          refresh_token: result.refreshToken,
+        });
+      }
+
+      router.push(ROUTES.panel);
+    } catch (error) {
+      console.error("Erro ao autenticar", error);
+      alert(error instanceof Error ? error.message : "Não foi possível autenticar.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
