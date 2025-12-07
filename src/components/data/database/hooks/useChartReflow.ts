@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import type { RefObject } from "react";
+import type Highcharts from "highcharts";
 import type HighchartsReact from "highcharts-react-official";
 
 export function useChartReflow(
@@ -11,11 +12,28 @@ export function useChartReflow(
     const chart = chartRef.current?.chart;
     if (!chart) return;
 
+    let rafId: number | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const isChartDestroyed = () =>
+      (chart as Highcharts.Chart & { destroyed?: boolean })?.destroyed;
+
     const triggerReflow = () => {
-      if (!chart.container) return;
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (timeoutId) clearTimeout(timeoutId);
+
+      if (!chart.container || isChartDestroyed()) return;
       chart.reflow();
-      requestAnimationFrame(() => chart.reflow());
-      setTimeout(() => chart.reflow(), 50);
+
+      // Run extra passes shortly after mount/resize to avoid layout glitches.
+      rafId = requestAnimationFrame(() => {
+        if (!chart.container || isChartDestroyed()) return;
+        chart.reflow();
+      });
+      timeoutId = setTimeout(() => {
+        if (!chart.container || isChartDestroyed()) return;
+        chart.reflow();
+      }, 50);
     };
 
     triggerReflow();
@@ -34,6 +52,8 @@ export function useChartReflow(
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (timeoutId) clearTimeout(timeoutId);
       observer?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
