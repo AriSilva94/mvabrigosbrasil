@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import AppImageProvider from "@/components/providers/AppImageProvider";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 const geistSans = localFont({
   variable: "--font-geist-sans",
@@ -127,9 +128,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppImageProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <ToastProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </ToastProvider>
         </AppImageProvider>
       </body>
     </html>

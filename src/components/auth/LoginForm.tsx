@@ -6,9 +6,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { z } from "zod";
 import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
+import FormError from "@/components/ui/FormError";
 import { ROUTES } from "@/constants/routes";
 import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
@@ -16,9 +19,25 @@ type LoginFormProps = {
   className?: string;
 };
 
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+const emailSchema = z
+  .string()
+  .trim()
+  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Informe um e-mail valido." });
+
+const loginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, "Informe a senha."),
+});
+
 export default function LoginForm({ className }: LoginFormProps): JSX.Element {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,13 +45,24 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
     if (isSubmitting) return;
 
     const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("log") ?? "").trim();
-    const password = String(formData.get("pwd") ?? "");
+    const values: LoginFormValues = {
+      email: String(formData.get("log") ?? "").trim(),
+      password: String(formData.get("pwd") ?? ""),
+    };
 
-    if (!email || !password) {
-      alert("Preencha e-mail e senha.");
+    const parsed = loginSchema.safeParse(values);
+    if (!parsed.success) {
+      const issues: Record<string, string> = {};
+      parsed.error.issues.forEach((issue) => {
+        const path = issue.path[0];
+        if (typeof path === "string") {
+          issues[path] = issue.message;
+        }
+      });
+      setFieldErrors(issues);
       return;
     }
+    setFieldErrors({});
 
     setIsSubmitting(true);
 
@@ -42,17 +72,19 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(values),
       });
 
-      const isJson = response.headers.get("content-type")?.includes("application/json");
+      const isJson = response.headers
+        .get("content-type")
+        ?.includes("application/json");
       const result = isJson ? await response.json() : null;
 
       if (!response.ok) {
-        throw new Error(result?.error || "Não foi possível autenticar.");
+        throw new Error(result?.error || "Nao foi possivel autenticar.");
       }
 
-      // Replica a sessão no client sem reenviar senha ao Supabase.
+      // Replica a sessao no client sem reenviar senha ao Supabase.
       if (result?.accessToken && result?.refreshToken) {
         const supabase = getBrowserSupabaseClient();
         await supabase.auth.setSession({
@@ -64,14 +96,20 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       router.push(ROUTES.panel);
     } catch (error) {
       console.error("Erro ao autenticar", error);
-      alert(error instanceof Error ? error.message : "Não foi possível autenticar.");
+      toast.error(
+        error instanceof Error ? error.message : "Nao foi possivel autenticar."
+      );
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form className={clsx("mt-8 w-full max-w-md space-y-5", className)} onSubmit={handleSubmit}>
+    <form
+      className={clsx("mt-8 w-full max-w-md space-y-5", className)}
+      onSubmit={handleSubmit}
+      noValidate
+    >
       <div className="space-y-2 text-left">
         <label
           htmlFor="user_login"
@@ -83,10 +121,16 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
           id="user_login"
           name="log"
           type="email"
-          required
           autoComplete="email"
-          className="bg-[#f2f2f2]"
+          aria-invalid={Boolean(fieldErrors.email)}
+          aria-describedby={fieldErrors.email ? "login-email-error" : undefined}
+          className={clsx(
+            "bg-[#f2f2f2]",
+            fieldErrors.email &&
+              "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+          )}
         />
+        <FormError id="login-email-error" message={fieldErrors.email} />
       </div>
 
       <div className="space-y-2 text-left">
@@ -100,10 +144,18 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
           id="user_pass"
           name="pwd"
           type="password"
-          required
           autoComplete="current-password"
-          className="bg-[#f2f2f2]"
+          aria-invalid={Boolean(fieldErrors.password)}
+          aria-describedby={
+            fieldErrors.password ? "login-password-error" : undefined
+          }
+          className={clsx(
+            "bg-[#f2f2f2]",
+            fieldErrors.password &&
+              "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+          )}
         />
+        <FormError id="login-password-error" message={fieldErrors.password} />
       </div>
 
       <div className="pt-2 text-center">
