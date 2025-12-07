@@ -18,3 +18,9 @@ export interface LoginTutorialLink {
   label: string;
   href: string;
 }
+
+export type RegisterType = "abrigo" | "voluntario";
+
+export interface RegisterFormContent {
+  title: string;
+}
