@@ -5,6 +5,7 @@ import type { FormEvent, JSX } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
@@ -108,9 +109,17 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       <div className="pt-2 text-center">
         <button
           type="submit"
-          className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
+          disabled={isSubmitting}
         >
-          Acessar
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden />
+              Acessando...
+            </>
+          ) : (
+            "Acessar"
+          )}
         </button>
       </div>
 
