@@ -79,7 +79,7 @@ export default function VolunteerTabsSection() {
                         </p>
                       )}
                       <Link
-                        href={`/voluntario/${slug}`}
+                        href={`/voluntario/${slug}?from=programa-de-voluntarios`}
                         className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
                       >
                         Ver Perfil
