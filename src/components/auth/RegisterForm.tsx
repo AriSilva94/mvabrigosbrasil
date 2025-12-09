@@ -1,10 +1,7 @@
-// Client-side placeholder until registration API is available
 "use client";
 
-import type { FormEvent, JSX } from "react";
-import { useMemo, useState } from "react";
-import { toast } from "sonner";
-import { z } from "zod";
+import type { JSX } from "react";
+import { useMemo } from "react";
 import clsx from "clsx";
 
 import RegisterActionLinks from "@/components/auth/RegisterActionLinks";
@@ -14,6 +11,7 @@ import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
 import { Heading, Text } from "@/components/ui/typography";
 import { REGISTER_CONTENT } from "@/constants/register";
+import { useRegisterForm } from "@/hooks/useRegisterForm";
 import type { RegisterType } from "@/types/auth.types";
 
 type RegisterFormProps = {
@@ -21,79 +19,17 @@ type RegisterFormProps = {
   className?: string;
 };
 
-type RegisterFormValues = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-const emailSchema = z
-  .string()
-  .trim()
-  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Informe um e-mail valido." });
-
-const registerSchema = z
-  .object({
-    email: emailSchema,
-    password: z.string().min(12, "A senha deve ter pelo menos 12 caracteres."),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "As senhas precisam coincidir.",
-  });
-
 export default function RegisterForm({
   registerType,
   className,
 }: RegisterFormProps): JSX.Element {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const { fieldErrors, isRegistering, handleSubmit } =
+    useRegisterForm(registerType);
 
   const registerContent = useMemo(
     () => REGISTER_CONTENT[registerType],
     [registerType]
   );
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (isSubmitting) return;
-
-    const formData = new FormData(event.currentTarget);
-    const formValues: RegisterFormValues = {
-      email: String(formData.get("email") ?? "").trim(),
-      password: String(formData.get("password") ?? ""),
-      confirmPassword: String(formData.get("confirmPassword") ?? ""),
-    };
-
-    const parsed = registerSchema.safeParse(formValues);
-    if (!parsed.success) {
-      const issues: Record<string, string> = {};
-      parsed.error.issues.forEach((issue) => {
-        const path = issue.path[0];
-        if (typeof path === "string") {
-          issues[path] = issue.message;
-        }
-      });
-      setFieldErrors(issues);
-      return;
-    }
-    setFieldErrors({});
-
-    setIsSubmitting(true);
-
-    try {
-      // TODO: integrar com endpoint real de registro
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      toast.success("Cadastro enviado! Em breve integraremos com o backend.");
-      event.currentTarget.reset();
-    } catch (error) {
-      console.error("Erro ao registrar", error);
-      toast.error("Nao foi possivel concluir o cadastro.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
   return (
     <form
@@ -106,8 +42,6 @@ export default function RegisterForm({
           {registerContent.title}
         </Heading>
       </header>
-
-      <input type="hidden" name="registerType" value={registerType} />
 
       <RegisterField id="email" label="E-mail" required>
         <Input
@@ -139,9 +73,9 @@ export default function RegisterForm({
         <button
           type="submit"
           className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
+          disabled={isRegistering}
         >
-          {isSubmitting ? "Enviando..." : "Cadastrar"}
+          {isRegistering ? "Enviando..." : "Cadastrar"}
         </button>
       </div>
 
