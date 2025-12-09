@@ -14,7 +14,7 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     id: "dynamic-data",
     title: "Registrar Dinâmica Populacional",
     subtitle: "Dados Mensais",
-    href: "/banco-de-dados",
+    href: "/dinamica-populacional",
     icon: Activity,
   },
   {
