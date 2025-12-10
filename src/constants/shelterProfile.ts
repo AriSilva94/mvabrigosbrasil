@@ -50,29 +50,4 @@ export const ROLES_OPTIONS: SpeciesOption[] = [
   { value: "Funcionário", label: "Funcionário" },
   { value: "Voluntário", label: "Voluntário" },
 ];
-
 export const STATE_OPTIONS = STATE_METADATA;
-
-export const DEFAULT_SHELTER_PROFILE: ShelterProfileFormData = {
-  shelterType: "public",
-  cnpj: "33.656.764/0001-99",
-  name: "TESTE ABRIGO",
-  cep: "14806-385",
-  street: "Avenida Tereza Pelegrinete Mota",
-  number: "2",
-  district: "Jardim Roberto Selmi Dei",
-  state: "SP",
-  city: "Araraquara",
-  website: "teste abrigo",
-  foundationDate: "20/12/2020",
-  species: "caes e gatos",
-  additionalSpecies: ["coelhos", "aves", "peixes", "outros"],
-  hasTemporaryAgreement: null,
-  initialDogs: 5,
-  initialCats: 5,
-  authorizedName: "Ariovaldo Silva",
-  authorizedRole: "Gestor",
-  authorizedEmail: "arizoka18@gmail.com",
-  authorizedPhone: "(16) 9 9999-9999",
-  acceptTerms: true,
-};

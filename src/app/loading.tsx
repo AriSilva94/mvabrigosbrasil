@@ -2,9 +2,9 @@
 import { PawPrint, Bone, Cat } from "lucide-react";
 
 const cards = [
-  { id: "dogs", title: "CÃ£es felizes", icon: Bone },
+  { id: "dogs", title: "Cãess felizes", icon: Bone },
   { id: "cats", title: "Gatos curiosos", icon: Cat },
-  { id: "volunteers", title: "VoluntÃ¡rios prontos", icon: PawPrint },
+  { id: "volunteers", title: "Voluntários prontos", icon: PawPrint },
 ];
 
 export default function Loading(): JSX.Element {

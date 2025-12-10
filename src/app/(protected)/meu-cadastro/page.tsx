@@ -1,7 +1,8 @@
 import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
-import ShelterProfileForm from "./components/ShelterProfileForm";
+import ShelterProfileForm from "@/app/(protected)/meu-cadastro/components/ShelterProfileForm";
+import { ShelterHistoryTimeline } from "@/app/(protected)/meu-cadastro/components/ShelterHistoryTimeline";
 
 export default function Page(): JSX.Element {
   return (
@@ -16,7 +17,10 @@ export default function Page(): JSX.Element {
       />
 
       <section className="bg-white px-4 py-14 md:px-6">
-        <ShelterProfileForm />
+        <div className="mx-auto max-w-6xl space-y-10">
+          <ShelterProfileForm />
+          <ShelterHistoryTimeline />
+        </div>
       </section>
     </main>
   );
