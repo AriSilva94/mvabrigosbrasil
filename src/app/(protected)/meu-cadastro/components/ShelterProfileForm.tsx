@@ -1,38 +1,100 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import type { FormEvent, JSX } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 
+import { FormLoading } from "@/components/loading/FormLoading";
+import {
+  shelterProfileSchema,
+  type ShelterProfileInput,
+} from "@/modules/shelter/shelterProfileSchema";
+import { useShelterProfile } from "@/hooks/useShelterProfile";
+import type { ShelterProfileFormData } from "@/types/shelter.types";
 import ShelterAuthorizationSection from "./ShelterAuthorizationSection";
 import ShelterInfoSection from "./ShelterInfoSection";
-
-const shelterProfileSchema = z.object({
-  shelterType: z.string().min(1, "Selecione o tipo de abrigo."),
-  cnpj: z.string().min(1, "Informe o CNPJ."),
-  shelterName: z.string().min(1, "Informe o nome do abrigo."),
-  cep: z.string().min(1, "Informe o CEP."),
-  street: z.string().min(1, "Informe a rua."),
-  number: z.coerce.number().min(0, "Informe o número."),
-  district: z.string().min(1, "Informe o bairro."),
-  state: z.string().min(1, "Selecione o estado."),
-  city: z.string().min(1, "Informe a cidade."),
-  website: z.string().optional(),
-  foundationDate: z.string().min(1, "Informe a fundação do abrigo."),
-  species: z.string().min(1, "Informe a espécie principal."),
-  additionalSpecies: z.array(z.string()).optional(),
-  temporaryAgreement: z.string().optional(),
-  initialDogs: z.coerce.number().min(0, "Informe a população inicial de cães."),
-  initialCats: z.coerce.number().min(0, "Informe a população inicial de gatos."),
-});
+import { DeactivateDialog } from "./DeactivateDialog";
+import { AlertCircle } from "lucide-react";
 
 export default function ShelterProfileForm(): JSX.Element {
+  const { shelter, isLoading, refresh } = useShelterProfile();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<keyof ShelterProfileInput, string>>
+  >({});
+  const [shelterType, setShelterType] = useState<string>(
+    shelter?.shelterType ?? ""
+  );
+  const [addressData, setAddressData] = useState({
+    street: shelter?.street ?? "",
+    district: shelter?.district ?? "",
+    city: shelter?.city ?? "",
+    state: shelter?.state ?? "",
+  });
+  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
+
+  useEffect(() => {
+    setShelterType(shelter?.shelterType ?? "");
+    setAddressData({
+      street: shelter?.street ?? "",
+      district: shelter?.district ?? "",
+      city: shelter?.city ?? "",
+      state: shelter?.state ?? "",
+    });
+  }, [shelter]);
+
+  function handleCepAutocomplete(data: {
+    street: string;
+    district: string;
+    city: string;
+    state: string;
+  }) {
+    setAddressData(data);
+  }
+
+  async function handleDeactivate() {
+    try {
+      const response = await fetch("/api/shelter-profile/deactivate", {
+        method: "POST",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result?.error || "Não foi possível alterar o status do cadastro."
+        );
+      }
+
+      toast.success(result.message);
+      await refresh();
+    } catch (error) {
+      console.error("Erro ao alterar status do cadastro", error);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Não foi possível alterar o status do cadastro.";
+      toast.error(message);
+    }
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const formData = new FormData(event.currentTarget);
+    const foundationDateRaw = String(formData.get("foundationDate") ?? "");
+
+    // Normaliza data para ISO (yyyy-MM-dd) antes de validar/salvar.
+    const foundationDateIso =
+      foundationDateRaw && foundationDateRaw.includes("/")
+        ? foundationDateRaw.split("/").reverse().join("-")
+        : foundationDateRaw;
+
+    const temporaryAgreementValue = formData.get("temporaryAgreement");
     const payload = {
-      shelterType: String(formData.get("shelterType") ?? ""),
+      shelterType: shelterType || String(formData.get("shelterType") ?? ""),
       cnpj: String(formData.get("cnpj") ?? ""),
       shelterName: String(formData.get("shelterName") ?? ""),
       cep: String(formData.get("cep") ?? ""),
@@ -42,48 +104,148 @@ export default function ShelterProfileForm(): JSX.Element {
       state: String(formData.get("state") ?? ""),
       city: String(formData.get("city") ?? ""),
       website: String(formData.get("website") ?? ""),
-      foundationDate: String(formData.get("foundationDate") ?? ""),
+      foundationDate: foundationDateIso,
       species: String(formData.get("species") ?? ""),
       additionalSpecies: formData.getAll("additionalSpecies").map(String),
-      temporaryAgreement: String(formData.get("temporaryAgreement") ?? ""),
+      temporaryAgreement: temporaryAgreementValue
+        ? String(temporaryAgreementValue)
+        : undefined,
       initialDogs: formData.get("initialDogs"),
       initialCats: formData.get("initialCats"),
+      authorizedName: String(formData.get("authorizedName") ?? ""),
+      authorizedRole: String(formData.get("authorizedRole") ?? ""),
+      authorizedEmail: String(formData.get("authorizedEmail") ?? ""),
+      authorizedPhone: String(formData.get("authorizedPhone") ?? ""),
+      acceptTerms: formData.get("acceptTerms") === "on",
     };
 
     const parsed = shelterProfileSchema.safeParse(payload);
     if (!parsed.success) {
-      const firstError = parsed.error.issues[0]?.message;
-      if (firstError) toast.error(firstError);
+      const issues: Partial<Record<keyof ShelterProfileInput, string>> = {};
+      parsed.error.issues.forEach((issue) => {
+        const path = issue.path[0];
+        if (typeof path === "string") {
+          issues[path as keyof ShelterProfileInput] = issue.message;
+        }
+      });
+      setFieldErrors(issues);
       return;
     }
 
-    toast.success("Dados validados. Integração com backend pendente.");
+    try {
+      setIsSubmitting(true);
+      setFieldErrors({});
+      const response = await fetch("/api/shelter-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed.data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Não foi possível salvar o cadastro.");
+      }
+
+      toast.success("Cadastro do abrigo salvo com sucesso.");
+      await refresh();
+    } catch (error) {
+      console.error("Erro ao salvar cadastro do abrigo", error);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Não foi possível salvar o cadastro.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  const formKey = useMemo(
+    () => (shelter ? JSON.stringify(shelter) : "empty"),
+    [shelter]
+  );
+
+  const addressOverrides = Object.fromEntries(
+    Object.entries(addressData).filter(([, value]) => value !== ""),
+  );
+
+  const data: Partial<ShelterProfileFormData> | null = shelter
+    ? { ...shelter, ...addressOverrides }
+    : null;
+
+  const submitLabel = isLoading
+    ? "Carregando..."
+    : isSubmitting
+    ? "Salvando..."
+    : "Salvar Cadastro";
+
+  if (isLoading && !shelter) {
+    return <FormLoading />;
   }
 
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
+      key={formKey}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
-      <ShelterInfoSection />
+      {shelter?.active === false && (
+        <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <AlertCircle className="h-5 w-5 shrink-0" />
+          <div>
+            <strong className="font-semibold">Cadastro Inativo</strong>
+            <p className="mt-0.5 text-amber-700">
+              Este cadastro está inativo e não aparece nas buscas públicas. Para
+              reativá-lo, clique em "Reativar Cadastro" abaixo.
+            </p>
+          </div>
+        </div>
+      )}
 
-      <ShelterAuthorizationSection />
+      <ShelterInfoSection
+        data={data}
+        fieldErrors={fieldErrors}
+        shelterType={shelterType}
+        onShelterTypeChange={(value) => {
+          setShelterType(value);
+          setFieldErrors((prev) => ({ ...prev, shelterType: undefined }));
+        }}
+        onCepAutocomplete={handleCepAutocomplete}
+      />
+
+      <ShelterAuthorizationSection data={data} fieldErrors={fieldErrors} />
 
       <div className="flex flex-col items-center gap-4 pt-2">
         <button
           type="submit"
           className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          disabled={isSubmitting || isLoading}
         >
-          Salvar Cadastro
+          {submitLabel}
         </button>
-        <button
-          type="button"
-          className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-5 py-2 text-sm font-medium text-[#6b7280] transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-        >
-          Inativar Cadastro
-        </button>
+        {shelter && (
+          <button
+            type="button"
+            onClick={() => setIsDeactivateDialogOpen(true)}
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 px-5 py-2 text-sm font-medium text-[#6b7280] transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          >
+            {shelter.active === false
+              ? "Reativar Cadastro"
+              : "Inativar Cadastro"}
+          </button>
+        )}
       </div>
+
+      {shelter && (
+        <DeactivateDialog
+          open={isDeactivateDialogOpen}
+          onOpenChange={setIsDeactivateDialogOpen}
+          onConfirm={handleDeactivate}
+          isActive={shelter.active !== false}
+        />
+      )}
     </form>
   );
 }
