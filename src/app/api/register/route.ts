@@ -42,7 +42,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status });
     }
 
-    return NextResponse.json({ ok: true, userId: data.user?.id ?? null });
+    const userId = data.user?.id ?? null;
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Usuário criado sem ID. Tente novamente." },
+        { status: 500 },
+      );
+    }
+
+    const { error: profileError } = await supabaseAdmin.from("profiles").upsert(
+      {
+        id: userId,
+        email: trimmedEmail,
+        origin: "supabase_native",
+      },
+      { onConflict: "id" },
+    );
+
+    if (profileError) {
+      console.error("register: erro ao criar profile", profileError);
+      return NextResponse.json(
+        { error: "Erro ao criar perfil do usuário" },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({ ok: true, userId });
   } catch (error) {
     console.error("register: erro inesperado", error);
     return NextResponse.json(

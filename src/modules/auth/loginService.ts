@@ -1,7 +1,7 @@
 import { verifyWordpressPassword } from "@/lib/auth/wordpressPassword";
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import { resolvePostTypeForUser } from "./postTypeResolver";
-import { insertProfileFromLegacy } from "./repositories/profileRepository";
+import { findProfileByEmail, insertProfileFromLegacy } from "./repositories/profileRepository";
 import {
   findLegacyUserByEmail,
   markLegacyUserAsMigrated,
@@ -88,9 +88,10 @@ async function attemptLegacyMigration(
 
   await insertProfileFromLegacy(supabaseAdmin, {
     id: supabaseUserId,
-    email: legacyUser.user_email,
+    email: legacyUser.user_email ?? email,
     full_name: legacyUser.display_name,
     wp_user_id: legacyUser.id,
+    origin: "wordpress_migrated",
   });
 
   await markLegacyUserAsMigrated(supabaseAdmin, legacyUser.id);
@@ -128,6 +129,9 @@ export async function loginWithMigration(
   const normalizedEmail = email.trim().toLowerCase();
   const trimmedPassword = password.trim();
 
+  const profileLookupPromise = findProfileByEmail(supabaseAdmin, normalizedEmail);
+  const legacyLookupPromise = findLegacyUserByEmail(supabaseAdmin, normalizedEmail);
+
   const supabaseLogin = await attemptSupabaseLogin(supabase, normalizedEmail, trimmedPassword);
 
   if (supabaseLogin.success) {
@@ -146,6 +150,19 @@ export async function loginWithMigration(
     };
   }
 
+  const [{ profile, error: profileError }, legacyLookup] = await Promise.all([
+    profileLookupPromise,
+    legacyLookupPromise,
+  ]);
+
+  if (profileError) {
+    return { ok: false, status: 500, errorMessage: "Erro ao buscar usuário" };
+  }
+
+  if (legacyLookup.error) {
+    return { ok: false, status: 500, errorMessage: "Erro ao buscar usuário legado" };
+  }
+
   const migrationResult = await attemptLegacyMigration(
     supabase,
     supabaseAdmin,
@@ -153,25 +170,28 @@ export async function loginWithMigration(
     trimmedPassword,
   );
 
-  if (!migrationResult.success) {
+  if (migrationResult.success) {
+    const postType = await resolvePostType(supabaseAdmin, {
+      supabaseUserId: migrationResult.userId,
+      email: migrationResult.email ?? normalizedEmail,
+    });
+
     return {
-      ok: false,
-      status: migrationResult.status,
-      errorMessage: migrationResult.errorMessage,
+      ok: true,
+      migrated: false,
+      postType,
+      status: 200,
+      accessToken: migrationResult.accessToken,
+      refreshToken: migrationResult.refreshToken,
     };
   }
 
-  const postType = await resolvePostType(supabaseAdmin, {
-    supabaseUserId: migrationResult.userId,
-    email: migrationResult.email ?? normalizedEmail,
-  });
+  const hasAnyUser = Boolean(profile) || Boolean(legacyLookup.legacyUser);
+  const errorMessage = hasAnyUser ? "Senha inválida" : "Usuário não encontrado";
 
   return {
-    ok: true,
-    migrated: false,
-    postType,
-    status: 200,
-    accessToken: migrationResult.accessToken,
-    refreshToken: migrationResult.refreshToken,
+    ok: false,
+    status: hasAnyUser ? 401 : 404,
+    errorMessage,
   };
 }

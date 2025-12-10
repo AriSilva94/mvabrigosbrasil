@@ -1,37 +1,453 @@
-# MVAbrigos Brasil
+# 🐾 MVAbrigos Brasil
 
-MVAbrigos Brasil é a primeira iniciativa de mapeamento e coleta de dados de abrigos de cães e gatos no Brasil. O site apresenta o banco de dados e o mapa nacional de abrigos, reúne materiais técnicos sobre medicina de abrigos e facilita o cadastro de abrigos, lares temporários e voluntários.
+<div align="center">
 
-## O que já está no ar
-- Landing page com chamada para cadastro de abrigos e voluntários.
-- Mapa inicial de abrigos com contagem resumida por tipo.
-- Biblioteca com publicações técnicas (detalhes por slug).
-- Páginas institucionais e de dados estruturadas para expansão futura.
+**Plataforma Nacional de Mapeamento e Gestão de Abrigos de Animais**
 
-## Stack
-- Next.js 16 (App Router) e React 19.
-- Tailwind CSS 4 para estilos.
-- Highcharts + highcharts-react para visualização de mapa.
-- Lucide React para ícones.
+[![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2-blue?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Latest-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
 
-## Como rodar localmente
-Pré-requisito: Node 18+ (recomendado Node 20).
+[Documentação](#-documentação) • [Instalação](#-instalação) • [Arquitetura](#-arquitetura) • [Contribuir](#-contribuindo)
 
-```bash
-npm install
-npm run dev
-# depois acesse http://localhost:3000
+</div>
+
+---
+
+## 📋 Sobre o Projeto
+
+**MVAbrigos Brasil** é a primeira iniciativa de mapeamento e coleta de dados de abrigos de cães e gatos no Brasil. A plataforma apresenta o banco de dados nacional de abrigos, reúne materiais técnicos sobre medicina de abrigos e facilita o cadastro de abrigos, lares temporários e voluntários.
+
+### 🎯 Objetivos
+
+- 📊 **Mapear** todos os abrigos de animais do Brasil
+- 📈 **Coletar** dados populacionais para análises estatísticas
+- 📚 **Centralizar** conhecimento técnico sobre medicina de abrigos
+- 🤝 **Conectar** abrigos e voluntários
+- 🔍 **Transparência** de dados para pesquisadores e público geral
+
+### ✨ Funcionalidades Principais
+
+#### Autenticação e Gestão de Usuários
+- ✅ Login com migração automática de usuários WordPress
+- ✅ Cadastro diferenciado (Abrigo ou Voluntário)
+- ✅ Área restrita com painéis personalizados
+- ✅ Sistema híbrido (Supabase Auth + legado WordPress)
+
+#### Gestão de Abrigos
+- ✅ Cadastro completo de abrigos com validação robusta
+- ✅ Formulário de dinâmica populacional (frontend completo)
+- ✅ Tipos de abrigo: público, privado, misto, lar temporário
+- ✅ Gestão de espécies e população inicial
+
+#### Dados e Visualizações
+- ✅ Banco de dados público com gráficos interativos (Highcharts)
+- ✅ Mapa nacional de abrigos
+- ✅ Filtros dinâmicos por estado, tipo, espécie
+- ✅ Relatórios e estatísticas
+
+#### Conteúdo Educacional
+- ✅ Biblioteca de publicações técnicas
+- ✅ Matérias sobre medicina de abrigos
+- ✅ Páginas institucionais completas
+
+---
+
+## 🚀 Tecnologias
+
+### Core Stack
+
+```
+Frontend:  Next.js 16 (App Router) + React 19 + TypeScript 5
+Styling:   Tailwind CSS 4
+Backend:   Next.js API Routes + Supabase (PostgreSQL)
+Auth:      Supabase Auth + WordPress Migration
 ```
 
-Build e lint:
+### Principais Dependências
+
+| Categoria | Tecnologia | Versão | Uso |
+|-----------|-----------|--------|-----|
+| **Framework** | Next.js | 16.0.7 | App Router, SSR, API Routes |
+| **UI Library** | React | 19.2.1 | Componentes e interatividade |
+| **Language** | TypeScript | 5.x | Type safety |
+| **Styling** | Tailwind CSS | 4.x | Utility-first CSS |
+| **Database** | Supabase | 2.86.2 | PostgreSQL + Auth + Storage |
+| **Validation** | Zod | 4.1.13 | Schema validation |
+| **Charts** | Highcharts | 12.4.0 | Visualizações de dados |
+| **Icons** | Lucide React | 0.554.0 | Ícones SVG |
+| **Toast** | Sonner | 2.0.7 | Notificações |
+| **Security** | bcryptjs | 3.0.3 | Password hashing (WP migration) |
+
+---
+
+## 📦 Instalação
+
+### Pré-requisitos
+
+- **Node.js** 18+ (recomendado Node 20)
+- **npm** ou **yarn** ou **pnpm**
+- **Conta Supabase** (para variáveis de ambiente)
+
+### Passos de Instalação
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/AriSilva94/mvabrigosbrasil.git
+   cd mvabrigosbrasil
+   ```
+
+2. **Instale as dependências**
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente**
+
+   Crie um arquivo `.env.local` na raiz do projeto:
+   ```env
+   # Supabase
+   NEXT_PUBLIC_SUPABASE_URL=sua_url_supabase
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
+
+   # ImageKit (opcional)
+   NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=sua_url_imagekit
+   NEXT_PUBLIC_IMAGEKIT_ENABLED=false
+   ```
+
+4. **Execute o servidor de desenvolvimento**
+   ```bash
+   npm run dev
+   ```
+
+5. **Acesse a aplicação**
+
+   Abra [http://localhost:3000](http://localhost:3000) no navegador
+
+### Scripts Disponíveis
 
 ```bash
-npm run build
-npm run lint
+npm run dev      # Inicia servidor de desenvolvimento
+npm run build    # Build de produção
+npm run start    # Inicia servidor de produção
+npm run lint     # Executa ESLint
 ```
 
-## Estrutura rápida
-- `src/app`: páginas públicas (home, biblioteca, institucional, dados, autenticacão).
-- `src/components`: componentes da UI e seções da home.
-- `src/data/libraryItems.ts`: conteúdo estático da biblioteca.
-- `src/styles`, `src/constants`, `src/lib`, `src/hooks`, `src/store`: utilitários e base para futuras integrações.
+---
+
+## 🏗️ Arquitetura
+
+### Estrutura de Pastas
+
+```
+mvabrigosbrasil/
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── (auth)/              # Rotas de autenticação
+│   │   ├── (protected)/         # Rotas protegidas (requer login)
+│   │   ├── (institutional)/     # Páginas institucionais
+│   │   ├── (data)/              # Dados públicos
+│   │   ├── (content)/           # Conteúdo (biblioteca, matérias)
+│   │   ├── (volunteers)/        # Voluntariado
+│   │   ├── (legal)/             # Documentos legais
+│   │   ├── api/                 # API Routes
+│   │   ├── layout.tsx           # Layout raiz
+│   │   └── page.tsx             # Home page
+│   │
+│   ├── components/              # Componentes React
+│   │   ├── layout/              # Header, Footer, Layouts
+│   │   ├── ui/                  # Componentes base (Button, Input, etc)
+│   │   ├── auth/                # Componentes de autenticação
+│   │   ├── data/                # Componentes de visualização de dados
+│   │   ├── volunteers/          # Componentes de voluntários
+│   │   └── home/                # Seções da home page
+│   │
+│   ├── lib/                     # Bibliotecas e utilitários
+│   │   ├── supabase/            # Clientes Supabase (browser, server, admin)
+│   │   ├── auth/                # Autenticação e validação de senhas WP
+│   │   └── database/            # Helpers de banco de dados
+│   │
+│   ├── modules/                 # Módulos de domínio
+│   │   ├── auth/                # Lógica de autenticação
+│   │   │   ├── loginService.ts  # Serviço de login com migração
+│   │   │   └── repositories/    # Repositórios de dados
+│   │   └── shelter/             # Lógica de abrigos
+│   │
+│   ├── services/                # Camada de serviços
+│   ├── hooks/                   # Custom React Hooks
+│   ├── types/                   # Definições TypeScript
+│   ├── constants/               # Constantes e configurações
+│   ├── data/                    # Dados estáticos
+│   ├── store/                   # Estado global (planejado)
+│   └── styles/                  # Estilos globais
+│
+├── public/                      # Assets estáticos
+├── docs/                        # Documentação do projeto
+├── .env.local                   # Variáveis de ambiente (local)
+├── next.config.ts               # Configuração Next.js
+├── tailwind.config.ts           # Configuração Tailwind
+└── tsconfig.json                # Configuração TypeScript
+```
+
+### Arquitetura de Camadas
+
+```
+┌─────────────────────────────────────────┐
+│      PRESENTATION LAYER                 │
+│  (Pages, Components, Client State)      │
+├─────────────────────────────────────────┤
+│      APPLICATION LAYER                  │
+│  (Hooks, API Routes, Form Logic)        │
+├─────────────────────────────────────────┤
+│      DOMAIN LAYER                       │
+│  (Services, Modules, Business Logic)    │
+├─────────────────────────────────────────┤
+│      INFRASTRUCTURE LAYER               │
+│  (Supabase Clients, Repositories)       │
+├─────────────────────────────────────────┤
+│      DATA LAYER                         │
+│  (Supabase PostgreSQL + Auth)           │
+└─────────────────────────────────────────┘
+```
+
+### Clientes Supabase
+
+O projeto utiliza **3 tipos de clientes** Supabase para diferentes contextos:
+
+1. **Cliente Browser** ([src/lib/supabase/clientBrowser.ts](src/lib/supabase/clientBrowser.ts))
+   - Uso: Hooks, componentes client-side
+   - Características: Singleton, gerenciamento automático de cookies
+
+2. **Cliente Server** ([src/lib/supabase/clientServer.ts](src/lib/supabase/clientServer.ts))
+   - Uso: Server Components, API Routes
+   - Características: SSR-ready, integração com Next.js cookies
+
+3. **Cliente Admin** ([src/lib/supabase/supabase-admin.ts](src/lib/supabase/supabase-admin.ts))
+   - Uso: Operações privilegiadas (criar usuários, bypass RLS)
+   - Características: Service Role Key, acesso total
+
+---
+
+## 🗄️ Banco de Dados
+
+### Modelo de Dados Principal
+
+#### **profiles** - Perfil do Usuário
+Conecta `auth.users` (Supabase Auth) com dados de domínio:
+- `id` → FK para `auth.users.id`
+- `email`, `full_name`
+- `wp_user_id` → ID WordPress original (para usuários migrados)
+- `origin` → `'wordpress_migrated'` | `'supabase_native'` | `'admin_created'`
+
+**RLS:** Usuário só acessa próprio perfil
+
+#### **shelters** - Abrigos
+Dados completos de abrigos de animais:
+- Identificação: `name`, `cnpj`/`cpf`, `shelter_type`
+- Localização: `cep`, `street`, `number`, `city`, `state`
+- Espécies: `species`, `additional_species[]`
+- População inicial: `initial_dogs`, `initial_cats`
+- Responsável: `authorized_name`, `authorized_email`, `authorized_phone`
+
+**RLS:** Leitura pública, escrita apenas via service_role
+
+#### **volunteers** - Voluntários
+Cadastro de voluntários disponíveis
+
+#### **shelter_dynamics** - Dinâmica Populacional
+Dados mensais de movimentação de animais (planejado)
+
+#### **vacancies** - Vagas
+Oportunidades de voluntariado em abrigos
+
+### Tabelas de Migração WordPress
+
+#### **wp_users_legacy**
+Usuários WordPress para migração automática no primeiro login
+- **Acesso:** Apenas service_role (bloqueado para anon/authenticated)
+- **Uso:** Validação de senha WordPress, criação de conta Supabase
+
+#### **wp_posts_raw**, **wp_postmeta_raw**
+Staging de posts WordPress (abrigos, voluntários, vagas antigas)
+
+### Segurança (Row Level Security)
+
+- **Tabelas legadas WordPress:** Bloqueadas para anon/auth (apenas service_role)
+- **Profiles:** Usuário só acessa próprio perfil
+- **Tabelas de domínio:** Leitura pública, escrita apenas service_role
+
+Para mais detalhes, veja [docs/instrucoes-codex-estrutura-banco-de-dados.md](docs/instrucoes-codex-estrutura-banco-de-dados.md)
+
+---
+
+## 🔐 Autenticação
+
+### Sistema Híbrido (WordPress + Supabase)
+
+O projeto implementa um **sistema de migração automática** de usuários WordPress:
+
+#### Fluxo de Login
+
+1. **Tentativa de Login Direto**
+   - Tenta autenticar no Supabase Auth
+   - Se sucesso → redireciona para painel
+
+2. **Migração Automática** (se login falhar)
+   - Busca usuário em `wp_users_legacy`
+   - Valida senha WordPress (suporta 3 formatos de hash)
+   - Cria usuário no Supabase Auth
+   - Cria perfil em `profiles` com `origin: 'wordpress_migrated'`
+   - Marca usuário como migrado
+   - Login automático
+
+#### Validação de Senha WordPress
+
+Suporta **3 formatos de hash**:
+- `$wp$` (novo): HMAC-SHA384 + bcrypt
+- `$P$` / `$H$` (antigo): phpass
+
+Implementação: [src/lib/auth/wordpressPassword.ts](src/lib/auth/wordpressPassword.ts)
+
+---
+
+## 🎨 Design System
+
+### Paleta de Cores
+
+```css
+--color-brand-primary:   #108259  /* Verde principal */
+--color-brand-secondary: #5e782a  /* Verde oliva */
+--color-brand-accent:    #f2a400  /* Amarelo destaque */
+--color-brand-red:       #dc3545  /* Vermelho */
+--color-text-default:    #696b7e  /* Texto padrão */
+--color-bg-light:        #f5f5f6  /* Background claro */
+```
+
+### Tipografia
+
+- **Sans-serif:** Poppins (Google Fonts)
+- **Monospace:** Geist Mono (local, 9 weights)
+
+### Componentes Base
+
+Kit de componentes reutilizáveis em [src/components/ui/](src/components/ui/):
+- `Button` - Botão com variantes
+- `Input` - Input com validação visual
+- `Select` - Select customizado
+- `Card` - Container de card
+- `Spinner` - Loading indicator
+- `FormError` - Mensagem de erro
+- `Dropdown` - Dropdown genérico
+- `Modal` - Modal overlay
+
+---
+
+## 📊 Status do Projeto
+
+| Categoria | Progresso | Detalhes |
+|-----------|-----------|----------|
+| **Autenticação** | ![95%](https://progress-bar.dev/95) | Login, cadastro, migração WP ✅<br>Alteração de senha ⏳ |
+| **Rotas Públicas** | ![90%](https://progress-bar.dev/90) | Institucional, conteúdo, dados ✅<br>Alguns slugs dinâmicos ⏳ |
+| **Rotas Protegidas** | ![60%](https://progress-bar.dev/60) | Painel e cadastro ✅<br>Dinâmica (backend), treinamentos ⏳ |
+| **Formulários** | ![85%](https://progress-bar.dev/85) | Cadastro abrigo ✅<br>Dinâmica populacional (backend) ⏳ |
+| **Services** | ![15%](https://progress-bar.dev/15) | loginService ✅<br>Demais services ⏳ |
+| **Visualizações** | ![80%](https://progress-bar.dev/80) | Gráficos Highcharts ✅<br>Mais dados reais ⏳ |
+| **Segurança (RLS)** | ![100%](https://progress-bar.dev/100) | Configuração completa ✅ |
+
+**Completude Geral:** ~72%
+
+### 🚧 Em Desenvolvimento
+
+- 🔄 Backend da dinâmica populacional
+- 🔄 Gestão completa de vagas
+- 🔄 Perfis públicos de voluntários
+- 🔄 Sistema de notificações
+- 🔄 Upload de imagens
+
+---
+
+## 📖 Documentação
+
+### Documentos Principais
+
+- **Estrutura do Projeto:** [docs/instrucoes-codex-estrutura.md](docs/instrucoes-codex-estrutura.md)
+- **Banco de Dados:** [docs/instrucoes-codex-estrutura-banco-de-dados.md](docs/instrucoes-codex-estrutura-banco-de-dados.md)
+
+### Convenções de Código
+
+- ✅ **TypeScript Strict Mode** habilitado
+- ✅ **Server Components** como padrão (Next.js 16)
+- ✅ `"use client"` apenas quando necessário
+- ✅ **Validação Zod** em client + server
+- ✅ **Tailwind CSS** para estilos
+- ✅ **Mobile-first** responsive design
+- ✅ Alias `@/` para imports absolutos
+
+### Estrutura de Rotas
+
+O projeto usa **Route Groups** do Next.js para organização:
+
+```
+(auth)/         → Autenticação (login, register)
+(protected)/    → Área restrita (painel, cadastros)
+(institutional)/→ Páginas institucionais
+(data)/         → Dados públicos
+(content)/      → Conteúdo (biblioteca, matérias)
+(volunteers)/   → Voluntariado
+(legal)/        → Documentos legais
+```
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são muito bem-vindas! Para contribuir:
+
+1. **Fork** o projeto
+2. Crie uma **branch** para sua feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um **Pull Request**
+
+### Diretrizes
+
+- Siga as convenções de código do projeto
+- Adicione testes quando aplicável
+- Atualize a documentação conforme necessário
+- Mantenha commits atômicos e descritivos
+
+---
+
+## 📝 Licença
+
+Este projeto é privado e pertence à iniciativa **Medicina de Abrigos Brasil**.
+
+---
+
+## 👥 Equipe
+
+Desenvolvido com ❤️ pela equipe **Medicina de Abrigos Brasil**
+
+### Links Úteis
+
+- 🌐 **Website:** [mvabrigosbrasil.com.br](https://mvabrigosbrasil.com.br)
+- 📧 **Contato:** [Página de Contato](https://mvabrigosbrasil.com.br/contato)
+- 📱 **Instagram:** [@medicinaabrigosbrasil](https://instagram.com/medicinaabrigosbrasil)
+- 👥 **Facebook:** [Medicina de Abrigos Brasil](https://facebook.com/medicinaabrigosbrasil)
+
+---
+
+## 🙏 Agradecimentos
+
+Agradecemos a todos os abrigos, voluntários e parceiros que tornam este projeto possível.
+
+---
+
+<div align="center">
+
+**Medicina de Abrigos Brasil** - Transformando dados em ação para o bem-estar animal 🐾
+
+</div>
