@@ -43,6 +43,7 @@ export type Database = {
           email: string | null;
           full_name: string | null;
           wp_user_id: number | null;
+          origin: Database["public"]["Enums"]["user_origin"] | null;
           [key: string]: Json | undefined;
         };
         Insert: {
@@ -50,14 +51,167 @@ export type Database = {
           email?: string | null;
           full_name?: string | null;
           wp_user_id?: number | null;
+          origin?: Database["public"]["Enums"]["user_origin"] | null;
         };
         Update: {
           id?: string;
           email?: string | null;
           full_name?: string | null;
           wp_user_id?: number | null;
+          origin?: Database["public"]["Enums"]["user_origin"] | null;
         };
         Relationships: [];
+      };
+      shelters: {
+        Row: {
+          id: string;
+          profile_id: string | null;
+          shelter_type: string | null;
+          cnpj: string | null;
+          cpf: string | null;
+          name: string | null;
+          cep: string | null;
+          street: string | null;
+          number: number | null;
+          district: string | null;
+          state: string | null;
+          city: string | null;
+          website: string | null;
+          foundation_date: string | null;
+          species: string | null;
+          additional_species: Json;
+          temporary_agreement: string | null;
+          initial_dogs: number | null;
+          initial_cats: number | null;
+          authorized_name: string | null;
+          authorized_role: string | null;
+          authorized_email: string | null;
+          authorized_phone: string | null;
+          active: boolean | null;
+          accept_terms: boolean | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          profile_id?: string | null;
+          shelter_type?: string | null;
+          cnpj?: string | null;
+          cpf?: string | null;
+          name?: string | null;
+          cep?: string | null;
+          street?: string | null;
+          number?: number | null;
+          district?: string | null;
+          state?: string | null;
+          city?: string | null;
+          website?: string | null;
+          foundation_date?: string | null;
+          species?: string | null;
+          additional_species?: Json;
+          temporary_agreement?: string | null;
+          initial_dogs?: number | null;
+          initial_cats?: number | null;
+          authorized_name?: string | null;
+          authorized_role?: string | null;
+          authorized_email?: string | null;
+          authorized_phone?: string | null;
+          active?: boolean | null;
+          accept_terms?: boolean | null;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string | null;
+          shelter_type?: string | null;
+          cnpj?: string | null;
+          cpf?: string | null;
+          name?: string | null;
+          cep?: string | null;
+          street?: string | null;
+          number?: number | null;
+          district?: string | null;
+          state?: string | null;
+          city?: string | null;
+          website?: string | null;
+          foundation_date?: string | null;
+          species?: string | null;
+          additional_species?: Json;
+          temporary_agreement?: string | null;
+          initial_dogs?: number | null;
+          initial_cats?: number | null;
+          authorized_name?: string | null;
+          authorized_role?: string | null;
+          authorized_email?: string | null;
+          authorized_phone?: string | null;
+          active?: boolean | null;
+          accept_terms?: boolean | null;
+        };
+        Relationships: [];
+      };
+      volunteers: {
+        Row: {
+          id: string;
+          profile_id: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          profile_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string | null;
+        };
+        Relationships: [];
+      };
+      shelter_history: {
+        Row: {
+          id: string;
+          shelter_id: string;
+          profile_id: string;
+          operation: string;
+          old_data: Json | null;
+          new_data: Json | null;
+          changed_fields: string[] | null;
+          changed_at: string;
+          changed_by: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          shelter_id: string;
+          profile_id: string;
+          operation: string;
+          old_data?: Json | null;
+          new_data?: Json | null;
+          changed_fields?: string[] | null;
+          changed_at?: string;
+          changed_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          shelter_id?: string;
+          profile_id?: string;
+          operation?: string;
+          old_data?: Json | null;
+          new_data?: Json | null;
+          changed_fields?: string[] | null;
+          changed_at?: string;
+          changed_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "shelter_history_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "shelter_history_shelter_id_fkey";
+            columns: ["shelter_id"];
+            referencedRelation: "shelters";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       wp_posts_raw: {
         Row: {
@@ -81,7 +235,9 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
-    Enums: Record<string, never>;
+    Enums: {
+      user_origin: "wordpress_migrated" | "supabase_native" | "admin_created";
+    };
     CompositeTypes: Record<string, never>;
   };
 };
