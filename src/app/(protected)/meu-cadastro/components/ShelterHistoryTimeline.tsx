@@ -123,15 +123,32 @@ export function ShelterHistoryTimeline() {
                 </div>
 
                 {/* Campos alterados */}
-                {item.changedFields.length > 0 && (
+                {(item.changes?.length ?? item.changedFields.length) > 0 && (
                   <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-3">
                     <p className="mb-2 text-xs font-medium text-gray-700">Campos alterados:</p>
-                    <ul className="space-y-1">
-                      {item.changedFields.map((field, idx) => (
-                        <li key={idx} className="text-sm text-gray-600">
-                          • {field}
-                        </li>
-                      ))}
+                    <ul className="space-y-3">
+                      {item.changes?.length ? (
+                        item.changes.map((change) => (
+                          <li key={change.field} className="text-sm text-gray-700">
+                            <div className="font-semibold text-gray-900">{change.label}</div>
+                            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-600">
+                              <span className="rounded border border-gray-200 bg-white px-2 py-1 text-[11px] leading-tight text-gray-700">
+                                De: {change.from}
+                              </span>
+                              <span className="text-gray-400">-&gt;</span>
+                              <span className="rounded border border-gray-200 bg-white px-2 py-1 text-[11px] leading-tight text-gray-900">
+                                Para: {change.to}
+                              </span>
+                            </div>
+                          </li>
+                        ))
+                      ) : (
+                        item.changedFields.map((field, idx) => (
+                          <li key={idx} className="text-sm text-gray-600">
+                            • {field}
+                          </li>
+                        ))
+                      )}
                     </ul>
                   </div>
                 )}

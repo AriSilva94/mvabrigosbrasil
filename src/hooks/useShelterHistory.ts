@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import type { ShelterHistoryRecord, ShelterHistoryItem } from "@/types/shelter.types";
+import type {
+  ShelterHistoryRecord,
+  ShelterHistoryItem,
+  ShelterHistoryChange,
+} from "@/types/shelter.types";
 
 interface UseShelterHistoryReturn {
   history: ShelterHistoryItem[];
@@ -35,14 +39,46 @@ const FIELD_LABELS: Record<string, string> = {
   active: "Status",
 };
 
+const VALUE_FORMATTERS: Partial<Record<string, (value: unknown) => string>> = {
+  active: (value) => (value ? "Ativo" : "Inativo"),
+};
+
+function formatValue(value: unknown): string {
+  if (value === null || value === undefined || value === "") return "-";
+  if (Array.isArray(value)) return value.length ? value.join(", ") : "-";
+  if (typeof value === "boolean") return value ? "Sim" : "Não";
+  return String(value);
+}
+
+function buildChanges(record: ShelterHistoryRecord): ShelterHistoryChange[] {
+  const fields = record.changed_fields ?? [];
+  const oldData = (record.old_data as Record<string, unknown> | null) ?? {};
+  const newData = (record.new_data as Record<string, unknown> | null) ?? {};
+
+  return fields.map((field) => {
+    const formatter = VALUE_FORMATTERS[field];
+    const format = formatter || formatValue;
+    const oldValue = format(oldData[field]);
+    const newValue = format(newData[field]);
+
+    return {
+      field,
+      label: FIELD_LABELS[field] || field,
+      from: oldValue,
+      to: newValue,
+    };
+  });
+}
+
 function mapHistoryRecord(record: ShelterHistoryRecord): ShelterHistoryItem {
   return {
     id: record.id,
     operation: record.operation,
-    changedFields: record.changed_fields.map((field) => FIELD_LABELS[field] || field),
+    changedFields: (record.changed_fields || []).map((field) => FIELD_LABELS[field] || field),
     changedAt: record.changed_at,
     oldValues: record.old_data || undefined,
     newValues: record.new_data || undefined,
+    changes: buildChanges(record),
   };
 }
 
