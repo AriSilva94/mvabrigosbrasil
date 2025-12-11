@@ -68,6 +68,7 @@ export type Database = {
           profile_id: string | null;
           shelter_type: string | null;
           cnpj: string | null;
+          cpf: string | null;
           name: string | null;
           cep: string | null;
           street: string | null;
@@ -95,6 +96,7 @@ export type Database = {
           profile_id?: string | null;
           shelter_type?: string | null;
           cnpj?: string | null;
+          cpf?: string | null;
           name?: string | null;
           cep?: string | null;
           street?: string | null;
@@ -121,6 +123,7 @@ export type Database = {
           profile_id?: string | null;
           shelter_type?: string | null;
           cnpj?: string | null;
+          cpf?: string | null;
           name?: string | null;
           cep?: string | null;
           street?: string | null;
@@ -159,6 +162,56 @@ export type Database = {
           profile_id?: string | null;
         };
         Relationships: [];
+      };
+      shelter_history: {
+        Row: {
+          id: string;
+          shelter_id: string;
+          profile_id: string;
+          operation: string;
+          old_data: Json | null;
+          new_data: Json | null;
+          changed_fields: string[] | null;
+          changed_at: string;
+          changed_by: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          shelter_id: string;
+          profile_id: string;
+          operation: string;
+          old_data?: Json | null;
+          new_data?: Json | null;
+          changed_fields?: string[] | null;
+          changed_at?: string;
+          changed_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          shelter_id?: string;
+          profile_id?: string;
+          operation?: string;
+          old_data?: Json | null;
+          new_data?: Json | null;
+          changed_fields?: string[] | null;
+          changed_at?: string;
+          changed_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "shelter_history_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "shelter_history_shelter_id_fkey";
+            columns: ["shelter_id"];
+            referencedRelation: "shelters";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       wp_posts_raw: {
         Row: {
