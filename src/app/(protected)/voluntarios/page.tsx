@@ -1,68 +1,15 @@
-"use client";
-
 import type { JSX } from "react";
-import { useMemo, useState } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Text } from "@/components/ui/typography";
-import VolunteerCard from "./components/VolunteerCard";
-import VolunteerFilters from "./components/VolunteerFilters";
-import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
+import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import { fetchVolunteerCards } from "@/repositories/volunteersRepository";
+import VolunteerListClient from "./components/VolunteerListClient";
 
-function VolunteerList(): JSX.Element {
-  const volunteers = useVolunteerCards();
-  const [stateFilter, setStateFilter] = useState<string>("");
-  const [genderFilter, setGenderFilter] = useState<string>("");
-  const [availabilityFilter, setAvailabilityFilter] = useState<string>("");
+export default async function Page(): Promise<JSX.Element> {
+  const supabase = getSupabaseAdminClient();
+  const { volunteers, error } = await fetchVolunteerCards(supabase);
 
-  const filteredVolunteers = useMemo(() => {
-    return volunteers.filter((volunteer) => {
-      const matchesState =
-        !stateFilter ||
-        volunteer.state?.toLowerCase() === stateFilter.toLowerCase();
-
-      // Placeholder filters until we fetch gender/availability data
-      const matchesGender = !genderFilter;
-      const matchesAvailability = !availabilityFilter;
-
-      return matchesState && matchesGender && matchesAvailability;
-    });
-  }, [volunteers, stateFilter, genderFilter, availabilityFilter]);
-
-  return (
-    <section className="bg-white">
-      <div className="container px-6 py-12">
-        <div className="space-y-6">
-          <VolunteerFilters
-            stateFilter={stateFilter}
-            setStateFilter={setStateFilter}
-            genderFilter={genderFilter}
-            setGenderFilter={setGenderFilter}
-            availabilityFilter={availabilityFilter}
-            setAvailabilityFilter={setAvailabilityFilter}
-          />
-
-          <div
-            className="rounded-xl border border-[#cbe7d8] bg-[#e5f3ec] px-4 py-3 text-center text-sm font-semibold text-[#2f6b4b]"
-            role="status"
-          >
-            <Text className="m-0">
-              <strong>{filteredVolunteers.length}</strong> voluntário(s) encontrado(s).
-            </Text>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {filteredVolunteers.map((volunteer) => (
-              <VolunteerCard key={volunteer.id} volunteer={volunteer} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export default function Page(): JSX.Element {
   return (
     <main>
       <PageHeader
@@ -74,9 +21,19 @@ export default function Page(): JSX.Element {
         ]}
       />
 
-      <div className="bg-white">
-        <VolunteerList />
-      </div>
+      {error ? (
+        <section className="bg-white">
+          <div className="container px-6 py-12">
+            <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center">
+              <Text className="text-red-800">
+                Erro ao carregar voluntários. Por favor, tente novamente mais tarde.
+              </Text>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <VolunteerListClient volunteers={volunteers} />
+      )}
     </main>
   );
 }
