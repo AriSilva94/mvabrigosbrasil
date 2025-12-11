@@ -52,6 +52,30 @@ function mapDbToFormData(row: Record<string, unknown>): Partial<ShelterProfileFo
   };
 }
 
+function arraysShallowEqual(a: unknown[], b: unknown[]) {
+  if (a.length !== b.length) return false;
+  return a.every((value, index) => value === b[index]);
+}
+
+function hasChanges(
+  current: Record<string, unknown> | null,
+  incoming: Record<string, unknown>,
+): boolean {
+  if (!current) return true;
+
+  return Object.entries(incoming).some(([key, incomingValue]) => {
+    const currentValue = key in current ? current[key] : undefined;
+
+    if (Array.isArray(currentValue) || Array.isArray(incomingValue)) {
+      const currentArray = Array.isArray(currentValue) ? currentValue : [];
+      const incomingArray = Array.isArray(incomingValue) ? incomingValue : [];
+      return !arraysShallowEqual(currentArray, incomingArray);
+    }
+
+    return (currentValue ?? null) !== (incomingValue ?? null);
+  });
+}
+
 export async function GET() {
   try {
     const user = await getCurrentUser();
@@ -126,7 +150,47 @@ export async function POST(request: Request) {
       );
     }
 
+    const { data: existingShelter, error: currentShelterError } = await supabaseAdmin
+      .from("shelters")
+      .select(
+        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
+      )
+      .eq("profile_id", user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (currentShelterError) {
+      const isUnknownColumn = currentShelterError.code === "42703";
+      if (!isUnknownColumn) {
+        console.error(
+          "shelter-profile POST: erro ao consultar cadastro existente",
+          currentShelterError,
+        );
+        return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
+      }
+    }
+
     const payload = mapShelterProfileToDb(user.id, parsed.data);
+
+    const normalizedCurrentShelter = existingShelter
+      ? {
+          ...existingShelter,
+          additional_species: Array.isArray(existingShelter.additional_species)
+            ? existingShelter.additional_species
+            : [],
+          website: existingShelter.website ?? null,
+          temporary_agreement: existingShelter.temporary_agreement ?? null,
+          cnpj: existingShelter.cnpj ?? null,
+          cpf: existingShelter.cpf ?? null,
+        }
+      : null;
+
+    if (normalizedCurrentShelter && !hasChanges(normalizedCurrentShelter, payload)) {
+      return NextResponse.json({
+        ok: true,
+        shelter: mapDbToFormData(normalizedCurrentShelter),
+      });
+    }
 
     const { data, error } = await supabaseAdmin
       .from("shelters")

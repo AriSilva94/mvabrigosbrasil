@@ -25,7 +25,9 @@ type ShelterInfoSectionProps = {
   data?: Partial<ShelterProfileFormData> | null;
   fieldErrors?: Partial<Record<string, string>>;
   shelterType?: string;
+  documentValue?: string;
   onShelterTypeChange?: (value: string) => void;
+  onDocumentValueChange?: (value: string) => void;
   onCepAutocomplete?: (data: {
     street: string;
     district: string;
@@ -38,7 +40,9 @@ export default function ShelterInfoSection({
   data,
   fieldErrors,
   shelterType,
+  documentValue,
   onShelterTypeChange,
+  onDocumentValueChange,
   onCepAutocomplete,
 }: ShelterInfoSectionProps): JSX.Element {
   const documentLabel = shelterType === "temporary" ? "CPF" : "CNPJ";
@@ -49,6 +53,7 @@ export default function ShelterInfoSection({
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onShelterTypeChange?.(event.target.value);
+    onDocumentValueChange?.("");
   };
 
   async function handleCepBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -111,7 +116,8 @@ export default function ShelterInfoSection({
             id="cnpj"
             name="cnpj"
             mask={documentMask}
-            defaultValue={data?.cnpj}
+            value={documentValue}
+            onValueChange={(_, masked) => onDocumentValueChange?.(masked)}
             required
             aria-invalid={Boolean(fieldErrors?.cnpj)}
             aria-describedby={fieldErrors?.cnpj ? "cnpj-error" : undefined}

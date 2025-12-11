@@ -26,6 +26,7 @@ export default function ShelterProfileForm(): JSX.Element {
   const [shelterType, setShelterType] = useState<string>(
     shelter?.shelterType ?? ""
   );
+  const [documentValue, setDocumentValue] = useState<string>(shelter?.cnpj ?? "");
   const [addressData, setAddressData] = useState({
     street: shelter?.street ?? "",
     district: shelter?.district ?? "",
@@ -36,6 +37,7 @@ export default function ShelterProfileForm(): JSX.Element {
 
   useEffect(() => {
     setShelterType(shelter?.shelterType ?? "");
+    setDocumentValue(shelter?.cnpj ?? "");
     setAddressData({
       street: shelter?.street ?? "",
       district: shelter?.district ?? "",
@@ -95,7 +97,7 @@ export default function ShelterProfileForm(): JSX.Element {
     const temporaryAgreementValue = formData.get("temporaryAgreement");
     const payload = {
       shelterType: shelterType || String(formData.get("shelterType") ?? ""),
-      cnpj: String(formData.get("cnpj") ?? ""),
+      cnpj: documentValue || String(formData.get("cnpj") ?? ""),
       shelterName: String(formData.get("shelterName") ?? ""),
       cep: String(formData.get("cep") ?? ""),
       street: String(formData.get("street") ?? ""),
@@ -210,7 +212,13 @@ export default function ShelterProfileForm(): JSX.Element {
         shelterType={shelterType}
         onShelterTypeChange={(value) => {
           setShelterType(value);
-          setFieldErrors((prev) => ({ ...prev, shelterType: undefined }));
+          setDocumentValue("");
+          setFieldErrors((prev) => ({ ...prev, shelterType: undefined, cnpj: undefined }));
+        }}
+        documentValue={documentValue}
+        onDocumentValueChange={(value) => {
+          setDocumentValue(value);
+          setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
         }}
         onCepAutocomplete={handleCepAutocomplete}
       />
