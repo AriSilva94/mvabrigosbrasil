@@ -86,6 +86,7 @@ export type Database = {
           authorized_role: string | null;
           authorized_email: string | null;
           authorized_phone: string | null;
+          active: boolean | null;
           accept_terms: boolean | null;
           [key: string]: Json | undefined;
         };
@@ -112,6 +113,7 @@ export type Database = {
           authorized_role?: string | null;
           authorized_email?: string | null;
           authorized_phone?: string | null;
+          active?: boolean | null;
           accept_terms?: boolean | null;
         };
         Update: {
@@ -137,6 +139,7 @@ export type Database = {
           authorized_role?: string | null;
           authorized_email?: string | null;
           authorized_phone?: string | null;
+          active?: boolean | null;
           accept_terms?: boolean | null;
         };
         Relationships: [];
