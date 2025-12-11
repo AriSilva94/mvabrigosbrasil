@@ -9,8 +9,8 @@ import { Heading, Text } from "@/components/ui/typography";
 import { VOLUNTEER_TABS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
 import type { VolunteerTabId } from "@/types/volunteer.types";
-import { useVolunteerCards } from "./hooks/useVolunteerCards";
-import { useVacancyCards } from "./hooks/useVacancyCards";
+import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
+import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
 import { ChevronDown } from "lucide-react";
 
 export default function VolunteerTabsSection() {
@@ -18,7 +18,7 @@ export default function VolunteerTabsSection() {
   const [openFaqId, setOpenFaqId] = useState<string | null>(
     VOLUNTEER_FAQ[0]?.id ?? null
   );
-  const volunteers = useVolunteerCards();
+  const { volunteers, loading: loadingVolunteers } = useVolunteerCards();
   const vacancies = useVacancyCards();
 
   function toggleFaq(id: string) {
@@ -59,7 +59,16 @@ export default function VolunteerTabsSection() {
                 Voluntários Disponíveis
               </Heading>
 
-              {volunteers.length === 0 ? (
+              {loadingVolunteers ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="h-28 animate-pulse rounded-xl bg-slate-200"
+                    />
+                  ))}
+                </div>
+              ) : volunteers.length === 0 ? (
                 <Text className="text-[#68707b]">
                   Nenhum voluntário disponível no momento.
                 </Text>

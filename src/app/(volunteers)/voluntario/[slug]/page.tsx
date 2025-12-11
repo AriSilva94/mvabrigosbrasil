@@ -16,7 +16,7 @@ export default async function Page({
 }: VolunteerPageProps): Promise<JSX.Element> {
   const { slug } = await params;
   const { from } = (await searchParams) ?? {};
-  const profile = getVolunteerProfileBySlug(slug);
+  const profile = await getVolunteerProfileBySlug(slug);
 
   const cameFromProgram = from === "programa-de-voluntarios";
   const backHref = cameFromProgram ? "/programa-de-voluntarios" : "/voluntarios";
