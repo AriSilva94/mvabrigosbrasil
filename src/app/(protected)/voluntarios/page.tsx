@@ -1,7 +1,8 @@
 "use client";
 
 import type { JSX } from "react";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Text } from "@/components/ui/typography";
@@ -11,9 +12,27 @@ import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCar
 
 function VolunteerList(): JSX.Element {
   const volunteers = useVolunteerCards();
-  const [stateFilter, setStateFilter] = useState<string>("");
-  const [genderFilter, setGenderFilter] = useState<string>("");
-  const [availabilityFilter, setAvailabilityFilter] = useState<string>("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [stateFilter, setStateFilter] = useState<string>(searchParams.get("estado") ?? "");
+  const [genderFilter, setGenderFilter] = useState<string>(searchParams.get("genero") ?? "");
+  const [availabilityFilter, setAvailabilityFilter] = useState<string>(searchParams.get("disponibilidade") ?? "");
+
+  const updateURL = useCallback((state: string, gender: string, availability: string) => {
+    const params = new URLSearchParams();
+
+    if (state) params.set("estado", state);
+    if (gender) params.set("genero", gender);
+    if (availability) params.set("disponibilidade", availability);
+
+    const queryString = params.toString();
+    router.push(queryString ? `/voluntarios?${queryString}` : "/voluntarios", { scroll: false });
+  }, [router]);
+
+  useEffect(() => {
+    updateURL(stateFilter, genderFilter, availabilityFilter);
+  }, [stateFilter, genderFilter, availabilityFilter, updateURL]);
 
   const filteredVolunteers = useMemo(() => {
     return volunteers.filter((volunteer) => {
@@ -21,9 +40,13 @@ function VolunteerList(): JSX.Element {
         !stateFilter ||
         volunteer.state?.toLowerCase() === stateFilter.toLowerCase();
 
-      // Placeholder filters until we fetch gender/availability data
-      const matchesGender = !genderFilter;
-      const matchesAvailability = !availabilityFilter;
+      const matchesGender =
+        !genderFilter ||
+        volunteer.gender?.toLowerCase() === genderFilter.toLowerCase();
+
+      const matchesAvailability =
+        !availabilityFilter ||
+        volunteer.availability === availabilityFilter;
 
       return matchesState && matchesGender && matchesAvailability;
     });
