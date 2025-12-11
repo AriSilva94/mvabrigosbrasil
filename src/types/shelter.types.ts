@@ -69,6 +69,13 @@ export interface ShelterHistoryRecord {
   changed_by: string | null;
 }
 
+export interface ShelterHistoryChange {
+  field: string;
+  label: string;
+  from: string;
+  to: string;
+}
+
 export interface ShelterHistoryItem {
   id: string;
   operation: ShelterHistoryOperation;
@@ -76,4 +83,5 @@ export interface ShelterHistoryItem {
   changedAt: string;
   oldValues?: Record<string, unknown>;
   newValues?: Record<string, unknown>;
+  changes?: ShelterHistoryChange[];
 }
