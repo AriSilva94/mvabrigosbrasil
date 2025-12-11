@@ -13,6 +13,8 @@ export type VolunteerCard = {
   location?: string;
   city?: string;
   state?: string;
+  gender?: string;
+  availability?: string;
 };
 
 export type VolunteerTabId = "volunteers" | "vacancies" | "faq";
