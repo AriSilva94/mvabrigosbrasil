@@ -4,10 +4,13 @@ import wpPostmeta from "@/data/wp/wp_postmeta.json";
 import wpPostsVoluntario from "@/data/wp/wp_posts_voluntario.json";
 import type { VolunteerCard } from "@/types/volunteer.types";
 import type { WpPost, WpPostMeta, WpTable } from "@/types/database.types";
+import { VOLUNTEER_META_KEYS, type VolunteerMetaKey } from "@/constants/volunteerMetaKeys";
 
-type LocationMeta = {
+type VolunteerMeta = {
   cidade?: string;
   estado?: string;
+  genero?: string;
+  disponibilidade?: string;
 };
 
 function isTable<T>(value: unknown, name: string): value is WpTable<T> {
@@ -19,8 +22,8 @@ function isTable<T>(value: unknown, name: string): value is WpTable<T> {
   );
 }
 
-function isLocationKey(key: string): key is keyof LocationMeta {
-  return key === "cidade" || key === "estado";
+function isVolunteerMetaKey(key: string): key is VolunteerMetaKey {
+  return Object.values(VOLUNTEER_META_KEYS).includes(key as VolunteerMetaKey);
 }
 
 function buildVolunteerCards(): VolunteerCard[] {
@@ -34,15 +37,15 @@ function buildVolunteerCards(): VolunteerCard[] {
 
   if (!postsTable?.data || !metasTable?.data) return [];
 
-  const locationByPost = new Map<string, LocationMeta>();
+  const metaByPost = new Map<string, VolunteerMeta>();
 
   metasTable.data.forEach((meta) => {
     if (!meta?.post_id || !meta?.meta_key) return;
-    if (!isLocationKey(meta.meta_key)) return;
+    if (!isVolunteerMetaKey(meta.meta_key)) return;
 
-    const current: LocationMeta = locationByPost.get(meta.post_id) ?? {};
+    const current: VolunteerMeta = metaByPost.get(meta.post_id) ?? {};
     current[meta.meta_key] = meta.meta_value ?? undefined;
-    locationByPost.set(meta.post_id, current);
+    metaByPost.set(meta.post_id, current);
   });
 
   const posts = postsTable.data
@@ -59,9 +62,11 @@ function buildVolunteerCards(): VolunteerCard[] {
 
   return posts
     .map((post) => {
-      const location = locationByPost.get(post.ID) ?? {};
-      const city = location.cidade?.trim();
-      const state = location.estado?.trim();
+      const meta = metaByPost.get(post.ID) ?? {};
+      const city = meta.cidade?.trim();
+      const state = meta.estado?.trim();
+      const gender = meta.genero?.trim();
+      const availability = meta.disponibilidade?.trim();
 
       return {
         id: post.ID,
@@ -71,6 +76,8 @@ function buildVolunteerCards(): VolunteerCard[] {
         state,
         location:
           city && state ? `${city} - ${state}` : city || state || undefined,
+        gender,
+        availability,
       };
     })
     .filter((volunteer) => volunteer.slug !== "");
