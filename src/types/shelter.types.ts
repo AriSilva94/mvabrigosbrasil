@@ -32,7 +32,8 @@ export interface ShelterProfileFormData {
   foundationDate: string;
   species: string;
   additionalSpecies: string[];
-  hasTemporaryAgreement: boolean | null;
+  hasTemporaryAgreement?: boolean | null;
+  temporaryAgreement?: string | null;
   initialDogs: number;
   initialCats: number;
   authorizedName: string;
@@ -40,6 +41,7 @@ export interface ShelterProfileFormData {
   authorizedEmail: string;
   authorizedPhone: string;
   acceptTerms: boolean;
+  active?: boolean;
 }
 
 export type ShelterFieldProps = {
@@ -51,3 +53,27 @@ export type ShelterFieldProps = {
 };
 
 export type NumericInputProps = InputHTMLAttributes<HTMLInputElement>;
+
+// Tipos para Histórico de Alterações
+export type ShelterHistoryOperation = "INSERT" | "UPDATE" | "DELETE" | "STATUS_CHANGE";
+
+export interface ShelterHistoryRecord {
+  id: string;
+  shelter_id: string;
+  profile_id: string;
+  operation: ShelterHistoryOperation;
+  old_data: Record<string, unknown> | null;
+  new_data: Record<string, unknown> | null;
+  changed_fields: string[];
+  changed_at: string;
+  changed_by: string | null;
+}
+
+export interface ShelterHistoryItem {
+  id: string;
+  operation: ShelterHistoryOperation;
+  changedFields: string[];
+  changedAt: string;
+  oldValues?: Record<string, unknown>;
+  newValues?: Record<string, unknown>;
+}
