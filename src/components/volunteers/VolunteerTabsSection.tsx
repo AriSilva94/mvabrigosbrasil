@@ -11,6 +11,7 @@ import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
 import type { VolunteerTabId } from "@/types/volunteer.types";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
 import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
+import { FormLoading } from "@/components/loading/FormLoading";
 import { ChevronDown } from "lucide-react";
 
 export default function VolunteerTabsSection() {
@@ -60,14 +61,7 @@ export default function VolunteerTabsSection() {
               </Heading>
 
               {loadingVolunteers ? (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="h-28 animate-pulse rounded-xl bg-slate-200"
-                    />
-                  ))}
-                </div>
+                <FormLoading />
               ) : volunteers.length === 0 ? (
                 <Text className="text-[#68707b]">
                   Nenhum voluntário disponível no momento.
