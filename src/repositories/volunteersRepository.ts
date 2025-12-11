@@ -26,7 +26,7 @@ type WpPost = {
 };
 
 type WpPostMeta = {
-  post_id: number;
+  post_id: number | null;
   meta_key: string | null;
   meta_value: string | null;
 };
@@ -42,7 +42,7 @@ function buildMetaMap<T extends Record<string, string | undefined>>(
   const metaMap = {} as T;
 
   metas.forEach((meta) => {
-    if (meta.post_id !== postId || !meta.meta_key) return;
+    if (!meta.post_id || meta.post_id !== postId || !meta.meta_key) return;
     if (!isVolunteerMetaKey(meta.meta_key)) return;
 
     metaMap[meta.meta_key as keyof T] = (meta.meta_value ?? undefined) as T[keyof T];
