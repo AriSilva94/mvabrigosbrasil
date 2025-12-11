@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { registerSchema } from "@/components/auth/registerSchema";
 import { ROUTES } from "@/constants/routes";
 import { useRegister } from "@/hooks/useRegister";
+import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
 import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 import type { RegisterType } from "@/types/auth.types";
 
@@ -72,7 +73,8 @@ export function useRegisterForm(registerType: RegisterType) {
 
         if (loginData.session) {
           toast.success("Cadastro realizado com sucesso!");
-          router.push(ROUTES.panel);
+          const redirectTo = await resolvePostLoginRedirect();
+          router.push(redirectTo);
           return;
         }
 

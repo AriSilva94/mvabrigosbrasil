@@ -2,17 +2,24 @@ import type { JSX } from "react";
 import Link from "next/link";
 
 import Input from "@/components/ui/Input";
+import MaskedInput from "@/components/ui/MaskedInput";
 import Select from "@/components/ui/Select";
+import FormError from "@/components/ui/FormError";
 import { Heading, Text } from "@/components/ui/typography";
-import {
-  DEFAULT_SHELTER_PROFILE,
-  ROLES_OPTIONS,
-} from "@/constants/shelterProfile";
+import { ROLES_OPTIONS } from "@/constants/shelterProfile";
+import clsx from "clsx";
+import type { ShelterProfileFormData } from "@/types/shelter.types";
 import { FormField } from "./FormField";
 
-export default function ShelterAuthorizationSection(): JSX.Element {
-  const data = DEFAULT_SHELTER_PROFILE;
+type ShelterAuthorizationSectionProps = {
+  data?: Partial<ShelterProfileFormData> | null;
+  fieldErrors?: Partial<Record<string, string>>;
+};
 
+export default function ShelterAuthorizationSection({
+  data,
+  fieldErrors,
+}: ShelterAuthorizationSectionProps): JSX.Element {
   return (
     <section aria-labelledby="authorization-heading" className="space-y-6">
       <Heading
@@ -57,17 +64,31 @@ export default function ShelterAuthorizationSection(): JSX.Element {
           <Input
             id="authorizedName"
             name="authorizedName"
-            defaultValue={data.authorizedName}
+            defaultValue={data?.authorizedName}
             required
+            aria-invalid={Boolean(fieldErrors?.authorizedName)}
+            aria-describedby={fieldErrors?.authorizedName ? "authorizedName-error" : undefined}
+            className={clsx(
+              "bg-[#f2f2f2]",
+              fieldErrors?.authorizedName &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+            )}
           />
+          <FormError id="authorizedName-error" message={fieldErrors?.authorizedName} />
         </FormField>
 
         <FormField id="authorizedRole" label="Cargo" required>
           <Select
             id="authorizedRole"
             name="authorizedRole"
-            defaultValue={data.authorizedRole}
+            defaultValue={data?.authorizedRole}
             required
+            aria-invalid={Boolean(fieldErrors?.authorizedRole)}
+            aria-describedby={fieldErrors?.authorizedRole ? "authorizedRole-error" : undefined}
+            className={clsx(
+              fieldErrors?.authorizedRole &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+            )}
           >
             <option value="">Selecione</option>
             {ROLES_OPTIONS.map((role) => (
@@ -76,6 +97,7 @@ export default function ShelterAuthorizationSection(): JSX.Element {
               </option>
             ))}
           </Select>
+          <FormError id="authorizedRole-error" message={fieldErrors?.authorizedRole} />
         </FormField>
 
         <FormField id="authorizedEmail" label="E-mail" required>
@@ -83,29 +105,54 @@ export default function ShelterAuthorizationSection(): JSX.Element {
             id="authorizedEmail"
             name="authorizedEmail"
             type="email"
-            defaultValue={data.authorizedEmail}
+            defaultValue={data?.authorizedEmail}
             required
+            aria-invalid={Boolean(fieldErrors?.authorizedEmail)}
+            aria-describedby={fieldErrors?.authorizedEmail ? "authorizedEmail-error" : undefined}
+            className={clsx(
+              "bg-[#f2f2f2]",
+              fieldErrors?.authorizedEmail &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+            )}
           />
+          <FormError id="authorizedEmail-error" message={fieldErrors?.authorizedEmail} />
         </FormField>
 
         <FormField id="authorizedPhone" label="Telefone" required>
-          <Input
+          <MaskedInput
             id="authorizedPhone"
             name="authorizedPhone"
-            defaultValue={data.authorizedPhone}
+            mask="phone"
+            defaultValue={data?.authorizedPhone}
             required
+            aria-invalid={Boolean(fieldErrors?.authorizedPhone)}
+            aria-describedby={fieldErrors?.authorizedPhone ? "authorizedPhone-error" : undefined}
+            className={clsx(
+              "bg-[#f2f2f2]",
+              fieldErrors?.authorizedPhone &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+            )}
           />
+          <FormError id="authorizedPhone-error" message={fieldErrors?.authorizedPhone} />
         </FormField>
       </div>
 
       <div className="mt-2 space-y-2 text-sm text-[#6b7280]">
-        <label className="inline-flex items-center gap-2 font-semibold text-[#4f5464]">
+        <label
+          className={clsx(
+            "inline-flex items-center gap-2 font-semibold text-[#4f5464]",
+            fieldErrors?.acceptTerms && "text-brand-red",
+          )}
+        >
           <input
             type="checkbox"
             name="acceptTerms"
-            defaultChecked={data.acceptTerms}
-            disabled
-            className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary"
+            defaultChecked={data?.acceptTerms ?? false}
+            className={clsx(
+              "h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary",
+              fieldErrors?.acceptTerms &&
+                "border-brand-red text-brand-red focus:border-brand-red focus:ring-brand-red/15",
+            )}
           />
           Declaro que estou de acordo com a{" "}
           <Link
@@ -123,6 +170,7 @@ export default function ShelterAuthorizationSection(): JSX.Element {
           </Link>
           <span className="text-brand-red">*</span>
         </label>
+        <FormError id="acceptTerms-error" message={fieldErrors?.acceptTerms} />
       </div>
     </section>
   );

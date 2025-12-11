@@ -13,6 +13,7 @@ import clsx from "clsx";
 import Input from "@/components/ui/Input";
 import FormError from "@/components/ui/FormError";
 import { ROUTES } from "@/constants/routes";
+import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
 import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
 type LoginFormProps = {
@@ -81,7 +82,21 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       const result = isJson ? await response.json() : null;
 
       if (!response.ok) {
-        throw new Error(result?.error || "Nao foi possivel autenticar.");
+        const message = result?.error || "Nao foi possivel autenticar.";
+
+        if (response.status === 401) {
+          setFieldErrors({ password: message });
+          toast.error(message);
+          return;
+        }
+
+        if (response.status === 404) {
+          setFieldErrors({ email: message });
+          toast.error(message);
+          return;
+        }
+
+        throw new Error(message);
       }
 
       // Replica a sessao no client sem reenviar senha ao Supabase.
@@ -93,12 +108,12 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         });
       }
 
-      router.push(ROUTES.panel);
+      const redirectTo = await resolvePostLoginRedirect();
+      router.push(redirectTo);
     } catch (error) {
+      const message = error instanceof Error ? error.message : "Nao foi possivel autenticar.";
       console.error("Erro ao autenticar", error);
-      toast.error(
-        error instanceof Error ? error.message : "Nao foi possivel autenticar."
-      );
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
