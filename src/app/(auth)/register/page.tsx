@@ -2,7 +2,7 @@ import type { JSX } from "react";
 
 import RegisterForm from "@/components/auth/RegisterForm";
 import PageHeader from "@/components/layout/PageHeader";
-import type { RegisterType } from "@/types/auth.types";
+import { normalizeRegisterType, REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -18,23 +18,14 @@ function parseRegisterType(rawType?: string | string[]): RegisterType | undefine
   if (!rawType) return undefined;
 
   const value = Array.isArray(rawType) ? rawType[0] : rawType;
-  const normalized = value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim()
-    .toLowerCase();
 
-  if (normalized === "abrigo" || normalized === "voluntario") {
-    return normalized as RegisterType;
-  }
-
-  return undefined;
+  return normalizeRegisterType(value) ?? undefined;
 }
 
 export default async function Page({ searchParams }: PageProps): Promise<JSX.Element> {
   const resolvedSearchParams = await searchParams;
   const parsedType = parseRegisterType(resolvedSearchParams?.tipo);
-  const registerType: RegisterType = parsedType ?? "abrigo";
+  const registerType: RegisterType = parsedType ?? REGISTER_TYPES.shelter;
 
   return (
     <main>
