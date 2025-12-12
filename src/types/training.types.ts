@@ -1,5 +1,6 @@
-// TODO: tipos para treinamentos
-export interface Training {
+export interface TrainingVideo {
   id: string;
-  title?: string;
+  title: string;
+  description: string;
+  videoId: string;
 }
