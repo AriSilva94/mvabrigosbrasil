@@ -3,6 +3,8 @@ import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
 type RedirectResponse = {
   hasShelter: boolean;
+  hasVolunteer?: boolean;
+  hasProfile?: boolean;
   redirectTo: string;
 };
 
