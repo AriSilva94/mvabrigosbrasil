@@ -1,16 +1,17 @@
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import type { LoginTutorialLink, RegisterOption } from "@/types/auth.types";
 
 export const REGISTER_OPTIONS: RegisterOption[] = [
   {
     id: "shelter",
     label: "Cadastro Abrigo",
-    href: "/register?tipo=abrigo",
+    href: `/register?tipo=${REGISTER_TYPES.shelter}`,
     variant: "secondary",
   },
   {
     id: "volunteer",
     label: "Cadastro Voluntário",
-    href: "/register?tipo=voluntario",
+    href: `/register?tipo=${REGISTER_TYPES.volunteer}`,
     variant: "primary",
   },
 ];

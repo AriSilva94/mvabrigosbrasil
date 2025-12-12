@@ -1,4 +1,5 @@
 import type { SupabaseClientType } from "@/lib/supabase/types";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import type { VolunteerCard, VolunteerProfile } from "@/types/volunteer.types";
 import { VOLUNTEER_META_KEYS, type VolunteerMetaKey } from "@/constants/volunteerMetaKeys";
 
@@ -18,31 +19,25 @@ type VolunteerProfileMeta = VolunteerCardMeta & {
   [VOLUNTEER_META_KEYS.NOTES]?: string;
 };
 
-type WpPost = {
-  id: number;
-  post_title: string | null;
-  post_name: string | null;
-  post_date: string | null;
-};
-
-type WpPostMeta = {
-  post_id: number | null;
-  meta_key: string | null;
-  meta_value: string | null;
-};
-
 function isVolunteerMetaKey(key: string): key is VolunteerMetaKey {
   return Object.values(VOLUNTEER_META_KEYS).includes(key as VolunteerMetaKey);
 }
 
+type MetaRow = {
+  post_id: string | number | null;
+  meta_key: string | null;
+  meta_value: string | null;
+};
+
 function buildMetaMap<T extends Record<string, string | undefined>>(
-  metas: WpPostMeta[],
+  metas: MetaRow[],
   postId: number
 ): T {
   const metaMap = {} as T;
+  const targetPostId = String(postId);
 
   metas.forEach((meta) => {
-    if (!meta.post_id || meta.post_id !== postId || !meta.meta_key) return;
+    if (!meta.post_id || String(meta.post_id) !== targetPostId || !meta.meta_key) return;
     if (!isVolunteerMetaKey(meta.meta_key)) return;
 
     metaMap[meta.meta_key as keyof T] = (meta.meta_value ?? undefined) as T[keyof T];
@@ -52,9 +47,9 @@ function buildMetaMap<T extends Record<string, string | undefined>>(
 }
 
 /**
- * Busca todos os voluntários publicados com metadados básicos para exibição em cards
+ * Busca todos os voluntários publicados com metadados básicos para exibição em cards (fonte WP)
  */
-export async function fetchVolunteerCards(
+export async function fetchVolunteerCardsFromWp(
   supabase: SupabaseClientType
 ): Promise<{ volunteers: VolunteerCard[]; error: Error | null }> {
   try {
@@ -62,13 +57,13 @@ export async function fetchVolunteerCards(
     const { data: posts, error: postsError } = await supabase
       .from("wp_posts_raw")
       .select("id, post_title, post_name, post_date")
-      .eq("post_type", "voluntario")
+      .eq("post_type", REGISTER_TYPES.volunteer)
       .eq("post_status", "publish")
       .not("post_name", "is", null)
       .order("post_date", { ascending: false });
 
     if (postsError) {
-      console.error("volunteersRepository.fetchVolunteerCards - posts error:", postsError);
+      console.error("volunteersRepository.fetchVolunteerCardsFromWp - posts error:", postsError);
       return { volunteers: [], error: postsError };
     }
 
@@ -93,7 +88,7 @@ export async function fetchVolunteerCards(
       .in("meta_key", metaKeys);
 
     if (metasError) {
-      console.error("volunteersRepository.fetchVolunteerCards - metas error:", metasError);
+      console.error("volunteersRepository.fetchVolunteerCardsFromWp - metas error:", metasError);
       // Continua sem metadados em caso de erro
     }
 
@@ -109,25 +104,28 @@ export async function fetchVolunteerCards(
         id: String(post.id),
         name: post.post_title ?? "Voluntário",
         slug: post.post_name ?? "",
+        createdAt: post.post_date ?? undefined,
         city,
         state,
         location: city && state ? `${city} - ${state}` : city || state || undefined,
         gender,
         availability,
+        wpPostId: String(post.id),
+        source: "wp",
       };
     });
 
     return { volunteers, error: null };
   } catch (error) {
-    console.error("volunteersRepository.fetchVolunteerCards - unexpected error:", error);
+    console.error("volunteersRepository.fetchVolunteerCardsFromWp - unexpected error:", error);
     return { volunteers: [], error: error as Error };
   }
 }
 
 /**
- * Busca um voluntário específico por slug com todos os metadados para perfil completo
+ * Busca um voluntário específico por slug com todos os metadados para perfil completo (fonte WP)
  */
-export async function fetchVolunteerProfileBySlug(
+export async function fetchVolunteerProfileBySlugFromWp(
   supabase: SupabaseClientType,
   slug: string
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
@@ -136,13 +134,13 @@ export async function fetchVolunteerProfileBySlug(
     const { data: post, error: postError } = await supabase
       .from("wp_posts_raw")
       .select("id, post_title, post_name")
-      .eq("post_type", "voluntario")
+      .eq("post_type", REGISTER_TYPES.volunteer)
       .eq("post_status", "publish")
       .eq("post_name", slug)
       .maybeSingle();
 
     if (postError) {
-      console.error("volunteersRepository.fetchVolunteerProfileBySlug - post error:", postError);
+      console.error("volunteersRepository.fetchVolunteerProfileBySlugFromWp - post error:", postError);
       return { profile: null, error: postError };
     }
 
@@ -170,7 +168,7 @@ export async function fetchVolunteerProfileBySlug(
       .in("meta_key", metaKeys);
 
     if (metasError) {
-      console.error("volunteersRepository.fetchVolunteerProfileBySlug - metas error:", metasError);
+      console.error("volunteersRepository.fetchVolunteerProfileBySlugFromWp - metas error:", metasError);
       // Continua sem metadados em caso de erro
     }
 
@@ -180,6 +178,7 @@ export async function fetchVolunteerProfileBySlug(
       id: String(post.id),
       name: post.post_title ?? "Voluntário",
       slug: post.post_name ?? "",
+      createdAt: undefined,
       city: meta[VOLUNTEER_META_KEYS.CITY]?.trim() ?? undefined,
       state: meta[VOLUNTEER_META_KEYS.STATE]?.trim() ?? undefined,
       profession: meta[VOLUNTEER_META_KEYS.PROFESSION]?.trim() ?? undefined,
@@ -189,11 +188,13 @@ export async function fetchVolunteerProfileBySlug(
       skills: meta[VOLUNTEER_META_KEYS.SKILLS]?.trim() ?? undefined,
       period: meta[VOLUNTEER_META_KEYS.PERIOD]?.trim() ?? undefined,
       notes: meta[VOLUNTEER_META_KEYS.NOTES]?.trim() ?? undefined,
+      wpPostId: String(post.id),
+      source: "wp",
     };
 
     return { profile, error: null };
   } catch (error) {
-    console.error("volunteersRepository.fetchVolunteerProfileBySlug - unexpected error:", error);
+    console.error("volunteersRepository.fetchVolunteerProfileBySlugFromWp - unexpected error:", error);
     return { profile: null, error: error as Error };
   }
 }

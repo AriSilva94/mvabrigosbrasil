@@ -59,5 +59,7 @@ export function mapVolunteerProfileToDb(
     descricao: payload.descricao,
     comentarios: payload.comentarios ?? null,
     accept_terms: payload.acceptTerms,
+    // Novo fluxo: perfis cadastrados são públicos por padrão.
+    is_public: true,
   };
 }
