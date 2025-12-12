@@ -1,10 +1,11 @@
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import type { RegisterFormContent, RegisterType } from "@/types/auth.types";
 
 export const REGISTER_CONTENT: Record<RegisterType, RegisterFormContent> = {
-  abrigo: {
+  [REGISTER_TYPES.shelter]: {
     title: "Cadastro de Abrigo",
   },
-  voluntario: {
+  [REGISTER_TYPES.volunteer]: {
     title: "Cadastro de Voluntario",
   },
 };
