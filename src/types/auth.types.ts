@@ -1,3 +1,5 @@
+import type { RegisterType as RegisterTypeValue } from "@/constants/registerTypes";
+
 // TODO: tipos para autenticação
 export interface AuthUser {
   id: string;
@@ -19,7 +21,7 @@ export interface LoginTutorialLink {
   href: string;
 }
 
-export type RegisterType = "abrigo" | "voluntario";
+export type RegisterType = RegisterTypeValue;
 
 export interface RegisterFormContent {
   title: string;

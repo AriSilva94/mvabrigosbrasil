@@ -1,4 +1,5 @@
 import type { SupabaseClientType } from "@/lib/supabase/types";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import type { VolunteerCard, VolunteerProfile } from "@/types/volunteer.types";
 import { VOLUNTEER_META_KEYS, type VolunteerMetaKey } from "@/constants/volunteerMetaKeys";
 
@@ -19,13 +20,6 @@ type VolunteerProfileMeta = VolunteerCardMeta & {
 };
 
 type WpPost = {
-  id: number;
-  post_title: string | null;
-  post_name: string | null;
-  post_date: string | null;
-};
-
-type WpPostMeta = {
   post_id: number | null;
   meta_key: string | null;
   meta_value: string | null;
@@ -62,7 +56,7 @@ export async function fetchVolunteerCards(
     const { data: posts, error: postsError } = await supabase
       .from("wp_posts_raw")
       .select("id, post_title, post_name, post_date")
-      .eq("post_type", "voluntario")
+      .eq("post_type", REGISTER_TYPES.volunteer)
       .eq("post_status", "publish")
       .not("post_name", "is", null)
       .order("post_date", { ascending: false });
@@ -136,7 +130,7 @@ export async function fetchVolunteerProfileBySlug(
     const { data: post, error: postError } = await supabase
       .from("wp_posts_raw")
       .select("id, post_title, post_name")
-      .eq("post_type", "voluntario")
+      .eq("post_type", REGISTER_TYPES.volunteer)
       .eq("post_status", "publish")
       .eq("post_name", slug)
       .maybeSingle();

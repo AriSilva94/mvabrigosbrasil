@@ -4,11 +4,12 @@ import PageHeader from "@/components/layout/PageHeader";
 import ShelterProfileForm from "@/app/(protected)/meu-cadastro/components/ShelterProfileForm";
 import VolunteerProfileForm from "@/app/(protected)/meu-cadastro/components/VolunteerProfileForm";
 import { ShelterHistoryTimeline } from "@/app/(protected)/meu-cadastro/components/ShelterHistoryTimeline";
+import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 
-async function loadUserPostType(): Promise<string | null> {
+async function loadUserPostType(): Promise<RegisterType | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
   const { data, error } = await supabase.auth.getUser();
 
@@ -24,7 +25,7 @@ async function loadUserPostType(): Promise<string | null> {
 
 export default async function Page(): Promise<JSX.Element> {
   const postType = await loadUserPostType();
-  const isVolunteer = postType === "voluntario";
+  const isVolunteer = postType === REGISTER_TYPES.volunteer;
 
   return (
     <main>
