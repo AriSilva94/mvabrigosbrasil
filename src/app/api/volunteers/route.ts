@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { fetchVolunteerCards } from "@/repositories/volunteersRepository";
+import { fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
 
 export async function GET() {
   try {
     const supabase = getSupabaseAdminClient();
-    const { volunteers, error } = await fetchVolunteerCards(supabase);
+    const { volunteers, error } = await fetchCombinedVolunteerCards(supabase);
 
     if (error) {
       console.error("API /api/volunteers - error:", error);
