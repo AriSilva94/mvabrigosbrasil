@@ -19,24 +19,25 @@ type VolunteerProfileMeta = VolunteerCardMeta & {
   [VOLUNTEER_META_KEYS.NOTES]?: string;
 };
 
-type WpPost = {
-  post_id: number | null;
-  meta_key: string | null;
-  meta_value: string | null;
-};
-
 function isVolunteerMetaKey(key: string): key is VolunteerMetaKey {
   return Object.values(VOLUNTEER_META_KEYS).includes(key as VolunteerMetaKey);
 }
 
+type MetaRow = {
+  post_id: string | number | null;
+  meta_key: string | null;
+  meta_value: string | null;
+};
+
 function buildMetaMap<T extends Record<string, string | undefined>>(
-  metas: WpPostMeta[],
+  metas: MetaRow[],
   postId: number
 ): T {
   const metaMap = {} as T;
+  const targetPostId = String(postId);
 
   metas.forEach((meta) => {
-    if (!meta.post_id || meta.post_id !== postId || !meta.meta_key) return;
+    if (!meta.post_id || String(meta.post_id) !== targetPostId || !meta.meta_key) return;
     if (!isVolunteerMetaKey(meta.meta_key)) return;
 
     metaMap[meta.meta_key as keyof T] = (meta.meta_value ?? undefined) as T[keyof T];
