@@ -1,11 +1,11 @@
 import { verifyWordpressPassword } from "@/lib/auth/wordpressPassword";
 import type { SupabaseClientType } from "@/lib/supabase/types";
+import type { RegisterType } from "@/constants/registerTypes";
 import { resolvePostTypeForUser } from "./postTypeResolver";
 import { findProfileByEmail, insertProfileFromLegacy } from "./repositories/profileRepository";
 import {
   findLegacyUserByEmail,
   markLegacyUserAsMigrated,
-  type LegacyUserRecord,
 } from "./repositories/wpUsersLegacyRepository";
 
 type SupabaseAuthClient = SupabaseClientType;
@@ -23,7 +23,7 @@ export type LoginServiceResult =
   | {
       ok: true;
       migrated: boolean;
-      postType: string | null;
+      postType: RegisterType | null;
       status: 200;
       accessToken: string;
       refreshToken: string;
@@ -113,7 +113,7 @@ async function attemptLegacyMigration(
 async function resolvePostType(
   supabaseAdmin: SupabaseAdminClient,
   params: { supabaseUserId?: string; email: string },
-): Promise<string | null> {
+): Promise<RegisterType | null> {
   return resolvePostTypeForUser(supabaseAdmin, {
     supabaseUserId: params.supabaseUserId,
     email: params.email,

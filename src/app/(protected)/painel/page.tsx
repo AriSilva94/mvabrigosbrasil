@@ -5,6 +5,7 @@ import { BadgeCheck, UserCheck2, Video } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
 import { PANEL_SHORTCUTS, TRAINING_URL } from "@/constants/panel";
+import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
@@ -15,25 +16,22 @@ const VOLUNTEER_SHORTCUTS = [
     title: "Vagas Disponiveis",
     href: "/programa-de-voluntarios",
     icon: BadgeCheck,
-    emphasize: false,
   },
   {
     id: "trainings",
     title: "Treinamentos",
     href: TRAINING_URL,
     icon: Video,
-    emphasize: false,
   },
   {
     id: "profile",
     title: "Meu Cadastro",
     href: "/meu-cadastro",
     icon: UserCheck2,
-    emphasize: true,
   },
 ] as const;
 
-async function loadUserPostType(): Promise<string | null> {
+async function loadUserPostType(): Promise<RegisterType | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
   const { data, error } = await supabase.auth.getUser();
 
@@ -58,7 +56,9 @@ function VolunteerPanel(): JSX.Element {
           <div className="space-y-1">
             <p className="text-sm font-semibold">
               Novo por aqui?{" "}
-              <span className="font-normal">Veja como funciona a plataforma.</span>
+              <span className="font-normal">
+                Veja como funciona a plataforma.
+              </span>
             </p>
           </div>
           <Link
@@ -70,21 +70,21 @@ function VolunteerPanel(): JSX.Element {
         </article>
 
         <section className="mt-10">
-          <ul className="grid gap-5 md:grid-cols-2">
-            {VOLUNTEER_SHORTCUTS.map(({ id, title, href, icon: Icon, emphasize }) => (
-              <li
-                key={id}
-                className={emphasize ? "md:col-span-2 md:mx-auto md:max-w-xl" : undefined}
-              >
+          <ul className="grid gap-5 grid-cols-1 md:grid-cols-3">
+            {VOLUNTEER_SHORTCUTS.map(({ id, title, href, icon: Icon }) => (
+              <li key={id}>
                 <Link
                   href={href}
-                  className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-8 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+                  className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-8 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
                 >
                   <Icon
                     className="h-12 w-12 text-brand-primary transition group-hover:scale-105"
                     aria-hidden
                   />
-                  <Heading as="h3" className="mt-4 text-[20px] font-semibold text-[#555a6d]">
+                  <Heading
+                    as="h3"
+                    className="mt-4 text-[20px] font-semibold text-[#555a6d]"
+                  >
                     {title}
                   </Heading>
                 </Link>
@@ -123,23 +123,30 @@ function ShelterPanel(): JSX.Element {
 
         <section className="mt-10">
           <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {PANEL_SHORTCUTS.map(({ id, title, subtitle, href, icon: Icon }) => (
-              <li key={id}>
-                <Link
-                  href={href}
-                  className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-                >
-                  <Icon className="h-12 w-12 text-brand-primary transition group-hover:scale-105" aria-hidden />
-                  <Heading
-                    as="h3"
-                    className="mt-4 text-[20px] font-semibold text-[#555a6d]"
+            {PANEL_SHORTCUTS.map(
+              ({ id, title, subtitle, href, icon: Icon }) => (
+                <li key={id}>
+                  <Link
+                    href={href}
+                    className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
                   >
-                    {title}
-                  </Heading>
-                  <Text className="mt-1 text-sm text-[#7b8191]">{subtitle}</Text>
-                </Link>
-              </li>
-            ))}
+                    <Icon
+                      className="h-12 w-12 text-brand-primary transition group-hover:scale-105"
+                      aria-hidden
+                    />
+                    <Heading
+                      as="h3"
+                      className="mt-4 text-[20px] font-semibold text-[#555a6d]"
+                    >
+                      {title}
+                    </Heading>
+                    <Text className="mt-1 text-sm text-[#7b8191]">
+                      {subtitle}
+                    </Text>
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </section>
       </div>
@@ -149,7 +156,7 @@ function ShelterPanel(): JSX.Element {
 
 export default async function Page(): Promise<JSX.Element> {
   const postType = await loadUserPostType();
-  const isVolunteer = postType === "voluntario";
+  const isVolunteer = postType === REGISTER_TYPES.volunteer;
 
   return (
     <main>

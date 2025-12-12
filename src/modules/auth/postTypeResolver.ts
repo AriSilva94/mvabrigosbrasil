@@ -1,4 +1,5 @@
 import type { SupabaseClientType } from "@/lib/supabase/types";
+import { normalizeRegisterType, type RegisterType } from "@/constants/registerTypes";
 import { findProfileById } from "./repositories/profileRepository";
 import { findLegacyUserByEmail } from "./repositories/wpUsersLegacyRepository";
 import { findPostTypeByAuthorId } from "./repositories/wpPostsRepository";
@@ -8,17 +9,10 @@ type ResolvePostTypeParams = {
   email?: string | null;
 };
 
-function normalizeRegisterType(raw?: unknown): string | null {
-  if (typeof raw !== "string") return null;
-  const value = raw.trim().toLowerCase();
-  if (value === "abrigo" || value === "voluntario") return value;
-  return null;
-}
-
 async function findRegisterTypeFromAuthMetadata(
   supabaseAdmin: SupabaseClientType,
   supabaseUserId?: string | null,
-): Promise<string | null> {
+): Promise<RegisterType | null> {
   if (!supabaseUserId) return null;
 
   const { data, error } = await supabaseAdmin.auth.admin.getUserById(supabaseUserId);
@@ -34,7 +28,7 @@ async function findRegisterTypeFromAuthMetadata(
 export async function resolvePostTypeForUser(
   supabaseAdmin: SupabaseClientType,
   { supabaseUserId, email }: ResolvePostTypeParams,
-): Promise<string | null> {
+): Promise<RegisterType | null> {
   const authRegisterType = await findRegisterTypeFromAuthMetadata(supabaseAdmin, supabaseUserId);
   if (authRegisterType) return authRegisterType;
 
@@ -53,5 +47,5 @@ export async function resolvePostTypeForUser(
   }
 
   const { postType } = await findPostTypeByAuthorId(supabaseAdmin, postAuthorId);
-  return postType ?? null;
+  return normalizeRegisterType(postType);
 }

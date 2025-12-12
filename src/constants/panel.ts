@@ -1,8 +1,8 @@
 import {
-  Activity,
   BookOpen,
   Home,
   ListChecks,
+  PawPrint,
   UserCheck2,
   Users,
 } from "lucide-react";
@@ -15,7 +15,7 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     title: "Registrar Dinâmica Populacional",
     subtitle: "Dados Mensais",
     href: "/dinamica-populacional",
-    icon: Activity,
+    icon: PawPrint,
   },
   {
     id: "vacancies",
