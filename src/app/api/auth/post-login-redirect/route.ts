@@ -30,34 +30,51 @@ export async function GET(request: Request) {
       userId = authData.user.id;
     }
 
-    const { data, error } = await supabaseAdmin
+    // Verifica se existe cadastro de abrigo
+    const { data: shelterData, error: shelterError } = await supabaseAdmin
       .from("shelters")
       .select("id")
       .eq("profile_id", userId)
       .limit(1)
       .maybeSingle();
 
-    if (error) {
-      const isUnknownColumn = error.code === "42703";
+    if (shelterError) {
+      const isUnknownColumn = shelterError.code === "42703";
       if (!isUnknownColumn) {
-        console.error("post-login-redirect: erro ao consultar shelters", error);
+        console.error("post-login-redirect: erro ao consultar shelters", shelterError);
       }
-      // Se a coluna ainda não existir, assume que não há cadastro para evitar 500.
-      if (isUnknownColumn) {
-        return NextResponse.json({
-          hasShelter: false,
-          redirectTo: ROUTES.profile,
-          warning: "Campo profile_id ausente em shelters; assumindo sem cadastro.",
-        });
-      }
-
-      return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
     }
 
-    const hasShelter = Boolean(data);
-    const redirectTo = hasShelter ? ROUTES.panel : ROUTES.profile;
+    const hasShelter = Boolean(shelterData);
 
-    return NextResponse.json({ hasShelter, redirectTo });
+    // Verifica se existe cadastro de voluntário
+    const { data: volunteerData, error: volunteerError } = await supabaseAdmin
+      .from("volunteers")
+      .select("id")
+      .eq("owner_profile_id", userId)
+      .limit(1)
+      .maybeSingle();
+
+    if (volunteerError) {
+      const isUnknownColumn = volunteerError.code === "42703";
+      if (!isUnknownColumn) {
+        console.error("post-login-redirect: erro ao consultar volunteers", volunteerError);
+      }
+    }
+
+    const hasVolunteer = Boolean(volunteerData);
+
+    // Se tem cadastro (abrigo ou voluntário), redireciona para o painel
+    // Senão, redireciona para /meu-cadastro para completar o cadastro
+    const hasProfile = hasShelter || hasVolunteer;
+    const redirectTo = hasProfile ? ROUTES.panel : ROUTES.profile;
+
+    return NextResponse.json({
+      hasShelter,
+      hasVolunteer,
+      hasProfile,
+      redirectTo
+    });
   } catch (error) {
     console.error("post-login-redirect: erro inesperado", error);
     return NextResponse.json({ error: "Erro ao decidir redirecionamento" }, { status: 500 });

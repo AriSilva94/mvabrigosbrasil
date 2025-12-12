@@ -39,3 +39,22 @@ export type VolunteerFaq = {
   question: string;
   answer: React.ReactNode;
 };
+
+export interface VolunteerProfileFormData {
+  name: string;
+  telefone: string;
+  profissao: string;
+  faixa_etaria: string;
+  genero: string;
+  escolaridade: string;
+  estado: string;
+  cidade: string;
+  disponibilidade: string;
+  periodo: string;
+  experiencia: string;
+  atuacao: string;
+  descricao: string;
+  comentarios?: string;
+  acceptTerms: boolean;
+  is_public?: boolean;
+}
