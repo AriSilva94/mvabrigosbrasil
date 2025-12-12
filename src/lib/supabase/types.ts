@@ -150,18 +150,82 @@ export type Database = {
       volunteers: {
         Row: {
           id: string;
-          profile_id: string | null;
+          wp_post_id: number | null;
+          owner_profile_id: string | null;
+          name: string;
+          telefone: string | null;
+          cidade: string | null;
+          estado: string | null;
+          profissao: string | null;
+          escolaridade: string | null;
+          faixa_etaria: string | null;
+          genero: string | null;
+          experiencia: string | null;
+          atuacao: string | null;
+          disponibilidade: string | null;
+          periodo: string | null;
+          descricao: string | null;
+          comentarios: string | null;
+          is_public: boolean;
+          accept_terms: boolean;
+          created_at: string;
+          updated_at: string;
           [key: string]: Json | undefined;
         };
         Insert: {
           id?: string;
-          profile_id?: string | null;
+          wp_post_id?: number | null;
+          owner_profile_id?: string | null;
+          name: string;
+          telefone?: string | null;
+          cidade?: string | null;
+          estado?: string | null;
+          profissao?: string | null;
+          escolaridade?: string | null;
+          faixa_etaria?: string | null;
+          genero?: string | null;
+          experiencia?: string | null;
+          atuacao?: string | null;
+          disponibilidade?: string | null;
+          periodo?: string | null;
+          descricao?: string | null;
+          comentarios?: string | null;
+          is_public?: boolean;
+          accept_terms?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
-          profile_id?: string | null;
+          wp_post_id?: number | null;
+          owner_profile_id?: string | null;
+          name?: string;
+          telefone?: string | null;
+          cidade?: string | null;
+          estado?: string | null;
+          profissao?: string | null;
+          escolaridade?: string | null;
+          faixa_etaria?: string | null;
+          genero?: string | null;
+          experiencia?: string | null;
+          atuacao?: string | null;
+          disponibilidade?: string | null;
+          periodo?: string | null;
+          descricao?: string | null;
+          comentarios?: string | null;
+          is_public?: boolean;
+          accept_terms?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "volunteers_owner_profile_id_fkey";
+            columns: ["owner_profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       shelter_history: {
         Row: {
