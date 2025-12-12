@@ -3,12 +3,12 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import { Text } from "@/components/ui/typography";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { fetchVolunteerCards } from "@/repositories/volunteersRepository";
+import { fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
 import VolunteerListClient from "./components/VolunteerListClient";
 
 export default async function Page(): Promise<JSX.Element> {
   const supabase = getSupabaseAdminClient();
-  const { volunteers, error } = await fetchVolunteerCards(supabase);
+  const { volunteers, error } = await fetchCombinedVolunteerCards(supabase);
 
   return (
     <main>
