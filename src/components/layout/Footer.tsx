@@ -99,23 +99,30 @@ export default function Footer() {
 
           <nav aria-label="Links institucionais">
             <ul className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-white md:gap-5 md:text-base">
-              {FOOTER_POLICY_LINKS.map(({ label, href }, index) => (
-                <li key={href} className="flex items-center gap-3">
-                  {index > 0 && (
-                    <span className="text-white/50" aria-hidden>
-                      •
-                    </span>
-                  )}
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-white hover:text-brand-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
+              {FOOTER_POLICY_LINKS.map(({ label, href }, index) => {
+                const isExternal = href.startsWith("http");
+                const linkClasses =
+                  "text-white hover:text-brand-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
+                return (
+                  <li key={href} className="flex items-center gap-3">
+                    {index > 0 && (
+                      <span className="text-white/50" aria-hidden>
+                        •
+                      </span>
+                    )}
+                    {isExternal ? (
+                      <a href={href} target="_blank" rel="noreferrer" className={linkClasses}>
+                        {label}
+                      </a>
+                    ) : (
+                      <Link href={href} className={linkClasses}>
+                        {label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
