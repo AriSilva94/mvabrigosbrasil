@@ -11,7 +11,6 @@ export const REPORTS: Report[] = [
     description:
       "Um panorama inédito da dinâmica populacional de abrigos e lares temporários em todo o país, com tendências, desafios e avanços da proteção animal no Brasil.",
     href: "https://mvabrigosbrasil.com.br/relatorios/resultados-parciais-2025/",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2025/11/capa_relatorio.jpg",
+    image: "/assets/img/capa_relatorio.jpg",
   },
 ];
