@@ -32,23 +32,23 @@ export const FOOTER_SOCIAL_LINKS: SocialLink[] = [
 export const FOOTER_POLICY_LINKS: PolicyLink[] = [
   {
     label: "Compromisso",
-    href: "https://mvabrigosbrasil.com.br/compromisso-privacidade",
+    href: "/compromisso",
   },
   {
     label: "Política de Privacidade",
-    href: "https://mvabrigosbrasil.com.br/politica-de-privacidade",
+    href: "/politica-de-privacidade",
   },
   {
     label: "Política de Cookies",
-    href: "https://mvabrigosbrasil.com.br/politica-de-cookies",
+    href: "/politica-de-cookies",
   },
   {
     label: "Termos de Uso",
-    href: "https://mvabrigosbrasil.com.br/termos-de-uso",
+    href: "/termos-de-uso",
   },
   {
     label: "Contato",
-    href: "https://mvabrigosbrasil.com.br/contato",
+    href: "/contato",
   },
 ];
 
