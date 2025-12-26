@@ -68,7 +68,7 @@ export default async function OpengraphImage() {
         >
           <div
             style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
               gap: "12px",
               padding: "12px 18px",
@@ -80,16 +80,17 @@ export default async function OpengraphImage() {
           >
             <div
               style={{
-                width: "46px",
-                height: "46px",
-                borderRadius: "14px",
-                background: "#f2a400",
-                display: "grid",
-                placeItems: "center",
-                color: "#0b3a2a",
-                fontWeight: 700,
-                fontSize: "20px",
-                boxShadow: "0 14px 40px rgba(0,0,0,0.16)",
+              width: "46px",
+              height: "46px",
+              borderRadius: "14px",
+              background: "#f2a400",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#0b3a2a",
+              fontWeight: 700,
+              fontSize: "20px",
+              boxShadow: "0 14px 40px rgba(0,0,0,0.16)",
               }}
             >
               MVA
@@ -171,6 +172,9 @@ export default async function OpengraphImage() {
               border: "1px solid rgba(255,255,255,0.12)",
               boxShadow: "0 16px 40px rgba(0,0,0,0.28)",
               backdropFilter: "blur(4px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
             }}
           >
             <div
@@ -179,12 +183,18 @@ export default async function OpengraphImage() {
                 letterSpacing: "0.6px",
                 textTransform: "uppercase",
                 color: "rgba(247,249,244,0.7)",
-                marginBottom: "8px",
               }}
             >
               Destaques
             </div>
-            <div style={{ display: "grid", gap: "10px", fontSize: "22px" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                fontSize: "22px",
+              }}
+            >
               <div>• Transparência de dados</div>
               <div>• Biblioteca técnica</div>
               <div>• Rede de voluntários</div>
