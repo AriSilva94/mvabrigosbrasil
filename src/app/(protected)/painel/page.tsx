@@ -9,6 +9,14 @@ import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Painel",
+  description:
+    "Área logada do projeto para acompanhar atalhos, treinamentos e recursos de abrigos ou voluntários.",
+  canonical: "/painel",
+});
 
 const VOLUNTEER_SHORTCUTS = [
   {

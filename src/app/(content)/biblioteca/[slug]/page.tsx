@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 
 import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
@@ -8,6 +9,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import AppImage from "@/components/ui/AppImage";
 import { Heading, Text } from "@/components/ui/typography";
 import { libraryItems } from "@/data/libraryItems";
+import { buildMetadata } from "@/lib/seo";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -15,6 +17,24 @@ type PageProps = {
 
 export async function generateStaticParams() {
   return libraryItems.map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const item = libraryItems.find((entry) => entry.slug === slug);
+
+  const description =
+    item?.summary ??
+    "Publicação técnica da biblioteca de medicina de abrigos com acesso ao material completo.";
+
+  return buildMetadata({
+    title: item?.title ?? "Publicação da Biblioteca",
+    description,
+    canonical: `/biblioteca/${slug}`,
+    image: item?.imageSrc,
+  });
 }
 
 export default async function LibraryDetailPage({

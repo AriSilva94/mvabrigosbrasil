@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LibraryItemCard from "@/components/content/LibraryItemCard";
 import { libraryItems } from "@/data/libraryItems";
+import { buildMetadata } from "@/lib/seo";
 
 const CATEGORIES = [
   {
@@ -15,6 +16,13 @@ const CATEGORIES = [
     href: "/biblioteca?categoria=informativos-tecnicos",
   },
 ];
+
+export const metadata = buildMetadata({
+  title: "Biblioteca",
+  description:
+    "Artigos, guias e informativos técnicos sobre medicina de abrigos para equipes e voluntários.",
+  canonical: "/biblioteca",
+});
 
 export default function Page(): JSX.Element {
   return (

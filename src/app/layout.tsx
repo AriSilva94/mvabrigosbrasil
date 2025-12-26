@@ -6,6 +6,8 @@ import Footer from "../components/layout/Footer";
 import AppImageProvider from "@/components/providers/AppImageProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 const geistSans = localFont({
   variable: "--font-geist-sans",
   src: [
@@ -109,9 +111,39 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Medicina de Abrigos Brasil - Infodados de Abrigos de Animais",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Medicina de Abrigos Brasil",
+    template: "%s | Medicina de Abrigos Brasil",
+  },
   description:
-    "Plataforma nacional de mapeamento de abrigos brasileiros de animais e estatísticas populacionais.",
+    "Plataforma nacional de mapeamento de abrigos de animais, dados populacionais e apoio técnico para quem cuida de cães e gatos.",
+  openGraph: {
+    type: "website",
+    siteName: "Medicina de Abrigos Brasil",
+    title: "Medicina de Abrigos Brasil",
+    description:
+      "Mapa nacional de abrigos, transparência de dados e conteúdos técnicos sobre medicina de abrigos.",
+    url: "/",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Medicina de Abrigos Brasil",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Medicina de Abrigos Brasil",
+    description:
+      "Mapa nacional de abrigos, transparência de dados e conteúdos técnicos sobre medicina de abrigos.",
+    images: ["/twitter-image"],
+  },
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/fav.png",
   },

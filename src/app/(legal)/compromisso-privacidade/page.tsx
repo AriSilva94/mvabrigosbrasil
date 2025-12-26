@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Compromisso de Privacidade",
+  description:
+    "Nosso compromisso de privacidade reforça como protegemos dados pessoais e tratamos informações com responsabilidade.",
+  canonical: "/compromisso-privacidade",
+});
 
 export default function Page(): JSX.Element {
   return (

@@ -5,9 +5,17 @@ import ContactInfo from "@/components/contact/ContactInfo";
 import PageHeader from "@/components/layout/PageHeader";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
 
 const CONTACT_EMAIL = "mvabrigosbrasil@gmail.com";
 const WHATSAPP_LINK = "https://api.whatsapp.com/send?phone=5541995192977";
+
+export const metadata = buildMetadata({
+  title: "Contato",
+  description:
+    "Fale com a equipe da Medicina de Abrigos Brasil por e-mail ou WhatsApp para dúvidas, parcerias e suporte.",
+  canonical: "/contato",
+});
 
 export default function Page(): JSX.Element {
   return (

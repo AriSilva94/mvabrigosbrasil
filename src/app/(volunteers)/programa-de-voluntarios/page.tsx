@@ -3,6 +3,14 @@ import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Programa de Voluntários",
+  description:
+    "Conecte voluntários a abrigos e lares temporários, divulgue vagas e encontre perfis preparados para ajudar.",
+  canonical: "/programa-de-voluntarios",
+});
 
 export default function Page() {
   return (
