@@ -1,5 +1,4 @@
 import type { JSX } from "react";
-import type { JSX } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -13,6 +12,15 @@ import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
+
+type SupabaseVacancyRow = {
+  id: string;
+  shelter_id: string | null;
+  title: string | null;
+  description: string | null;
+  status: string | null;
+  created_at: string | null;
+};
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
@@ -52,12 +60,14 @@ async function loadVacancy(slug: string): Promise<{
     .select("id, shelter_id, title, description, status, created_at")
     .eq("id", uuid)
     .limit(1)
-    .maybeSingle();
+    .maybeSingle<SupabaseVacancyRow>();
 
   if (supabaseData) {
     const mapped = { ...mapVacancyRow(supabaseData as any), source: "supabase" } as UiVacancy;
     const canEdit =
-      postType === REGISTER_TYPES.shelter && shelterId && supabaseData.shelter_id === shelterId;
+      postType === REGISTER_TYPES.shelter &&
+      !!shelterId &&
+      supabaseData.shelter_id === shelterId;
     return { vacancy: mapped, canEdit };
   }
 
