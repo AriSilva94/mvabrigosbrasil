@@ -21,14 +21,14 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     id: "vacancies",
     title: "Minhas Vagas",
     subtitle: "Voluntariado",
-    href: "/programa-de-voluntarios",
+    href: "/minhas-vagas",
     icon: ListChecks,
   },
   {
     id: "exclusive-content",
     title: "Conteúdos Exclusivos",
     subtitle: "Medicina de Abrigos",
-    href: "/biblioteca",
+    href: "/conteudos-exclusivos",
     icon: BookOpen,
   },
   {
