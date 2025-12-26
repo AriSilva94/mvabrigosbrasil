@@ -100,6 +100,7 @@ export default async function OpengraphImage() {
                 display: "block",
                 objectFit: "contain",
                 maxHeight: "68px",
+                filter: "brightness(1.35)",
               }}
             />
           </div>
