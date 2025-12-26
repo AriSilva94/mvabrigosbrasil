@@ -9,6 +9,14 @@ import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { fetchVacanciesByShelter } from "@/services/vacanciesSupabase";
 import MinhasVagasClient from "@/app/(protected)/minhas-vagas/components/MinhasVagasClient";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Minhas Vagas",
+  description:
+    "Gerencie e publique vagas de voluntariado do seu abrigo, com divulgação na comunidade da plataforma.",
+  canonical: "/minhas-vagas",
+});
 
 type UserContext = {
   postType: RegisterType | null;

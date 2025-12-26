@@ -1,6 +1,14 @@
 import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Conteúdos Exclusivos",
+  description:
+    "Materiais exclusivos para usuários cadastrados, incluindo livros digitais e referências de medicina de abrigos.",
+  canonical: "/conteudos-exclusivos",
+});
 
 export default function Page(): JSX.Element {
   return (

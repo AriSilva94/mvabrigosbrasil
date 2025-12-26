@@ -6,6 +6,14 @@ import LoginForm from "@/components/auth/LoginForm";
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
 import { LOGIN_TUTORIALS, REGISTER_OPTIONS } from "@/constants/login";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Acessar",
+  description:
+    "Entre com sua conta de abrigo ou voluntário para atualizar dados, publicar vagas e acessar conteúdos.",
+  canonical: "/login",
+});
 
 export default function Page(): JSX.Element {
   return (

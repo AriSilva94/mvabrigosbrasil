@@ -3,8 +3,16 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
+import { buildMetadata } from "@/lib/seo";
 
 const CONTACT_EMAIL = "contato@mvabrigosbrasil.com.br";
+
+export const metadata = buildMetadata({
+  title: "Compromisso",
+  description:
+    "Entenda o compromisso do Medicina de Abrigos Brasil para uso responsável e ético dos dados compartilhados.",
+  canonical: "/compromisso",
+});
 
 export default function Page(): JSX.Element {
   return (

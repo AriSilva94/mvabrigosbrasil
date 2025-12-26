@@ -5,6 +5,14 @@ import { Text } from "@/components/ui/typography";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
 import VolunteerListClient from "./components/VolunteerListClient";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Voluntários",
+  description:
+    "Lista de voluntários cadastrados e prontos para apoiar abrigos e lares temporários na plataforma.",
+  canonical: "/voluntarios",
+});
 
 export default async function Page(): Promise<JSX.Element> {
   const supabase = getSupabaseAdminClient();

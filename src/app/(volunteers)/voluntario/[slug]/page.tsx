@@ -1,13 +1,36 @@
 import type { JSX } from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
 import { getVolunteerProfileBySlug } from "@/services/volunteersService";
+import { buildMetadata } from "@/lib/seo";
 
 interface VolunteerPageProps {
   params: Promise<{ slug: string }>;
   searchParams?: Promise<{ from?: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: Pick<VolunteerPageProps, "params">): Promise<Metadata> {
+  const { slug } = await params;
+  const profile = await getVolunteerProfileBySlug(slug);
+  const displayName = profile?.name || "Perfil de voluntário";
+  const location =
+    profile?.city && profile?.state
+      ? `${profile.city} - ${profile.state}`
+      : profile?.city || profile?.state || null;
+  const description = location
+    ? `${displayName} disponível para apoiar abrigos em ${location}.`
+    : `${displayName} disponível para apoiar abrigos e lares temporários.`;
+
+  return buildMetadata({
+    title: displayName,
+    description,
+    canonical: `/voluntario/${slug}`,
+  });
 }
 
 export default async function Page({

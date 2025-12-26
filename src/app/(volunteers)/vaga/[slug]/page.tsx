@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
@@ -12,6 +13,7 @@ import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
+import { buildMetadata } from "@/lib/seo";
 
 type SupabaseVacancyRow = {
   id: string;
@@ -63,7 +65,17 @@ async function loadVacancy(slug: string): Promise<{
     .maybeSingle<SupabaseVacancyRow>();
 
   if (supabaseData) {
-    const mapped = { ...mapVacancyRow(supabaseData as any), source: "supabase" } as UiVacancy;
+    const mapped = {
+      ...mapVacancyRow({
+        id: supabaseData.id,
+        shelter_id: supabaseData.shelter_id,
+        title: supabaseData.title,
+        description: supabaseData.description,
+        status: supabaseData.status,
+        created_at: supabaseData.created_at,
+      }),
+      source: "supabase",
+    } as UiVacancy;
     const canEdit =
       postType === REGISTER_TYPES.shelter &&
       !!shelterId &&
@@ -74,6 +86,34 @@ async function loadVacancy(slug: string): Promise<{
   const legacy = getVacancyProfileBySlug(slug);
   if (!legacy) return { vacancy: null, canEdit: false };
   return { vacancy: { ...legacy, source: "legacy" }, canEdit: false };
+}
+
+export async function generateMetadata({
+  params,
+}: VacancyPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { vacancy } = await loadVacancy(slug);
+
+  const displayTitle = vacancy?.title ?? "Vaga de voluntariado";
+  const location =
+    vacancy?.city && vacancy?.state
+      ? `${vacancy.city} - ${vacancy.state}`
+      : vacancy?.city || vacancy?.state || null;
+  const descriptionParts = [
+    vacancy?.shelter ? `Abrigo: ${vacancy.shelter}` : null,
+    location ? `Local: ${location}` : null,
+    vacancy?.period ? `Período: ${vacancy.period}` : null,
+  ].filter(Boolean);
+
+  const description =
+    descriptionParts.join(" • ") ||
+    "Detalhes da vaga de voluntariado disponível no programa da Medicina de Abrigos Brasil.";
+
+  return buildMetadata({
+    title: displayTitle,
+    description,
+    canonical: `/vaga/${slug}`,
+  });
 }
 
 export default async function Page({

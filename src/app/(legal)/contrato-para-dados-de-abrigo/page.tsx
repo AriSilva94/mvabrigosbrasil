@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Contrato para Dados de Abrigo",
+  description:
+    "Termos de participação para abrigos e protetores que enviam informações à base nacional do projeto.",
+  canonical: "/contrato-para-dados-de-abrigo",
+});
 
 export default function Page(): JSX.Element {
   return (

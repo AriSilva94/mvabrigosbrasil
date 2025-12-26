@@ -2,6 +2,14 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import PopulationDynamicsContent from "./components/PopulationDynamicsContent";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Registrar Dinâmica Populacional",
+  description:
+    "Formulário para registrar entradas, saídas e dinâmica populacional dos animais atendidos pelo abrigo.",
+  canonical: "/dinamica-populacional",
+});
 
 export default function Page(): JSX.Element {
   return (

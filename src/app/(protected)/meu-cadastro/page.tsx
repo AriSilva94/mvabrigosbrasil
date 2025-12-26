@@ -8,6 +8,14 @@ import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Meu Cadastro",
+  description:
+    "Atualize os dados do abrigo ou perfil de voluntário e acompanhe o histórico de envios na plataforma.",
+  canonical: "/meu-cadastro",
+});
 
 async function loadUserPostType(): Promise<RegisterType | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
