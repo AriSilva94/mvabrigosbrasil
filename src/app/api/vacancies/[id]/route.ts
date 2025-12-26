@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
@@ -40,17 +40,16 @@ async function getShelterForUser() {
 }
 
 export async function GET(
-  _: Request,
-  { params }: { params: { id: string } },
+  _: NextRequest,
+  context: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await context.params;
   const { shelter, error, status } = await getShelterForUser();
   if (error || !shelter) {
     return NextResponse.json({ error }, { status });
   }
 
-  const uuidFromSlug = UUID_REGEX.test(params.id)
-    ? params.id
-    : extractVacancyIdFromSlug(params.id);
+  const uuidFromSlug = UUID_REGEX.test(id) ? id : extractVacancyIdFromSlug(id);
 
   if (uuidFromSlug) {
     const supabaseAdmin = getSupabaseAdminClient();
@@ -73,7 +72,7 @@ export async function GET(
     return NextResponse.json({ vacancy: { ...mapVacancyRow(data as any), source: "supabase" } });
   }
 
-  const legacy = getVacancyProfileBySlug(params.id);
+  const legacy = getVacancyProfileBySlug(id);
   if (!legacy) {
     return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
   }
@@ -81,9 +80,10 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await context.params;
   const { shelter, error, status } = await getShelterForUser();
   if (error || !shelter) {
     return NextResponse.json({ error }, { status });
@@ -110,9 +110,7 @@ export async function PUT(
   const supabaseAdmin = getSupabaseAdminClient();
 
   // Se for UUID, atualiza vaga existente
-  const uuidFromSlug = UUID_REGEX.test(params.id)
-    ? params.id
-    : extractVacancyIdFromSlug(params.id);
+  const uuidFromSlug = UUID_REGEX.test(id) ? id : extractVacancyIdFromSlug(id);
 
   if (uuidFromSlug) {
     const { data, error: updateError } = await supabaseAdmin

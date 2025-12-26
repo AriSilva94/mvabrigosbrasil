@@ -227,6 +227,41 @@ export type Database = {
           },
         ];
       };
+      vacancies: {
+        Row: {
+          id: string;
+          shelter_id: string | null;
+          title: string | null;
+          description: string | null;
+          status: string | null;
+          created_at: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          shelter_id?: string | null;
+          title?: string | null;
+          description?: string | null;
+          status?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          shelter_id?: string | null;
+          title?: string | null;
+          description?: string | null;
+          status?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vacancies_shelter_id_fkey";
+            columns: ["shelter_id"];
+            referencedRelation: "shelters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       shelter_history: {
         Row: {
           id: string;

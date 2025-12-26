@@ -104,7 +104,7 @@ export default function NewVacancyModal({
         if (!response.ok) {
           throw new Error(json?.error || "Erro ao salvar vaga");
         }
-        if (json?.vacancy) onCreated(json.vacancy as VacancyProfile);
+        if (json?.vacancy) onCreated(json.vacancy as UiVacancy);
         if (onRefresh) onRefresh();
         handleClose();
       })
