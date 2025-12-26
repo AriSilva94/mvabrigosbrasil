@@ -17,23 +17,31 @@ import {
   WORKLOAD_OPTIONS,
 } from "@/app/(protected)/minhas-vagas/constants";
 import { vacancyFormSchema, type VacancyFormInput } from "@/app/(protected)/minhas-vagas/schema";
+import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 
 type NewVacancyModalProps = {
   open: boolean;
   onClose: () => void;
   shelterName: string | null;
+  onCreated: (vacancy: UiVacancy) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 };
 
 export default function NewVacancyModal({
   open,
   onClose,
   shelterName,
+  onCreated,
+  onRefresh,
+  isRefreshing = false,
 }: NewVacancyModalProps) {
   const [period, setPeriod] = useState("");
   const [workload, setWorkload] = useState("");
   const [demand, setDemand] = useState("");
   const [area, setArea] = useState("");
   const [errors, setErrors] = useState<Partial<Record<keyof VacancyFormInput, string>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function resetForm() {
     setPeriod("");
@@ -50,6 +58,7 @@ export default function NewVacancyModal({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
     const formData = new FormData(event.currentTarget);
     const payload: VacancyFormInput = {
       post_abrigo: shelterName ?? "",
@@ -84,7 +93,25 @@ export default function NewVacancyModal({
     }
 
     setErrors({});
-    handleClose();
+    setIsSubmitting(true);
+    fetch("/api/vacancies", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(parsed.data),
+    })
+      .then(async (response) => {
+        const json = await response.json();
+        if (!response.ok) {
+          throw new Error(json?.error || "Erro ao salvar vaga");
+        }
+        if (json?.vacancy) onCreated(json.vacancy as VacancyProfile);
+        if (onRefresh) onRefresh();
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("NewVacancyModal: erro ao salvar", error);
+      })
+      .finally(() => setIsSubmitting(false));
   }
 
   const renderError = (message?: string) => (
@@ -266,9 +293,10 @@ export default function NewVacancyModal({
           <div className="flex justify-center pt-2">
             <button
               type="submit"
+              disabled={isSubmitting || isRefreshing}
               className="inline-flex min-w-35 items-center justify-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
             >
-              Salvar
+              {isSubmitting ? "Salvando..." : "Salvar"}
             </button>
           </div>
         </form>
