@@ -6,13 +6,14 @@ import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
-import { getVacanciesByShelterName } from "@/services/vacanciesService";
-import type { VacancyProfile } from "@/types/vacancies.types";
+import { fetchVacanciesByShelter } from "@/services/vacanciesSupabase";
 import MinhasVagasClient from "@/app/(protected)/minhas-vagas/components/MinhasVagasClient";
+import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 
 type UserContext = {
   postType: RegisterType | null;
   shelterName: string | null;
+  shelterId: string | null;
 };
 
 async function loadUserContext(): Promise<UserContext> {
@@ -20,7 +21,7 @@ async function loadUserContext(): Promise<UserContext> {
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    return { postType: null, shelterName: null };
+    return { postType: null, shelterName: null, shelterId: null };
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
@@ -35,7 +36,7 @@ async function loadUserContext(): Promise<UserContext> {
 
   const { data: shelterRow, error: shelterError } = await supabaseAdmin
     .from("shelters")
-    .select("name")
+    .select("id, name")
     .eq("profile_id", data.user.id)
     .limit(1)
     .maybeSingle();
@@ -47,20 +48,26 @@ async function loadUserContext(): Promise<UserContext> {
   return {
     postType,
     shelterName: shelterRow?.name ?? null,
+    shelterId: shelterRow?.id ?? null,
   };
 }
 
 export default async function Page(): Promise<JSX.Element> {
-  const { postType, shelterName } = await loadUserContext();
+  const { postType, shelterName, shelterId } = await loadUserContext();
 
   if (postType === REGISTER_TYPES.volunteer) {
     redirect("/painel");
   }
 
-  const vacancies: VacancyProfile[] =
-    shelterName && shelterName.trim().length > 0
-      ? getVacanciesByShelterName(shelterName)
-      : [];
+  let vacancies: UiVacancy[] = [];
+  if (shelterId) {
+    const supabaseAdmin = getSupabaseAdminClient();
+    const { vacancies: dbVacancies } = await fetchVacanciesByShelter(
+      supabaseAdmin,
+      shelterId,
+    );
+    vacancies = dbVacancies.map((item) => ({ ...item, source: "supabase" }));
+  }
 
   return (
     <main>
@@ -74,7 +81,10 @@ export default async function Page(): Promise<JSX.Element> {
       />
 
       <section className="bg-white">
-        <MinhasVagasClient vacancies={vacancies} shelterName={shelterName} />
+        <MinhasVagasClient
+          vacancies={vacancies}
+          shelterName={shelterName}
+        />
       </section>
     </main>
   );

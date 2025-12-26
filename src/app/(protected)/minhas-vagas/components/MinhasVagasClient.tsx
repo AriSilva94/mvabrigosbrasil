@@ -1,15 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 import { Heading, Text } from "@/components/ui/typography";
-import type { VacancyProfile } from "@/types/vacancies.types";
+import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import NewVacancyModal from "@/app/(protected)/minhas-vagas/components/NewVacancyModal";
 import VacancyCard from "@/app/(protected)/minhas-vagas/components/VacancyCard";
 
 type MinhasVagasClientProps = {
-  vacancies: VacancyProfile[];
+  vacancies: UiVacancy[];
   shelterName: string | null;
 };
 
@@ -18,10 +18,35 @@ export default function MinhasVagasClient({
   shelterName,
 }: MinhasVagasClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [items, setItems] = useState<UiVacancy[]>(vacancies);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const hasShelterName = useMemo(
     () => Boolean(shelterName?.trim()),
     [shelterName]
   );
+
+  useEffect(() => {
+    setItems(vacancies);
+  }, [vacancies]);
+
+  async function refreshVacancies() {
+    try {
+      setIsRefreshing(true);
+      const response = await fetch("/api/vacancies", { cache: "no-store" });
+      if (!response.ok) throw new Error("Erro ao carregar vagas");
+      const json = (await response.json()) as { vacancies?: UiVacancy[] };
+      if (json.vacancies) setItems(json.vacancies);
+    } catch (error) {
+      console.error("refreshVacancies: erro ao buscar vagas", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }
+
+  function handleCreated(vacancy: UiVacancy) {
+    setItems((prev) => [vacancy, ...prev]);
+    setIsModalOpen(false);
+  }
 
   return (
     <div className="container px-6 py-12 space-y-6">
@@ -57,7 +82,7 @@ export default function MinhasVagasClient({
         </div>
       </header>
 
-      {vacancies.length === 0 ? (
+      {items.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-[0_12px_30px_rgba(16,130,89,0.06)]">
           <Text className="text-base font-semibold text-brand-secondary">
             Você ainda não possui nenhuma vaga disponível
@@ -79,9 +104,13 @@ export default function MinhasVagasClient({
         </div>
       ) : (
         <ul className="grid gap-4 md:grid-cols-2">
-          {vacancies.map((vacancy) => (
+          {items.map((vacancy) => (
             <li key={vacancy.id}>
-              <VacancyCard vacancy={vacancy} />
+              <VacancyCard
+                vacancy={vacancy}
+                showEditLink
+                editHref={`/minhas-vagas/editar/${vacancy.slug || vacancy.id}`}
+              />
             </li>
           ))}
         </ul>
@@ -91,6 +120,9 @@ export default function MinhasVagasClient({
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         shelterName={shelterName}
+        onCreated={handleCreated}
+        onRefresh={refreshVacancies}
+        isRefreshing={isRefreshing}
       />
     </div>
   );
