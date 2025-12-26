@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
 
 const thirdPartyRows = [
   { name: "__Secure-3PSIDCC", purpose: "Identificar usuários e rastrear a atividade.", duration: "12 meses" },
@@ -69,6 +70,13 @@ const thirdPartyRows = [
   { name: "IP_JAR", purpose: "Armazenar informações de acesso e personalizar anúncios.", duration: "9 meses" },
   { name: "SEARCH_SAMESITE", purpose: "Usado para o envio correto de dados para o Google.", duration: "12 meses" },
 ];
+
+export const metadata = buildMetadata({
+  title: "Política de Cookies",
+  description:
+    "Saiba como utilizamos cookies e tecnologias semelhantes e confira finalidades, duração e controle de consentimento.",
+  canonical: "/politica-de-cookies",
+});
 
 export default function Page(): JSX.Element {
   return (

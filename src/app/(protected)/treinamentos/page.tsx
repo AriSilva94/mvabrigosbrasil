@@ -6,6 +6,14 @@ import { Heading, Text } from "@/components/ui/typography";
 import AppImage from "@/components/ui/AppImage";
 import { TRAINING_VIDEOS } from "@/constants/trainings";
 import type { TrainingVideo } from "@/types/training.types";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Treinamentos",
+  description:
+    "Vídeos e materiais de capacitação para equipes de abrigos e voluntários cadastrados na plataforma.",
+  canonical: "/treinamentos",
+});
 
 function TrainingCard({ video }: { video: TrainingVideo }): JSX.Element {
   const videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;

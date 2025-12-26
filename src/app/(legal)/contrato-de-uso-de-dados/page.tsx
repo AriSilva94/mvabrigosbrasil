@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Contrato de Uso de Dados",
+  description:
+    "Termos para acesso e uso responsável do banco de dados da Medicina de Abrigos Brasil.",
+  canonical: "/contrato-de-uso-de-dados",
+});
 
 export default function Page(): JSX.Element {
   return (

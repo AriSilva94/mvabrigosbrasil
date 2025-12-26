@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import RegisterForm from "@/components/auth/RegisterForm";
 import PageHeader from "@/components/layout/PageHeader";
 import { normalizeRegisterType, REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Cadastro",
+  description:
+    "Crie sua conta como abrigo ou voluntário para registrar dados, publicar vagas e acessar treinamentos.",
+  canonical: "/register",
+});
 
 export const dynamic = "force-dynamic";
 

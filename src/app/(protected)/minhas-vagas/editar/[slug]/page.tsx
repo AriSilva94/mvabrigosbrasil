@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { redirect, notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
@@ -10,6 +11,7 @@ import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import { buildVacancySlug, mapVacancyRow } from "@/services/vacanciesSupabase";
 import { getVacancyProfileBySlug } from "@/services/vacanciesService";
+import { buildMetadata } from "@/lib/seo";
 
 type PageParams = {
   slug: string;
@@ -92,6 +94,20 @@ async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVa
   if (legacy) return { ...legacy, source: "legacy" };
 
   return null;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<PageParams>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  return buildMetadata({
+    title: "Editar Vaga",
+    description: "Edite uma vaga de voluntariado publicada pelo seu abrigo.",
+    canonical: `/minhas-vagas/editar/${slug}`,
+  });
 }
 
 export default async function Page({

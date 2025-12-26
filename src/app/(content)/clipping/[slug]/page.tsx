@@ -1,8 +1,27 @@
+import type { Metadata } from "next";
+
 import PageHeader from "@/components/layout/PageHeader";
 import { MATERIAS_ITEMS } from "@/constants/materias";
+import { buildMetadata } from "@/lib/seo";
 
 interface ClippingPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ClippingPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = MATERIAS_ITEMS.find((item) => item.href.endsWith(slug));
+  const title = article?.title ?? "Matéria";
+
+  return buildMetadata({
+    title,
+    description:
+      article?.title ??
+      "Matéria sobre a iniciativa Medicina de Abrigos Brasil. Conteúdo completo em breve.",
+    canonical: `/clipping/${slug}`,
+  });
 }
 
 export default async function Page({ params }: ClippingPageProps) {

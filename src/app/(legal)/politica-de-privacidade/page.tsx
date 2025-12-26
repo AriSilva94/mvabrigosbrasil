@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Política de Privacidade",
+  description:
+    "Como coletamos, tratamos e protegemos dados pessoais na plataforma Medicina de Abrigos Brasil.",
+  canonical: "/politica-de-privacidade",
+});
 
 export default function Page(): JSX.Element {
   return (

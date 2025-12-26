@@ -8,6 +8,14 @@ import {
   WhoWeAreMissionSection,
   WhoWeAreSupportersCtaSection,
 } from "@/components/institutional/who-we-are";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Quem Somos",
+  description:
+    "Conheça a iniciativa Medicina de Abrigos Brasil, nossa missão, justificativa e equipe fundadora.",
+  canonical: "/quem-somos",
+});
 
 export default function Page(): JSX.Element {
   return (

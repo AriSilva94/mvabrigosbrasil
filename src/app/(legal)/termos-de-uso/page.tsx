@@ -3,6 +3,14 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Heading, Text } from "@/components/ui/typography";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Termos de Uso",
+  description:
+    "Condições para utilizar a plataforma, acessar dados e interagir com os serviços da Medicina de Abrigos Brasil.",
+  canonical: "/termos-de-uso",
+});
 
 export default function Page(): JSX.Element {
   return (
