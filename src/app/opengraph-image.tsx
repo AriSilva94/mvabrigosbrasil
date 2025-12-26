@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { promises as fs } from "fs";
 import path from "path";
 import { ImageResponse } from "next/og";
@@ -12,11 +13,23 @@ export const contentType = "image/png";
 async function loadFont(filePath: string) {
   const absolutePath = path.join(process.cwd(), "src", "app", filePath);
   const buffer = await fs.readFile(absolutePath);
-  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+  return buffer.buffer.slice(
+    buffer.byteOffset,
+    buffer.byteOffset + buffer.byteLength
+  );
 }
 
 const geistBold = loadFont(path.join("fonts", "geist-sans", "Geist-700.ttf"));
 const geistMedium = loadFont(path.join("fonts", "geist-sans", "Geist-500.ttf"));
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteHost = (() => {
+  try {
+    return new URL(siteUrl).host;
+  } catch {
+    return "mvabrigosbrasil.com.br";
+  }
+})();
+const logoUrl = `${siteUrl}/assets/img/logo-medicina-de-abrigos-brasil.svg`;
 
 export default async function OpengraphImage() {
   const [boldFont, mediumFont] = await Promise.all([geistBold, geistMedium]);
@@ -70,7 +83,7 @@ export default async function OpengraphImage() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "12px",
+              gap: "14px",
               padding: "12px 18px",
               borderRadius: "999px",
               background: "rgba(255,255,255,0.12)",
@@ -78,24 +91,17 @@ export default async function OpengraphImage() {
               letterSpacing: "0.4px",
             }}
           >
-            <div
+            <img
+              src={logoUrl}
+              alt="Medicina de Abrigos Brasil"
+              width={210}
+              height={68}
               style={{
-              width: "46px",
-              height: "46px",
-              borderRadius: "14px",
-              background: "#f2a400",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#0b3a2a",
-              fontWeight: 700,
-              fontSize: "20px",
-              boxShadow: "0 14px 40px rgba(0,0,0,0.16)",
+                display: "block",
+                objectFit: "contain",
+                maxHeight: "68px",
               }}
-            >
-              MVA
-            </div>
-            Medicina de Abrigos Brasil
+            />
           </div>
 
           <div
@@ -106,7 +112,7 @@ export default async function OpengraphImage() {
               textShadow: "0 10px 40px rgba(0,0,0,0.25)",
             }}
           >
-            Mapa nacional e dados de quem cuida de cães e gatos.
+            Mapeamento e Banco de Dados de Abrigos de Animais no Brasil.
           </div>
 
           <div
@@ -145,7 +151,7 @@ export default async function OpengraphImage() {
                 color: "rgba(247,249,244,0.9)",
               }}
             >
-              mvabrigosbrasil.com.br
+              {siteHost}
             </div>
           </div>
         </div>
@@ -234,6 +240,6 @@ export default async function OpengraphImage() {
           weight: 500,
         },
       ],
-    },
+    }
   );
 }
