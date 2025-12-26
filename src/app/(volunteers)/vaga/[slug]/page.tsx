@@ -1,26 +1,116 @@
 import type { JSX } from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
 import { getVacancyProfileBySlug } from "@/services/vacanciesService";
+import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
+import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
+import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
+import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
+
+type SupabaseVacancyRow = {
+  id: string;
+  shelter_id: string | null;
+  title: string | null;
+  description: string | null;
+  status: string | null;
+  created_at: string | null;
+};
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+async function loadUserContext() {
+  const supabase = await getServerSupabaseClient({ readOnly: true });
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return { userId: null, postType: null, shelterId: null };
+
+  const supabaseAdmin = getSupabaseAdminClient();
+  const postType = await resolvePostTypeForUser(supabaseAdmin, {
+    supabaseUserId: data.user.id,
+    email: data.user.email ?? null,
+  }).catch(() => null);
+
+  const { data: shelterRow } = await supabaseAdmin
+    .from("shelters")
+    .select("id")
+    .eq("profile_id", data.user.id)
+    .limit(1)
+    .maybeSingle();
+
+  return { userId: data.user.id, postType, shelterId: shelterRow?.id ?? null };
+}
+
+async function loadVacancy(slug: string): Promise<{
+  vacancy: UiVacancy | null;
+  canEdit: boolean;
+}> {
+  const { postType, shelterId } = await loadUserContext();
+
+  const uuid = extractVacancyIdFromSlug(slug) ?? slug;
+  const supabaseAdmin = getSupabaseAdminClient();
+  const { data: supabaseData } = await supabaseAdmin
+    .from("vacancies")
+    .select("id, shelter_id, title, description, status, created_at")
+    .eq("id", uuid)
+    .limit(1)
+    .maybeSingle<SupabaseVacancyRow>();
+
+  if (supabaseData) {
+    const mapped = { ...mapVacancyRow(supabaseData as any), source: "supabase" } as UiVacancy;
+    const canEdit =
+      postType === REGISTER_TYPES.shelter &&
+      !!shelterId &&
+      supabaseData.shelter_id === shelterId;
+    return { vacancy: mapped, canEdit };
+  }
+
+  const legacy = getVacancyProfileBySlug(slug);
+  if (!legacy) return { vacancy: null, canEdit: false };
+  return { vacancy: { ...legacy, source: "legacy" }, canEdit: false };
+}
+
 export default async function Page({
   params,
 }: VacancyPageProps): Promise<JSX.Element> {
   const { slug } = await params;
-  const vacancy = getVacancyProfileBySlug(slug);
+  const { vacancy, canEdit } = await loadVacancy(slug);
 
-  const displayTitle = vacancy?.title || "Vaga";
+  if (!vacancy) redirect("/programa-de-voluntarios");
+
+  if (canEdit) {
+    return (
+      <main>
+        <PageHeader
+          title="Editar Vaga"
+          breadcrumbs={[
+            { label: "Inicial", href: "/" },
+            { label: "Painel", href: "/painel" },
+            { label: "Minhas Vagas", href: "/minhas-vagas" },
+            { label: vacancy.title },
+          ]}
+        />
+        <section className="bg-white">
+          <div className="container px-6 py-10">
+            <EditVacancyClient vacancy={vacancy} />
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  const displayTitle = vacancy.title || "Vaga";
   const location =
-    vacancy?.city && vacancy?.state
+    vacancy.city && vacancy.state
       ? `${vacancy.city} - ${vacancy.state}`
-      : vacancy?.city || vacancy?.state || "Não informado";
-  const periodInfo = [vacancy?.period, vacancy?.workload]
+      : vacancy.city || vacancy.state || "Não informado";
+  const periodInfo = [vacancy.period, vacancy.workload]
     .filter(Boolean)
     .join(" / ");
 
@@ -55,7 +145,7 @@ export default async function Page({
                     Vaga
                   </Heading>
                   <p className="mt-1 text-base text-[#68707b]">
-                    {vacancy?.title ?? "Vaga"}
+                    {vacancy.title ?? "Vaga"}
                   </p>
                 </div>
                 <div className="md:text-center">
@@ -86,7 +176,7 @@ export default async function Page({
                 Abrigo
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {vacancy?.shelter || "Não informado"}
+                {vacancy.shelter || "Não informado"}
               </p>
             </div>
 
@@ -95,7 +185,7 @@ export default async function Page({
                 Descrição
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {vacancy?.description || "Não informado"}
+                {vacancy.description || "Não informado"}
               </p>
             </div>
 
@@ -104,7 +194,7 @@ export default async function Page({
                 Habilidade e Funções
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {vacancy?.skills || "Não informado"}
+                {vacancy.skills || "Não informado"}
               </p>
             </div>
 
@@ -113,7 +203,7 @@ export default async function Page({
                 Perfil dos Voluntários
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {vacancy?.volunteerProfile || "Não informado"}
+                {vacancy.volunteerProfile || "Não informado"}
               </p>
             </div>
 
@@ -122,7 +212,7 @@ export default async function Page({
                 Quantidade de Voluntários
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {vacancy?.quantity ?? "Não informado"}
+                {vacancy.quantity ?? "Não informado"}
               </p>
             </div>
 
