@@ -61,16 +61,6 @@ export default async function OpengraphImage() {
 
         <div
           style={{
-            position: "absolute",
-            inset: "38px",
-            borderRadius: "32px",
-            border: "1px solid rgba(255,255,255,0.12)",
-            boxShadow: "0 0 0 1px rgba(255,255,255,0.05) inset",
-          }}
-        />
-
-        <div
-          style={{
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -84,11 +74,12 @@ export default async function OpengraphImage() {
               display: "flex",
               alignItems: "center",
               gap: "14px",
-              padding: "12px 18px",
-              borderRadius: "999px",
-              background: "rgba(255,255,255,0.12)",
-              fontSize: "22px",
-              letterSpacing: "0.4px",
+              padding: "10px 12px",
+              borderRadius: "14px",
+              background: "#ffffff",
+              border: "1px solid rgba(16,130,89,0.15)",
+              boxShadow: "0 10px 22px rgba(16,130,89,0.12)",
+              alignSelf: "flex-start",
             }}
           >
             <img
