@@ -11,4 +11,6 @@ export type VacancyProfile = {
   skills?: string;
   volunteerProfile?: string;
   quantity?: string;
+  demand?: string;
+  area?: string;
 };
