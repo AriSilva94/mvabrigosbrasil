@@ -28,7 +28,7 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     id: "exclusive-content",
     title: "Conteúdos Exclusivos",
     subtitle: "Medicina de Abrigos",
-    href: "/biblioteca",
+    href: "/conteudos-exclusivos",
     icon: BookOpen,
   },
   {
