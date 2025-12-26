@@ -30,7 +30,18 @@ function cleanContent(raw?: string | null): string | undefined {
   return normalized.length > 0 ? normalized : undefined;
 }
 
-export function getVacancyProfileBySlug(slug: string): VacancyProfile | null {
+function normalizeName(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function loadVacancyTables(): {
+  postsTable: WpTable<WpPost> | undefined;
+  metasTable: WpTable<WpPostMeta> | undefined;
+} {
   const postsTable = (wpPostsVaga as unknown[]).find((item) =>
     isTable<WpPost>(item, "wp_posts")
   ) as WpTable<WpPost> | undefined;
@@ -39,22 +50,23 @@ export function getVacancyProfileBySlug(slug: string): VacancyProfile | null {
     isTable<WpPostMeta>(item, "wp_postmeta")
   ) as WpTable<WpPostMeta> | undefined;
 
-  if (!postsTable?.data) return null;
+  return { postsTable, metasTable };
+}
 
-  const post =
-    postsTable.data.find(
-      (entry) =>
-        entry?.post_type === "vaga" &&
-        entry?.post_status === "publish" &&
-        entry?.post_name === slug
-    ) ?? null;
+function buildVacancyProfiles(): VacancyProfile[] {
+  const { postsTable, metasTable } = loadVacancyTables();
+  if (!postsTable?.data) return [];
 
-  if (!post) return null;
+  const posts = postsTable.data.filter(
+    (entry) => entry?.post_type === "vaga" && entry?.post_status === "publish"
+  );
+
+  if (posts.length === 0) return [];
 
   const metaByPost = new Map<string, VacancyMeta>();
 
   metasTable?.data.forEach((meta) => {
-    if (meta?.post_id !== post.ID || !meta.meta_key) return;
+    if (!meta?.post_id || !meta.meta_key) return;
 
     const current: VacancyMeta = metaByPost.get(meta.post_id) ?? {};
     current[meta.meta_key as keyof VacancyMeta] =
@@ -62,20 +74,43 @@ export function getVacancyProfileBySlug(slug: string): VacancyProfile | null {
     metaByPost.set(meta.post_id, current);
   });
 
-  const meta = metaByPost.get(post.ID) ?? {};
+  return posts
+    .map((entry) => {
+      const meta = metaByPost.get(entry.ID) ?? {};
+      return {
+        id: entry.ID,
+        title: entry.post_title ?? "Vaga",
+        slug: entry.post_name ?? "",
+        city: meta.cidade ?? undefined,
+        state: meta.estado ?? undefined,
+        period: meta.periodo ?? undefined,
+        workload: meta.carga_horaria ?? undefined,
+        shelter: meta.abrigo ?? undefined,
+        skills: meta.habilidades_e_funcoes ?? undefined,
+        volunteerProfile: meta.perfil_dos_voluntarios ?? undefined,
+        quantity: meta.quantidade ?? undefined,
+        description:
+          cleanContent(entry.post_content) ?? cleanContent(meta.descricao),
+      } satisfies VacancyProfile;
+    })
+    .filter((vacancy) => vacancy.slug !== "");
+}
 
-  return {
-    id: post.ID,
-    title: post.post_title ?? "Vaga",
-    slug: post.post_name ?? "",
-    city: meta.cidade ?? undefined,
-    state: meta.estado ?? undefined,
-    period: meta.periodo ?? undefined,
-    workload: meta.carga_horaria ?? undefined,
-    shelter: meta.abrigo ?? undefined,
-    skills: meta.habilidades_e_funcoes ?? undefined,
-    volunteerProfile: meta.perfil_dos_voluntarios ?? undefined,
-    quantity: meta.quantidade ?? undefined,
-    description: cleanContent(post.post_content) ?? cleanContent(meta.descricao),
-  };
+export function getVacancyProfileBySlug(slug: string): VacancyProfile | null {
+  const vacancies = buildVacancyProfiles();
+  return vacancies.find((vacancy) => vacancy.slug === slug) ?? null;
+}
+
+export function getVacanciesByShelterName(
+  shelterName: string
+): VacancyProfile[] {
+  const normalizedShelter = normalizeName(shelterName);
+  if (!normalizedShelter) return [];
+
+  return buildVacancyProfiles().filter((vacancy) => {
+    const normalizedVacancyShelter = vacancy.shelter
+      ? normalizeName(vacancy.shelter)
+      : "";
+    return normalizedVacancyShelter === normalizedShelter;
+  });
 }
