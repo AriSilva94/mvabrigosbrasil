@@ -38,3 +38,11 @@ export type RegisterFormData = {
   tutorReturn: number;
   originReturn: number;
 };
+
+export type PopulationUserSummary = {
+  displayName: string | null;
+  totalAnimals: number | null;
+  shelterTypeLabel: string | null;
+  dogsCount: number | null;
+  catsCount: number | null;
+};
