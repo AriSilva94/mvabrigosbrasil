@@ -42,6 +42,7 @@ export type Database = {
           id: string;
           email: string | null;
           full_name: string | null;
+          is_team_only: boolean | null;
           wp_user_id: number | null;
           origin: Database["public"]["Enums"]["user_origin"] | null;
           [key: string]: Json | undefined;
@@ -50,6 +51,7 @@ export type Database = {
           id: string;
           email?: string | null;
           full_name?: string | null;
+          is_team_only?: boolean | null;
           wp_user_id?: number | null;
           origin?: Database["public"]["Enums"]["user_origin"] | null;
         };
@@ -57,6 +59,7 @@ export type Database = {
           id?: string;
           email?: string | null;
           full_name?: string | null;
+          is_team_only?: boolean | null;
           wp_user_id?: number | null;
           origin?: Database["public"]["Enums"]["user_origin"] | null;
         };

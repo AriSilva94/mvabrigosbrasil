@@ -6,6 +6,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
 import VolunteerListClient from "./components/VolunteerListClient";
 import { buildMetadata } from "@/lib/seo";
+import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
 export const metadata = buildMetadata({
   title: "Voluntários",
@@ -15,6 +16,8 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
+  await enforceTeamAccess("/voluntarios");
+
   const supabase = getSupabaseAdminClient();
   const { volunteers, error } = await fetchCombinedVolunteerCards(supabase);
 

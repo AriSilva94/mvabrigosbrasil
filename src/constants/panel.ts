@@ -42,7 +42,7 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     id: "team",
     title: "Equipe",
     subtitle: "Cadastrar Usuários",
-    href: "/equipe-mv",
+    href: "/equipe",
     icon: UserCheck2,
   },
   {

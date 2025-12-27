@@ -3,15 +3,14 @@ import { redirect, notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
-import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
-import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import { buildVacancySlug, mapVacancyRow } from "@/services/vacanciesSupabase";
 import { getVacancyProfileBySlug } from "@/services/vacanciesService";
 import { buildMetadata } from "@/lib/seo";
+import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
 type PageParams = {
   slug: string;
@@ -25,49 +24,6 @@ type SupabaseVacancyRow = {
   status: string | null;
   created_at: string | null;
 };
-
-type UserContext = {
-  postType: RegisterType | null;
-  shelterId: string | null;
-};
-
-async function loadUserContext(): Promise<UserContext> {
-  const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data.user) {
-    redirect("/login");
-  }
-
-  const supabaseAdmin = getSupabaseAdminClient();
-
-  const postType = await resolvePostTypeForUser(supabaseAdmin, {
-    supabaseUserId: data.user.id,
-    email: data.user.email ?? null,
-  }).catch((err) => {
-    console.error("minhas-vagas/editar: erro ao resolver tipo de usuário", err);
-    return null;
-  });
-
-  const { data: shelterRow, error: shelterError } = await supabaseAdmin
-    .from("shelters")
-    .select("id")
-    .eq("profile_id", data.user.id)
-    .limit(1)
-    .maybeSingle();
-
-  if (shelterError && shelterError.code !== "42703") {
-    console.error(
-      "minhas-vagas/editar: erro ao buscar abrigo do usuário",
-      shelterError
-    );
-  }
-
-  return {
-    postType,
-    shelterId: shelterRow?.id ?? null,
-  };
-}
 
 async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVacancy | null> {
   if (!slug || !shelterId) return null;
@@ -116,11 +72,28 @@ export default async function Page({
   params: Promise<PageParams>;
 }): Promise<JSX.Element> {
   const { slug } = await params;
-  const { postType, shelterId } = await loadUserContext();
+  const access = await enforceTeamAccess("/minhas-vagas/editar");
 
-  if (postType === REGISTER_TYPES.volunteer) {
+  if (access.registerType === REGISTER_TYPES.volunteer) {
     redirect("/painel");
   }
+
+  const supabaseAdmin = getSupabaseAdminClient();
+  const { data: shelterRow, error: shelterError } = await supabaseAdmin
+    .from("shelters")
+    .select("id")
+    .eq("profile_id", access.userId)
+    .limit(1)
+    .maybeSingle();
+
+  if (shelterError && shelterError.code !== "42703") {
+    console.error(
+      "minhas-vagas/editar: erro ao buscar abrigo do usuário",
+      shelterError
+    );
+  }
+
+  const shelterId = shelterRow?.id ?? null;
 
   if (!shelterId) {
     notFound();
