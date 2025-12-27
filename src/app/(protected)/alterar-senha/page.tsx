@@ -1,4 +1,5 @@
 import { buildMetadata } from "@/lib/seo";
+import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
 export const metadata = buildMetadata({
   title: "Alterar Senha",
@@ -6,7 +7,8 @@ export const metadata = buildMetadata({
   canonical: "/alterar-senha",
 });
 
-export default function Page() {
+export default async function Page() {
+  await enforceTeamAccess("/alterar-senha");
   // Página em construção para troca de senha.
   return (
     <main>
