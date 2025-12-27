@@ -69,7 +69,7 @@ export async function GET(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as any), source: "supabase" } });
+    return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
   }
 
   const legacy = getVacancyProfileBySlug(id);
@@ -133,7 +133,7 @@ export async function PUT(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as any), source: "supabase" } });
+    return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
   }
 
   // Caso seja legado, cria uma nova vaga no Supabase vinculada ao abrigo do usuário
@@ -153,5 +153,5 @@ export async function PUT(
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
 
-  return NextResponse.json({ vacancy: { ...mapVacancyRow(data as any), source: "supabase" } });
+  return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
 }

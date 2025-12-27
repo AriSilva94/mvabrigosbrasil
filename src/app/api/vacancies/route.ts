@@ -112,6 +112,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
 
-  const vacancy = { ...mapVacancyRow(data as any), source: "supabase" };
+  const vacancy = { ...mapVacancyRow(data), source: "supabase" };
   return NextResponse.json({ vacancy });
 }
