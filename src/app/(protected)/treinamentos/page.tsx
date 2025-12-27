@@ -46,7 +46,10 @@ function TrainingCard({ video }: { video: TrainingVideo }): JSX.Element {
           </div>
 
           <div className="flex flex-1 flex-col gap-2 px-5 py-4">
-            <Heading as="h3" className="text-lg font-semibold text-brand-secondary">
+            <Heading
+              as="h3"
+              className="text-lg font-semibold text-brand-secondary"
+            >
               {video.title}
             </Heading>
             <Text className="text-sm leading-relaxed text-[#68707b]">
@@ -63,7 +66,7 @@ function TrainingCard({ video }: { video: TrainingVideo }): JSX.Element {
   );
 }
 
-export default function Page(): JSX.Element {
+export default async function Page(): Promise<JSX.Element> {
   return (
     <main>
       <PageHeader
@@ -89,8 +92,8 @@ export default function Page(): JSX.Element {
               Capacitações em vídeo
             </Heading>
             <Text className="mt-3 text-base leading-relaxed text-[#68707b]">
-              Conteúdos introdutórios para apoiar equipes e voluntários na rotina
-              dos abrigos. Assista às aulas abaixo no YouTube.
+              Conteúdos introdutórios para apoiar equipes e voluntários na
+              rotina dos abrigos. Assista às aulas abaixo no YouTube.
             </Text>
           </header>
 

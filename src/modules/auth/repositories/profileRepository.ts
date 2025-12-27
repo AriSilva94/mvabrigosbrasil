@@ -4,6 +4,7 @@ export interface ProfileRecord {
   id: string;
   email: string | null;
   full_name: string | null;
+  is_team_only?: boolean | null;
   wp_user_id: number | null;
   origin?: Database["public"]["Enums"]["user_origin"] | null;
 }
@@ -16,7 +17,7 @@ export async function findProfileById(
 ): Promise<ProfileQueryResult> {
   const { data, error } = await supabaseAdmin
     .from("profiles")
-    .select("id, email, full_name, wp_user_id, origin")
+    .select("id, email, full_name, wp_user_id, origin, is_team_only")
     .eq("id", supabaseUserId)
     .maybeSingle();
 
@@ -34,7 +35,7 @@ export async function findProfileByEmail(
 ): Promise<ProfileQueryResult> {
   const { data, error } = await supabaseAdmin
     .from("profiles")
-    .select("id, email, full_name, wp_user_id, origin")
+    .select("id, email, full_name, wp_user_id, origin, is_team_only")
     .ilike("email", email)
     .maybeSingle();
 
@@ -58,6 +59,7 @@ export async function insertProfileFromLegacy(
     full_name: profile.full_name,
     wp_user_id: profile.wp_user_id,
     origin,
+    is_team_only: profile.is_team_only ?? false,
   });
 
   if (error) {
