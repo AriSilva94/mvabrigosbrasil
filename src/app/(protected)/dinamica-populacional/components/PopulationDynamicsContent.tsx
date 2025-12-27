@@ -1,14 +1,13 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Home, PawPrint } from "lucide-react";
 
 import { Text } from "@/components/ui/typography";
 import GlossaryCard from "./GlossaryCard";
 import GlossaryTable from "./GlossaryTable";
 import HeaderSection from "./HeaderSection";
-import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
@@ -16,7 +15,10 @@ import type {
   DynamicType,
   PopulationUserSummary,
   RegisterFormSubmit,
+  DynamicsDisplay,
+  RateCardData,
 } from "../types";
+import DynamicsSection from "./DynamicsSection";
 
 type PopulationDynamicsContentProps = {
   userSummary: PopulationUserSummary | null;
@@ -28,11 +30,99 @@ export default function PopulationDynamicsContent({
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
   const [isRegisterChoiceOpen, setRegisterChoiceOpen] = useState(false);
   const [registerType, setRegisterType] = useState<DynamicType | null>(null);
+  const [sections, setSections] = useState<DynamicsDisplay[]>([]);
+  const [isLoading, setLoading] = useState(true);
+  const [isSaving, setSaving] = useState(false);
 
-  const handleSubmitRegister = (values: RegisterFormSubmit): void => {
-    // TODO: Integrar com backend quando a API estiver pronta.
-    console.info("Novo registro de dinâmica populacional", values);
-    setRegisterType(null);
+  const baseStats: RateCardData[] = [
+    { key: "entry", label: "Taxa de Entrada", value: null, trend: "neutral" },
+    { key: "exit", label: "Taxa de Saída", value: null, trend: "neutral" },
+    {
+      key: "adoption",
+      label: "Taxa de Adoção",
+      value: null,
+      trend: "neutral",
+    },
+    {
+      key: "mortality",
+      label: "Taxa de Mortalidade",
+      value: null,
+      trend: "neutral",
+    },
+    {
+      key: "morbidity",
+      label: "Taxa de Morbidade",
+      value: null,
+      trend: "neutral",
+    },
+  ];
+  const fallbackSections: DynamicsDisplay[] = [
+    {
+      dynamicType: "dinamica",
+      title: "Dinâmica Populacional",
+      populationInitial: userSummary?.totalAnimals ?? null,
+      populationInitialDogs: userSummary?.dogsCount ?? null,
+      populationInitialCats: userSummary?.catsCount ?? null,
+      populationCurrent: userSummary?.totalAnimals ?? null,
+      stats: [...baseStats],
+      rows: [],
+    },
+    {
+      dynamicType: "dinamica_lar",
+      title: "Dinâmica Populacional L.T",
+      populationInitial: userSummary?.totalAnimals ?? null,
+      populationInitialDogs: userSummary?.dogsCount ?? null,
+      populationInitialCats: userSummary?.catsCount ?? null,
+      populationCurrent: userSummary?.totalAnimals ?? null,
+      stats: [...baseStats],
+      rows: [],
+    },
+  ];
+
+  const fetchSections = async (): Promise<void> => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/dynamics", { cache: "no-store" });
+      if (!response.ok) {
+        setSections(fallbackSections);
+        setLoading(false);
+        return;
+      }
+      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+      setSections(json.sections ?? fallbackSections);
+    } catch (error) {
+      console.error("dinamica-populacional: falha ao carregar dados", error);
+      setSections(fallbackSections);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void fetchSections();
+  }, []);
+
+  const handleSubmitRegister = async (values: RegisterFormSubmit): Promise<void> => {
+    setSaving(true);
+    try {
+      const response = await fetch("/api/dynamics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        console.error("Erro ao salvar registro de dinâmica");
+      } else {
+        const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+        setSections(json.sections ?? fallbackSections);
+      }
+    } catch (error) {
+      console.error("dinamica-populacional: falha ao salvar registro", error);
+    } finally {
+      setSaving(false);
+      setRegisterType(null);
+    }
   };
 
   const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
@@ -57,9 +147,21 @@ export default function PopulationDynamicsContent({
             userSummary={userSummary}
           />
 
-          <EmptyState onOpenRegister={openRegisterChoice} />
+          <div className="space-y-6">
+            <DynamicsSection
+              data={sections[0] ?? fallbackSections[0]}
+              isLoading={isLoading}
+              onCreate={handleSelectRegister}
+            />
 
-          <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
+            <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
+
+            <DynamicsSection
+              data={sections[1] ?? fallbackSections[1]}
+              isLoading={isLoading}
+              onCreate={handleSelectRegister}
+            />
+          </div>
         </div>
       </section>
 
@@ -79,6 +181,7 @@ export default function PopulationDynamicsContent({
         {registerType ? (
           <RegisterForm
             dynamicType={registerType}
+            isSubmitting={isSaving}
             onSubmit={handleSubmitRegister}
           />
         ) : (

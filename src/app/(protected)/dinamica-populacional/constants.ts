@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import type { GlossarySection, SelectOption } from "./types";
 
 export const GLOSSARY_SECTIONS: GlossarySection[] = [
@@ -103,8 +105,10 @@ export const MONTH_OPTIONS: SelectOption[] = [
   { value: "12", label: "Dezembro" },
 ];
 
-export const YEAR_OPTIONS: SelectOption[] = [
-  { value: "2025", label: "2025" },
-  { value: "2024", label: "2024" },
-  { value: "2023", label: "2023" },
-];
+const currentYear = dayjs().year();
+const yearRange = Array.from({ length: 3 }, (_, index) => String(currentYear - index));
+
+export const YEAR_OPTIONS: SelectOption[] = yearRange.map((value) => ({
+  value,
+  label: value,
+}));

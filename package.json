@@ -17,6 +17,7 @@
     "chart.js": "^4.5.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "highcharts": "^12.4.0",
     "highcharts-react-official": "^3.2.3",
     "lucide-react": "^0.554.0",

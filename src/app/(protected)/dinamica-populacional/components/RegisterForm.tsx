@@ -1,6 +1,7 @@
 import type { ChangeEvent, FormEvent, JSX } from "react";
 import { useState } from "react";
 import clsx from "clsx";
+import dayjs from "dayjs";
 
 import { Text } from "@/components/ui/typography";
 import FormError from "@/components/ui/FormError";
@@ -15,24 +16,34 @@ import { registerSchema } from "../validations";
 type RegisterFormProps = {
   dynamicType: DynamicType;
   onSubmit: (values: RegisterFormSubmit) => void;
+  isSubmitting?: boolean;
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
-  month: "12",
-  year: "2025",
-  entries: "",
-  adoptions: "",
-  returns: "",
-  euthanasias: "",
-  naturalDeaths: "",
-  diseases: "",
-  tutorReturn: "",
-  originReturn: "",
+  month: dayjs().format("MM"),
+  year: dayjs().format("YYYY"),
+  entries: "0",
+  entriesCats: "0",
+  adoptions: "0",
+  adoptionsCats: "0",
+  returns: "0",
+  returnsCats: "0",
+  euthanasias: "0",
+  euthanasiasCats: "0",
+  naturalDeaths: "0",
+  naturalDeathsCats: "0",
+  diseases: "0",
+  diseasesCats: "0",
+  tutorReturn: "0",
+  tutorReturnCats: "0",
+  originReturn: "0",
+  originReturnCats: "0",
 };
 
 export default function RegisterForm({
   dynamicType,
   onSubmit,
+  isSubmitting = false,
 }: RegisterFormProps): JSX.Element {
   const [values, setValues] = useState<RegisterFormValues>(INITIAL_VALUES);
   const [fieldErrors, setFieldErrors] = useState<
@@ -107,13 +118,21 @@ export default function RegisterForm({
     label: string;
   }> = [
     { field: "entries", label: "Entradas de Cães" },
+    { field: "entriesCats", label: "Entradas de Gatos" },
     { field: "adoptions", label: "Adoções de Cães" },
+    { field: "adoptionsCats", label: "Adoções de Gatos" },
     { field: "returns", label: "Devoluções de Cães" },
+    { field: "returnsCats", label: "Devoluções de Gatos" },
     { field: "euthanasias", label: "Eutanásias de Cães" },
+    { field: "euthanasiasCats", label: "Eutanásias de Gatos" },
     { field: "naturalDeaths", label: "Mortes Naturais de Cães" },
+    { field: "naturalDeathsCats", label: "Mortes Naturais de Gatos" },
     { field: "diseases", label: "Cães Doentes" },
-    { field: "tutorReturn", label: "Retorno ao Tutor\nCães" },
-    { field: "originReturn", label: "Retorno Local Origem\nCães" },
+    { field: "diseasesCats", label: "Gatos Doentes" },
+    { field: "tutorReturn", label: "Retorno ao Tutor (Cães)" },
+    { field: "tutorReturnCats", label: "Retorno ao Tutor (Gatos)" },
+    { field: "originReturn", label: "Retorno Local Origem (Cães)" },
+    { field: "originReturnCats", label: "Retorno Local Origem (Gatos)" },
   ];
 
   return (
@@ -174,9 +193,10 @@ export default function RegisterForm({
       <div className="pt-2 text-center">
         <button
           type="submit"
+          disabled={isSubmitting}
           className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
         >
-          Salvar
+          {isSubmitting ? "Salvando..." : "Salvar"}
         </button>
       </div>
     </form>
