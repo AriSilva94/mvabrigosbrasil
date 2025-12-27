@@ -129,8 +129,16 @@ async function fetchWpData(): Promise<FetchWpDataResult> {
     return rows;
   }
 
-  const posts = await fetchAllRows<WpPostRow>("wp_posts_raw", "*");
-  const meta = await fetchAllRows<WpPostMetaRow>("wp_postmeta_raw", "*");
+  const posts = await fetchAllRows<WpPostRow>(
+    "wp_posts_raw",
+    "id, post_date, post_title, post_type, post_status"
+  );
+
+  const meta = await fetchAllRows<WpPostMetaRow>(
+    "wp_postmeta_raw",
+    "post_id, meta_key, meta_value",
+    (query) => query.in("meta_key", META_KEYS)
+  );
 
   return { posts, meta };
 }
