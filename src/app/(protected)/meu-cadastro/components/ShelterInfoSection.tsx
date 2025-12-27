@@ -34,6 +34,7 @@ type ShelterInfoSectionProps = {
     city: string;
     state: string;
   }) => void;
+  lockNonPopulation?: boolean;
 };
 
 export default function ShelterInfoSection({
@@ -44,12 +45,21 @@ export default function ShelterInfoSection({
   onShelterTypeChange,
   onDocumentValueChange,
   onCepAutocomplete,
+  lockNonPopulation = false,
 }: ShelterInfoSectionProps): JSX.Element {
   const documentLabel = shelterType === "temporary" ? "CPF" : "CNPJ";
   const documentMask = shelterType === "temporary" ? "cpf" : "cnpj";
 
   const [cepValue, setCepValue] = useState(data?.cep ?? "");
-  const { isLoading: isCepLoading, error: cepError, searchCep, clearError } = useCepAutocomplete();
+  const {
+    isLoading: isCepLoading,
+    error: cepError,
+    searchCep,
+    clearError,
+  } = useCepAutocomplete();
+  const disabledStyles = lockNonPopulation
+    ? "disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+    : "";
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onShelterTypeChange?.(event.target.value);
@@ -88,18 +98,22 @@ export default function ShelterInfoSection({
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-2" id="populacao-inicial">
         <FormField id="shelterType" label="Tipo de Abrigo" required>
           <Select
             id="shelterType"
             name="shelterType"
             value={shelterType}
             onChange={handleTypeChange}
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.shelterType)}
-            aria-describedby={fieldErrors?.shelterType ? "shelterType-error" : undefined}
+            aria-describedby={
+              fieldErrors?.shelterType ? "shelterType-error" : undefined
+            }
             className={clsx(
+              disabledStyles,
               fieldErrors?.shelterType &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           >
             {SHELTER_TYPE_OPTIONS.map((option) => (
@@ -108,7 +122,10 @@ export default function ShelterInfoSection({
               </option>
             ))}
           </Select>
-          <FormError id="shelterType-error" message={fieldErrors?.shelterType} />
+          <FormError
+            id="shelterType-error"
+            message={fieldErrors?.shelterType}
+          />
         </FormField>
 
         <FormField id="cnpj" label={documentLabel} required>
@@ -118,13 +135,15 @@ export default function ShelterInfoSection({
             mask={documentMask}
             value={documentValue}
             onValueChange={(_, masked) => onDocumentValueChange?.(masked)}
+            disabled={lockNonPopulation}
             required
             aria-invalid={Boolean(fieldErrors?.cnpj)}
             aria-describedby={fieldErrors?.cnpj ? "cnpj-error" : undefined}
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.cnpj &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="cnpj-error" message={fieldErrors?.cnpj} />
@@ -136,15 +155,22 @@ export default function ShelterInfoSection({
             name="shelterName"
             defaultValue={data?.name}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.shelterName)}
-            aria-describedby={fieldErrors?.shelterName ? "shelterName-error" : undefined}
+            aria-describedby={
+              fieldErrors?.shelterName ? "shelterName-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.shelterName &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
-          <FormError id="shelterName-error" message={fieldErrors?.shelterName} />
+          <FormError
+            id="shelterName-error"
+            message={fieldErrors?.shelterName}
+          />
         </FormField>
 
         <FormField id="cep" label="CEP" required hint="não será divulgado">
@@ -159,15 +185,21 @@ export default function ShelterInfoSection({
                 clearError();
               }}
               onBlur={handleCepBlur}
+              disabled={lockNonPopulation}
               required
               aria-invalid={Boolean(fieldErrors?.cep || cepError)}
               aria-describedby={
-                fieldErrors?.cep ? "cep-error" : cepError ? "cep-viacep-error" : undefined
+                fieldErrors?.cep
+                  ? "cep-error"
+                  : cepError
+                  ? "cep-viacep-error"
+                  : undefined
               }
               className={clsx(
                 "bg-[#f2f2f2]",
+                disabledStyles,
                 (fieldErrors?.cep || cepError) &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
             />
             {isCepLoading && (
@@ -188,12 +220,14 @@ export default function ShelterInfoSection({
             name="street"
             defaultValue={data?.street}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.street)}
             aria-describedby={fieldErrors?.street ? "street-error" : undefined}
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.street &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="street-error" message={fieldErrors?.street} />
@@ -212,12 +246,14 @@ export default function ShelterInfoSection({
             defaultValue={data?.number}
             required
             min={0}
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.number)}
             aria-describedby={fieldErrors?.number ? "number-error" : undefined}
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.number &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="number-error" message={fieldErrors?.number} />
@@ -234,12 +270,16 @@ export default function ShelterInfoSection({
             name="district"
             defaultValue={data?.district}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.district)}
-            aria-describedby={fieldErrors?.district ? "district-error" : undefined}
+            aria-describedby={
+              fieldErrors?.district ? "district-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.district &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="district-error" message={fieldErrors?.district} />
@@ -250,12 +290,14 @@ export default function ShelterInfoSection({
             id="state"
             name="state"
             defaultValue={data?.state}
+            disabled={lockNonPopulation}
             required
             aria-invalid={Boolean(fieldErrors?.state)}
             aria-describedby={fieldErrors?.state ? "state-error" : undefined}
             className={clsx(
+              disabledStyles,
               fieldErrors?.state &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           >
             {STATE_OPTIONS.map((state) => (
@@ -273,12 +315,14 @@ export default function ShelterInfoSection({
             name="city"
             defaultValue={data?.city}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.city)}
             aria-describedby={fieldErrors?.city ? "city-error" : undefined}
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.city &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="city-error" message={fieldErrors?.city} />
@@ -289,12 +333,16 @@ export default function ShelterInfoSection({
             id="website"
             name="website"
             defaultValue={data?.website}
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.website)}
-            aria-describedby={fieldErrors?.website ? "website-error" : undefined}
+            aria-describedby={
+              fieldErrors?.website ? "website-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.website &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
           <FormError id="website-error" message={fieldErrors?.website} />
@@ -307,15 +355,22 @@ export default function ShelterInfoSection({
             type="date"
             defaultValue={data?.foundationDate ?? ""}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.foundationDate)}
-            aria-describedby={fieldErrors?.foundationDate ? "foundationDate-error" : undefined}
+            aria-describedby={
+              fieldErrors?.foundationDate ? "foundationDate-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
+              disabledStyles,
               fieldErrors?.foundationDate &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
-          <FormError id="foundationDate-error" message={fieldErrors?.foundationDate} />
+          <FormError
+            id="foundationDate-error"
+            message={fieldErrors?.foundationDate}
+          />
         </FormField>
 
         <FormField id="species" label="Espécies Abrigadas" required>
@@ -324,11 +379,15 @@ export default function ShelterInfoSection({
             name="species"
             defaultValue={data?.species}
             required
+            disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.species)}
-            aria-describedby={fieldErrors?.species ? "species-error" : undefined}
+            aria-describedby={
+              fieldErrors?.species ? "species-error" : undefined
+            }
             className={clsx(
+              disabledStyles,
               fieldErrors?.species &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           >
             {SPECIES_OPTIONS.map((option) => (
@@ -344,23 +403,26 @@ export default function ShelterInfoSection({
           <span className="text-sm font-semibold text-[#4f5464]">
             Outras espécies
           </span>
-          <div className="grid grid-cols-2 gap-2 text-sm text-[#4f5464]">
-            {ADDITIONAL_SPECIES.map((option) => (
-              <label
-                key={option.value}
-                className="inline-flex items-center gap-2"
-              >
-                <input
-                  type="checkbox"
-                  name="additionalSpecies"
-                  value={option.value}
-                  defaultChecked={data?.additionalSpecies?.includes(option.value)}
-                  className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary"
-                />
-                {option.label}
-              </label>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 gap-2 text-sm text-[#4f5464]">
+          {ADDITIONAL_SPECIES.map((option) => (
+            <label
+              key={option.value}
+              className="inline-flex items-center gap-2"
+            >
+              <input
+                type="checkbox"
+                name="additionalSpecies"
+                value={option.value}
+                defaultChecked={data?.additionalSpecies?.includes(
+                  option.value
+                )}
+                disabled={lockNonPopulation}
+                className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
         </div>
 
         <div className="space-y-2">
@@ -374,7 +436,8 @@ export default function ShelterInfoSection({
                 name="temporaryAgreement"
                 value="sim"
                 defaultChecked={data?.hasTemporaryAgreement === true}
-                className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary"
+                disabled={lockNonPopulation}
+                className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
               />
               Sim
             </label>
@@ -384,7 +447,8 @@ export default function ShelterInfoSection({
                 name="temporaryAgreement"
                 value="nao"
                 defaultChecked={data?.hasTemporaryAgreement === false}
-                className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary"
+                disabled={lockNonPopulation}
+                className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
               />
               Não
             </label>
@@ -394,7 +458,9 @@ export default function ShelterInfoSection({
             message={fieldErrors?.temporaryAgreement}
           />
         </div>
+      </div>
 
+      <div className="grid gap-5 md:grid-cols-2">
         <FormField id="initialDogs" label="População inicial de cães" required>
           <Input
             id="initialDogs"
@@ -404,14 +470,19 @@ export default function ShelterInfoSection({
             defaultValue={data?.initialDogs}
             required
             aria-invalid={Boolean(fieldErrors?.initialDogs)}
-            aria-describedby={fieldErrors?.initialDogs ? "initialDogs-error" : undefined}
+            aria-describedby={
+              fieldErrors?.initialDogs ? "initialDogs-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
               fieldErrors?.initialDogs &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
-          <FormError id="initialDogs-error" message={fieldErrors?.initialDogs} />
+          <FormError
+            id="initialDogs-error"
+            message={fieldErrors?.initialDogs}
+          />
         </FormField>
 
         <FormField id="initialCats" label="População inicial de gatos" required>
@@ -423,14 +494,19 @@ export default function ShelterInfoSection({
             defaultValue={data?.initialCats}
             required
             aria-invalid={Boolean(fieldErrors?.initialCats)}
-            aria-describedby={fieldErrors?.initialCats ? "initialCats-error" : undefined}
+            aria-describedby={
+              fieldErrors?.initialCats ? "initialCats-error" : undefined
+            }
             className={clsx(
               "bg-[#f2f2f2]",
               fieldErrors?.initialCats &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
           />
-          <FormError id="initialCats-error" message={fieldErrors?.initialCats} />
+          <FormError
+            id="initialCats-error"
+            message={fieldErrors?.initialCats}
+          />
         </FormField>
       </div>
     </section>
