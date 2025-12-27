@@ -14,14 +14,25 @@ import { FormField } from "./FormField";
 type ShelterAuthorizationSectionProps = {
   data?: Partial<ShelterProfileFormData> | null;
   fieldErrors?: Partial<Record<string, string>>;
+  lockNonPopulation?: boolean;
 };
 
 export default function ShelterAuthorizationSection({
   data,
   fieldErrors,
+  lockNonPopulation = false,
 }: ShelterAuthorizationSectionProps): JSX.Element {
+  const lockClass = lockNonPopulation
+    ? "pointer-events-none cursor-not-allowed [&_input]:bg-slate-100 [&_input]:text-slate-500 [&_select]:bg-slate-100 [&_select]:text-slate-500"
+    : "";
   return (
-    <section aria-labelledby="authorization-heading" className="space-y-6">
+    <section
+      aria-labelledby="authorization-heading"
+      className={clsx(
+        "space-y-6",
+        lockClass,
+      )}
+    >
       <Heading
         id="authorization-heading"
         as="h2"
