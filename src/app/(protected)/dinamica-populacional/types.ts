@@ -111,6 +111,8 @@ export type DynamicsDisplay = {
   populationCurrent: number | null;
   populationInitialDogs?: number | null;
   populationInitialCats?: number | null;
+  populationCurrentDogs?: number | null;
+  populationCurrentCats?: number | null;
   stats: RateCardData[];
   rows: DynamicsTableRow[];
 };

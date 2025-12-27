@@ -8,8 +8,11 @@ type PopulationTableProps = {
   populationCurrent: number | null;
   populationInitialDogs?: number | null;
   populationInitialCats?: number | null;
+  populationCurrentDogs?: number | null;
+  populationCurrentCats?: number | null;
   rows: DynamicsTableRow[];
   onEditRow?: (id: string) => void;
+  onEditPopulation?: () => void;
 };
 
 const METRIC_COLUMNS: Array<{
@@ -54,8 +57,11 @@ export default function PopulationTable({
   populationCurrent,
   populationInitialDogs,
   populationInitialCats,
+  populationCurrentDogs,
+  populationCurrentCats,
   rows,
   onEditRow,
+  onEditPopulation,
 }: PopulationTableProps): JSX.Element {
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -71,7 +77,14 @@ export default function PopulationTable({
               })`}
             </span>
           )}
-          <Pencil className="h-4 w-4 text-slate-400" aria-hidden />
+          <button
+            type="button"
+            onClick={onEditPopulation}
+            className="ml-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+            aria-label="Editar população inicial"
+          >
+            <Pencil className="h-4 w-4" aria-hidden />
+          </button>
         </div>
       </div>
 
@@ -94,7 +107,7 @@ export default function PopulationTable({
               <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
                 Saldo
               </th>
-              <th className="border-b border-slate-200 px-3 py-2 text-center font-semibold">
+              <th className="border-b border-slate-200 px-6 py-2 text-center font-semibold">
                 Ações
               </th>
             </tr>
@@ -153,13 +166,25 @@ export default function PopulationTable({
           <tfoot>
             <tr>
               <td
-                className="px-3 py-3 text-right text-sm font-semibold text-slate-800"
-                colSpan={METRIC_COLUMNS.length + 2}
+                className="px-3 py-3 text-right align-top text-sm font-semibold text-slate-800"
+                colSpan={METRIC_COLUMNS.length + 1}
               >
                 População Atual:
               </td>
-              <td className="px-3 py-3 text-center text-sm font-semibold text-brand-primary">
-                {populationCurrent ?? "—"}
+              <td
+                className="px-3 py-3 align-top text-left text-sm font-semibold text-brand-primary"
+                colSpan={2}
+              >
+                <div className="flex flex-col items-start gap-1">
+                  {populationCurrent ?? "—"}
+                  {(populationCurrentDogs ?? populationCurrentCats ?? null) !==
+                    null && (
+                    <span className="text-xs font-semibold text-slate-600">
+                      Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
+                      {populationCurrentCats ?? 0}
+                    </span>
+                  )}
+                </div>
               </td>
             </tr>
           </tfoot>
