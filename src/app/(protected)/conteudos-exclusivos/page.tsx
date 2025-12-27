@@ -2,6 +2,7 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { buildMetadata } from "@/lib/seo";
+import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
 export const metadata = buildMetadata({
   title: "Conteúdos Exclusivos",
@@ -10,7 +11,9 @@ export const metadata = buildMetadata({
   canonical: "/conteudos-exclusivos",
 });
 
-export default function Page(): JSX.Element {
+export default async function Page(): Promise<JSX.Element> {
+  await enforceTeamAccess("/conteudos-exclusivos");
+
   return (
     <main>
       <PageHeader

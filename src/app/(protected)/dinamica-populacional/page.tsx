@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import PopulationDynamicsContent from "./components/PopulationDynamicsContent";
 import { buildMetadata } from "@/lib/seo";
+import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
 export const metadata = buildMetadata({
   title: "Registrar Dinâmica Populacional",
@@ -11,7 +12,9 @@ export const metadata = buildMetadata({
   canonical: "/dinamica-populacional",
 });
 
-export default function Page(): JSX.Element {
+export default async function Page(): Promise<JSX.Element> {
+  await enforceTeamAccess("/dinamica-populacional");
+
   return (
     <main>
       <PageHeader
