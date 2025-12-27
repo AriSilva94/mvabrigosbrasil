@@ -2,6 +2,7 @@
 
 import type { JSX } from "react";
 import { useState } from "react";
+import { Home, PawPrint } from "lucide-react";
 
 import { Text } from "@/components/ui/typography";
 import GlossaryCard from "./GlossaryCard";
@@ -11,10 +12,17 @@ import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
-import type { RegisterFormData } from "../types";
+import type { PopulationUserSummary, RegisterFormData } from "../types";
 
-export default function PopulationDynamicsContent(): JSX.Element {
+type PopulationDynamicsContentProps = {
+  userSummary: PopulationUserSummary | null;
+};
+
+export default function PopulationDynamicsContent({
+  userSummary,
+}: PopulationDynamicsContentProps): JSX.Element {
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
+  const [isRegisterChoiceOpen, setRegisterChoiceOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isRegisterLtOpen, setRegisterLtOpen] = useState(false);
 
@@ -24,13 +32,26 @@ export default function PopulationDynamicsContent(): JSX.Element {
     setRegisterOpen(false);
   };
 
+  const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
+  const handleSelectRegister = (): void => {
+    setRegisterChoiceOpen(false);
+    setRegisterOpen(true);
+  };
+  const handleSelectRegisterLt = (): void => {
+    setRegisterChoiceOpen(false);
+    setRegisterLtOpen(true);
+  };
+
   return (
     <>
       <section className="bg-white pb-14 pt-4">
         <div className="container px-6">
-          <HeaderSection onOpenRegister={() => setRegisterOpen(true)} />
+          <HeaderSection
+            onOpenRegister={openRegisterChoice}
+            userSummary={userSummary}
+          />
 
-          <EmptyState onOpenRegister={() => setRegisterOpen(true)} />
+          <EmptyState onOpenRegister={openRegisterChoice} />
 
           <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
         </div>
@@ -60,6 +81,50 @@ export default function PopulationDynamicsContent(): JSX.Element {
         <Text className="text-sm text-slate-700">
           O formulário de registro para lares temporários está em construção.
         </Text>
+      </Modal>
+
+      <Modal
+        title="Escolha o tipo de registro"
+        isOpen={isRegisterChoiceOpen}
+        onClose={() => setRegisterChoiceOpen(false)}
+      >
+        <div className="grid gap-3 md:grid-cols-2">
+          <button
+            type="button"
+            onClick={handleSelectRegister}
+            className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
+              <PawPrint className="h-5 w-5" aria-hidden />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-slate-900">
+                Dinâmica Populacional
+              </p>
+              <p className="text-xs text-slate-600">
+                Registre entradas, saídas e movimentação geral dos animais.
+              </p>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSelectRegisterLt}
+            className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <Home className="h-5 w-5" aria-hidden />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-slate-900">
+                Dinâmica Populacional L.T
+              </p>
+              <p className="text-xs text-slate-600">
+                Registros específicos para lares temporários e protetores.
+              </p>
+            </div>
+          </button>
+        </div>
       </Modal>
     </>
   );

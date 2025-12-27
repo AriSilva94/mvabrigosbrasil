@@ -19,7 +19,7 @@ export default function EmptyState({
         <button
           type="button"
           onClick={onOpenRegister}
-          className="rounded-lg bg-brand-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-secondary"
+          className="rounded-lg bg-brand-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-secondary cursor-pointer"
         >
           Novo Registro
         </button>
