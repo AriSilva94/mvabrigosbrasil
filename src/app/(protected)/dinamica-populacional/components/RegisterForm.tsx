@@ -5,11 +5,16 @@ import clsx from "clsx";
 import { Text } from "@/components/ui/typography";
 import FormError from "@/components/ui/FormError";
 import { MONTH_OPTIONS, YEAR_OPTIONS } from "../constants";
-import type { RegisterFormValues } from "../types";
-import { registerSchema, type RegisterFormData } from "../validations";
+import type {
+  DynamicType,
+  RegisterFormSubmit,
+  RegisterFormValues,
+} from "../types";
+import { registerSchema } from "../validations";
 
 type RegisterFormProps = {
-  onSubmit: (values: RegisterFormData) => void;
+  dynamicType: DynamicType;
+  onSubmit: (values: RegisterFormSubmit) => void;
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
@@ -26,6 +31,7 @@ const INITIAL_VALUES: RegisterFormValues = {
 };
 
 export default function RegisterForm({
+  dynamicType,
   onSubmit,
 }: RegisterFormProps): JSX.Element {
   const [values, setValues] = useState<RegisterFormValues>(INITIAL_VALUES);
@@ -58,7 +64,7 @@ export default function RegisterForm({
     }
 
     setFieldErrors({});
-    onSubmit(parsed.data);
+    onSubmit({ ...parsed.data, dynamicType });
   };
 
   const renderLabel = (text: string, isRequired = true): JSX.Element => (
@@ -112,6 +118,13 @@ export default function RegisterForm({
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+      <div className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-4 py-2">
+        <Text className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+          {dynamicType === "dinamica_lar"
+            ? "Registro para Lar Temporário"
+            : "Registro para Abrigo"}
+        </Text>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1">
           {renderLabel("Mês Referência")}
