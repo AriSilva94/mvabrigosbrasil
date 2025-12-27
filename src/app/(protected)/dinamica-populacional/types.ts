@@ -13,6 +13,8 @@ export type SelectOption = {
   value: string;
 };
 
+export type DynamicType = "dinamica" | "dinamica_lar";
+
 export type RegisterFormValues = {
   month: string;
   year: string;
@@ -37,6 +39,10 @@ export type RegisterFormData = {
   diseases: number;
   tutorReturn: number;
   originReturn: number;
+};
+
+export type RegisterFormSubmit = RegisterFormData & {
+  dynamicType: DynamicType;
 };
 
 export type PopulationUserSummary = {
