@@ -6,19 +6,20 @@ type RegisterParams = {
   email: string;
   password: string;
   registerType: RegisterType;
+  teamOnly?: boolean;
 };
 
 export function useRegister() {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const signUp = useCallback(
-    async ({ email, password, registerType }: RegisterParams) => {
+    async ({ email, password, registerType, teamOnly }: RegisterParams) => {
       setIsRegistering(true);
       try {
         const response = await fetch("/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, registerType }),
+          body: JSON.stringify({ email, password, registerType, teamOnly }),
         });
 
         const isJson = response.headers
