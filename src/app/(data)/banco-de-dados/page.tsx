@@ -5,6 +5,9 @@ import PageHeader from "@/components/layout/PageHeader";
 import { loadDatabaseDataset } from "@/lib/database/dataLoader";
 import { buildMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = buildMetadata({
   title: "Banco de Dados",
   description:
@@ -12,8 +15,8 @@ export const metadata = buildMetadata({
   canonical: "/banco-de-dados",
 });
 
-export default function Page(): JSX.Element {
-  const dataset = loadDatabaseDataset();
+export default async function Page(): Promise<JSX.Element> {
+  const dataset = await loadDatabaseDataset();
 
   return (
     <main>
