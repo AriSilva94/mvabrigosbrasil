@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Home, PawPrint } from "lucide-react";
 
 import { Text } from "@/components/ui/typography";
@@ -11,14 +11,10 @@ import HeaderSection from "./HeaderSection";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
-import type {
-  DynamicType,
-  PopulationUserSummary,
-  RegisterFormSubmit,
-  DynamicsDisplay,
-  RateCardData,
-} from "../types";
+import type { PopulationUserSummary } from "../types";
 import DynamicsSection from "./DynamicsSection";
+import { useDynamicsData } from "../hooks/useDynamicsData";
+import { useRouter } from "next/navigation";
 
 type PopulationDynamicsContentProps = {
   userSummary: PopulationUserSummary | null;
@@ -27,111 +23,22 @@ type PopulationDynamicsContentProps = {
 export default function PopulationDynamicsContent({
   userSummary,
 }: PopulationDynamicsContentProps): JSX.Element {
+  const router = useRouter();
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
-  const [isRegisterChoiceOpen, setRegisterChoiceOpen] = useState(false);
-  const [registerType, setRegisterType] = useState<DynamicType | null>(null);
-  const [sections, setSections] = useState<DynamicsDisplay[]>([]);
-  const [isLoading, setLoading] = useState(true);
-  const [isSaving, setSaving] = useState(false);
-
-  const baseStats: RateCardData[] = [
-    { key: "entry", label: "Taxa de Entrada", value: null, trend: "neutral" },
-    { key: "exit", label: "Taxa de Saída", value: null, trend: "neutral" },
-    {
-      key: "adoption",
-      label: "Taxa de Adoção",
-      value: null,
-      trend: "neutral",
-    },
-    {
-      key: "mortality",
-      label: "Taxa de Mortalidade",
-      value: null,
-      trend: "neutral",
-    },
-    {
-      key: "morbidity",
-      label: "Taxa de Morbidade",
-      value: null,
-      trend: "neutral",
-    },
-  ];
-  const fallbackSections: DynamicsDisplay[] = [
-    {
-      dynamicType: "dinamica",
-      title: "Dinâmica Populacional",
-      populationInitial: userSummary?.totalAnimals ?? null,
-      populationInitialDogs: userSummary?.dogsCount ?? null,
-      populationInitialCats: userSummary?.catsCount ?? null,
-      populationCurrent: userSummary?.totalAnimals ?? null,
-      stats: [...baseStats],
-      rows: [],
-    },
-    {
-      dynamicType: "dinamica_lar",
-      title: "Dinâmica Populacional L.T",
-      populationInitial: userSummary?.totalAnimals ?? null,
-      populationInitialDogs: userSummary?.dogsCount ?? null,
-      populationInitialCats: userSummary?.catsCount ?? null,
-      populationCurrent: userSummary?.totalAnimals ?? null,
-      stats: [...baseStats],
-      rows: [],
-    },
-  ];
-
-  const fetchSections = async (): Promise<void> => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/dynamics", { cache: "no-store" });
-      if (!response.ok) {
-        setSections(fallbackSections);
-        setLoading(false);
-        return;
-      }
-      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-      setSections(json.sections ?? fallbackSections);
-    } catch (error) {
-      console.error("dinamica-populacional: falha ao carregar dados", error);
-      setSections(fallbackSections);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchSections();
-  }, []);
-
-  const handleSubmitRegister = async (values: RegisterFormSubmit): Promise<void> => {
-    setSaving(true);
-    try {
-      const response = await fetch("/api/dynamics", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-
-      if (!response.ok) {
-        console.error("Erro ao salvar registro de dinâmica");
-      } else {
-        const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-        setSections(json.sections ?? fallbackSections);
-      }
-    } catch (error) {
-      console.error("dinamica-populacional: falha ao salvar registro", error);
-    } finally {
-      setSaving(false);
-      setRegisterType(null);
-    }
-  };
-
-  const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
-  const handleSelectRegister = (type: DynamicType): void => {
-    setRegisterChoiceOpen(false);
-    setRegisterType(type);
-  };
-
-  const closeRegister = (): void => setRegisterType(null);
+  const {
+    sections,
+    isLoading,
+    isSaving,
+    isRegisterChoiceOpen,
+    openRegisterChoice,
+    closeRegisterChoice,
+    openRegister,
+    closeRegister,
+    registerType,
+    formInitialValues,
+    startEditRow,
+    onSubmit,
+  } = useDynamicsData({ userSummary });
 
   const registerTitle =
     registerType === "dinamica_lar"
@@ -149,17 +56,25 @@ export default function PopulationDynamicsContent({
 
           <div className="space-y-6">
             <DynamicsSection
-              data={sections[0] ?? fallbackSections[0]}
+              data={sections[0]}
               isLoading={isLoading}
-              onCreate={handleSelectRegister}
+              onCreate={openRegister}
+              onEditRow={(id) => startEditRow("dinamica", id)}
+              onEditPopulation={() =>
+                router.push("/meu-cadastro?edit=population#populacao-inicial")
+              }
             />
 
             <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
 
             <DynamicsSection
-              data={sections[1] ?? fallbackSections[1]}
+              data={sections[1]}
               isLoading={isLoading}
-              onCreate={handleSelectRegister}
+              onCreate={openRegister}
+              onEditRow={(id) => startEditRow("dinamica_lar", id)}
+              onEditPopulation={() =>
+                router.push("/meu-cadastro?edit=population#populacao-inicial")
+              }
             />
           </div>
         </div>
@@ -182,7 +97,8 @@ export default function PopulationDynamicsContent({
           <RegisterForm
             dynamicType={registerType}
             isSubmitting={isSaving}
-            onSubmit={handleSubmitRegister}
+            initialValues={formInitialValues ?? undefined}
+            onSubmit={onSubmit}
           />
         ) : (
           <Text className="text-sm text-slate-700">
@@ -194,12 +110,12 @@ export default function PopulationDynamicsContent({
       <Modal
         title="Escolha o tipo de registro"
         isOpen={isRegisterChoiceOpen}
-        onClose={() => setRegisterChoiceOpen(false)}
+        onClose={closeRegisterChoice}
       >
         <div className="grid gap-3 md:grid-cols-2">
           <button
             type="button"
-            onClick={() => handleSelectRegister("dinamica")}
+            onClick={() => openRegister("dinamica")}
             className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
@@ -217,7 +133,7 @@ export default function PopulationDynamicsContent({
 
           <button
             type="button"
-            onClick={() => handleSelectRegister("dinamica_lar")}
+            onClick={() => openRegister("dinamica_lar")}
             className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">

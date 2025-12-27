@@ -1,5 +1,5 @@
 import type { ChangeEvent, FormEvent, JSX } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import dayjs from "dayjs";
 
@@ -17,6 +17,7 @@ type RegisterFormProps = {
   dynamicType: DynamicType;
   onSubmit: (values: RegisterFormSubmit) => void;
   isSubmitting?: boolean;
+  initialValues?: RegisterFormValues;
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
@@ -44,8 +45,11 @@ export default function RegisterForm({
   dynamicType,
   onSubmit,
   isSubmitting = false,
+  initialValues,
 }: RegisterFormProps): JSX.Element {
-  const [values, setValues] = useState<RegisterFormValues>(INITIAL_VALUES);
+  const [values, setValues] = useState<RegisterFormValues>(
+    initialValues ?? INITIAL_VALUES,
+  );
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof RegisterFormValues, string>>
   >({});
@@ -55,8 +59,17 @@ export default function RegisterForm({
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { value } = event.target;
       setValues((current) => ({ ...current, [field]: value }));
-      setFieldErrors((current) => ({ ...current, [field]: undefined }));
-    };
+    setFieldErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  useEffect(() => {
+    if (initialValues) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setValues(initialValues);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFieldErrors({});
+    }
+  }, [initialValues]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();

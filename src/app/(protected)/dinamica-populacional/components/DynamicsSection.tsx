@@ -11,6 +11,7 @@ type DynamicsSectionProps = {
   onCreate: (type: DynamicType) => void;
   onEditRow?: (id: string, type: DynamicType) => void;
   isLoading?: boolean;
+  onEditPopulation?: () => void;
 };
 
 export default function DynamicsSection({
@@ -18,6 +19,7 @@ export default function DynamicsSection({
   onCreate,
   onEditRow,
   isLoading = false,
+  onEditPopulation,
 }: DynamicsSectionProps): JSX.Element {
   const hasData = data.rows.length > 0;
 
@@ -49,8 +51,11 @@ export default function DynamicsSection({
             populationCurrent={data.populationCurrent}
             populationInitialDogs={data.populationInitialDogs}
             populationInitialCats={data.populationInitialCats}
+            populationCurrentDogs={data.populationCurrentDogs}
+            populationCurrentCats={data.populationCurrentCats}
             rows={data.rows}
             onEditRow={(id) => onEditRow?.(id, data.dynamicType)}
+            onEditPopulation={onEditPopulation}
           />
         </div>
       ) : (

@@ -15,9 +15,15 @@ export const metadata = buildMetadata({
   canonical: "/meu-cadastro",
 });
 
-export default async function Page(): Promise<JSX.Element> {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: Promise<{ edit?: string }>;
+}): Promise<JSX.Element> {
   const access = await enforceTeamAccess("/meu-cadastro");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
+  const resolvedSearch = searchParams ? await searchParams : {};
+  const populationEditOnly = resolvedSearch?.edit === "population";
 
   return (
     <main>
@@ -32,7 +38,11 @@ export default async function Page(): Promise<JSX.Element> {
 
       <section className="bg-white px-4 py-14 md:px-6">
         <div className="mx-auto max-w-6xl space-y-10">
-          {isVolunteer ? <VolunteerProfileForm /> : <ShelterProfileForm />}
+          {isVolunteer ? (
+            <VolunteerProfileForm />
+          ) : (
+            <ShelterProfileForm populationEditOnly={populationEditOnly} />
+          )}
           {!isVolunteer && <ShelterHistoryTimeline />}
         </div>
       </section>

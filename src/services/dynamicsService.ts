@@ -215,6 +215,42 @@ function buildDisplay(
   );
   const rows = filtered.map(mapRecordToRow);
   const populationInitialValue = populationInitial ?? populationFallback ?? null;
+  const computeSpeciesCurrent = (
+    initialDogs: number | null | undefined,
+    initialCats: number | null | undefined,
+  ) => {
+    if (initialDogs === null && initialCats === null) return { dogs: null, cats: null };
+
+    const totals = rows.reduce(
+      (acc, row) => {
+        acc.dogs +=
+          (row.metrics.entriesDogs ?? 0) -
+          ((row.metrics.adoptionsDogs ?? 0) +
+            (row.metrics.returnsDogs ?? 0) +
+            (row.metrics.tutorReturnDogs ?? 0) +
+            (row.metrics.originReturnDogs ?? 0) +
+            (row.metrics.euthanasiasDogs ?? 0) +
+            (row.metrics.naturalDeathsDogs ?? 0));
+        acc.cats +=
+          (row.metrics.entriesCats ?? 0) -
+          ((row.metrics.adoptionsCats ?? 0) +
+            (row.metrics.returnsCats ?? 0) +
+            (row.metrics.tutorReturnCats ?? 0) +
+            (row.metrics.originReturnCats ?? 0) +
+            (row.metrics.euthanasiasCats ?? 0) +
+            (row.metrics.naturalDeathsCats ?? 0));
+        return acc;
+      },
+      { dogs: 0, cats: 0 },
+    );
+
+    return {
+      dogs: initialDogs !== null && initialDogs !== undefined ? initialDogs + totals.dogs : null,
+      cats: initialCats !== null && initialCats !== undefined ? initialCats + totals.cats : null,
+    };
+  };
+
+  const speciesCurrent = computeSpeciesCurrent(populationDogs, populationCats);
   const populationCurrent =
     populationInitialValue !== null
       ? populationInitialValue + rows.reduce((acc, row) => acc + (row.balance ?? 0), 0)
@@ -227,6 +263,8 @@ function buildDisplay(
     populationCurrent,
     populationInitialDogs: populationDogs ?? null,
     populationInitialCats: populationCats ?? null,
+    populationCurrentDogs: speciesCurrent.dogs,
+    populationCurrentCats: speciesCurrent.cats,
     stats: computeRates(rows, populationInitialValue),
     rows: rows.sort((a, b) => a.referenceLabel.localeCompare(b.referenceLabel)),
   };
