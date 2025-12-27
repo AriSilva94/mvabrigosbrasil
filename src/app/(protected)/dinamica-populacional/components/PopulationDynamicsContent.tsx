@@ -12,7 +12,11 @@ import EmptyState from "./EmptyState";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
-import type { PopulationUserSummary, RegisterFormData } from "../types";
+import type {
+  DynamicType,
+  PopulationUserSummary,
+  RegisterFormSubmit,
+} from "../types";
 
 type PopulationDynamicsContentProps = {
   userSummary: PopulationUserSummary | null;
@@ -23,24 +27,26 @@ export default function PopulationDynamicsContent({
 }: PopulationDynamicsContentProps): JSX.Element {
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
   const [isRegisterChoiceOpen, setRegisterChoiceOpen] = useState(false);
-  const [isRegisterOpen, setRegisterOpen] = useState(false);
-  const [isRegisterLtOpen, setRegisterLtOpen] = useState(false);
+  const [registerType, setRegisterType] = useState<DynamicType | null>(null);
 
-  const handleSubmitRegister = (values: RegisterFormData): void => {
+  const handleSubmitRegister = (values: RegisterFormSubmit): void => {
     // TODO: Integrar com backend quando a API estiver pronta.
     console.info("Novo registro de dinâmica populacional", values);
-    setRegisterOpen(false);
+    setRegisterType(null);
   };
 
   const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
-  const handleSelectRegister = (): void => {
+  const handleSelectRegister = (type: DynamicType): void => {
     setRegisterChoiceOpen(false);
-    setRegisterOpen(true);
+    setRegisterType(type);
   };
-  const handleSelectRegisterLt = (): void => {
-    setRegisterChoiceOpen(false);
-    setRegisterLtOpen(true);
-  };
+
+  const closeRegister = (): void => setRegisterType(null);
+
+  const registerTitle =
+    registerType === "dinamica_lar"
+      ? "Registro de Dinâmica Populacional L.T"
+      : "Registro de Dinâmica Populacional";
 
   return (
     <>
@@ -66,21 +72,20 @@ export default function PopulationDynamicsContent({
       </Modal>
 
       <Modal
-        title="Registro de Dinâmica Populacional"
-        isOpen={isRegisterOpen}
-        onClose={() => setRegisterOpen(false)}
+        title={registerTitle}
+        isOpen={Boolean(registerType)}
+        onClose={closeRegister}
       >
-        <RegisterForm onSubmit={handleSubmitRegister} />
-      </Modal>
-
-      <Modal
-        title="Registro de Dinâmica Populacional L.T"
-        isOpen={isRegisterLtOpen}
-        onClose={() => setRegisterLtOpen(false)}
-      >
-        <Text className="text-sm text-slate-700">
-          O formulário de registro para lares temporários está em construção.
-        </Text>
+        {registerType ? (
+          <RegisterForm
+            dynamicType={registerType}
+            onSubmit={handleSubmitRegister}
+          />
+        ) : (
+          <Text className="text-sm text-slate-700">
+            Selecione o tipo de registro para continuar.
+          </Text>
+        )}
       </Modal>
 
       <Modal
@@ -91,7 +96,7 @@ export default function PopulationDynamicsContent({
         <div className="grid gap-3 md:grid-cols-2">
           <button
             type="button"
-            onClick={handleSelectRegister}
+            onClick={() => handleSelectRegister("dinamica")}
             className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
@@ -109,7 +114,7 @@ export default function PopulationDynamicsContent({
 
           <button
             type="button"
-            onClick={handleSelectRegisterLt}
+            onClick={() => handleSelectRegister("dinamica_lar")}
             className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
