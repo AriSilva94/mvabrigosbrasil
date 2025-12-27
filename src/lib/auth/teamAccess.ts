@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
+import type { RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";

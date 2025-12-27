@@ -1,19 +1,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import type { Database } from "@/lib/supabase/types";
 import type { VacancyProfile } from "@/types/vacancies.types";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const UUID_PREFIX_REGEX = /^[0-9a-f]{8}$/i;
 
-type VacancyRow = {
-  id: string;
-  shelter_id: string | null;
-  title: string | null;
-  description: string | null;
-  status: string | null;
-  created_at: string | null;
-};
+type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
 type VacancyExtra = {
   post_content?: string;
@@ -89,7 +83,7 @@ export function mapVacancyRow(row: VacancyRow): VacancyProfile {
 }
 
 export async function fetchVacanciesByShelter(
-  supabaseAdmin: SupabaseClient,
+  supabaseAdmin: SupabaseClient<Database>,
   shelterId: string
 ): Promise<{ vacancies: VacancyProfile[]; error?: string }> {
   const { data, error } = await supabaseAdmin

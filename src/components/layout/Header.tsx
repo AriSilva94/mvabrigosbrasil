@@ -163,7 +163,7 @@ export default function Header() {
             </div>
           </div>
 
-          <nav className="flex w-full flex-1 flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+          <nav className="flex w-full flex-1 flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
             <ul
               className={`flex flex-col gap-3 text-[15px] font-medium text-brand-primary lg:flex-row lg:items-center lg:gap-5 xl:gap-6 ${
                 isMobileOpen ? "block" : "hidden lg:flex"

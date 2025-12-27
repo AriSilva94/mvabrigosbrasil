@@ -1,8 +1,7 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 

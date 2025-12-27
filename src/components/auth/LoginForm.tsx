@@ -12,7 +12,6 @@ import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
 import FormError from "@/components/ui/FormError";
-import { ROUTES } from "@/constants/routes";
 import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
 import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
