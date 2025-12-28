@@ -1,57 +1,84 @@
-import wpPostsRaw from "@/data/wp/wp_posts.json";
-import wpPostMetaRaw from "@/data/wp/wp_postmeta.json";
-import type {
-  DatabaseDataset,
-  MovementRecord,
-  ShelterRecord,
-  WpPost,
-  WpPostMeta,
-} from "@/types/database.types";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
-type WpExportTable<T> = {
-  type: string;
-  name: string;
-  data: T[];
+import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import type { Database } from "@/lib/supabase/types";
+import type { DatabaseDataset, MovementRecord, ShelterRecord } from "@/types/database.types";
+
+dayjs.extend(customParseFormat);
+
+type WpPostRow = Database["public"]["Tables"]["wp_posts_raw"]["Row"];
+type WpPostMetaRow = Database["public"]["Tables"]["wp_postmeta_raw"]["Row"];
+
+type FetchWpDataResult = {
+  posts: WpPostRow[];
+  meta: WpPostMetaRow[];
 };
 
-const ALL_POSTS = getTableData<WpPost>(wpPostsRaw, "wp_posts");
-const ALL_POST_META = getTableData<WpPostMeta>(wpPostMetaRaw, "wp_postmeta");
+const META_KEYS = [
+  "estado",
+  "tipo",
+  "id_abrigo",
+  "entradas_de_animais",
+  "entradas_de_gatos",
+  "adocoes_de_animais",
+  "adocoes_de_gatos",
+  "devolucoes_de_animais",
+  "devolucoes_de_gatos",
+  "eutanasias_de_animais",
+  "eutanasias_de_gatos",
+  "mortes_naturais_de_animais",
+  "mortes_naturais_de_gatos",
+  "retorno_de_caes",
+  "retorno_de_gatos",
+  "retorno_local_caes",
+  "retorno_local_gatos",
+];
 
-// Posts de dinâmica presentes no dump mas que não são exibidos no site original
-// (registros apenas de gatos em 2025-09/10 que inflavam Saída por Tipo de Abrigo - Privado).
-const EXCLUDED_MOVEMENT_IDS = new Set<string>(["2829", "2900"]);
+function parseDate(date: string | null | undefined) {
+  if (!date) return dayjs(Number.NaN);
 
-function getTableData<T>(raw: unknown, tableName: string): T[] {
-  if (!Array.isArray(raw)) return [];
-  const table = raw.find(
-    (item) => typeof item === "object" && item !== null && (item as { name?: string }).name === tableName
-  ) as WpExportTable<T> | undefined;
+  const direct = dayjs(date);
+  if (direct.isValid()) return direct;
 
-  return table?.data ?? [];
+  const formats = [
+    "YYYY-MM-DD HH:mm:ss",
+    "YYYY-MM-DDTHH:mm:ss[Z]",
+    "YYYY-MM-DDTHH:mm:ssZ",
+    "YYYY-MM-DD",
+  ];
+
+  for (const format of formats) {
+    const parsed = dayjs(date, format, true);
+    if (parsed.isValid()) return parsed;
+  }
+
+  return dayjs(Number.NaN);
 }
 
-function parseYear(date: string): number {
-  const year = Number.parseInt(date.slice(0, 4), 10);
-  return Number.isFinite(year) ? year : 0;
+function parseYear(date: string | null | undefined): number {
+  const parsed = parseDate(date);
+  return parsed.isValid() ? parsed.year() : 0;
 }
 
-function parseMonth(date: string): number {
-  const month = Number.parseInt(date.slice(5, 7), 10);
-  return Number.isFinite(month) ? month : 1;
+function parseMonth(date: string | null | undefined): number {
+  const parsed = parseDate(date);
+  return parsed.isValid() ? parsed.month() + 1 : 1;
 }
 
-function parseMetaNumber(value: string | null | undefined): number {
+function parseMetaNumber(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
   const normalized = String(value).replace(",", ".").trim();
   const parsed = Number.parseFloat(normalized);
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function buildMetaLookup(meta: WpPostMeta[]): Map<string, Record<string, string | null>> {
-  const lookup = new Map<string, Record<string, string | null>>();
+function buildMetaLookup(meta: WpPostMetaRow[]): Map<number, Record<string, string | null>> {
+  const lookup = new Map<number, Record<string, string | null>>();
 
   meta.forEach((entry) => {
-    if (entry.meta_key.startsWith("_")) return;
+    if (!entry.meta_key || entry.meta_key.startsWith("_")) return;
+    if (entry.post_id === null || entry.post_id === undefined) return;
     const current = lookup.get(entry.post_id) ?? {};
     current[entry.meta_key] = entry.meta_value;
     lookup.set(entry.post_id, current);
@@ -65,68 +92,117 @@ function normalizeState(state: string | null | undefined): string | undefined {
   return trimmed ? trimmed.toUpperCase() : undefined;
 }
 
-export function loadDatabaseDataset(): DatabaseDataset {
-  const metaLookup = buildMetaLookup(ALL_POST_META);
+async function fetchWpData(): Promise<FetchWpDataResult> {
+  const supabase = getSupabaseAdminClient();
 
-  const shelters: ShelterRecord[] = ALL_POSTS.filter(
-    (post) => post.post_type === "abrigo" && post.post_status === "publish"
-  ).map((post) => {
-    const meta = metaLookup.get(post.ID) ?? {};
+  async function fetchAllRows<T>(
+    table: keyof Database["public"]["Tables"],
+    select: string,
+    configure?: (query: ReturnType<typeof supabase["from"]>) => ReturnType<typeof supabase["from"]>,
+    pageSize = 1000
+  ): Promise<T[]> {
+    const rows: T[] = [];
+    let from = 0;
 
-    return {
-      id: Number.parseInt(post.ID, 10),
-      title: post.post_title,
-      postDate: post.post_date,
-      year: parseYear(post.post_date),
-      month: parseMonth(post.post_date),
-      state: normalizeState(meta.estado),
-      type: meta.tipo?.trim(),
-    };
-  });
+    // Paginate to avoid default Supabase row limits.
+    // Stop when a page returns fewer items than requested.
+    for (;;) {
+      const to = from + pageSize - 1;
+      let query = supabase.from(table as string).select(select).range(from, to);
+      if (configure) {
+        query = configure(query);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        throw new Error(`Falha ao carregar ${table}: ${error.message}`);
+      }
+
+      const batch = (data ?? []) as T[];
+      rows.push(...batch);
+
+      if (batch.length < pageSize) break;
+      from += pageSize;
+    }
+
+    return rows;
+  }
+
+  const posts = await fetchAllRows<WpPostRow>(
+    "wp_posts_raw",
+    "id, post_date, post_title, post_type, post_status"
+  );
+
+  const meta = await fetchAllRows<WpPostMetaRow>(
+    "wp_postmeta_raw",
+    "post_id, meta_key, meta_value",
+    (query) => query.in("meta_key", META_KEYS)
+  );
+
+  return { posts, meta };
+}
+
+export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
+  const { posts, meta } = await fetchWpData();
+  const metaLookup = buildMetaLookup(meta);
+
+  const shelters: ShelterRecord[] = posts
+    .filter((post) => post.post_type === "abrigo")
+    .map((post) => {
+      const meta = metaLookup.get(post.id) ?? {};
+
+      return {
+        id: Number.isFinite(post.id) ? post.id : 0,
+        title: post.post_title ?? "",
+        postDate: post.post_date ?? "",
+        year: parseYear(post.post_date ?? ""),
+        month: parseMonth(post.post_date ?? ""),
+        state: normalizeState(meta.estado),
+        type: meta.tipo?.trim(),
+      };
+    });
 
   const shelterLookup = new Map<number, ShelterRecord>();
   shelters.forEach((shelter) => shelterLookup.set(shelter.id, shelter));
 
-  const movements: MovementRecord[] = ALL_POSTS.filter(
-    (post) =>
-      post.post_type === "dinamica" &&
-      post.post_status === "publish" &&
-      !EXCLUDED_MOVEMENT_IDS.has(post.ID)
-  ).map((post) => {
-    const meta = metaLookup.get(post.ID) ?? {};
-    const parsedShelterId = meta.id_abrigo ? Number.parseInt(meta.id_abrigo, 10) : Number.NaN;
-    const shelterId = Number.isFinite(parsedShelterId) ? parsedShelterId : null;
-    const shelter = shelterId !== null ? shelterLookup.get(shelterId) : undefined;
+  const movements: MovementRecord[] = posts
+    .filter((post) => post.post_type === "dinamica" || post.post_type === "dinamica_lar")
+    .map((post) => {
+      const meta = metaLookup.get(post.id) ?? {};
+      const parsedShelterId = meta.id_abrigo ? Number.parseInt(meta.id_abrigo, 10) : Number.NaN;
+      const shelterId = Number.isFinite(parsedShelterId) ? parsedShelterId : null;
+      const shelter = shelterId !== null ? shelterLookup.get(shelterId) : undefined;
 
-    return {
-      id: Number.parseInt(post.ID, 10),
-      postType: post.post_type as MovementRecord["postType"],
-      year: parseYear(post.post_date),
-      month: parseMonth(post.post_date),
-      shelterId,
-      shelterState: shelter?.state,
-      shelterType: shelter?.type,
-      metrics: {
-        entradas: parseMetaNumber(meta.entradas_de_animais),
-        entradasGatos: parseMetaNumber(meta.entradas_de_gatos),
-        adocoes: parseMetaNumber(meta.adocoes_de_animais),
-        adocoesGatos: parseMetaNumber(meta.adocoes_de_gatos),
-        devolucoes: parseMetaNumber(meta.devolucoes_de_animais),
-        devolucoesGatos: parseMetaNumber(meta.devolucoes_de_gatos),
-        eutanasias: parseMetaNumber(meta.eutanasias_de_animais),
-        eutanasiasGatos: parseMetaNumber(meta.eutanasias_de_gatos),
-        mortesNaturais: parseMetaNumber(meta.mortes_naturais_de_animais),
-        mortesNaturaisGatos: parseMetaNumber(meta.mortes_naturais_de_gatos),
-        retornoTutor:
-          parseMetaNumber(meta.retorno_de_caes) + parseMetaNumber(meta.retorno_de_gatos),
-        retornoTutorGatos: parseMetaNumber(meta.retorno_de_gatos),
-        retornoLocal:
-          parseMetaNumber(meta.retorno_local_caes) +
-          parseMetaNumber(meta.retorno_local_gatos),
-        retornoLocalGatos: parseMetaNumber(meta.retorno_local_gatos),
-      },
-    };
-  });
+      return {
+        id: Number.isFinite(post.id) ? post.id : 0,
+        postType: post.post_type as MovementRecord["postType"],
+        year: parseYear(post.post_date),
+        month: parseMonth(post.post_date),
+        shelterId,
+        shelterState: shelter?.state,
+        shelterType: shelter?.type,
+        metrics: {
+          entradas: parseMetaNumber(meta.entradas_de_animais),
+          entradasGatos: parseMetaNumber(meta.entradas_de_gatos),
+          adocoes: parseMetaNumber(meta.adocoes_de_animais),
+          adocoesGatos: parseMetaNumber(meta.adocoes_de_gatos),
+          devolucoes: parseMetaNumber(meta.devolucoes_de_animais),
+          devolucoesGatos: parseMetaNumber(meta.devolucoes_de_gatos),
+          eutanasias: parseMetaNumber(meta.eutanasias_de_animais),
+          eutanasiasGatos: parseMetaNumber(meta.eutanasias_de_gatos),
+          mortesNaturais: parseMetaNumber(meta.mortes_naturais_de_animais),
+          mortesNaturaisGatos: parseMetaNumber(meta.mortes_naturais_de_gatos),
+          retornoTutor:
+            parseMetaNumber(meta.retorno_de_caes) + parseMetaNumber(meta.retorno_de_gatos),
+          retornoTutorGatos: parseMetaNumber(meta.retorno_de_gatos),
+          retornoLocal:
+            parseMetaNumber(meta.retorno_local_caes) +
+            parseMetaNumber(meta.retorno_local_gatos),
+          retornoLocalGatos: parseMetaNumber(meta.retorno_local_gatos),
+        },
+      };
+    });
 
   const years = Array.from(
     new Set([...shelters.map((item) => item.year), ...movements.map((item) => item.year)])

@@ -158,20 +158,16 @@ export function computeMonthlySpeciesEntries(
     const month = index + 1;
     const monthMovements = movements.filter((movement) => movement.month === month);
 
+    // Entradas devem considerar apenas entradas (não devoluções)
     const cats = monthMovements.reduce(
-      (acc, movement) => acc + movement.metrics.entradasGatos + movement.metrics.devolucoesGatos,
+      (acc, movement) => acc + movement.metrics.entradasGatos,
       0
     );
-    const totalsCombined = monthMovements.reduce(
-      (acc, movement) =>
-        acc +
-        movement.metrics.entradas +
-        movement.metrics.entradasGatos +
-        movement.metrics.devolucoes +
-        movement.metrics.devolucoesGatos,
+    const dogs = monthMovements.reduce(
+      (acc, movement) => acc + movement.metrics.entradas,
       0
     );
-    const dogs = Math.max(totalsCombined - cats, 0);
+    const totalsCombined = cats + dogs;
 
     return { month, label, dogs, cats, total: totalsCombined };
   });

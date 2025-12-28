@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { registerSchema } from "@/components/auth/registerSchema";
-import { ROUTES } from "@/constants/routes";
 import { useRegister } from "@/hooks/useRegister";
 import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
 import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
