@@ -5,7 +5,7 @@ import { BadgeCheck, UserCheck2, Video } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
 import { PANEL_SHORTCUTS, TRAINING_URL } from "@/constants/panel";
-import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";

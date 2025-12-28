@@ -1,8 +1,4 @@
-import type {
-  ShelterProfileFormData,
-  ShelterTypeOption,
-  SpeciesOption,
-} from "@/types/shelter.types";
+import type { ShelterTypeOption, SpeciesOption } from "@/types/shelter.types";
 import { STATE_METADATA } from "@/lib/database/stateMetadata";
 
 export const SHELTER_TYPE_OPTIONS: ShelterTypeOption[] = [

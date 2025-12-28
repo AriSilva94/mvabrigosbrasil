@@ -1,5 +1,5 @@
 import type { ChangeEvent, FormEvent, JSX } from "react";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
 import dayjs from "dayjs";
 
@@ -41,10 +41,10 @@ const INITIAL_VALUES: RegisterFormValues = {
   originReturnCats: "0",
 };
 
-export default function RegisterForm({
+function RegisterFormInner({
   dynamicType,
   onSubmit,
-  isSubmitting = false,
+  isSubmitting,
   initialValues,
 }: RegisterFormProps): JSX.Element {
   const [values, setValues] = useState<RegisterFormValues>(
@@ -59,17 +59,8 @@ export default function RegisterForm({
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { value } = event.target;
       setValues((current) => ({ ...current, [field]: value }));
-    setFieldErrors((current) => ({ ...current, [field]: undefined }));
-  };
-
-  useEffect(() => {
-    if (initialValues) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setValues(initialValues);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setFieldErrors({});
-    }
-  }, [initialValues]);
+      setFieldErrors((current) => ({ ...current, [field]: undefined }));
+    };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -213,5 +204,20 @@ export default function RegisterForm({
         </button>
       </div>
     </form>
+  );
+}
+
+export default function RegisterForm(props: RegisterFormProps): JSX.Element {
+  const formKey = useMemo(
+    () => (props.initialValues ? JSON.stringify(props.initialValues) : "empty"),
+    [props.initialValues],
+  );
+
+  return (
+    <RegisterFormInner
+      key={formKey}
+      {...props}
+      isSubmitting={props.isSubmitting ?? false}
+    />
   );
 }
