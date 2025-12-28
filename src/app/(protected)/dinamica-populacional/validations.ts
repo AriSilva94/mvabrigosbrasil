@@ -13,7 +13,7 @@ const numberField = z.preprocess((value) => {
     return Number(trimmed);
   }
   return value;
-}, z.number().min(0, "Informe um valor maior ou igual a zero."));
+}, z.number().int("Use apenas números inteiros.").min(0, "Informe um valor maior ou igual a zero."));
 
 export const registerSchema = z.object({
   month: monthEnum,
