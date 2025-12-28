@@ -6,11 +6,15 @@ import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 type GetDynamicsUserSummaryParams = {
   userId: string;
   fallbackEmail: string | null;
+  creatorProfileId?: string | null;
+  isTeamOnly?: boolean;
 };
 
 export async function getDynamicsUserSummary({
   userId,
   fallbackEmail,
+  creatorProfileId,
+  isTeamOnly,
 }: GetDynamicsUserSummaryParams): Promise<{
   summary: PopulationUserSummary;
   shelterId: string | null;
@@ -19,18 +23,46 @@ export async function getDynamicsUserSummary({
 
   const { profile } = await findProfileById(supabaseAdmin, userId);
 
-  const { data: shelterRow, error: shelterError } = await supabaseAdmin
-    .from("shelters")
-    .select("id, name, shelter_type, initial_dogs, initial_cats")
-    .eq("profile_id", userId)
-    .limit(1)
-    .maybeSingle();
+  const resolveShelter = async (profileId: string) =>
+    supabaseAdmin
+      .from("shelters")
+      .select("id, name, shelter_type, initial_dogs, initial_cats")
+      .eq("profile_id", profileId)
+      .limit(1)
+      .maybeSingle();
 
-  if (shelterError && shelterError.code !== "42703") {
-    console.error(
-      "dinamica-populacional: erro ao buscar abrigo do usuário",
-      shelterError,
-    );
+  const attemptOrder = [
+    userId,
+    isTeamOnly && creatorProfileId ? creatorProfileId : null,
+  ].filter(Boolean) as string[];
+
+  let shelterRow: {
+    id: string;
+    name: string | null;
+    shelter_type: string | null;
+    initial_dogs: number | null;
+    initial_cats: number | null;
+  } | null = null;
+  let shelterError: unknown = null;
+
+  for (const profileId of attemptOrder) {
+    const { data, error } = await resolveShelter(profileId);
+    if (error) {
+      shelterError = error;
+      console.error(
+        "dinamica-populacional: erro ao buscar abrigo do usuário",
+        error,
+      );
+      break;
+    }
+    if (data) {
+      shelterRow = data;
+      break;
+    }
+  }
+
+  if (shelterError && (shelterError as { code?: string }).code !== "42703") {
+    console.error("dinamica-populacional: erro ao buscar abrigo do usuário", shelterError);
   }
 
   const hasDogs = typeof shelterRow?.initial_dogs === "number";

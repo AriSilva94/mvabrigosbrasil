@@ -14,6 +14,7 @@ export type UserAccessInfo = {
   registerType: RegisterType | null;
   isTeamOnly: boolean;
   isTeamDisabled: boolean;
+  creatorProfileId: string | null;
 };
 
 function isPathAllowed(pathname: string, allowed: string[]): boolean {
@@ -50,6 +51,8 @@ export async function loadUserAccess(): Promise<UserAccessInfo | null> {
     registerType: registerType ?? null,
     isTeamOnly: Boolean(profile?.is_team_only),
     isTeamDisabled: Boolean(authUser?.user?.user_metadata?.teamDisabled),
+    creatorProfileId:
+      (authUser?.user?.user_metadata?.creator_profile_id as string | undefined) ?? null,
   };
 }
 
