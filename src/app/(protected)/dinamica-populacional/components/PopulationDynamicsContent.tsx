@@ -29,6 +29,7 @@ export default function PopulationDynamicsContent({
     sections,
     isLoading,
     isSaving,
+    isDeleting,
     isRegisterChoiceOpen,
     openRegisterChoice,
     closeRegisterChoice,
@@ -36,8 +37,11 @@ export default function PopulationDynamicsContent({
     closeRegister,
     registerType,
     formInitialValues,
+    editingRowId,
+    isEditing,
     startEditRow,
     onSubmit,
+    onDelete,
   } = useDynamicsData({ userSummary });
 
   const registerTitle =
@@ -97,6 +101,10 @@ export default function PopulationDynamicsContent({
           <RegisterForm
             dynamicType={registerType}
             isSubmitting={isSaving}
+            isDeleting={isDeleting}
+            isEditing={isEditing}
+            editingRowId={editingRowId ?? undefined}
+            onDelete={isEditing ? onDelete : undefined}
             initialValues={formInitialValues ?? undefined}
             onSubmit={onSubmit}
           />

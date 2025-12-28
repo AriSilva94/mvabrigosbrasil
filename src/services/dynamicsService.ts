@@ -378,3 +378,22 @@ export async function saveDynamicsRecord(params: {
     throw attempt.error;
   }
 }
+
+export async function deleteDynamicsRecord(params: {
+  supabaseAdmin: AdminClient;
+  shelterId: string;
+  rowId: string;
+}): Promise<void> {
+  const { supabaseAdmin, shelterId, rowId } = params;
+
+  const { error } = await supabaseAdmin
+    .from("shelter_dynamics")
+    .delete()
+    .eq("id", rowId)
+    .eq("shelter_id", shelterId);
+
+  if (error) {
+    console.error("dynamicsService: erro ao excluir registro", error);
+    throw error;
+  }
+}

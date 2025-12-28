@@ -1,5 +1,6 @@
-import type { ChangeEvent, FormEvent, JSX } from "react";
+import type { ChangeEvent, FormEvent, JSX, KeyboardEvent } from "react";
 import { useMemo, useState } from "react";
+import { Trash2 } from "lucide-react";
 import clsx from "clsx";
 import dayjs from "dayjs";
 
@@ -18,6 +19,10 @@ type RegisterFormProps = {
   onSubmit: (values: RegisterFormSubmit) => void;
   isSubmitting?: boolean;
   initialValues?: RegisterFormValues;
+  isEditing?: boolean;
+  isDeleting?: boolean;
+  onDelete?: () => void;
+  editingRowId?: string | null;
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
@@ -45,11 +50,15 @@ function RegisterFormInner({
   dynamicType,
   onSubmit,
   isSubmitting,
+  isEditing,
+  isDeleting,
+  onDelete,
   initialValues,
 }: RegisterFormProps): JSX.Element {
   const [values, setValues] = useState<RegisterFormValues>(
     initialValues ?? INITIAL_VALUES,
   );
+  const [isConfirmingDelete, setConfirmingDelete] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof RegisterFormValues, string>>
   >({});
@@ -61,6 +70,19 @@ function RegisterFormInner({
       setValues((current) => ({ ...current, [field]: value }));
       setFieldErrors((current) => ({ ...current, [field]: undefined }));
     };
+  const handleIntegerChange =
+    (field: keyof RegisterFormValues) =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const sanitized = event.target.value.replace(/\D+/g, "");
+      setValues((current) => ({ ...current, [field]: sanitized }));
+      setFieldErrors((current) => ({ ...current, [field]: undefined }));
+    };
+  const preventInvalidKeys = (event: KeyboardEvent<HTMLInputElement>): void => {
+    const blocked = ["e", "E", ".", ",", "+", "-"];
+    if (blocked.includes(event.key)) {
+      event.preventDefault();
+    }
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -81,6 +103,17 @@ function RegisterFormInner({
     setFieldErrors({});
     onSubmit({ ...parsed.data, dynamicType });
   };
+  const handleDeleteConfirm = (): void => {
+    if (!onDelete || isDeleting) return;
+    void onDelete();
+  };
+  const handleDeleteRequest = (): void => {
+    if (!onDelete || isDeleting) return;
+    setConfirmingDelete(true);
+  };
+  const handleDeleteCancel = (): void => setConfirmingDelete(false);
+
+  const isEditMode = isEditing ?? Boolean(initialValues);
 
   const renderLabel = (text: string, isRequired = true): JSX.Element => (
     <span className="flex items-center gap-1 text-sm font-semibold text-slate-800">
@@ -99,10 +132,13 @@ function RegisterFormInner({
       <input
         required={isRequired}
         min={0}
+        step={1}
         inputMode="numeric"
-        type="number"
+        pattern="[0-9]*"
+        type="text"
         value={values[field]}
-        onChange={handleChange(field)}
+        onChange={handleIntegerChange(field)}
+        onKeyDown={preventInvalidKeys}
         aria-invalid={Boolean(fieldErrors[field])}
         aria-describedby={
           fieldErrors[field] ? `${String(field)}-error` : undefined
@@ -141,12 +177,63 @@ function RegisterFormInner({
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-      <div className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-4 py-2">
+      <div className="relative flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-4 py-2">
         <Text className="text-xs font-semibold uppercase tracking-wide text-slate-700">
           {dynamicType === "dinamica_lar"
             ? "Registro para Lar Temporário"
             : "Registro para Abrigo"}
         </Text>
+        {isEditMode && onDelete && (
+          <div className="relative">
+            <button
+              type="button"
+              onClick={handleDeleteRequest}
+              disabled={isDeleting || isSubmitting}
+              className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 disabled:opacity-60"
+              aria-label="Excluir registro"
+            >
+              <Trash2 className="h-4 w-4" aria-hidden />
+              <span>Excluir</span>
+            </button>
+            {isConfirmingDelete && (
+              <div className="absolute right-0 top-11 z-10 w-64 rounded-lg border border-slate-200 bg-white p-3 shadow-lg">
+                <p className="text-xs font-semibold text-slate-800">
+                  Deseja excluir este registro?
+                </p>
+                <p className="mt-1 text-xs text-slate-600">
+                  Esta ação não pode ser desfeita.
+                </p>
+                <div className="mt-3 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={handleDeleteCancel}
+                    className="inline-flex items-center justify-center rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteConfirm}
+                    disabled={isDeleting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red px-3 py-1 text-xs font-semibold text-white transition hover:bg-brand-red/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red disabled:opacity-70"
+                  >
+                    {isDeleting ? (
+                      <>
+                        <span
+                          className="h-3 w-3 animate-spin rounded-full border-2 border-white/60 border-t-white"
+                          aria-hidden
+                        />
+                        Excluindo...
+                      </>
+                    ) : (
+                      "Excluir"
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1">
@@ -194,11 +281,11 @@ function RegisterFormInner({
         ))}
       </div>
 
-      <div className="pt-2 text-center">
+      <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-center">
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
+          disabled={isSubmitting || isDeleting}
+          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer disabled:opacity-70"
         >
           {isSubmitting ? "Salvando..." : "Salvar"}
         </button>
@@ -209,8 +296,12 @@ function RegisterFormInner({
 
 export default function RegisterForm(props: RegisterFormProps): JSX.Element {
   const formKey = useMemo(
-    () => (props.initialValues ? JSON.stringify(props.initialValues) : "empty"),
-    [props.initialValues],
+    () =>
+      JSON.stringify({
+        values: props.initialValues ?? null,
+        editId: props.editingRowId ?? null,
+      }),
+    [props.initialValues, props.editingRowId],
   );
 
   return (
@@ -218,6 +309,8 @@ export default function RegisterForm(props: RegisterFormProps): JSX.Element {
       key={formKey}
       {...props}
       isSubmitting={props.isSubmitting ?? false}
+      isDeleting={props.isDeleting ?? false}
+      isEditing={props.isEditing ?? Boolean(props.initialValues)}
     />
   );
 }
