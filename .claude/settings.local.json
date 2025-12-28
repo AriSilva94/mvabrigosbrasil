@@ -16,7 +16,16 @@
       "Bash(grep:*)",
       "Bash(node scripts/migrations/voluntarios/setup-test-login.js:*)",
       "Bash(ls:*)",
-      "Bash(node scripts/migrations/voluntarios/check-password-hash.js:*)"
+      "Bash(node scripts/migrations/voluntarios/check-password-hash.js:*)",
+      "Bash(node scripts/migrations/voluntarios/check-specific-user.js:*)",
+      "Bash(node scripts/migrations/voluntarios/find-periodo-atuacao.js:*)",
+      "Bash(node scripts/migrations/voluntarios/list-all-meta-keys.js:*)",
+      "Bash(node scripts/migrations/voluntarios/migrate-volunteers-wp-to-supabase.js:*)",
+      "Bash(node scripts/migrations/voluntarios/force-update-analays.js:*)",
+      "Bash(node -e:*)",
+      "Bash(node scripts/migrations/voluntarios/check-wp-posts-columns.js:*)",
+      "Bash(node migrate-volunteers-wp-to-supabase.js:*)",
+      "Bash(node:*)"
     ]
   }
 }
