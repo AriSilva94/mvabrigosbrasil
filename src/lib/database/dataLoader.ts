@@ -36,7 +36,7 @@ const META_KEYS = [
 ];
 
 function parseDate(date: string | null | undefined) {
-  if (!date) return dayjs.invalid();
+  if (!date) return dayjs(Number.NaN);
 
   const direct = dayjs(date);
   if (direct.isValid()) return direct;
@@ -53,7 +53,7 @@ function parseDate(date: string | null | undefined) {
     if (parsed.isValid()) return parsed;
   }
 
-  return dayjs.invalid();
+  return dayjs(Number.NaN);
 }
 
 function parseYear(date: string | null | undefined): number {

@@ -133,7 +133,7 @@ export async function PUT(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
+    return NextResponse.json({ vacancy: { ...mapVacancyRow(data!), source: "supabase" } });
   }
 
   // Caso seja legado, cria uma nova vaga no Supabase vinculada ao abrigo do usuário
@@ -151,6 +151,10 @@ export async function PUT(
   if (insertError) {
     console.error("api/vacancies/[id] PUT insert error (legacy)", insertError);
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
+  }
+
+  if (!data) {
+    return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
   }
 
   return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
