@@ -43,7 +43,7 @@ export async function fetchVolunteerCardsFromNew(
     const { data, error } = await supabase
       .from("volunteers")
       .select(
-        "id, name, cidade, estado, genero, disponibilidade, wp_post_id, created_at"
+        "id, name, slug, cidade, estado, genero, disponibilidade, wp_post_id, created_at"
       )
       .eq("accept_terms", true)
       .eq("is_public", true)
@@ -57,7 +57,8 @@ export async function fetchVolunteerCardsFromNew(
     const volunteers: VolunteerCard[] = (data ?? []).map((volunteer) => {
       const city = volunteer.cidade?.trim();
       const state = volunteer.estado?.trim();
-      const slug = generateVolunteerSlug(volunteer.name, volunteer.id);
+      // Usar slug do banco ou gerar fallback se não existir (migração em andamento)
+      const slug = volunteer.slug || generateVolunteerSlug(volunteer.name, volunteer.id);
 
       return {
         id: volunteer.id,
@@ -86,44 +87,41 @@ export async function fetchVolunteerProfileBySlugFromNew(
   slug: string
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
   try {
+    // Busca direta por slug (usa índice único quando disponível)
     const { data, error } = await supabase
       .from("volunteers")
       .select(
-        "id, name, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at"
+        "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at"
       )
+      .eq("slug", slug)
       .eq("accept_terms", true)
-      .eq("is_public", true);
+      .eq("is_public", true)
+      .maybeSingle();
 
     if (error) {
       console.error("newVolunteersRepository.fetchVolunteerProfileBySlugFromNew - error:", error);
       return { profile: null, error };
     }
 
-    const volunteers = (data ?? []) as VolunteerRow[];
-    const match =
-      volunteers.find(
-        (volunteer) => generateVolunteerSlug(volunteer.name, volunteer.id) === slug
-      ) ?? null;
-
-    if (!match) {
+    if (!data) {
       return { profile: null, error: null };
     }
 
     const profile: VolunteerProfile = {
-      id: match.id,
-      name: match.name ?? "Voluntário",
-      slug: generateVolunteerSlug(match.name, match.id),
-      createdAt: match.created_at ?? undefined,
-      city: match.cidade ?? undefined,
-      state: match.estado ?? undefined,
-      profession: match.profissao ?? undefined,
-      schooling: match.escolaridade ?? undefined,
-      experience: match.experiencia ?? undefined,
-      availability: match.disponibilidade ?? undefined,
-      skills: match.descricao ?? match.atuacao ?? undefined,
-      period: match.periodo ?? undefined,
-      notes: match.comentarios ?? undefined,
-      wpPostId: match.wp_post_id ? String(match.wp_post_id) : undefined,
+      id: data.id,
+      name: data.name ?? "Voluntário",
+      slug: data.slug || generateVolunteerSlug(data.name, data.id),
+      createdAt: data.created_at ?? undefined,
+      city: data.cidade ?? undefined,
+      state: data.estado ?? undefined,
+      profession: data.profissao ?? undefined,
+      schooling: data.escolaridade ?? undefined,
+      experience: data.experiencia ?? undefined,
+      availability: data.disponibilidade ?? undefined,
+      skills: data.descricao ?? data.atuacao ?? undefined,
+      period: data.periodo ?? undefined,
+      notes: data.comentarios ?? undefined,
+      wpPostId: data.wp_post_id ? String(data.wp_post_id) : undefined,
       source: "new",
     };
 
