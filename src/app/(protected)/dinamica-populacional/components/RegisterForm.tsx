@@ -221,12 +221,3 @@ export default function RegisterForm(props: RegisterFormProps): JSX.Element {
     />
   );
 }
-
-export default function RegisterForm(props: RegisterFormProps): JSX.Element {
-  const formKey = useMemo(
-    () => (props.initialValues ? JSON.stringify(props.initialValues) : "empty"),
-    [props.initialValues],
-  );
-
-  return <RegisterFormInner key={formKey} {...props} />;
-}
