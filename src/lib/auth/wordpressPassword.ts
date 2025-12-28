@@ -1,17 +1,41 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-// @ts-expect-error - pacote não fornece tipos
-import { PasswordHash as PasswordHashImport } from "wordpress-hash-node";
 
-type PasswordHashCtor = new (
-  iterationCountLog2?: number,
-  portableHashes?: boolean
-) => {
-  HashPassword(password: string): string | null;
-  CheckPassword(password: string, storedHash: string): boolean;
-};
+// Lazy import do PasswordHash para evitar problemas de inicialização
+let PasswordHashClass: any = null;
 
-const PasswordHash = PasswordHashImport as unknown as PasswordHashCtor;
+function getPasswordHash() {
+  if (!PasswordHashClass) {
+    // @ts-expect-error - pacote não fornece tipos
+    const { PasswordHash } = require("wordpress-hash-node");
+    PasswordHashClass = PasswordHash;
+  }
+  return PasswordHashClass;
+}
+
+/**
+ * Gera um hash PHPass do WordPress para uma senha
+ * Usado para atualizar senhas MD5 temporárias para o formato correto
+ */
+export function generateWordpressHash(password: string): string {
+  try {
+    const PasswordHash = getPasswordHash();
+    const phpass = new PasswordHash(8, true);
+    const hash = phpass.HashPassword(password);
+    return hash ?? "";
+  } catch (error) {
+    console.error("Erro ao gerar hash WordPress", error);
+    return "";
+  }
+}
+
+/**
+ * Verifica se um hash é MD5 temporário (32 caracteres hexadecimais)
+ */
+export function isMd5Hash(hash: string): boolean {
+  const trimmed = hash.trim();
+  return trimmed.length === 32 && /^[a-f0-9]+$/i.test(trimmed);
+}
 
 export async function verifyWordpressPassword(
   password: string,
@@ -53,8 +77,16 @@ export async function verifyWordpressPassword(
     }
 
     if (trimmedHash.startsWith("$P") || trimmedHash.startsWith("$H")) {
+      const PasswordHash = getPasswordHash();
       const phpass = new PasswordHash(8, true);
       return Boolean(phpass.CheckPassword(trimmedPassword, trimmedHash));
+    }
+
+    // Fallback: MD5 temporário (usado para reset de senha em testes/migração)
+    // Se o hash tem 32 caracteres e são apenas hexadecimais, pode ser MD5
+    if (trimmedHash.length === 32 && /^[a-f0-9]+$/i.test(trimmedHash)) {
+      const md5Hash = crypto.createHash('md5').update(trimmedPassword).digest('hex');
+      return md5Hash === trimmedHash.toLowerCase();
     }
 
     return false;

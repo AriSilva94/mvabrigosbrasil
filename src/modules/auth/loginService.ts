@@ -1,4 +1,4 @@
-import { verifyWordpressPassword } from "@/lib/auth/wordpressPassword";
+import { verifyWordpressPassword, isMd5Hash, generateWordpressHash } from "@/lib/auth/wordpressPassword";
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { RegisterType } from "@/constants/registerTypes";
 import { resolvePostTypeForUser } from "./postTypeResolver";
@@ -6,7 +6,9 @@ import { findProfileByEmail, insertProfileFromLegacy } from "./repositories/prof
 import {
   findLegacyUserByEmail,
   markLegacyUserAsMigrated,
+  updateLegacyUserPassword,
 } from "./repositories/wpUsersLegacyRepository";
+import { linkVolunteerToProfileByWpUserId } from "./repositories/volunteersRepository";
 
 type SupabaseAuthClient = SupabaseClientType;
 type SupabaseAdminClient = SupabaseClientType;
@@ -73,6 +75,15 @@ async function attemptLegacyMigration(
     return { success: false, status: 401, errorMessage: "Credenciais inválidas" };
   }
 
+  // Se o hash é MD5 temporário, atualizar para PHPass
+  if (legacyUser.user_pass && isMd5Hash(legacyUser.user_pass)) {
+    console.log(`[Migration] Atualizando hash MD5 para PHPass (user_id: ${legacyUser.id})`);
+    const newHash = generateWordpressHash(password);
+    if (newHash) {
+      await updateLegacyUserPassword(supabaseAdmin, legacyUser.id, newHash);
+    }
+  }
+
   const { data: createdUser, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
@@ -93,6 +104,9 @@ async function attemptLegacyMigration(
     wp_user_id: legacyUser.id,
     origin: "wordpress_migrated",
   });
+
+  // Link any migrated volunteer data to this profile
+  await linkVolunteerToProfileByWpUserId(supabaseAdmin, legacyUser.id, supabaseUserId);
 
   await markLegacyUserAsMigrated(supabaseAdmin, legacyUser.id);
 

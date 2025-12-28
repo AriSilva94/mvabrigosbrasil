@@ -46,3 +46,26 @@ export async function markLegacyUserAsMigrated(
 
   return { error: error ?? null };
 }
+
+/**
+ * Atualiza o hash de senha de um usuário legado
+ * Usado para converter MD5 temporário para PHPass após login bem-sucedido
+ */
+export async function updateLegacyUserPassword(
+  supabaseAdmin: SupabaseClientType,
+  legacyUserId: number,
+  newPasswordHash: string,
+): Promise<{ error: Error | null }> {
+  const { error } = await supabaseAdmin
+    .from("wp_users_legacy")
+    .update({
+      user_pass: newPasswordHash,
+    })
+    .eq("id", legacyUserId);
+
+  if (error) {
+    console.error("wpUsersLegacyRepository.updateLegacyUserPassword", error);
+  }
+
+  return { error: error ?? null };
+}
