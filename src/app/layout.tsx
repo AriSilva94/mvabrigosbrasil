@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "../components/layout/Header";
@@ -162,8 +163,11 @@ export default function RootLayout({
         <AppImageProvider>
           <ToastProvider>
             <Header />
-            <main>{children}</main>
+            <main>
+              {children}
+            </main>
             <Footer />
+            <SpeedInsights />
           </ToastProvider>
         </AppImageProvider>
       </body>
