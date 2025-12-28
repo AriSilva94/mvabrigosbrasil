@@ -1,0 +1,6 @@
+# Ignorar relatórios de migração (podem conter dados sensíveis)
+*.json
+*.log
+
+# Manter o diretório no git
+!.gitignore

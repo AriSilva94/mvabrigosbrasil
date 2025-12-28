@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(node scripts/migrations/migrate-volunteers-wp-to-supabase.js:*)",
+      "Bash(node scripts/migrations/test-connection.js:*)",
+      "Bash(node scripts/migrations/check-schema.js:*)",
+      "Bash(node scripts/migrations/inspect-volunteer-meta.js:*)",
+      "Bash(node scripts/migrations/setup-test-login.js:*)",
+      "Bash(node scripts/migrations/diagnose-volunteer-users.js:*)",
+      "Bash(node scripts/migrations/populate-wp-users-legacy.js:*)",
+      "Bash(node scripts/migrations/check-password-hash.js:*)",
+      "Bash(node scripts/migrations/create-test-user-native.js:*)",
+      "Bash(node scripts/migrations/link-existing-volunteers.js:*)",
+      "Bash(node scripts/migrations/verify-volunteer-link.js:*)",
+      "Bash(grep:*)",
+      "Bash(node scripts/migrations/voluntarios/setup-test-login.js:*)",
+      "Bash(ls:*)",
+      "Bash(node scripts/migrations/voluntarios/check-password-hash.js:*)"
+    ]
+  }
+}
