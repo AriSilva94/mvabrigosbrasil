@@ -110,13 +110,15 @@ export default function TeamUserList(): JSX.Element {
 
   return (
     <div className="space-y-3 rounded-xl border border-slate-100 bg-white px-5 py-4 shadow-[0_10px_30px_rgba(16,130,89,0.06)] md:px-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <Heading as="h3" className="text-lg font-semibold text-brand-secondary">
           Usuários cadastrados
         </Heading>
-        {isLoading && (
-          <span className="text-sm font-medium text-[#7b8191]">Carregando…</span>
-        )}
+        <div className="flex items-center gap-3">
+          {isLoading && (
+            <span className="text-sm font-medium text-[#7b8191]">Carregando…</span>
+          )}
+        </div>
       </div>
 
       {error && (

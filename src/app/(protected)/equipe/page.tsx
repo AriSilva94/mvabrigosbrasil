@@ -3,9 +3,9 @@ import type { JSX } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
-import TeamAccessForm from "@/app/(protected)/equipe/components/TeamAccessForm";
 import TeamUserList from "@/app/(protected)/equipe/components/TeamUserList";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
+import TeamAccessModal from "@/app/(protected)/equipe/components/TeamAccessModal";
 
 export const metadata = buildMetadata({
   title: "Equipe do Abrigo",
@@ -45,7 +45,7 @@ export default async function Page(): Promise<JSX.Element> {
               </Text>
             </header>
 
-            <TeamAccessForm />
+            <TeamAccessModal triggerLabel="Novo Integrante" />
 
             <div className="rounded-xl border border-[#e8ecf1] bg-[#f7fafc] px-5 py-4">
               <Heading as="h3" className="text-base font-semibold text-brand-secondary">
