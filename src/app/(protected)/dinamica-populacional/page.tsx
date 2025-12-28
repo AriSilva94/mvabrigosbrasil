@@ -19,6 +19,8 @@ export default async function Page(): Promise<JSX.Element> {
   const { summary: userSummary } = await getDynamicsUserSummary({
     userId: access.userId,
     fallbackEmail: access.email,
+    creatorProfileId: access.creatorProfileId,
+    isTeamOnly: access.isTeamOnly,
   });
 
   return (
@@ -32,7 +34,10 @@ export default async function Page(): Promise<JSX.Element> {
         ]}
       />
 
-      <PopulationDynamicsContent userSummary={userSummary} />
+      <PopulationDynamicsContent
+        userSummary={userSummary}
+        isTeamOnly={access.isTeamOnly}
+      />
     </main>
   );
 }

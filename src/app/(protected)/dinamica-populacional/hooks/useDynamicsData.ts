@@ -86,7 +86,11 @@ export function useDynamicsData({
         return;
       }
       const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-      setSections(json.sections ?? buildFallbackSections(userSummary, BASE_STATS));
+      const nextSections =
+        json.sections && json.sections.length > 0
+          ? json.sections
+          : buildFallbackSections(userSummary, BASE_STATS);
+      setSections(nextSections);
     } catch (error) {
       console.error("dinamica-populacional: falha ao carregar dados", error);
       setSections(buildFallbackSections(userSummary, BASE_STATS));
@@ -113,17 +117,21 @@ export function useDynamicsData({
           console.error("Erro ao salvar registro de dinâmica");
         } else {
           const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-          setSections(json.sections ?? buildFallbackSections(userSummary, BASE_STATS));
+          const nextSections =
+            json.sections && json.sections.length > 0
+              ? json.sections
+              : buildFallbackSections(userSummary, BASE_STATS);
+          setSections(nextSections);
         }
       } catch (error) {
-      console.error("dinamica-populacional: falha ao salvar registro", error);
-    } finally {
-      setSaving(false);
-      setRegisterType(null);
-      setEditingRowId(null);
-      setFormInitialValues(null);
-    }
-  },
+        console.error("dinamica-populacional: falha ao salvar registro", error);
+      } finally {
+        setSaving(false);
+        setRegisterType(null);
+        setEditingRowId(null);
+        setFormInitialValues(null);
+      }
+    },
     [userSummary],
   );
 
@@ -196,7 +204,11 @@ export function useDynamicsData({
       }
 
       const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-      setSections(json.sections ?? buildFallbackSections(userSummary, BASE_STATS));
+      const nextSections =
+        json.sections && json.sections.length > 0
+          ? json.sections
+          : buildFallbackSections(userSummary, BASE_STATS);
+      setSections(nextSections);
     } catch (error) {
       console.error("dinamica-populacional: falha ao excluir registro", error);
     } finally {
