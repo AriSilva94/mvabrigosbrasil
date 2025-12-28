@@ -46,3 +46,35 @@ export async function markLegacyUserAsMigrated(
 
   return { error: error ?? null };
 }
+
+export async function upsertLegacyUser(
+  supabaseAdmin: SupabaseClientType,
+  user: Omit<LegacyUserRecord, "migrated" | "migrated_at"> & {
+    migrated?: boolean | null;
+    migrated_at?: string | null;
+  },
+): Promise<{ legacyUser: LegacyUserRecord | null; error: Error | null }> {
+  const { data, error } = await supabaseAdmin
+    .from("wp_users_legacy")
+    .upsert(
+      {
+        id: user.id,
+        user_pass: user.user_pass,
+        user_email: user.user_email,
+        user_login: user.user_login,
+        display_name: user.display_name,
+        migrated: user.migrated ?? false,
+        migrated_at: user.migrated_at ?? null,
+      },
+      { onConflict: "id" },
+    )
+    .select("id, user_pass, user_email, user_login, display_name, migrated, migrated_at")
+    .maybeSingle();
+
+  if (error) {
+    console.error("wpUsersLegacyRepository.upsertLegacyUser", error);
+    return { legacyUser: null, error };
+  }
+
+  return { legacyUser: (data as LegacyUserRecord | null) ?? null, error: null };
+}
