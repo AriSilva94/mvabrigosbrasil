@@ -129,6 +129,37 @@ function extractMeta(metaArray, key) {
   return meta?.meta_value || null;
 }
 
+/**
+ * Normaliza slug do WordPress
+ */
+function normalizeWpSlug(postName) {
+  if (!postName) return null;
+  return postName.trim().toLowerCase();
+}
+
+/**
+ * Gera slug a partir do nome (fallback se post_name não existir)
+ */
+function slugifyName(name) {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-{2,}/g, '-');
+}
+
+/**
+ * Gera slug completo com sufixo de ID (fallback)
+ */
+function generateVolunteerSlug(name, wpPostId) {
+  const base = slugifyName(name || 'voluntario');
+  const idSuffix = String(wpPostId).slice(-4).padStart(4, '0');
+  return `${base}-${idSuffix}`;
+}
+
 // ========================================
 // TRANSFORMAÇÃO E VALIDAÇÃO
 // ========================================
@@ -156,10 +187,16 @@ function mapLegacyVolunteerToNew(wpPost, metaArray) {
   const createdAt = parseWpDate(wpPost.post_date);
   const updatedAt = parseWpDate(wpPost.post_modified);
 
+  // Gerar slug: prioriza post_name do WP, senão gera a partir do nome
+  const slug = wpPost.post_name
+    ? normalizeWpSlug(wpPost.post_name)
+    : generateVolunteerSlug(name || 'voluntario', wpPost.id);
+
   return {
     wp_post_id: wpPost.id,
     owner_profile_id: null, // Será vinculado no login
     name,
+    slug,
     telefone,
     cidade,
     estado,
@@ -206,7 +243,7 @@ function validateVolunteer(volunteer) {
 async function fetchLegacyVolunteers(offset = 0, pageSize = PAGE_SIZE) {
   const { data: posts, error: postsError } = await supabase
     .from('wp_posts_raw')
-    .select('id, post_author, post_date, post_content, post_title, post_status, post_modified, post_type')
+    .select('id, post_author, post_date, post_content, post_title, post_name, post_status, post_modified, post_type')
     .eq('post_type', 'voluntario')
     .order('id', { ascending: true })
     .range(offset, offset + pageSize - 1);
@@ -221,18 +258,29 @@ async function fetchLegacyVolunteers(offset = 0, pageSize = PAGE_SIZE) {
 
   const postIds = posts.map(p => p.id);
 
-  const { data: metas, error: metasError } = await supabase
-    .from('wp_postmeta_raw')
-    .select('post_id, meta_key, meta_value')
-    .in('post_id', postIds);
+  // Buscar TODOS os metadados em lotes (Supabase limita a 1000 registros por padrão)
+  let allMetas = [];
+  const CHUNK_SIZE = 50; // Buscar metadados para 50 posts por vez
 
-  if (metasError) {
-    throw new Error(`Erro ao buscar metadados: ${metasError.message}`);
+  for (let i = 0; i < postIds.length; i += CHUNK_SIZE) {
+    const chunk = postIds.slice(i, i + CHUNK_SIZE);
+    const { data: metas, error: metasError } = await supabase
+      .from('wp_postmeta_raw')
+      .select('post_id, meta_key, meta_value')
+      .in('post_id', chunk);
+
+    if (metasError) {
+      throw new Error(`Erro ao buscar metadados: ${metasError.message}`);
+    }
+
+    if (metas) {
+      allMetas = allMetas.concat(metas);
+    }
   }
 
   // Agrupar metadados por post_id
   const metasByPostId = {};
-  (metas || []).forEach(meta => {
+  allMetas.forEach(meta => {
     if (!metasByPostId[meta.post_id]) {
       metasByPostId[meta.post_id] = [];
     }

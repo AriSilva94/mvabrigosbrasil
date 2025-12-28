@@ -29,7 +29,7 @@ node migrate-volunteers-wp-to-supabase.js
 
 ---
 
-### 2. `setup-test-login.js` - Configurar Login de Teste
+### 2. `setup-test-login.js` - Configurar Login de Teste (Aleatório)
 
 Seleciona aleatoriamente um voluntário migrado e configura senha para teste.
 
@@ -62,6 +62,54 @@ Dados esperados no perfil:
    Estado: SP
    ...
 ```
+
+---
+
+### 2.1. `setup-test-login-by-email.js` - Configurar Login de Teste (Email Específico)
+
+Configura senha de teste para um email específico.
+
+**Uso:**
+
+```bash
+node setup-test-login-by-email.js EMAIL
+```
+
+**Exemplo:**
+
+```bash
+node setup-test-login-by-email.js analays.souza@gmail.com
+```
+
+**O que faz:**
+
+1. Valida se o email existe em `wp_users_legacy`
+2. Busca dados do voluntário (se existir)
+3. Configura senha MD5 temporária no `wp_users_legacy`
+4. Exibe credenciais e dados esperados
+
+**Vantagens:**
+
+- ✅ Teste com email específico que você já conhece
+- ✅ Útil para re-testar o mesmo usuário
+- ✅ Validação clara se o email não existir
+
+---
+
+### 2.2. `setup-test-login-with-periodo.js` - Configurar Login de Teste (Com Periodo/Atuacao)
+
+Seleciona aleatoriamente um voluntário que TEM os campos periodo e atuacao preenchidos.
+
+**Uso:**
+
+```bash
+node setup-test-login-with-periodo.js
+```
+
+**Quando usar:**
+
+- Para testar especificamente os campos periodo e atuacao
+- Validar que esses campos foram migrados corretamente
 
 ---
 
@@ -117,6 +165,42 @@ node verify-volunteer-link.js
 
 ## 🔧 Scripts de Diagnóstico e Debug
 
+### `check-specific-user.js`
+
+Verifica todos os dados de um usuário específico, comparando WordPress vs Supabase.
+
+```bash
+node check-specific-user.js
+```
+
+Mostra:
+
+- Metadados no WordPress (wp_postmeta_raw)
+- Dados migrados na tabela volunteers
+- Útil para debug de migração
+
+### `verify-all-migrations.js`
+
+Verifica a qualidade geral da migração com estatísticas.
+
+```bash
+node verify-all-migrations.js
+```
+
+Mostra:
+
+- Total de voluntários migrados
+- Porcentagem de campos preenchidos
+- Amostra aleatória de 5 voluntários
+
+### `check-periodo-atuacao-distribution.js`
+
+Verifica quantos posts no WordPress têm os campos periodo e atuacao.
+
+```bash
+node check-periodo-atuacao-distribution.js
+```
+
 ### `check-password-hash.js`
 
 Verifica o formato do hash de senha de um usuário específico e testa validação MD5.
@@ -149,13 +233,15 @@ Popula a tabela `wp_users_legacy` com usuários que são autores de voluntários
 node populate-wp-users-legacy.js
 ```
 
-### `clear-migrated-volunteers.js`
+### `delete-and-remigrate.js`
 
-Remove voluntários migrados (útil para testes). **Use com cuidado!**
+Deleta todos os voluntários migrados para permitir nova migração do zero.
 
 ```bash
-node clear-migrated-volunteers.js
+node delete-and-remigrate.js
 ```
+
+**⚠️ Use com cuidado!** Este script remove TODOS os voluntários que têm `wp_post_id` preenchido.
 
 ### Scripts Obsoletos (mantidos para referência)
 

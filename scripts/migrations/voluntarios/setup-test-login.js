@@ -50,7 +50,7 @@ async function setupTestLogin() {
 
   const { data: volunteers, error: volError } = await supabase
     .from('volunteers')
-    .select('wp_post_id, name, cidade, estado, telefone, profissao, escolaridade, genero, disponibilidade')
+    .select('wp_post_id, name, cidade, estado, telefone, profissao, escolaridade, faixa_etaria, genero, experiencia, atuacao, disponibilidade, periodo, descricao, comentarios')
     .not('wp_post_id', 'is', null)
     .not('cidade', 'is', null)
     .not('estado', 'is', null)
@@ -131,13 +131,19 @@ async function setupTestLogin() {
 
   console.log('📋 DADOS DO VOLUNTÁRIO (esperados no perfil após login):\n');
   console.log(`   Nome:            ${volunteer.name}`);
-  console.log(`   Cidade:          ${volunteer.cidade || '(não informado)'}`);
-  console.log(`   Estado:          ${volunteer.estado || '(não informado)'}`);
   console.log(`   Telefone:        ${volunteer.telefone || '(não informado)'}`);
   console.log(`   Profissão:       ${volunteer.profissao || '(não informado)'}`);
-  console.log(`   Escolaridade:    ${volunteer.escolaridade || '(não informado)'}`);
+  console.log(`   Faixa Etária:    ${volunteer.faixa_etaria || '(não informado)'}`);
   console.log(`   Gênero:          ${volunteer.genero || '(não informado)'}`);
-  console.log(`   Disponibilidade: ${volunteer.disponibilidade || '(não informado)'}\n`);
+  console.log(`   Escolaridade:    ${volunteer.escolaridade || '(não informado)'}`);
+  console.log(`   Estado:          ${volunteer.estado || '(não informado)'}`);
+  console.log(`   Cidade:          ${volunteer.cidade || '(não informado)'}`);
+  console.log(`   Disponibilidade: ${volunteer.disponibilidade || '(não informado)'}`);
+  console.log(`   Período:         ${volunteer.periodo || '(não informado)'}`);
+  console.log(`   Experiência:     ${volunteer.experiencia || '(não informado)'}`);
+  console.log(`   Atuação:         ${volunteer.atuacao || '(não informado)'}`);
+  console.log(`   Descrição:       ${volunteer.descricao ? volunteer.descricao.substring(0, 50) + '...' : '(não informado)'}`);
+  console.log(`   Comentários:     ${volunteer.comentarios || '(não informado)'}\n`);
 
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
