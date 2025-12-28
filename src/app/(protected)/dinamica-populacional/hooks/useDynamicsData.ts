@@ -18,6 +18,7 @@ type UseDynamicsDataReturn = {
   sections: DynamicsDisplay[];
   isLoading: boolean;
   isSaving: boolean;
+  isDeleting: boolean;
   isRegisterChoiceOpen: boolean;
   openRegisterChoice: () => void;
   closeRegisterChoice: () => void;
@@ -25,8 +26,11 @@ type UseDynamicsDataReturn = {
   closeRegister: () => void;
   registerType: DynamicType | null;
   formInitialValues?: RegisterFormValues | null;
+  editingRowId?: string | null;
+  isEditing: boolean;
   startEditRow: (type: DynamicType, rowId: string) => void;
   onSubmit: (payload: RegisterFormSubmit) => Promise<void>;
+  onDelete: () => Promise<void>;
 };
 
 const buildFallbackSections = (
@@ -64,9 +68,11 @@ export function useDynamicsData({
 }: UseDynamicsDataParams): UseDynamicsDataReturn {
   const [isLoading, setLoading] = useState(true);
   const [isSaving, setSaving] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
   const [isRegisterChoiceOpen, setRegisterChoiceOpen] = useState(false);
   const [registerType, setRegisterType] = useState<DynamicType | null>(null);
   const [formInitialValues, setFormInitialValues] = useState<RegisterFormValues | null>(null);
+  const [editingRowId, setEditingRowId] = useState<string | null>(null);
   const [sections, setSections] = useState<DynamicsDisplay[]>(() =>
     buildFallbackSections(userSummary, BASE_STATS),
   );
@@ -110,12 +116,14 @@ export function useDynamicsData({
           setSections(json.sections ?? buildFallbackSections(userSummary, BASE_STATS));
         }
       } catch (error) {
-        console.error("dinamica-populacional: falha ao salvar registro", error);
-      } finally {
-        setSaving(false);
-        setRegisterType(null);
-      }
-    },
+      console.error("dinamica-populacional: falha ao salvar registro", error);
+    } finally {
+      setSaving(false);
+      setRegisterType(null);
+      setEditingRowId(null);
+      setFormInitialValues(null);
+    }
+  },
     [userSummary],
   );
 
@@ -123,10 +131,15 @@ export function useDynamicsData({
   const closeRegisterChoice = (): void => setRegisterChoiceOpen(false);
   const openRegister = (type: DynamicType): void => {
     closeRegisterChoice();
+    setEditingRowId(null);
     setFormInitialValues(null);
     setRegisterType(type);
   };
-  const closeRegister = (): void => setRegisterType(null);
+  const closeRegister = (): void => {
+    setRegisterType(null);
+    setEditingRowId(null);
+    setFormInitialValues(null);
+  };
 
   const startEditRow = (type: DynamicType, rowId: string): void => {
     const section = sections.find((sectionItem) => sectionItem.dynamicType === type);
@@ -136,6 +149,7 @@ export function useDynamicsData({
       return;
     }
 
+    setEditingRowId(row.id);
     const dateSource = row.referenceDate || row.referenceLabel;
     const [month, year] = dateSource.includes("/")
       ? dateSource.split("/").reverse()
@@ -166,10 +180,38 @@ export function useDynamicsData({
     setRegisterType(type);
   };
 
+  const handleDelete = useCallback(async () => {
+    if (!editingRowId) return;
+    setDeleting(true);
+    try {
+      const response = await fetch("/api/dynamics", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editingRowId }),
+      });
+
+      if (!response.ok) {
+        console.error("Erro ao excluir registro de dinâmica");
+        return;
+      }
+
+      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+      setSections(json.sections ?? buildFallbackSections(userSummary, BASE_STATS));
+    } catch (error) {
+      console.error("dinamica-populacional: falha ao excluir registro", error);
+    } finally {
+      setDeleting(false);
+      setRegisterType(null);
+      setFormInitialValues(null);
+      setEditingRowId(null);
+    }
+  }, [editingRowId, userSummary]);
+
   return {
     sections,
     isLoading,
     isSaving,
+    isDeleting,
     isRegisterChoiceOpen,
     openRegisterChoice,
     closeRegisterChoice,
@@ -177,7 +219,10 @@ export function useDynamicsData({
     closeRegister,
     registerType,
     formInitialValues,
+    editingRowId,
+    isEditing: Boolean(formInitialValues && editingRowId),
     startEditRow,
     onSubmit: handleSubmit,
+    onDelete: handleDelete,
   };
 }
