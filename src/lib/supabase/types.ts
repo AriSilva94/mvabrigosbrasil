@@ -37,6 +37,31 @@ export type Database = {
         };
         Relationships: [];
       };
+      wp_users_raw: {
+        Row: {
+          id: number;
+          user_pass: string | null;
+          user_email: string | null;
+          user_login: string | null;
+          display_name: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: number;
+          user_pass?: string | null;
+          user_email?: string | null;
+          user_login?: string | null;
+          display_name?: string | null;
+        };
+        Update: {
+          id?: number;
+          user_pass?: string | null;
+          user_email?: string | null;
+          user_login?: string | null;
+          display_name?: string | null;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           id: string;

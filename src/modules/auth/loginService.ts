@@ -6,7 +6,10 @@ import { findProfileByEmail, insertProfileFromLegacy } from "./repositories/prof
 import {
   findLegacyUserByEmail,
   markLegacyUserAsMigrated,
+  upsertLegacyUser,
+  type LegacyUserRecord,
 } from "./repositories/wpUsersLegacyRepository";
+import { findRawUserByEmail } from "./repositories/wpUsersRawRepository";
 
 type SupabaseAuthClient = SupabaseClientType;
 type SupabaseAdminClient = SupabaseClientType;
@@ -18,6 +21,7 @@ type AttemptLoginResult =
 type MigrationResult =
   | { success: true; userId: string; email: string | null; accessToken: string; refreshToken: string }
   | { success: false; status: number; errorMessage: string };
+type LegacyLookupResult = { legacyUser: LegacyUserRecord | null; error: Error | null };
 
 export type LoginServiceResult =
   | {
@@ -52,13 +56,50 @@ async function attemptSupabaseLogin(
   };
 }
 
+async function findOrSeedLegacyUser(
+  supabaseAdmin: SupabaseAdminClient,
+  email: string,
+): Promise<LegacyLookupResult> {
+  const { legacyUser, error } = await findLegacyUserByEmail(supabaseAdmin, email);
+  if (error || legacyUser) {
+    return { legacyUser, error };
+  }
+
+  const { rawUser, error: rawError } = await findRawUserByEmail(supabaseAdmin, email);
+  if (rawError) {
+    return { legacyUser: null, error: rawError };
+  }
+
+  if (!rawUser || !rawUser.user_pass) {
+    return { legacyUser: null, error: null };
+  }
+
+  const { legacyUser: seededUser, error: seedError } = await upsertLegacyUser(supabaseAdmin, {
+    id: rawUser.id,
+    user_pass: rawUser.user_pass,
+    user_email: rawUser.user_email,
+    user_login: rawUser.user_login,
+    display_name: rawUser.display_name,
+  });
+
+  if (seedError) {
+    return { legacyUser: null, error: seedError };
+  }
+
+  return { legacyUser: seededUser, error: null };
+}
+
 async function attemptLegacyMigration(
   supabase: SupabaseAuthClient,
   supabaseAdmin: SupabaseAdminClient,
   email: string,
   password: string,
+  existingLegacyUser?: LegacyUserRecord | null,
 ): Promise<MigrationResult> {
-  const { legacyUser, error: legacyError } = await findLegacyUserByEmail(supabaseAdmin, email);
+  const legacyLookup: LegacyLookupResult = existingLegacyUser
+    ? { legacyUser: existingLegacyUser, error: null }
+    : await findOrSeedLegacyUser(supabaseAdmin, email);
+  const { legacyUser, error: legacyError } = legacyLookup;
 
   if (legacyError) {
     return { success: false, status: 500, errorMessage: "Erro ao buscar usuário" };
@@ -130,7 +171,6 @@ export async function loginWithMigration(
   const trimmedPassword = password.trim();
 
   const profileLookupPromise = findProfileByEmail(supabaseAdmin, normalizedEmail);
-  const legacyLookupPromise = findLegacyUserByEmail(supabaseAdmin, normalizedEmail);
 
   const supabaseLogin = await attemptSupabaseLogin(supabase, normalizedEmail, trimmedPassword);
 
@@ -152,7 +192,7 @@ export async function loginWithMigration(
 
   const [{ profile, error: profileError }, legacyLookup] = await Promise.all([
     profileLookupPromise,
-    legacyLookupPromise,
+    findOrSeedLegacyUser(supabaseAdmin, normalizedEmail),
   ]);
 
   if (profileError) {
@@ -168,6 +208,7 @@ export async function loginWithMigration(
     supabaseAdmin,
     normalizedEmail,
     trimmedPassword,
+    legacyLookup.legacyUser,
   );
 
   if (migrationResult.success) {
