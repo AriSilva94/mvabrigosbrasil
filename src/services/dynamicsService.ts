@@ -51,25 +51,6 @@ const MONTH_LABELS = [
   "dez",
 ];
 
-const defaultMetrics: DynamicsTableRow["metrics"] = {
-  entriesDogs: 0,
-  entriesCats: 0,
-  returnsDogs: 0,
-  returnsCats: 0,
-  adoptionsDogs: 0,
-  adoptionsCats: 0,
-  euthanasiasDogs: 0,
-  euthanasiasCats: 0,
-  naturalDeathsDogs: 0,
-  naturalDeathsCats: 0,
-  diseasesDogs: 0,
-  diseasesCats: 0,
-  tutorReturnDogs: 0,
-  tutorReturnCats: 0,
-  originReturnDogs: 0,
-  originReturnCats: 0,
-};
-
 function parseReferenceLabel(reference: string | null): string {
   if (!reference) return "—";
   const cleaned = reference.replace("/", "-");
