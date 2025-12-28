@@ -18,10 +18,12 @@ import { useRouter } from "next/navigation";
 
 type PopulationDynamicsContentProps = {
   userSummary: PopulationUserSummary | null;
+  isTeamOnly?: boolean;
 };
 
 export default function PopulationDynamicsContent({
   userSummary,
+  isTeamOnly = false,
 }: PopulationDynamicsContentProps): JSX.Element {
   const router = useRouter();
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
@@ -64,6 +66,7 @@ export default function PopulationDynamicsContent({
               isLoading={isLoading}
               onCreate={openRegister}
               onEditRow={(id) => startEditRow("dinamica", id)}
+              canEditPopulation={!isTeamOnly}
               onEditPopulation={() =>
                 router.push("/meu-cadastro?edit=population#populacao-inicial")
               }
@@ -76,6 +79,7 @@ export default function PopulationDynamicsContent({
               isLoading={isLoading}
               onCreate={openRegister}
               onEditRow={(id) => startEditRow("dinamica_lar", id)}
+              canEditPopulation={!isTeamOnly}
               onEditPopulation={() =>
                 router.push("/meu-cadastro?edit=population#populacao-inicial")
               }

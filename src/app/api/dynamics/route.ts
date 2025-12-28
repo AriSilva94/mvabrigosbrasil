@@ -13,20 +13,33 @@ const deleteSchema = z.object({
   id: z.string().min(1),
 });
 
-async function resolveShelter(supabaseAdmin: ReturnType<typeof getSupabaseAdminClient>, userId: string) {
-  const { data, error } = await supabaseAdmin
-    .from("shelters")
-    .select("id, initial_dogs, initial_cats")
-    .eq("profile_id", userId)
-    .limit(1)
-    .maybeSingle();
+async function resolveShelter(
+  supabaseAdmin: ReturnType<typeof getSupabaseAdminClient>,
+  access: Awaited<ReturnType<typeof loadUserAccess>>,
+) {
+  const queryShelter = async (profileId: string) =>
+    supabaseAdmin
+      .from("shelters")
+      .select("id, initial_dogs, initial_cats")
+      .eq("profile_id", profileId)
+      .limit(1)
+      .maybeSingle();
 
-  if (error) {
-    console.error("api/dynamics: erro ao buscar shelter", error);
-    throw error;
+  const attemptOrder = [
+    access?.userId ?? null,
+    access?.isTeamOnly ? access?.creatorProfileId ?? null : null,
+  ].filter(Boolean) as string[];
+
+  for (const profileId of attemptOrder) {
+    const { data, error } = await queryShelter(profileId);
+    if (error) {
+      console.error("api/dynamics: erro ao buscar shelter", error);
+      throw error;
+    }
+    if (data) return data;
   }
 
-  return data;
+  return null;
 }
 
 export async function GET(): Promise<NextResponse> {
@@ -36,7 +49,7 @@ export async function GET(): Promise<NextResponse> {
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
-  const shelter = await resolveShelter(supabaseAdmin, access.userId);
+  const shelter = await resolveShelter(supabaseAdmin, access);
 
   if (!shelter) {
     return NextResponse.json({ sections: [] });
@@ -75,7 +88,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
-  const shelter = await resolveShelter(supabaseAdmin, access.userId);
+  const shelter = await resolveShelter(supabaseAdmin, access);
 
   if (!shelter) {
     return NextResponse.json({ error: "shelter_not_found" }, { status: 404 });
@@ -124,7 +137,7 @@ export async function DELETE(request: Request): Promise<NextResponse> {
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
-  const shelter = await resolveShelter(supabaseAdmin, access.userId);
+  const shelter = await resolveShelter(supabaseAdmin, access);
 
   if (!shelter) {
     return NextResponse.json({ error: "shelter_not_found" }, { status: 404 });
