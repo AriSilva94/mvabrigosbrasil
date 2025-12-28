@@ -1,7 +1,13 @@
-import React, { type JSX } from "react";
-import { Pencil } from "lucide-react";
+import React, { useState, type JSX } from "react";
+import { LayoutGrid, Pencil, Table } from "lucide-react";
 
 import type { DynamicsTableRow } from "../types";
+import PopulationGrid from "./PopulationGrid";
+import {
+  GROUPED_HEADERS,
+  METRIC_COLUMNS,
+  formatMetricValue,
+} from "./populationMetrics";
 
 type PopulationTableProps = {
   populationInitial: number | null;
@@ -15,42 +21,16 @@ type PopulationTableProps = {
   onEditPopulation?: () => void;
 };
 
-const METRIC_COLUMNS: Array<{
-  key: keyof DynamicsTableRow["metrics"];
+type ViewMode = "table" | "grid";
+
+const VIEW_OPTIONS: Array<{
+  key: ViewMode;
   label: string;
-  species: "dogs" | "cats";
+  icon: typeof Table;
 }> = [
-  { key: "entriesDogs", label: "Entradas", species: "dogs" },
-  { key: "entriesCats", label: "Entradas", species: "cats" },
-  { key: "returnsDogs", label: "Devoluções", species: "dogs" },
-  { key: "returnsCats", label: "Devoluções", species: "cats" },
-  { key: "adoptionsDogs", label: "Adoções", species: "dogs" },
-  { key: "adoptionsCats", label: "Adoções", species: "cats" },
-  { key: "euthanasiasDogs", label: "Eutanásias", species: "dogs" },
-  { key: "euthanasiasCats", label: "Eutanásias", species: "cats" },
-  { key: "naturalDeathsDogs", label: "Mortes Naturais", species: "dogs" },
-  { key: "naturalDeathsCats", label: "Mortes Naturais", species: "cats" },
-  { key: "diseasesDogs", label: "Doenças", species: "dogs" },
-  { key: "diseasesCats", label: "Doenças", species: "cats" },
-  { key: "tutorReturnDogs", label: "Retorno Tutor", species: "dogs" },
-  { key: "tutorReturnCats", label: "Retorno Tutor", species: "cats" },
-  { key: "originReturnDogs", label: "Retorno Origem", species: "dogs" },
-  { key: "originReturnCats", label: "Retorno Origem", species: "cats" },
+  { key: "table", label: "Tabela", icon: Table },
+  { key: "grid", label: "Grid", icon: LayoutGrid },
 ];
-
-const groupedHeaders = [
-  "Entradas",
-  "Devoluções",
-  "Adoções",
-  "Eutanásias",
-  "Mortes Naturais",
-  "Doenças",
-  "Retorno Tutor",
-  "Retorno Origem",
-];
-
-const formatValue = (value: number | null): string =>
-  typeof value === "number" ? String(value) : "—";
 
 export default function PopulationTable({
   populationInitial,
@@ -63,10 +43,12 @@ export default function PopulationTable({
   onEditRow,
   onEditPopulation,
 }: PopulationTableProps): JSX.Element {
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
+
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-800">
           População Inicial:{" "}
           <span className="text-brand-primary">{populationInitial ?? "—"}</span>
           {(populationInitialDogs ?? populationInitialCats ?? null) !==
@@ -86,109 +68,160 @@ export default function PopulationTable({
             <Pencil className="h-4 w-4" aria-hidden />
           </button>
         </div>
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+          <span>Visualização</span>
+          <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1 shadow-inner">
+            {VIEW_OPTIONS.map((option) => {
+              const Icon = option.icon;
+              const isActive = viewMode === option.key;
+              return (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => setViewMode(option.key)}
+                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-semibold transition cursor-pointer ${
+                    isActive
+                      ? "border border-brand-primary/60 bg-white text-brand-primary shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                  aria-pressed={isActive}
+                >
+                  <Icon className="h-4 w-4" aria-hidden />
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse text-xs text-slate-800">
-          <thead>
-            <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-600">
-              <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
-                Data
-              </th>
-              {groupedHeaders.map((label) => (
-                <th
-                  key={label}
-                  className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold"
-                  colSpan={2}
-                >
-                  {label}
-                </th>
-              ))}
-              <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
-                Saldo
-              </th>
-              <th className="border-b border-slate-200 px-6 py-2 text-center font-semibold">
-                Ações
-              </th>
-            </tr>
-            <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
-              <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
-                &nbsp;
-              </th>
-              {groupedHeaders.map((label) => (
-                <React.Fragment key={`${label}-sub`}>
-                  <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
-                    Cães
+      <div className="relative">
+        <div
+          className={`transition-all duration-300 ${
+            viewMode === "table"
+              ? "opacity-100 translate-y-0"
+              : "pointer-events-none absolute inset-0 translate-y-3 opacity-0"
+          }`}
+        >
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse text-xs text-slate-800">
+              <thead>
+                <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-600">
+                  <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
+                    Data
                   </th>
+                  {GROUPED_HEADERS.map((label) => (
+                    <th
+                      key={label}
+                      className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold"
+                      colSpan={2}
+                    >
+                      {label}
+                    </th>
+                  ))}
                   <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
-                    Gatos
+                    Saldo
                   </th>
-                </React.Fragment>
-              ))}
-              <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
-                &nbsp;
-              </th>
-              <th className="border-b border-slate-200 px-3 py-2 text-center font-semibold">
-                &nbsp;
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.id} className="border-b border-slate-100">
-                <td className="border-r border-slate-200 px-3 py-3 text-sm font-semibold">
-                  {row.referenceLabel}
-                </td>
-                {METRIC_COLUMNS.map((column) => (
-                  <td
-                    key={`${row.id}-${column.key}`}
-                    className="border-r border-slate-200 px-3 py-3 text-center text-sm"
-                  >
-                    {formatValue(row.metrics[column.key])}
-                  </td>
+                  <th className="border-b border-slate-200 px-6 py-2 text-center font-semibold">
+                    Ações
+                  </th>
+                </tr>
+                <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
+                  <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
+                    &nbsp;
+                  </th>
+                  {GROUPED_HEADERS.map((label) => (
+                    <React.Fragment key={`${label}-sub`}>
+                      <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                        Cães
+                      </th>
+                      <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                        Gatos
+                      </th>
+                    </React.Fragment>
+                  ))}
+                  <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                    &nbsp;
+                  </th>
+                  <th className="border-b border-slate-200 px-3 py-2 text-center font-semibold">
+                    &nbsp;
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id} className="border-b border-slate-100">
+                    <td className="border-r border-slate-200 px-3 py-3 text-sm font-semibold">
+                      {row.referenceLabel}
+                    </td>
+                    {METRIC_COLUMNS.map((column) => (
+                      <td
+                        key={`${row.id}-${column.key}`}
+                        className="border-r border-slate-200 px-3 py-3 text-center text-sm"
+                      >
+                        {formatMetricValue(row.metrics[column.key])}
+                      </td>
+                    ))}
+                    <td className="border-r border-slate-200 px-3 py-3 text-center text-sm font-semibold">
+                      {formatMetricValue(row.balance)}
+                    </td>
+                    <td className="px-3 py-3 text-center">
+                      <button
+                        type="button"
+                        onClick={() => onEditRow?.(row.id)}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+                        aria-label="Editar registro"
+                      >
+                        <Pencil className="h-4 w-4" aria-hidden />
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-                <td className="border-r border-slate-200 px-3 py-3 text-center text-sm font-semibold">
-                  {formatValue(row.balance)}
-                </td>
-                <td className="px-3 py-3 text-center">
-                  <button
-                    type="button"
-                    onClick={() => onEditRow?.(row.id)}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
-                    aria-label="Editar registro"
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td
+                    className="px-3 py-3 text-right align-top text-sm font-semibold text-slate-800"
+                    colSpan={METRIC_COLUMNS.length + 1}
                   >
-                    <Pencil className="h-4 w-4" aria-hidden />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td
-                className="px-3 py-3 text-right align-top text-sm font-semibold text-slate-800"
-                colSpan={METRIC_COLUMNS.length + 1}
-              >
-                População Atual:
-              </td>
-              <td
-                className="px-3 py-3 align-top text-left text-sm font-semibold text-brand-primary"
-                colSpan={2}
-              >
-                <div className="flex flex-col items-start gap-1">
-                  {populationCurrent ?? "—"}
-                  {(populationCurrentDogs ?? populationCurrentCats ?? null) !==
-                    null && (
-                    <span className="text-xs font-semibold text-slate-600">
-                      Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
-                      {populationCurrentCats ?? 0}
-                    </span>
-                  )}
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+                    População Atual:
+                  </td>
+                  <td
+                    className="px-3 py-3 align-top text-left text-sm font-semibold text-brand-primary"
+                    colSpan={2}
+                  >
+                    <div className="flex flex-col items-start gap-1">
+                      {populationCurrent ?? "—"}
+                      {(populationCurrentDogs ?? populationCurrentCats ??
+                        null) !== null && (
+                        <span className="text-xs font-semibold text-slate-600">
+                          Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
+                          {populationCurrentCats ?? 0}
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div
+          className={`transition-all duration-300 ${
+            viewMode === "grid"
+              ? "opacity-100 translate-y-0"
+              : "pointer-events-none absolute inset-0 translate-y-3 opacity-0"
+          }`}
+        >
+          <PopulationGrid
+            rows={rows}
+            populationCurrent={populationCurrent}
+            populationCurrentDogs={populationCurrentDogs}
+            populationCurrentCats={populationCurrentCats}
+            onEditRow={onEditRow}
+          />
+        </div>
       </div>
     </div>
   );
