@@ -19,6 +19,7 @@ type PopulationTableProps = {
   rows: DynamicsTableRow[];
   onEditRow?: (id: string) => void;
   onEditPopulation?: () => void;
+  canEditPopulation?: boolean;
 };
 
 type ViewMode = "table" | "grid";
@@ -42,6 +43,7 @@ export default function PopulationTable({
   rows,
   onEditRow,
   onEditPopulation,
+  canEditPopulation = true,
 }: PopulationTableProps): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("table");
 
@@ -59,14 +61,16 @@ export default function PopulationTable({
               })`}
             </span>
           )}
-          <button
-            type="button"
-            onClick={onEditPopulation}
-            className="ml-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
-            aria-label="Editar população inicial"
-          >
-            <Pencil className="h-4 w-4" aria-hidden />
-          </button>
+          {canEditPopulation && onEditPopulation ? (
+            <button
+              type="button"
+              onClick={onEditPopulation}
+              className="ml-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+              aria-label="Editar população inicial"
+            >
+              <Pencil className="h-4 w-4" aria-hidden />
+            </button>
+          ) : null}
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
           <span>Visualização</span>
