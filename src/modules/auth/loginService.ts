@@ -9,6 +9,7 @@ import {
   updateLegacyUserPassword,
 } from "./repositories/wpUsersLegacyRepository";
 import { linkVolunteerToProfileByWpUserId } from "./repositories/volunteersRepository";
+import { linkShelterToProfileByWpUserId } from "./repositories/sheltersRepository";
 
 type SupabaseAuthClient = SupabaseClientType;
 type SupabaseAdminClient = SupabaseClientType;
@@ -107,6 +108,9 @@ async function attemptLegacyMigration(
 
   // Link any migrated volunteer data to this profile
   await linkVolunteerToProfileByWpUserId(supabaseAdmin, legacyUser.id, supabaseUserId);
+
+  // Link any migrated shelter data to this profile
+  await linkShelterToProfileByWpUserId(supabaseAdmin, legacyUser.id, supabaseUserId);
 
   await markLegacyUserAsMigrated(supabaseAdmin, legacyUser.id);
 
