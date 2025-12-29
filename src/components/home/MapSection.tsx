@@ -8,7 +8,19 @@ import type { MapStatistic } from "@/types/home.types";
 import StatCard from "@/components/ui/StatCard";
 import { Heading, Text } from "@/components/ui/typography";
 
-const MapChart = dynamic(() => import("./MapChart"), { ssr: false });
+const MapChart = dynamic(() => import("./MapChart"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full" style={{ minHeight: "500px" }}>
+      <div className="flex h-full items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-brand-primary" />
+          <p className="mt-4 text-sm text-slate-600">Carregando mapa...</p>
+        </div>
+      </div>
+    </div>
+  ),
+});
 
 const MAP_DESCRIPTION =
   "O Projeto está em seu desenvolvimento inicial, dessa maneira, o banco de dados e mapeamento está ainda com poucas informações.\nAjude esse movimento a crescer, faça parte dele registrando os dados do seu abrigo/lar temporário!!";

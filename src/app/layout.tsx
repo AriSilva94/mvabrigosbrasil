@@ -11,6 +11,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 const geistSans = localFont({
   variable: "--font-geist-sans",
+  display: "swap",
   src: [
     {
       path: "./fonts/geist-sans/Geist-100.ttf",
@@ -62,6 +63,7 @@ const geistSans = localFont({
 
 const geistMono = localFont({
   variable: "--font-geist-mono",
+  display: "swap",
   src: [
     {
       path: "./fonts/geist-mono/GeistMono-100.ttf",
