@@ -7,7 +7,6 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
-import { getVacancyProfileBySlug } from "@/services/vacanciesService";
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -72,11 +71,7 @@ export async function GET(
     return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
   }
 
-  const legacy = getVacancyProfileBySlug(id);
-  if (!legacy) {
-    return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
-  }
-  return NextResponse.json({ vacancy: { ...legacy, source: "legacy" } });
+  return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
 }
 
 export async function PUT(

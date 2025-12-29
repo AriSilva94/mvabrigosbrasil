@@ -18,6 +18,9 @@ type VacancyExtra = {
   post_tipo_demanda?: string;
   post_area_atuacao?: string;
   post_quantidade?: number | string;
+  cidade?: string;
+  estado?: string;
+  abrigo?: string;
 };
 
 function parseExtras(raw: string | null | undefined): VacancyExtra {
@@ -65,13 +68,13 @@ export function mapVacancyRow(row: VacancyRow): VacancyProfile {
     id: row.id,
     title,
     slug,
-    city: undefined,
-    state: undefined,
+    city: extras.cidade,
+    state: extras.estado,
     period: extras.post_periodo,
     workload: extras.post_carga,
     demand: extras.post_tipo_demanda,
     area: extras.post_area_atuacao,
-    shelter: undefined,
+    shelter: extras.abrigo,
     description: extras.post_content,
     skills: extras.post_habilidades_e_funcoes,
     volunteerProfile: extras.post_perfil_dos_voluntarios,
