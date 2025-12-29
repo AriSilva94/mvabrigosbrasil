@@ -4,6 +4,7 @@ import type { FormEvent, JSX } from "react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 import { FormLoading } from "@/components/loading/FormLoading";
 import {
@@ -68,6 +69,7 @@ const ATUACAO_OPTIONS = [
 ];
 
 export default function VolunteerProfileForm(): JSX.Element {
+  const router = useRouter();
   const { volunteer, isLoading, refresh } = useVolunteerProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
@@ -127,6 +129,7 @@ export default function VolunteerProfileForm(): JSX.Element {
 
       toast.success("Cadastro de voluntário salvo com sucesso.");
       await refresh();
+      router.push("/painel");
     } catch (error) {
       console.error("Erro ao salvar cadastro de voluntário", error);
       const message =
