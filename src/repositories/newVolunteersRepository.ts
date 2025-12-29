@@ -23,6 +23,7 @@ type VolunteerRow = {
   name: string;
   cidade: string | null;
   estado: string | null;
+  slug?: string | null;
   genero: string | null;
   disponibilidade: string | null;
   wp_post_id: number | null;
@@ -88,7 +89,6 @@ export async function fetchVolunteerProfileBySlugFromNew(
   slug: string
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
   try {
-    // Busca direta por slug (usa índice único quando disponível)
     const { data, error } = await supabase
       .from("volunteers")
       .select(
@@ -108,22 +108,23 @@ export async function fetchVolunteerProfileBySlugFromNew(
       return { profile: null, error: null };
     }
 
-    const slugFromDb = typeof data.slug === 'string' ? data.slug : null;
+    const row = data as VolunteerRow;
+    const slugFromDb = typeof row.slug === "string" ? row.slug : null;
     const profile: VolunteerProfile = {
-      id: data.id,
-      name: data.name ?? "Voluntário",
-      slug: slugFromDb || generateVolunteerSlug(data.name, data.id),
-      createdAt: data.created_at ?? undefined,
-      city: data.cidade ?? undefined,
-      state: data.estado ?? undefined,
-      profession: data.profissao ?? undefined,
-      schooling: data.escolaridade ?? undefined,
-      experience: data.experiencia ?? undefined,
-      availability: data.disponibilidade ?? undefined,
-      skills: data.descricao ?? data.atuacao ?? undefined,
-      period: data.periodo ?? undefined,
-      notes: data.comentarios ?? undefined,
-      wpPostId: data.wp_post_id ? String(data.wp_post_id) : undefined,
+      id: row.id,
+      name: row.name ?? "Voluntário",
+      slug: slugFromDb || generateVolunteerSlug(row.name, row.id),
+      createdAt: row.created_at ?? undefined,
+      city: row.cidade ?? undefined,
+      state: row.estado ?? undefined,
+      profession: row.profissao ?? undefined,
+      schooling: row.escolaridade ?? undefined,
+      experience: row.experiencia ?? undefined,
+      availability: row.disponibilidade ?? undefined,
+      skills: row.descricao ?? row.atuacao ?? undefined,
+      period: row.periodo ?? undefined,
+      notes: row.comentarios ?? undefined,
+      wpPostId: row.wp_post_id ? String(row.wp_post_id) : undefined,
       source: "new",
     };
 
