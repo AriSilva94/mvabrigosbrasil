@@ -162,11 +162,12 @@ export default function ShelterProfileForm({
       }
 
       toast.success("Cadastro do abrigo salvo com sucesso.");
+      await refresh();
       if (populationEditOnly) {
         router.push("/dinamica-populacional");
-        return;
+      } else {
+        router.push("/painel");
       }
-      await refresh();
     } catch (error) {
       console.error("Erro ao salvar cadastro do abrigo", error);
       const message =
