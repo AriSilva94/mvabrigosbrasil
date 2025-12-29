@@ -8,7 +8,6 @@ import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import { buildVacancySlug, mapVacancyRow } from "@/services/vacanciesSupabase";
-import { getVacancyProfileBySlug } from "@/services/vacanciesService";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
@@ -45,9 +44,6 @@ async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVa
   if (match) {
     return { ...mapVacancyRow(match), source: "supabase" };
   }
-
-  const legacy = getVacancyProfileBySlug(slug);
-  if (legacy) return { ...legacy, source: "legacy" };
 
   return null;
 }
