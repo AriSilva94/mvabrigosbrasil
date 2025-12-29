@@ -43,3 +43,6 @@ next-env.d.ts
 
 docs/
 SUPABASE.md
+
+# claude code
+.claude
