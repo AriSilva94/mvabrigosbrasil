@@ -21,7 +21,7 @@ const VOLUNTEER_SHORTCUTS = [
   {
     id: "vacancies",
     title: "Vagas Disponiveis",
-    href: "/programa-de-voluntarios",
+    href: "/vagas",
     icon: BadgeCheck,
   },
   {
