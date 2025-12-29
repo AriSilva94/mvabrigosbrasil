@@ -20,7 +20,7 @@ export default function VolunteerTabsSection() {
     VOLUNTEER_FAQ[0]?.id ?? null
   );
   const { volunteers, loading: loadingVolunteers } = useVolunteerCards();
-  const vacancies = useVacancyCards();
+  const { vacancies, loading: loadingVacancies } = useVacancyCards();
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));
@@ -103,7 +103,9 @@ export default function VolunteerTabsSection() {
                 Vagas Disponíveis
               </Heading>
 
-              {vacancies.length === 0 ? (
+              {loadingVacancies ? (
+                <FormLoading />
+              ) : vacancies.length === 0 ? (
                 <Text className="text-[#68707b]">
                   Nenhuma vaga disponível no momento.
                 </Text>
@@ -132,7 +134,7 @@ export default function VolunteerTabsSection() {
                           href={`/vaga/${slug}`}
                           className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
                         >
-                          Ver Perfil
+                          Ver Vaga
                         </Link>
                       </div>
                     )

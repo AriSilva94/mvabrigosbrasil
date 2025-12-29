@@ -6,7 +6,6 @@ let PasswordHashClass: any = null;
 
 function getPasswordHash() {
   if (!PasswordHashClass) {
-    // @ts-expect-error - pacote não fornece tipos
     const { PasswordHash } = require("wordpress-hash-node");
     PasswordHashClass = PasswordHash;
   }
