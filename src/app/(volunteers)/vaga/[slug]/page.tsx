@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
-import { getVacancyProfileBySlug } from "@/services/vacanciesService";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
@@ -55,37 +54,34 @@ async function loadVacancy(slug: string): Promise<{
 }> {
   const { postType, shelterId } = await loadUserContext();
 
-  const uuid = extractVacancyIdFromSlug(slug) ?? slug;
   const supabaseAdmin = getSupabaseAdminClient();
   const { data: supabaseData } = await supabaseAdmin
     .from("vacancies")
-    .select("id, shelter_id, title, description, status, created_at")
-    .eq("id", uuid)
+    .select("id, shelter_id, title, description, status, created_at, slug")
+    .eq("slug", slug)
     .limit(1)
-    .maybeSingle<SupabaseVacancyRow>();
+    .maybeSingle<SupabaseVacancyRow & { slug: string }>();
 
-  if (supabaseData) {
-    const mapped = {
-      ...mapVacancyRow({
-        id: supabaseData.id,
-        shelter_id: supabaseData.shelter_id,
-        title: supabaseData.title,
-        description: supabaseData.description,
-        status: supabaseData.status,
-        created_at: supabaseData.created_at,
-      }),
-      source: "supabase",
-    } as UiVacancy;
-    const canEdit =
-      postType === REGISTER_TYPES.shelter &&
-      !!shelterId &&
-      supabaseData.shelter_id === shelterId;
-    return { vacancy: mapped, canEdit };
+  if (!supabaseData) {
+    return { vacancy: null, canEdit: false };
   }
 
-  const legacy = getVacancyProfileBySlug(slug);
-  if (!legacy) return { vacancy: null, canEdit: false };
-  return { vacancy: { ...legacy, source: "legacy" }, canEdit: false };
+  const mapped = {
+    ...mapVacancyRow({
+      id: supabaseData.id,
+      shelter_id: supabaseData.shelter_id,
+      title: supabaseData.title,
+      description: supabaseData.description,
+      status: supabaseData.status,
+      created_at: supabaseData.created_at,
+    }),
+    source: "supabase",
+  } as UiVacancy;
+  const canEdit =
+    postType === REGISTER_TYPES.shelter &&
+    !!shelterId &&
+    supabaseData.shelter_id === shelterId;
+  return { vacancy: mapped, canEdit };
 }
 
 export async function generateMetadata({
