@@ -186,15 +186,18 @@ export default function VolunteerTabsSection() {
                       </button>
                       <div
                         id={`faq-panel-${id}`}
-                        className={clsx(
-                          "text-base text-[#68707b] overflow-hidden transition-all duration-300 ease-in-out",
-                          isOpen
-                            ? "max-h-[600px] p-4 opacity-100"
-                            : "max-h-0 p-0 opacity-0"
-                        )}
+                        className="overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out"
+                        style={{
+                          display: "grid",
+                          gridTemplateRows: isOpen ? "1fr" : "0fr",
+                        }}
                         aria-hidden={!isOpen}
                       >
-                        {answer}
+                        <div className="overflow-hidden">
+                          <div className={clsx("text-base text-[#68707b]", isOpen && "p-4")}>
+                            {answer}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );

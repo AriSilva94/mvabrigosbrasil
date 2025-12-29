@@ -31,13 +31,17 @@ export default function PageHeader({
         "relative isolate overflow-hidden bg-brand-primary text-white h-40",
         className
       )}
-      style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.031), rgba(0, 0, 0, 0.008)), url('${backgroundImage}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
       aria-labelledby="page-header-title"
     >
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.031), rgba(0, 0, 0, 0.008)), url('${backgroundImage}')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          contentVisibility: "auto",
+        }}
+      />
       <div className="container mx-auto px-6 py-12">
         <div className="mx-auto max-w-4xl text-center">
           <Heading

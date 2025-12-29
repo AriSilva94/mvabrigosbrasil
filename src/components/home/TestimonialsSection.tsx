@@ -82,13 +82,14 @@ export default function TestimonialsSection(): JSX.Element {
   const trackStyle = { transform: `translateX(-${activeIndex * 100}%)` };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)]">
+    <section className="relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)] min-h-[80vh]">
       <AppImage
         src="/assets/img/bg_intro.jpg"
         alt="Plano de fundo de animais"
         fill
         quality={85}
         className="-z-10 object-cover"
+        style={{ contentVisibility: "auto" }}
       />
 
       <div className="mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center px-6 py-16 text-center text-white md:px-8 md:py-24">
@@ -122,7 +123,7 @@ export default function TestimonialsSection(): JSX.Element {
                   className="flex w-full shrink-0 flex-col items-center gap-6 px-2 py-2 text-white md:gap-8"
                   aria-hidden={index !== activeIndex}
                 >
-                  <div className="h-24 w-24 overflow-hidden rounded-full shadow-lg md:h-28 md:w-28">
+                  <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full shadow-lg md:h-28 md:w-28">
                     <AppImage
                       src={testimonial.avatar}
                       alt={`Retrato de ${testimonial.name}`}
@@ -130,6 +131,7 @@ export default function TestimonialsSection(): JSX.Element {
                       height={128}
                       quality={100}
                       className="h-full w-full object-cover"
+                      sizes="(max-width: 768px) 96px, 112px"
                     />
                   </div>
 

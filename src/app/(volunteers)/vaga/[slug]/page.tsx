@@ -7,7 +7,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
-import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { mapVacancyRow } from "@/services/vacanciesSupabase";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
@@ -30,7 +30,8 @@ type VacancyPageProps = {
 async function loadUserContext() {
   const supabase = await getServerSupabaseClient({ readOnly: true });
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return { userId: null, postType: null, shelterId: null };
+  if (error || !data.user)
+    return { userId: null, postType: null, shelterId: null };
 
   const supabaseAdmin = getSupabaseAdminClient();
   const postType = await resolvePostTypeForUser(supabaseAdmin, {
@@ -156,7 +157,10 @@ export default async function Page({
         title="Vaga de Voluntariado"
         breadcrumbs={[
           { label: "Inicial", href: "/" },
-          { label: "Programa de Voluntários", href: "/programa-de-voluntarios" },
+          {
+            label: "Programa de Voluntários",
+            href: "/programa-de-voluntarios",
+          },
           { label: displayTitle },
         ]}
       />
@@ -208,7 +212,10 @@ export default async function Page({
             </div>
 
             <div>
-              <Heading as="h3" className="text-base font-semibold text-brand-primary">
+              <Heading
+                as="h3"
+                className="text-base font-semibold text-brand-primary"
+              >
                 Abrigo
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
@@ -217,7 +224,10 @@ export default async function Page({
             </div>
 
             <div>
-              <Heading as="h3" className="text-base font-semibold text-brand-primary">
+              <Heading
+                as="h3"
+                className="text-base font-semibold text-brand-primary"
+              >
                 Descrição
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
@@ -226,7 +236,10 @@ export default async function Page({
             </div>
 
             <div>
-              <Heading as="h3" className="text-base font-semibold text-brand-primary">
+              <Heading
+                as="h3"
+                className="text-base font-semibold text-brand-primary"
+              >
                 Habilidade e Funções
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
@@ -235,7 +248,10 @@ export default async function Page({
             </div>
 
             <div>
-              <Heading as="h3" className="text-base font-semibold text-brand-primary">
+              <Heading
+                as="h3"
+                className="text-base font-semibold text-brand-primary"
+              >
                 Perfil dos Voluntários
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
@@ -244,7 +260,10 @@ export default async function Page({
             </div>
 
             <div>
-              <Heading as="h3" className="text-base font-semibold text-brand-primary">
+              <Heading
+                as="h3"
+                className="text-base font-semibold text-brand-primary"
+              >
                 Quantidade de Voluntários
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
@@ -255,7 +274,7 @@ export default async function Page({
             <div className="pt-2">
               <Link
                 href="https://mvabrigosbrasil.com.br/register/?tipo=voluntario"
-                className="inline-flex items-center rounded-full bg-brand-primary px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+                className="inline-flex items-center rounded-full bg-brand-primary px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
               >
                 Quero ser voluntário
               </Link>
