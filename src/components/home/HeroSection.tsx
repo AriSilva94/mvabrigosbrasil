@@ -19,15 +19,16 @@ const CTA_LINKS: CtaLink[] = [
 
 export default function HeroSection(): JSX.Element {
   return (
-    <section className="intro relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)]">
+    <section className="intro relative isolate overflow-hidden bg-[linear-gradient(90deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.55)_100%)] min-h-[calc(100vh-140px)]">
       <AppImage
         src="/assets/img/bg_intro.jpg"
         alt="Plano de fundo de animais"
         fill
         quality={85}
-        fetchPriority="high"
+        priority
         sizes="100vw"
         className="-z-10 object-cover"
+        style={{ contentVisibility: "auto" }}
       />
       <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-6xl flex-col items-center justify-center px-6 text-center text-white md:px-8">
         <Heading as="h1" className="font-45 md:max-w-11/12">
