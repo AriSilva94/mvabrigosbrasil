@@ -6,8 +6,8 @@ let PasswordHashClass: any = null;
 
 function getPasswordHash() {
   if (!PasswordHashClass) {
-    const { PasswordHash } = require("wordpress-hash-node");
-    PasswordHashClass = PasswordHash;
+    // wordpress-hash-node exporta diretamente a classe, não um objeto
+    PasswordHashClass = require("wordpress-hash-node");
   }
   return PasswordHashClass;
 }

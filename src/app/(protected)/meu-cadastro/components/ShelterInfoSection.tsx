@@ -446,7 +446,7 @@ export default function ShelterInfoSection({
                 type="radio"
                 name="temporaryAgreement"
                 value="nao"
-                defaultChecked={data?.hasTemporaryAgreement === false}
+                defaultChecked={data?.hasTemporaryAgreement !== true}
                 disabled={lockNonPopulation}
                 className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
               />
