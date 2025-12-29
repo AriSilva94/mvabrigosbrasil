@@ -7,10 +7,14 @@ type VolunteerCardProps = {
   volunteer: VolunteerCardType;
 };
 
-export default function VolunteerCard({ volunteer }: VolunteerCardProps): JSX.Element {
+export default function VolunteerCard({
+  volunteer,
+}: VolunteerCardProps): JSX.Element {
   return (
-    <article className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition hover:-translate-y-[1px] hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)]">
-      <h3 className="text-[18px] font-semibold text-brand-primary">{volunteer.name}</h3>
+    <article className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition hover:-translate-y-px hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)]">
+      <h3 className="text-[18px] font-semibold text-brand-primary">
+        {volunteer.name}
+      </h3>
       {volunteer.location && (
         <p className="mt-1 text-sm text-[#6b7280]">{volunteer.location}</p>
       )}
