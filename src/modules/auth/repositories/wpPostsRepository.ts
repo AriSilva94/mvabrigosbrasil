@@ -10,8 +10,10 @@ export async function findPostTypeByAuthorId(
     .from("wp_posts_raw")
     .select("post_type")
     .eq("post_author", postAuthorId)
-    .not("post_type", "is", null)
-    .maybeSingle();
+    .in("post_type", ["abrigo", "voluntario"])
+    .eq("post_status", "publish")
+    .limit(1)
+    .single();
 
   if (error) {
     console.error("wpPostsRepository.findPostTypeByAuthorId", { postAuthorId, error });
