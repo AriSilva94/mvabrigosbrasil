@@ -1,5 +1,6 @@
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { VacancyCard } from "@/types/vacancy.types";
+import { normalizePeriod, normalizeWorkload } from "@/constants/vacancyFilters";
 
 type VacancyRow = {
   id: string;
@@ -55,8 +56,8 @@ export async function fetchVacancyCards(
         id: String(vacancy.wp_post_id || vacancy.id),
         title: vacancy.title ?? "Vaga",
         slug: slugFromDb,
-        period: meta.post_periodo ?? undefined,
-        workload: meta.post_carga ?? undefined,
+        period: normalizePeriod(meta.post_periodo) || undefined,
+        workload: normalizeWorkload(meta.post_carga) || undefined,
         location:
           city && state ? `${city} - ${state}` : city || state || undefined,
       };
