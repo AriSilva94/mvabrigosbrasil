@@ -58,7 +58,8 @@ export async function fetchVolunteerCardsFromNew(
       const city = volunteer.cidade?.trim();
       const state = volunteer.estado?.trim();
       // Usar slug do banco ou gerar fallback se não existir (migração em andamento)
-      const slug = volunteer.slug || generateVolunteerSlug(volunteer.name, volunteer.id);
+      const slugFromDb = typeof volunteer.slug === 'string' ? volunteer.slug : null;
+      const slug = slugFromDb || generateVolunteerSlug(volunteer.name, volunteer.id);
 
       return {
         id: volunteer.id,
@@ -107,10 +108,11 @@ export async function fetchVolunteerProfileBySlugFromNew(
       return { profile: null, error: null };
     }
 
+    const slugFromDb = typeof data.slug === 'string' ? data.slug : null;
     const profile: VolunteerProfile = {
       id: data.id,
       name: data.name ?? "Voluntário",
-      slug: data.slug || generateVolunteerSlug(data.name, data.id),
+      slug: slugFromDb || generateVolunteerSlug(data.name, data.id),
       createdAt: data.created_at ?? undefined,
       city: data.cidade ?? undefined,
       state: data.estado ?? undefined,
