@@ -72,7 +72,7 @@ export default function PopulationTable({
             </button>
           ) : null}
         </div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+        <div className="ml-auto flex shrink-0 items-center gap-2 text-xs font-semibold text-slate-600">
           <span>Visualização</span>
           <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1 shadow-inner">
             {VIEW_OPTIONS.map((option) => {
@@ -83,7 +83,7 @@ export default function PopulationTable({
                   key={option.key}
                   type="button"
                   onClick={() => setViewMode(option.key)}
-                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-semibold transition cursor-pointer ${
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-1.5 text-sm font-semibold transition cursor-pointer ${
                     isActive
                       ? "border border-brand-primary/60 bg-white text-brand-primary shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
@@ -91,7 +91,7 @@ export default function PopulationTable({
                   aria-pressed={isActive}
                 >
                   <Icon className="h-4 w-4" aria-hidden />
-                  {option.label}
+                  <span className="hidden sm:inline">{option.label}</span>
                 </button>
               );
             })}
