@@ -38,7 +38,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const TEST_PASSWORD = process.argv[2] || 'TESTE_VOLUNTARIO_2025';
+const TEST_PASSWORD = process.argv[2] || 'TESTE_SENHA_2025';
 
 async function setupTestLogin() {
   console.log('\n╔════════════════════════════════════════════════════════════╗');

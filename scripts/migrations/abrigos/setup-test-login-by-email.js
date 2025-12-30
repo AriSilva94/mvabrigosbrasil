@@ -35,7 +35,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const TEST_PASSWORD = 'TESTE_ABRIGO_2025';
+const TEST_PASSWORD = 'TESTE_SENHA_2025';
 
 async function setupTestLoginByEmail(email) {
   console.log('\n╔════════════════════════════════════════════════════════════╗');
