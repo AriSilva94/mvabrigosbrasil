@@ -9,17 +9,13 @@ type VacancyRow = {
   description: string | null;
   status: string;
   wp_post_id: number | null;
+  periodo: string | null;
+  carga_horaria: string | null;
+  cidade: string | null;
+  estado: string | null;
+  is_published: boolean | null;
   created_at: string | null;
   updated_at: string | null;
-};
-
-type VacancyDescription = {
-  post_periodo?: string | null;
-  post_carga?: string | null;
-  post_cidade?: string | null;
-  post_estado?: string | null;
-  cidade?: string | null;
-  estado?: string | null;
 };
 
 export async function fetchVacancyCards(
@@ -28,8 +24,9 @@ export async function fetchVacancyCards(
   try {
     const { data, error } = await supabase
       .from("vacancies")
-      .select("id, title, slug, description, status, wp_post_id, created_at, updated_at")
+      .select("id, title, slug, description, status, wp_post_id, periodo, carga_horaria, cidade, estado, is_published, created_at, updated_at")
       .eq("status", "active")
+      .eq("is_published", true)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -37,27 +34,17 @@ export async function fetchVacancyCards(
       return { vacancies: [], error };
     }
 
-    const vacancies: VacancyCard[] = (data ?? []).map((vacancy) => {
-      // Parse description JSON to extract metadata
-      let meta: VacancyDescription = {};
-      if (vacancy.description) {
-        try {
-          meta = JSON.parse(vacancy.description) as VacancyDescription;
-        } catch (e) {
-          console.warn(`Failed to parse description for vacancy ${vacancy.id}:`, e);
-        }
-      }
-
-      const city = (meta.post_cidade || meta.cidade)?.trim();
-      const state = (meta.post_estado || meta.estado)?.trim();
+    const vacancies: VacancyCard[] = (data ?? []).map((vacancy: any) => {
+      const city = vacancy.cidade?.trim();
+      const state = vacancy.estado?.trim();
       const slugFromDb = typeof vacancy.slug === 'string' ? vacancy.slug : String(vacancy.id);
 
       return {
         id: String(vacancy.wp_post_id || vacancy.id),
         title: vacancy.title ?? "Vaga",
         slug: slugFromDb,
-        period: normalizePeriod(meta.post_periodo) || undefined,
-        workload: normalizeWorkload(meta.post_carga) || undefined,
+        period: normalizePeriod(vacancy.periodo) || undefined,
+        workload: normalizeWorkload(vacancy.carga_horaria) || undefined,
         location:
           city && state ? `${city} - ${state}` : city || state || undefined,
       };

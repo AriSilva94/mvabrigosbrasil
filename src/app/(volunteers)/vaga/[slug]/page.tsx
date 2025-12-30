@@ -10,18 +10,11 @@ import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import { mapVacancyRow } from "@/services/vacanciesSupabase";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import type { Database } from "@/lib/supabase/types";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
-
-type SupabaseVacancyRow = {
-  id: string;
-  shelter_id: string | null;
-  title: string | null;
-  description: string | null;
-  status: string | null;
-  created_at: string | null;
-};
+import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
@@ -58,30 +51,35 @@ async function loadVacancy(slug: string): Promise<{
   const supabaseAdmin = getSupabaseAdminClient();
   const { data: supabaseData } = await supabaseAdmin
     .from("vacancies")
-    .select("id, shelter_id, title, description, status, created_at, slug")
+    .select("*")
     .eq("slug", slug)
     .limit(1)
-    .maybeSingle<SupabaseVacancyRow & { slug: string }>();
+    .maybeSingle();
 
   if (!supabaseData) {
     return { vacancy: null, canEdit: false };
   }
 
-  const mapped = {
-    ...mapVacancyRow({
-      id: supabaseData.id,
-      shelter_id: supabaseData.shelter_id,
-      title: supabaseData.title,
-      description: supabaseData.description,
-      status: supabaseData.status,
-      created_at: supabaseData.created_at,
-    }),
-    source: "supabase",
-  } as UiVacancy;
+  // Cast para o tipo correto da tabela vacancies
+  type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
+  const vacancyRow = supabaseData as VacancyRow;
+
+  // Verificar se o usuário pode editar a vaga (é o dono)
   const canEdit =
     postType === REGISTER_TYPES.shelter &&
     !!shelterId &&
-    supabaseData.shelter_id === shelterId;
+    vacancyRow.shelter_id === shelterId;
+
+  // Se a vaga não está publicada E o usuário NÃO é o dono, bloquear acesso
+  if (vacancyRow.is_published === false && !canEdit) {
+    return { vacancy: null, canEdit: false };
+  }
+
+  const mapped = {
+    ...mapVacancyRow(vacancyRow),
+    source: "supabase",
+  } as UiVacancy;
+
   return { vacancy: mapped, canEdit };
 }
 
@@ -147,7 +145,7 @@ export default async function Page({
     vacancy.city && vacancy.state
       ? `${vacancy.city} - ${vacancy.state}`
       : vacancy.city || vacancy.state || "Não informado";
-  const periodInfo = [vacancy.period, vacancy.workload]
+  const periodInfo = [vacancy.period, normalizeWorkload(vacancy.workload)]
     .filter(Boolean)
     .join(" / ");
 

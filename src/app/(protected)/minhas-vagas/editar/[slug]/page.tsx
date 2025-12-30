@@ -5,23 +5,17 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/layout/PageHeader";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import type { Database } from "@/lib/supabase/types";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import { buildVacancySlug, mapVacancyRow } from "@/services/vacanciesSupabase";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 
+type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
+
 type PageParams = {
   slug: string;
-};
-
-type SupabaseVacancyRow = {
-  id: string;
-  shelter_id: string | null;
-  title: string | null;
-  description: string | null;
-  status: string | null;
-  created_at: string | null;
 };
 
 async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVacancy | null> {
@@ -29,20 +23,20 @@ async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVa
   const supabaseAdmin = getSupabaseAdminClient();
   const { data, error } = await supabaseAdmin
     .from("vacancies")
-    .select("id, shelter_id, title, description, status, created_at")
+    .select("*")
     .eq("shelter_id", shelterId);
 
   if (error) {
     console.error("minhas-vagas/editar: erro ao buscar vagas do abrigo", error);
   }
 
-  const match = (data as SupabaseVacancyRow[] | null)?.find((row) => {
+  const match = data?.find((row: any) => {
     const candidateSlug = buildVacancySlug(row.title ?? "Vaga", row.id);
     return candidateSlug === slug;
   });
 
   if (match) {
-    return { ...mapVacancyRow(match), source: "supabase" };
+    return { ...mapVacancyRow(match as VacancyRow), source: "supabase" };
   }
 
   return null;

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import SelectField from "@/components/data/SelectField";
 import { Heading, Text } from "@/components/ui/typography";
@@ -10,6 +11,7 @@ import {
   DEMAND_OPTIONS,
   PERIOD_OPTIONS,
   WORKLOAD_OPTIONS,
+  normalizeWorkload,
 } from "@/app/(protected)/minhas-vagas/constants";
 import {
   vacancyFormSchema,
@@ -26,11 +28,12 @@ type FieldErrors = Partial<Record<keyof VacancyFormInput, string>>;
 export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
   const router = useRouter();
   const [period, setPeriod] = useState(vacancy.period ?? "");
-  const [workload, setWorkload] = useState(vacancy.workload ?? "");
+  const [workload, setWorkload] = useState(normalizeWorkload(vacancy.workload));
   const [demand, setDemand] = useState(vacancy.demand ?? "");
   const [area, setArea] = useState(vacancy.area ?? "");
-  const [title, setTitle] = useState(vacancy.title ?? "");
   const [quantity, setQuantity] = useState(vacancy.quantity ?? "");
+  const [isPublished, setIsPublished] = useState(vacancy.isPublished ?? true);
+  const [title, setTitle] = useState(vacancy.title ?? "");
   const [description, setDescription] = useState(vacancy.description ?? "");
   const [skills, setSkills] = useState(vacancy.skills ?? "");
   const [profile, setProfile] = useState(vacancy.volunteerProfile ?? "");
@@ -41,7 +44,11 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
   const vacancyId = useMemo(() => vacancy.id, [vacancy.id]);
 
   function renderError(message?: string) {
-    return <p className="min-h-[18px] text-xs font-medium text-red-600">{message ?? "\u00A0"}</p>;
+    return (
+      <p className="min-h-4.5 text-xs font-medium text-red-600">
+        {message ?? "\u00A0"}
+      </p>
+    );
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -54,10 +61,11 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
       post_cidade: "",
       post_title: title,
       post_periodo: period,
-      post_quantidade: Number(quantity) || 0,
       post_carga: workload,
       post_tipo_demanda: demand,
       post_area_atuacao: area,
+      post_quantidade: quantity,
+      post_is_published: isPublished,
       post_content: description,
       post_habilidades_e_funcoes: skills,
       post_perfil_dos_voluntarios: profile,
@@ -91,10 +99,16 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
         throw new Error(json?.error || "Erro ao atualizar vaga");
       }
 
+      toast.success("Vaga atualizada com sucesso!");
       router.refresh();
       router.push("/minhas-vagas");
     } catch (error) {
       console.error("EditVacancyClient: erro ao atualizar vaga", error);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Erro ao atualizar vaga. Tente novamente.";
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
       setIsSaving(false);
@@ -102,7 +116,10 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl bg-white p-6 shadow-[0_12px_30px_rgba(16,130,89,0.06)]">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 rounded-2xl bg-white p-6 shadow-[0_12px_30px_rgba(16,130,89,0.06)]"
+    >
       <header className="space-y-1">
         <Heading as="h2" className="text-xl font-semibold text-brand-secondary">
           Editar Vaga
@@ -112,7 +129,7 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
         </Text>
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-1">
         <div className="space-y-1">
           <label className="flex w-full flex-col gap-2 text-sm font-semibold text-brand-secondary">
             <span className="inline-flex items-center gap-1">
@@ -129,7 +146,9 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
           </label>
           {renderError(errors.post_title)}
         </div>
+      </div>
 
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-1">
           <SelectField
             id="post_periodo"
@@ -145,24 +164,6 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
             showRequiredAsterisk
           />
           {renderError(errors.post_periodo)}
-        </div>
-
-        <div className="space-y-1">
-          <label className="flex w-full flex-col gap-2 text-sm font-semibold text-brand-secondary">
-            <span className="inline-flex items-center gap-1">
-              Quantidade de Vagas <span className="text-red-500">*</span>
-            </span>
-            <input
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              name="post_quantidade"
-              type="number"
-              min={1}
-              className="w-full rounded-lg border border-slate-200 px-3 py-3 text-sm text-[#4f5765] shadow-sm focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
-              placeholder="Ex: 3"
-            />
-          </label>
-          {renderError(errors.post_quantidade)}
         </div>
 
         <div className="space-y-1">
@@ -214,6 +215,57 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
             showRequiredAsterisk
           />
           {renderError(errors.post_area_atuacao)}
+        </div>
+
+        <div className="space-y-1">
+          <label className="flex w-full flex-col gap-2 text-sm font-semibold text-brand-secondary">
+            <span className="inline-flex items-center gap-1">
+              Quantidade de Vagas <span className="text-red-500">*</span>
+            </span>
+            <input
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              name="post_quantidade"
+              type="number"
+              min="1"
+              className="w-full rounded-lg border border-slate-200 px-3 py-3 text-sm text-[#4f5765] shadow-sm focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
+              placeholder="Ex: 5"
+            />
+          </label>
+          {renderError(errors.post_quantidade)}
+        </div>
+
+        <div className="space-y-1">
+          <fieldset>
+            <legend className="text-sm font-semibold text-brand-secondary mb-2">
+              Vaga Publicada? <span className="text-red-500">*</span>
+            </legend>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="post_is_published"
+                  value="true"
+                  checked={isPublished === true}
+                  onChange={() => setIsPublished(true)}
+                  className="h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                />
+                <span className="text-sm text-[#4f5765]">Sim</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="post_is_published"
+                  value="false"
+                  checked={isPublished === false}
+                  onChange={() => setIsPublished(false)}
+                  className="h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                />
+                <span className="text-sm text-[#4f5765]">Não</span>
+              </label>
+            </div>
+          </fieldset>
+          {renderError(errors.post_is_published)}
         </div>
       </div>
 
@@ -278,7 +330,7 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
         <button
           type="submit"
           disabled={isSubmitting || isSaving}
-          className="inline-flex min-w-[140px] items-center justify-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-w-35 items-center justify-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSaving ? "Salvando..." : "Salvar"}
         </button>

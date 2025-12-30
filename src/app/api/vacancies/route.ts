@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import type { Database } from "@/lib/supabase/types";
 import {
   vacancyFormSchema,
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { fetchVacanciesByShelter, mapVacancyRow } from "@/services/vacanciesSupabase";
+
+type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
 async function getCurrentUserId(): Promise<string | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
@@ -85,26 +88,26 @@ export async function POST(request: Request) {
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
-  const extras = {
-    post_content: parsed.data.post_content,
-    post_habilidades_e_funcoes: parsed.data.post_habilidades_e_funcoes,
-    post_perfil_dos_voluntarios: parsed.data.post_perfil_dos_voluntarios,
-    post_periodo: parsed.data.post_periodo,
-    post_carga: parsed.data.post_carga,
-    post_tipo_demanda: parsed.data.post_tipo_demanda,
-    post_area_atuacao: parsed.data.post_area_atuacao,
-    post_quantidade: parsed.data.post_quantidade,
-  };
 
   const { data, error: insertError } = await supabaseAdmin
     .from("vacancies")
     .insert({
       shelter_id: shelter.id,
       title: parsed.data.post_title,
-      description: JSON.stringify(extras),
-      status: "open",
+      description: parsed.data.post_content,
+      cidade: shelter.city,
+      estado: shelter.state,
+      area_atuacao: parsed.data.post_area_atuacao,
+      carga_horaria: parsed.data.post_carga,
+      periodo: parsed.data.post_periodo,
+      quantidade: parsed.data.post_quantidade,
+      is_published: parsed.data.post_is_published,
+      habilidades_e_funcoes: parsed.data.post_habilidades_e_funcoes,
+      perfil_dos_voluntarios: parsed.data.post_perfil_dos_voluntarios,
+      tipo_demanda: parsed.data.post_tipo_demanda,
+      status: "active",
     })
-    .select("id, shelter_id, title, description, status, created_at")
+    .select("*")
     .single();
 
   if (insertError) {
@@ -112,6 +115,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
 
-  const vacancy = { ...mapVacancyRow(data), source: "supabase" };
+  const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
   return NextResponse.json({ vacancy });
 }
