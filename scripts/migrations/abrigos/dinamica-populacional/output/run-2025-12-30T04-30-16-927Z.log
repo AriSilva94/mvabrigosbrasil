@@ -1,0 +1,45 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  VERIFICAÇÃO: Migração de Dinâmica Populacional           ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 CONTAGENS:
+
+WordPress (wp_posts_raw):
+   dinamica:       844
+   dinamica_lar:   156
+   TOTAL:          1000
+
+Supabase (shelter_dynamics):
+   dinamica:       0
+   dinamica_lar:   0
+   TOTAL:          0
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  ATENÇÃO: 1000 registros NÃO foram migrados
+
+   Possíveis motivos:
+   - Posts sem id_abrigo
+   - Abrigos não migrados (sem shelter_id)
+   - Posts sem período de referência válido
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 VALIDAÇÃO DETALHADA (amostra de 5 registros):
+
+Post 1219: ⚠️  Abrigo 851 não migrado
+Post 2346: ⚠️  Abrigo 1499 não migrado
+Post 627: ⚠️  Abrigo 626 não migrado
+Post 632: ⚠️  Abrigo 631 não migrado
+Post 649: ⚠️  Abrigo 648 não migrado
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏠 ABRIGOS COM DINÂMICA MIGRADA:
+
+   Total de abrigos únicos com dinâmica: 0
+
+
+✅ Verificação concluída!
+

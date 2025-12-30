@@ -31,24 +31,11 @@ Você já fez isso! ✅
 - wp_postmeta_raw
 - wp_users_raw
 
-### 3.1. Popular wp_users_legacy
+### 3.1. ~~Popular wp_users_legacy~~ (Agora automático!)
 
-⚠️ **IMPORTANTE**: Após importar `wp_users_raw`, execute este SQL:
+✅ **Não precisa mais fazer isso manualmente!**
 
-```sql
--- Popular wp_users_legacy a partir de wp_users_raw
-INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
-SELECT
-  id,
-  user_login,
-  user_email,
-  user_pass,
-  display_name
-FROM wp_users_raw
-ON CONFLICT (id) DO NOTHING;
-```
-
-Esta tabela é necessária para os scripts de teste de login funcionarem.
+O script `run-full-migration.js` agora popula automaticamente a tabela `wp_users_legacy` no **PASSO 15** (último passo da migração).
 
 ### 4. Configurar .env.local
 
@@ -57,9 +44,13 @@ Na **raiz do projeto**, crie `.env.local`:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
+DATABASE_URL=postgresql://postgres:[SUA_SENHA]@db.xxxxx.supabase.co:5432/postgres
 ```
 
 ⚠️ Use a **SERVICE_ROLE_KEY**, não a anon key!
+⚠️ A **DATABASE_URL** é necessária para execução automática de SQL (evita pausas manuais)
+
+📍 Encontre a DATABASE_URL em: Supabase Dashboard → Settings → Database → Connection String → URI
 
 ### 5. Instalar dependências
 
@@ -80,20 +71,25 @@ node run-full-migration.js
 
 ### O que acontece
 
-O script executa **12 passos automaticamente**:
+O script executa **15 passos 100% automaticamente**:
 
 1. ✅ Migra abrigos (297)
 2. ✅ Migra dinâmicas populacionais
 3. ✅ Migra voluntários (232)
-4. ⏸️  **PAUSA** → Você executa SQL: `ALTER TABLE volunteers ADD COLUMN slug TEXT;`
+4. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `volunteers`
 5. ✅ Gera slugs para voluntários
 6. ✅ Verifica duplicatas de slugs
-7. ⏸️  **PAUSA** → Você executa SQL: `CREATE UNIQUE INDEX idx_volunteers_slug ON volunteers(slug);`
-8. ⏸️  **PAUSA** → Você executa SQL: `ALTER TABLE vacancies ADD COLUMN slug TEXT;`
+7. ✅ **AUTOMÁTICO** → Cria índice único em `volunteers.slug`
+8. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `vacancies`
 9. ✅ Migra vagas (53)
 10. ✅ Verifica duplicatas de slugs
-11. ⏸️  **PAUSA** → Você executa SQL: `CREATE UNIQUE INDEX idx_vacancies_slug ON vacancies(slug);`
+11. ✅ **AUTOMÁTICO** → Cria índice único em `vacancies.slug`
 12. ✅ Valida tudo
+13. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
+14. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
+15. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
+
+🎉 **Zero pausas! 100% automático!** (requer `DATABASE_URL` no `.env.local`)
 
 **Tempo estimado**: 10-15 minutos
 
@@ -101,23 +97,7 @@ O script executa **12 passos automaticamente**:
 
 ## 🏁 Finalização (VOCÊ FAZ - Manual)
 
-### 1. Executar SQLs finais (06-07)
-
-No Supabase SQL Editor:
-
-```
-sql/06-pos-migracao-reabilitar-triggers.sql
-sql/07-validacao-final.sql
-```
-
-O SQL 07 valida:
-- ✅ Contagens corretas
-- ✅ Sem duplicatas
-- ✅ Slugs únicos
-- ✅ Índices criados
-- ✅ Triggers ativos
-
-### 2. Testar localmente
+### 1. Testar localmente
 
 ```bash
 npm run build
@@ -128,7 +108,7 @@ Acesse http://localhost:3000 e teste:
 - /abrigos
 - /programa-de-voluntarios
 
-### 3. Deploy
+### 2. Deploy
 
 ```bash
 vercel --prod
@@ -151,15 +131,15 @@ git push origin main
 ## 📊 Resumo
 
 ```
-ANTES DO SCRIPT:              SCRIPT:                    DEPOIS DO SCRIPT:
-─────────────────              ───────                    ──────────────────
-✅ Criar Supabase         →    node run-full-migration    →    SQL 06-07
-✅ SQL 00-05              →    (automático)               →    Testar
-✅ Importar WP            →    (10-15 min)                →    Deploy
-✅ .env.local             →                               →
+ANTES DO SCRIPT:              SCRIPT:                         DEPOIS DO SCRIPT:
+─────────────────              ───────                         ──────────────────
+✅ Criar Supabase         →    node run-full-migration    →    Testar
+✅ SQL 00-05              →    (100% automático)          →    Deploy
+✅ Importar WP            →    (10-15 min)                →
+✅ .env.local             →    + SQL 06-07 automático     →
 ```
 
-**Tempo total**: ~50 minutos (30 prep + 15 migração + 5 final)
+**Tempo total**: ~45 minutos (30 prep + 15 migração)
 
 ---
 
@@ -170,11 +150,14 @@ Antes de executar `run-full-migration.js`:
 - [ ] Supabase criado
 - [ ] SQLs 00-05 executados
 - [ ] Backup WP importado (wp_*_raw)
-- [ ] .env.local criado na raiz
+- [ ] .env.local criado na raiz **com DATABASE_URL**
 - [ ] npm install executado
 - [ ] Estou em `scripts/migrations/`
+- [ ] (Opcional) Testei a conexão: `cd utils && node test-execute-sql.js`
 
 **Tudo OK? Execute**: `node run-full-migration.js`
+
+💡 **Dica**: Execute o teste de conexão primeiro para garantir que a automação SQL funciona!
 
 ---
 

@@ -37,6 +37,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { executeSql, executeSqlFile } = require('./utils/execute-sql');
 
 // Cores para output
 const colors = {
@@ -173,18 +174,24 @@ function runScript(scriptPath, description, options = {}) {
   }
 }
 
-// Função para pausar e pedir confirmação
-function pause(message) {
+// Função para executar SQL automaticamente
+async function runSql(sql, description) {
   if (isDryRun) {
-    logWarning(`PAUSE: ${message} (pulado em dry-run)`);
-    return;
+    logWarning(`SQL: ${description} (pulado em dry-run)`);
+    logInfo(sql.trim());
+    return { success: true, dryRun: true };
   }
 
-  logWarning(`\n⏸️  PAUSA: ${message}`);
-  logWarning('Pressione ENTER para continuar após executar o SQL...');
+  logInfo(`Executando SQL: ${description}`);
 
-  // Esperar input do usuário
-  require('child_process').execSync('pause', { stdio: 'inherit', shell: true });
+  try {
+    const result = await executeSql(sql, { verbose: false });
+    logSuccess(`SQL executado: ${description}`);
+    return result;
+  } catch (error) {
+    logError(`Falha ao executar SQL: ${error.message}`);
+    throw error;
+  }
 }
 
 // Função principal
@@ -242,16 +249,13 @@ async function main() {
     stats.steps.push({ name: 'Voluntários', ...step3 });
 
     // ========================================
-    // PASSO 4: PAUSE - Adicionar coluna slug
+    // PASSO 4: Adicionar coluna slug em volunteers
     // ========================================
-    logStep(4, 'PAUSE - Executar SQL para adicionar coluna slug');
-    pause(`
-Execute este SQL no Supabase SQL Editor:
-
--- Adicionar coluna slug em volunteers
-ALTER TABLE public.volunteers
-ADD COLUMN IF NOT EXISTS slug TEXT;
-    `);
+    logStep(4, 'Adicionar coluna slug em volunteers');
+    await runSql(
+      'ALTER TABLE public.volunteers ADD COLUMN IF NOT EXISTS slug TEXT;',
+      'Adicionar coluna slug em volunteers'
+    );
 
     // ========================================
     // PASSO 5: Backfill Slugs (Voluntários)
@@ -281,29 +285,24 @@ ADD COLUMN IF NOT EXISTS slug TEXT;
     }
 
     // ========================================
-    // PASSO 7: PAUSE - Criar índice único de slug
+    // PASSO 7: Criar índice único de slug em volunteers
     // ========================================
-    logStep(7, 'PAUSE - Criar índice único de slug');
-    pause(`
-Execute este SQL no Supabase SQL Editor:
-
--- Criar índice único para slug em volunteers
-CREATE UNIQUE INDEX IF NOT EXISTS idx_volunteers_slug
-ON public.volunteers(slug)
-WHERE slug IS NOT NULL;
-    `);
+    logStep(7, 'Criar índice único de slug em volunteers');
+    await runSql(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_volunteers_slug
+       ON public.volunteers(slug)
+       WHERE slug IS NOT NULL;`,
+      'Criar índice único para slug em volunteers'
+    );
 
     // ========================================
-    // PASSO 8: PAUSE - Adicionar coluna slug em vagas
+    // PASSO 8: Adicionar coluna slug em vacancies
     // ========================================
-    logStep(8, 'PAUSE - Adicionar coluna slug em vacancies');
-    pause(`
-Execute este SQL no Supabase SQL Editor:
-
--- Adicionar coluna slug em vacancies
-ALTER TABLE public.vacancies
-ADD COLUMN IF NOT EXISTS slug TEXT;
-    `);
+    logStep(8, 'Adicionar coluna slug em vacancies');
+    await runSql(
+      'ALTER TABLE public.vacancies ADD COLUMN IF NOT EXISTS slug TEXT;',
+      'Adicionar coluna slug em vacancies'
+    );
 
     // ========================================
     // PASSO 9: Migrar Vagas
@@ -333,17 +332,15 @@ ADD COLUMN IF NOT EXISTS slug TEXT;
     }
 
     // ========================================
-    // PASSO 11: PAUSE - Criar índice único de slug (vagas)
+    // PASSO 11: Criar índice único de slug em vacancies
     // ========================================
-    logStep(11, 'PAUSE - Criar índice único de slug para vagas');
-    pause(`
-Execute este SQL no Supabase SQL Editor:
-
--- Criar índice único para slug em vacancies
-CREATE UNIQUE INDEX IF NOT EXISTS idx_vacancies_slug
-ON public.vacancies(slug)
-WHERE slug IS NOT NULL;
-    `);
+    logStep(11, 'Criar índice único de slug em vacancies');
+    await runSql(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_vacancies_slug
+       ON public.vacancies(slug)
+       WHERE slug IS NOT NULL;`,
+      'Criar índice único para slug em vacancies'
+    );
 
     // ========================================
     // PASSO 12: Validações Finais
@@ -367,6 +364,35 @@ WHERE slug IS NOT NULL;
     }
 
     // ========================================
+    // PASSO 13: Reabilitar Triggers
+    // ========================================
+    logStep(13, 'Reabilitar Triggers');
+    const sql06Path = path.join(__dirname, 'sql', '06-pos-migracao-reabilitar-triggers.sql');
+    await executeSqlFile(sql06Path, { verbose: true });
+    logSuccess('Triggers reabilitados');
+
+    // ========================================
+    // PASSO 14: Validação Final
+    // ========================================
+    logStep(14, 'Validação Final da Migração');
+    const sql07Path = path.join(__dirname, 'sql', '07-validacao-final.sql');
+    await executeSqlFile(sql07Path, { verbose: true });
+    logSuccess('Validação final concluída');
+
+    // ========================================
+    // PASSO 15: Popular wp_users_legacy
+    // ========================================
+    logStep(15, 'Popular wp_users_legacy');
+    await runSql(
+      `INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
+       SELECT id, user_login, user_email, user_pass, display_name
+       FROM wp_users_raw
+       ON CONFLICT (id) DO NOTHING;`,
+      'Popular wp_users_legacy a partir de wp_users_raw'
+    );
+    logSuccess('wp_users_legacy populada com sucesso');
+
+    // ========================================
     // RESUMO FINAL
     // ========================================
     const totalDuration = ((Date.now() - stats.startTime) / 1000 / 60).toFixed(2);
@@ -382,13 +408,15 @@ WHERE slug IS NOT NULL;
 
     console.log(`\n⏱️  Tempo total: ${totalDuration} minutos\n`);
 
-    logWarning('\n⚠️  PRÓXIMOS PASSOS - VOCÊ DEVE EXECUTAR:');
-    logWarning('1. SQL 06: Reabilitar triggers (06-pos-migracao-reabilitar-triggers.sql)');
-    logWarning('2. SQL 07: Validação final (07-validacao-final.sql)');
-    logWarning('3. Testar aplicação: npm run build && npm run start');
-    logWarning('4. Fazer deploy em produção');
+    logSuccess('\n🎉 Migração 100% automatizada concluída!');
 
-    logSuccess('\n🎉 Migração automatizada concluída!');
+    logWarning('\n📋 PRÓXIMOS PASSOS:');
+    logWarning('1. Testar aplicação: npm run build && npm run start');
+    logWarning('2. Fazer deploy em produção');
+
+    logInfo('\n💡 DICA:');
+    logInfo('Revise os resultados da validação final (PASSO 14) acima.');
+    logInfo('Todos os checks devem estar ✅ OK.');
 
   } catch (error) {
     logHeader('❌ ERRO NA MIGRAÇÃO');
