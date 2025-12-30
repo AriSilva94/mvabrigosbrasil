@@ -44,5 +44,8 @@ next-env.d.ts
 docs/
 SUPABASE.md
 
+# migration scripts (contain sensitive data and credentials)
+scripts/
+
 # claude code
 .claude
