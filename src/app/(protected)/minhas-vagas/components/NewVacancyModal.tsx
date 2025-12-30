@@ -16,7 +16,10 @@ import {
   PERIOD_OPTIONS,
   WORKLOAD_OPTIONS,
 } from "@/app/(protected)/minhas-vagas/constants";
-import { vacancyFormSchema, type VacancyFormInput } from "@/app/(protected)/minhas-vagas/schema";
+import {
+  vacancyFormSchema,
+  type VacancyFormInput,
+} from "@/app/(protected)/minhas-vagas/schema";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 
 type NewVacancyModalProps = {
@@ -40,7 +43,10 @@ export default function NewVacancyModal({
   const [workload, setWorkload] = useState("");
   const [demand, setDemand] = useState("");
   const [area, setArea] = useState("");
-  const [errors, setErrors] = useState<Partial<Record<keyof VacancyFormInput, string>>>({});
+  const [isPublished, setIsPublished] = useState(true);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof VacancyFormInput, string>>
+  >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   function resetForm() {
@@ -48,6 +54,7 @@ export default function NewVacancyModal({
     setWorkload("");
     setDemand("");
     setArea("");
+    setIsPublished(true);
     setErrors({});
   }
 
@@ -66,10 +73,11 @@ export default function NewVacancyModal({
       post_cidade: "",
       post_title: String(formData.get("post_title") ?? ""),
       post_periodo: String(period ?? ""),
-      post_quantidade: Number(formData.get("post_quantidade") ?? 0),
       post_carga: String(workload ?? ""),
       post_tipo_demanda: String(demand ?? ""),
       post_area_atuacao: String(area ?? ""),
+      post_quantidade: String(formData.get("post_quantidade") ?? ""),
+      post_is_published: isPublished,
       post_content: String(formData.get("post_content") ?? ""),
       post_habilidades_e_funcoes: String(
         formData.get("post_habilidades_e_funcoes") ?? ""
@@ -115,7 +123,7 @@ export default function NewVacancyModal({
   }
 
   const renderError = (message?: string) => (
-    <p className="min-h-[18px] text-xs font-medium text-red-600">
+    <p className="min-h-4.5 text-xs font-medium text-red-600">
       {message ?? "\u00A0"}
     </p>
   );
@@ -179,22 +187,6 @@ export default function NewVacancyModal({
             </div>
 
             <div className="space-y-1">
-              <label className="flex w-full flex-col gap-2 text-sm font-semibold text-brand-secondary">
-                <span className="inline-flex items-center gap-1">
-                  Quantidade de Vagas <span className="text-red-500">*</span>
-                </span>
-                <input
-                  name="post_quantidade"
-                  type="number"
-                  min={1}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-3 text-sm text-[#4f5765] shadow-sm focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
-                  placeholder="Ex: 3"
-                />
-              </label>
-              {renderError(errors.post_quantidade)}
-            </div>
-
-            <div className="space-y-1">
               <SelectField
                 id="post_carga"
                 name="post_carga"
@@ -243,6 +235,55 @@ export default function NewVacancyModal({
                 showRequiredAsterisk
               />
               {renderError(errors.post_area_atuacao)}
+            </div>
+
+            <div className="space-y-1">
+              <label className="flex w-full flex-col gap-2 text-sm font-semibold text-brand-secondary">
+                <span className="inline-flex items-center gap-1">
+                  Quantidade de Vagas <span className="text-red-500">*</span>
+                </span>
+                <input
+                  name="post_quantidade"
+                  type="number"
+                  min="1"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-3 text-sm text-[#4f5765] shadow-sm focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
+                  placeholder="Ex: 5"
+                />
+              </label>
+              {renderError(errors.post_quantidade)}
+            </div>
+
+            <div className="space-y-1">
+              <fieldset>
+                <legend className="text-sm font-semibold text-brand-secondary mb-2">
+                  Vaga Publicada? <span className="text-red-500">*</span>
+                </legend>
+                <div className="flex gap-6">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="post_is_published"
+                      value="true"
+                      checked={isPublished === true}
+                      onChange={() => setIsPublished(true)}
+                      className="h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                    />
+                    <span className="text-sm text-[#4f5765]">Sim</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="post_is_published"
+                      value="false"
+                      checked={isPublished === false}
+                      onChange={() => setIsPublished(false)}
+                      className="h-4 w-4 text-brand-primary focus:ring-brand-primary"
+                    />
+                    <span className="text-sm text-[#4f5765]">Não</span>
+                  </label>
+                </div>
+              </fieldset>
+              {renderError(errors.post_is_published)}
             </div>
           </div>
 
