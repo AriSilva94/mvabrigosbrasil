@@ -26,6 +26,10 @@ DELETE FROM shelters;
 -- Se quiser deletar TUDO mesmo, remova a condição WHERE
 DELETE FROM profiles;
 
+-- ⚠️  DELETAR USUÁRIOS DO AUTH (CUIDADO!)
+-- Isso remove TODOS os usuários autenticados do Supabase
+DELETE FROM auth.users;
+
 -- Tabelas WordPress legadas
 DELETE FROM wp_postmeta_raw;
 DELETE FROM wp_posts_raw;
