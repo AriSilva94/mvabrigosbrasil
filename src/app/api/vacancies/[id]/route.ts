@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import type { Database } from "@/lib/supabase/types";
 import {
   vacancyFormSchema,
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
+
+type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -54,8 +57,8 @@ export async function GET(
     const supabaseAdmin = getSupabaseAdminClient();
     const { data, error: fetchError } = await supabaseAdmin
       .from("vacancies")
-      .select("id, shelter_id, title, description, status, created_at")
-      .ilike("id", `${uuidFromSlug}%`)
+      .select("*")
+      .eq("id", uuidFromSlug)
       .eq("shelter_id", shelter.id)
       .maybeSingle();
 
@@ -68,7 +71,7 @@ export async function GET(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
+    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
   }
 
   return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
@@ -91,17 +94,6 @@ export async function PUT(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const extras = {
-    post_content: parsed.data.post_content,
-    post_habilidades_e_funcoes: parsed.data.post_habilidades_e_funcoes,
-    post_perfil_dos_voluntarios: parsed.data.post_perfil_dos_voluntarios,
-    post_periodo: parsed.data.post_periodo,
-    post_carga: parsed.data.post_carga,
-    post_tipo_demanda: parsed.data.post_tipo_demanda,
-    post_area_atuacao: parsed.data.post_area_atuacao,
-    post_quantidade: parsed.data.post_quantidade,
-  };
-
   const supabaseAdmin = getSupabaseAdminClient();
 
   // Se for UUID, atualiza vaga existente
@@ -112,11 +104,19 @@ export async function PUT(
       .from("vacancies")
       .update({
         title: parsed.data.post_title,
-        description: JSON.stringify(extras),
+        description: parsed.data.post_content,
+        area_atuacao: parsed.data.post_area_atuacao,
+        carga_horaria: parsed.data.post_carga,
+        periodo: parsed.data.post_periodo,
+        quantidade: parsed.data.post_quantidade,
+        is_published: parsed.data.post_is_published,
+        habilidades_e_funcoes: parsed.data.post_habilidades_e_funcoes,
+        perfil_dos_voluntarios: parsed.data.post_perfil_dos_voluntarios,
+        tipo_demanda: parsed.data.post_tipo_demanda,
       })
-      .ilike("id", `${uuidFromSlug}%`)
+      .eq("id", uuidFromSlug)
       .eq("shelter_id", shelter.id)
-      .select("id, shelter_id, title, description, status, created_at")
+      .select("*")
       .maybeSingle();
 
     if (updateError) {
@@ -128,7 +128,7 @@ export async function PUT(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data!), source: "supabase" } });
+    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
   }
 
   // Caso seja legado, cria uma nova vaga no Supabase vinculada ao abrigo do usuário
@@ -137,10 +137,20 @@ export async function PUT(
     .insert({
       shelter_id: shelter.id,
       title: parsed.data.post_title,
-      description: JSON.stringify(extras),
-      status: "open",
+      description: parsed.data.post_content,
+      cidade: shelter.city,
+      estado: shelter.state,
+      area_atuacao: parsed.data.post_area_atuacao,
+      carga_horaria: parsed.data.post_carga,
+      periodo: parsed.data.post_periodo,
+      quantidade: parsed.data.post_quantidade,
+      is_published: parsed.data.post_is_published,
+      habilidades_e_funcoes: parsed.data.post_habilidades_e_funcoes,
+      perfil_dos_voluntarios: parsed.data.post_perfil_dos_voluntarios,
+      tipo_demanda: parsed.data.post_tipo_demanda,
+      status: "active",
     })
-    .select("id, shelter_id, title, description, status, created_at")
+    .select("*")
     .maybeSingle();
 
   if (insertError) {
@@ -152,5 +162,5 @@ export async function PUT(
     return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
   }
 
-  return NextResponse.json({ vacancy: { ...mapVacancyRow(data), source: "supabase" } });
+  return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
 }
