@@ -23,8 +23,9 @@
  * 4. Backfill de slugs (volunteers)
  * 5. Verificar duplicatas de slugs (volunteers)
  * 6. Migração de vagas
- * 7. Verificar duplicatas de slugs (vacancies)
- * 8. Validação final de todas as migrações
+ * 7. Vincular vagas aos abrigos
+ * 8. Verificar duplicatas de slugs (vacancies)
+ * 9. Validação final de todas as migrações
  *
  * DEPOIS DESTE SCRIPT, VOCÊ DEVE:
  * - ⚠️  Executar SQL 06: Reabilitar triggers
@@ -325,26 +326,36 @@ async function main() {
     stats.steps.push({ name: 'Vagas', ...step9 });
 
     // ========================================
-    // PASSO 10: Verificar Duplicatas de Slugs (Vagas)
+    // PASSO 10: Vincular Vagas aos Abrigos
+    // ========================================
+    logStep(10, 'Vincular Vagas aos Abrigos');
+    const step10 = runScript(
+      'vagas-voluntariado/link-vacancies-to-shelters.js',
+      'Vincular vagas migradas aos seus respectivos abrigos'
+    );
+    stats.steps.push({ name: 'Vincular Vagas', ...step10 });
+
+    // ========================================
+    // PASSO 11: Verificar Duplicatas de Slugs (Vagas)
     // ========================================
     if (!skipValidation) {
-      logStep(10, 'Verificar Duplicatas de Slugs (Vagas)');
-      const step10 = runScript(
+      logStep(11, 'Verificar Duplicatas de Slugs (Vagas)');
+      const step11 = runScript(
         'vagas-voluntariado/check-slug-duplicates.js',
         'Verificar se há slugs duplicados em vagas'
       );
-      stats.steps.push({ name: 'Check Duplicatas (Vagas)', ...step10 });
+      stats.steps.push({ name: 'Check Duplicatas (Vagas)', ...step11 });
 
-      if (step10.hasWarnings) {
+      if (step11.hasWarnings) {
         logError('ATENÇÃO: Duplicatas encontradas! Não prossiga sem resolver.');
         process.exit(1);
       }
     }
 
     // ========================================
-    // PASSO 11: Criar índice único de slug em vacancies
+    // PASSO 12: Criar índice único de slug em vacancies
     // ========================================
-    logStep(11, 'Criar índice único de slug em vacancies');
+    logStep(12, 'Criar índice único de slug em vacancies');
     await runSql(
       `CREATE UNIQUE INDEX IF NOT EXISTS idx_vacancies_slug
        ON public.vacancies(slug)
@@ -353,10 +364,10 @@ async function main() {
     );
 
     // ========================================
-    // PASSO 12: Validações Finais
+    // PASSO 13: Validações Finais
     // ========================================
     if (!skipValidation) {
-      logStep(12, 'Validações Finais');
+      logStep(13, 'Validações Finais');
 
       logInfo('Validando migração de abrigos...');
       const val1 = runScript(
@@ -374,25 +385,25 @@ async function main() {
     }
 
     // ========================================
-    // PASSO 13: Reabilitar Triggers
+    // PASSO 14: Reabilitar Triggers
     // ========================================
-    logStep(13, 'Reabilitar Triggers');
+    logStep(14, 'Reabilitar Triggers');
     const sql06Path = path.join(__dirname, 'sql', '06-pos-migracao-reabilitar-triggers.sql');
     await executeSqlFile(sql06Path, { verbose: true });
     logSuccess('Triggers reabilitados');
 
     // ========================================
-    // PASSO 14: Validação Final
+    // PASSO 15: Validação Final
     // ========================================
-    logStep(14, 'Validação Final da Migração');
+    logStep(15, 'Validação Final da Migração');
     const sql07Path = path.join(__dirname, 'sql', '07-validacao-final.sql');
     await executeSqlFile(sql07Path, { verbose: true });
     logSuccess('Validação final concluída');
 
     // ========================================
-    // PASSO 15: Popular wp_users_legacy
+    // PASSO 16: Popular wp_users_legacy
     // ========================================
-    logStep(15, 'Popular wp_users_legacy');
+    logStep(16, 'Popular wp_users_legacy');
     await runSql(
       `INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
        SELECT id, user_login, user_email, user_pass, display_name
