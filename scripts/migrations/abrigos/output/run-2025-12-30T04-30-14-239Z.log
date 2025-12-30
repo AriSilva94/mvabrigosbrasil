@@ -1,0 +1,60 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  Verificação Pós-Migração: Abrigos                         ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 Contando abrigos no legado...
+   Total no legado: 297
+
+📊 Contando abrigos migrados no Supabase...
+   Total migrado: 0
+
+🔍 Verificando duplicatas...
+   Duplicatas encontradas: 0
+
+🔍 Verificando abrigos sem nome...
+   Sem nome: 0
+
+🔍 Verificando vínculos de perfil...
+   Com profile_id vinculado: 0
+
+📊 Analisando distribuição por tipo...
+   Distribuição calculada
+
+🎲 Buscando amostra aleatória...
+   Amostra coletada: 0 registros
+
+╔════════════════════════════════════════════════════════════╗
+║  RESUMO DA VERIFICAÇÃO                                     ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 CONTAGENS:
+   Legado (WordPress):       297
+   Migrados (Supabase):      0
+   Nativos (sem wp_post_id): 0
+   Total (Supabase):         0
+
+📈 TAXA DE MIGRAÇÃO: 0.0%
+
+🔍 VALIDAÇÕES:
+   Duplicatas:               0
+   Sem nome:                 0
+   Com profile_id:           0
+
+📊 DISTRIBUIÇÃO POR TIPO:
+
+📊 DISTRIBUIÇÃO POR ESTADO (TOP 10):
+
+🎲 AMOSTRA ALEATÓRIA:
+
+📄 Relatório salvo em: C:\Users\ariov\Desktop\projetos\mvabrigosbrasil\scripts\migrations\abrigos\output\verify-migration-report.json
+
+╔════════════════════════════════════════════════════════════╗
+║  CONCLUSÃO                                                 ║
+╚════════════════════════════════════════════════════════════╝
+
+⚠️  Migração CONCLUÍDA com ressalvas:
+   - 297 abrigos não foram migrados
+
+   Revise o relatório JSON para mais detalhes.
+

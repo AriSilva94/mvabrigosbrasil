@@ -1,0 +1,41 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  MIGRAÇÃO OTIMIZADA: Dinâmica Populacional               ║
+╚════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📥 [1/4] Buscando posts de dinâmica...
+   ✅ 1000 posts encontrados
+
+📥 [2/4] Buscando metadados (busca otimizada)...
+   ✅ 10000 metadados carregados em memória
+
+📥 [3/4] Buscando shelters migrados...
+   ✅ 0 shelters carregados em memória
+
+⚙️  [4/4] Processando registros...
+
+   🔄 Processando: 100/1000 (10.0%)   🔄 Processando: 200/1000 (20.0%)   🔄 Processando: 300/1000 (30.0%)   🔄 Processando: 400/1000 (40.0%)   🔄 Processando: 500/1000 (50.0%)   🔄 Processando: 600/1000 (60.0%)   🔄 Processando: 700/1000 (70.0%)   🔄 Processando: 800/1000 (80.0%)   🔄 Processando: 900/1000 (90.0%)   🔄 Processando: 1000/1000 (100.0%)
+
+   ✅ Processamento concluído: 0 registros prontos
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 RELATÓRIO FINAL:
+
+   Processados:  1000
+   Sucesso:      0
+   Pulados:      1000
+
+📋 Motivos de registros pulados:
+
+   Sem id_abrigo:           583
+   Abrigo não migrado:      289
+   Sem período:             0
+   Sem metadados:           128
+
+✅ Migração concluída!
+
+💾 Log exportado para: C:\Users\ariov\Desktop\projetos\mvabrigosbrasil\scripts\migrations\abrigos\dinamica-populacional\output\migration-optimized-1767069002109.json
+

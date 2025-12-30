@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-12-30T00:54:47.113Z",
+  "mode": "dry-run",
+  "limit": 10,
+  "stats": {
+    "processed": 10,
+    "successful": 10,
+    "skipped": 0,
+    "errors": 0,
+    "skippedReasons": {
+      "noIdAbrigo": 0,
+      "shelterNotMigrated": 0,
+      "noPeriod": 0,
+      "noMetadata": 0
+    }
+  }
+}

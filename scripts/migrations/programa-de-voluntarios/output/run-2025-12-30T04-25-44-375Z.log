@@ -1,0 +1,9 @@
+🔍 Verificando duplicatas de slug...
+
+✅ Total de voluntários com slug: 232
+
+✅ Nenhuma duplicata encontrada! Seguro criar índice único.
+
+📋 Próximo passo:
+   Execute o SQL: create-slug-index.sql
+
