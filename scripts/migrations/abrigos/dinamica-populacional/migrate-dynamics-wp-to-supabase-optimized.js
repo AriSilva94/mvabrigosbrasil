@@ -122,20 +122,37 @@ async function migrateDynamics() {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
   // ========================================
-  // ETAPA 1: Buscar todos os posts
+  // ETAPA 1: Buscar TODOS os posts (paginado)
   // ========================================
   console.log('📥 [1/4] Buscando posts de dinâmica...');
 
-  const { data: dinamicaPosts, error: dinamicaError } = await supabase
-    .from('wp_posts_raw')
-    .select('id, post_author, post_title, post_type, post_date')
-    .in('post_type', ['dinamica', 'dinamica_lar'])
-    .order('id', { ascending: true });
+  // Buscar com paginação para garantir que pegamos TODOS os posts
+  const allDinamicaPosts = [];
+  let from = 0;
+  const pageSize = 1000;
 
-  if (dinamicaError) {
-    console.error('❌ Erro:', dinamicaError);
-    process.exit(1);
+  while (true) {
+    const { data, error } = await supabase
+      .from('wp_posts_raw')
+      .select('id, post_author, post_title, post_type, post_date')
+      .in('post_type', ['dinamica', 'dinamica_lar'])
+      .order('id', { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) {
+      console.error('❌ Erro:', error);
+      process.exit(1);
+    }
+
+    if (!data || data.length === 0) break;
+
+    allDinamicaPosts.push(...data);
+
+    if (data.length < pageSize) break;
+    from += pageSize;
   }
+
+  const dinamicaPosts = allDinamicaPosts;
 
   console.log(`   ✅ ${dinamicaPosts?.length || 0} posts encontrados\n`);
 
@@ -152,10 +169,11 @@ async function migrateDynamics() {
   const postIds = dinamicaPosts.map(p => p.id);
   const allMetas = [];
 
-  // Buscar em lotes pequenos (100 posts por vez para não estourar limite de resultados)
-  // Como cada post tem ~11 metadados, 100 posts = ~1100 metadados (dentro do limite)
-  for (let i = 0; i < postIds.length; i += 100) {
-    const batch = postIds.slice(i, i + 100);
+  // Buscar em lotes pequenos (60 posts por vez para não estourar limite de 1000 resultados)
+  // Como cada post tem ~13 metadados, 60 posts = ~780 metadados
+  // Isso garante que ficamos bem abaixo do limite de 1000
+  for (let i = 0; i < postIds.length; i += 60) {
+    const batch = postIds.slice(i, i + 60);
     const { data: metas } = await supabase
       .from('wp_postmeta_raw')
       .select('post_id, meta_key, meta_value')
@@ -230,38 +248,31 @@ async function migrateDynamics() {
       reason: ''
     };
 
-    // Buscar metadados do mapa
-    const metaMap = metasByPost.get(post.id);
-    if (!metaMap || Object.keys(metaMap).length === 0) {
-      skipped++;
-      skippedReasons.noMetadata++;
-      logEntry.status = 'skipped';
-      logEntry.reason = 'no_metadata';
-      detailedLog.push(logEntry);
-      continue;
-    }
+    // Buscar metadados do mapa (pode ser vazio - valores zerados)
+    const metaMap = metasByPost.get(post.id) || {};
 
     // Buscar id_abrigo
     const idAbrigo = metaMap['id_abrigo'];
-    if (!idAbrigo) {
-      skipped++;
-      skippedReasons.noIdAbrigo++;
-      logEntry.status = 'skipped';
-      logEntry.reason = 'no_id_abrigo';
-      detailedLog.push(logEntry);
-      continue;
-    }
 
-    // Buscar shelter_id do mapa
-    const shelterId = shelterMap.get(String(idAbrigo));
-    if (!shelterId) {
-      skipped++;
-      skippedReasons.shelterNotMigrated++;
-      logEntry.status = 'skipped';
-      logEntry.reason = 'shelter_not_migrated';
-      logEntry.wpPostId = idAbrigo;
-      detailedLog.push(logEntry);
-      continue;
+    // Se não tem id_abrigo, permitir NULL (precisa alterar schema antes)
+    let shelterId = null;
+
+    if (idAbrigo) {
+      // Buscar shelter_id do mapa
+      shelterId = shelterMap.get(String(idAbrigo));
+      if (!shelterId) {
+        skipped++;
+        skippedReasons.shelterNotMigrated++;
+        logEntry.status = 'skipped';
+        logEntry.reason = 'shelter_not_migrated';
+        logEntry.wpPostId = idAbrigo;
+        detailedLog.push(logEntry);
+        continue;
+      }
+    } else {
+      // Sem id_abrigo - será inserido com shelter_id = NULL
+      // NOTA: O schema precisa permitir NULL em shelter_id
+      logEntry.noShelter = true;
     }
 
     // Extrair período
@@ -292,21 +303,21 @@ async function migrateDynamics() {
       entradas_de_animais: normalizeNumber(metaMap['entradas_de_animais']),
       entradas_de_gatos: normalizeNumber(metaMap['entradas_de_gatos']),
 
-      // Campos de adoção
-      adocoes_de_animais: normalizeNumber(metaMap['adocoes_de_animais']),
-      adocoes_de_gatos: normalizeNumber(metaMap['adocoes_de_gatos']),
+      // Campos de adoção (WP usa "adocoes_de_animais", DB usa "adocoes_caes")
+      adocoes_caes: normalizeNumber(metaMap['adocoes_de_animais']),
+      adocoes_gatos: normalizeNumber(metaMap['adocoes_de_gatos']),
 
-      // Campos de devolução
-      devolucoes_de_animais: normalizeNumber(metaMap['devolucoes_de_animais']),
-      devolucoes_de_gatos: normalizeNumber(metaMap['devolucoes_de_gatos']),
+      // Campos de devolução (WP usa "devolucoes_de_animais", DB usa "devolucoes_caes")
+      devolucoes_caes: normalizeNumber(metaMap['devolucoes_de_animais']),
+      devolucoes_gatos: normalizeNumber(metaMap['devolucoes_de_gatos']),
 
-      // Campos de eutanásia
-      eutanasias_de_animais: normalizeNumber(metaMap['eutanasias_de_animais']),
-      eutanasias_de_gatos: normalizeNumber(metaMap['eutanasias_de_gatos']),
+      // Campos de eutanásia (WP usa "eutanasias_de_animais", DB usa "eutanasias_caes")
+      eutanasias_caes: normalizeNumber(metaMap['eutanasias_de_animais']),
+      eutanasias_gatos: normalizeNumber(metaMap['eutanasias_de_gatos']),
 
-      // Campos de morte natural
-      mortes_naturais_de_animais: normalizeNumber(metaMap['mortes_naturais_de_animais']),
-      mortes_naturais_de_gatos: normalizeNumber(metaMap['mortes_naturais_de_gatos']),
+      // Campos de morte natural (WP usa "mortes_naturais_de_animais", DB usa "mortes_naturais_caes")
+      mortes_naturais_caes: normalizeNumber(metaMap['mortes_naturais_de_animais']),
+      mortes_naturais_gatos: normalizeNumber(metaMap['mortes_naturais_de_gatos']),
 
       // Campos de doença
       doencas_caes: normalizeNumber(metaMap['doencas_caes']),

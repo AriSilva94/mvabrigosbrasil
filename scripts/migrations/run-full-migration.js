@@ -12,24 +12,31 @@
  * - ✅ SQL 02: Criar tabelas de domínio
  * - ✅ SQL 03: Criar triggers e funções
  * - ✅ SQL 04: Configurar RLS
- * - ✅ SQL 05: Desabilitar triggers
  * - ✅ Importar backup do WordPress nas tabelas *_raw
- * - ✅ Configurar .env.local com SUPABASE_SERVICE_ROLE_KEY
+ * - ✅ Configurar .env.local com SUPABASE_SERVICE_ROLE_KEY e DATABASE_URL
  *
- * ESTE SCRIPT EXECUTA:
+ * ESTE SCRIPT EXECUTA AUTOMATICAMENTE (17 PASSOS):
+ * 0. Desabilitar triggers de histórico (SQL 05)
  * 1. Migração de abrigos
  * 2. Migração de dinâmicas populacionais
  * 3. Migração de voluntários
- * 4. Backfill de slugs (volunteers)
- * 5. Verificar duplicatas de slugs (volunteers)
- * 6. Migração de vagas
- * 7. Vincular vagas aos abrigos
- * 8. Verificar duplicatas de slugs (vacancies)
- * 9. Validação final de todas as migrações
+ * 4. Adicionar coluna slug em volunteers
+ * 5. Backfill de slugs (volunteers)
+ * 6. Verificar duplicatas de slugs (volunteers)
+ * 7. Criar índice único em volunteers.slug
+ * 8. Adicionar coluna slug em vacancies
+ * 9. Migração de vagas
+ * 10. Vincular vagas aos abrigos
+ * 11. Verificar duplicatas de slugs (vacancies)
+ * 12. Criar índice único em vacancies.slug
+ * 13. Validações parciais
+ * 14. Reabilitar triggers (SQL 06)
+ * 15. Validação final completa (SQL 07)
+ * 16. Popular wp_users_legacy para autenticação
+ * 17. Garantir RLS e policies em todas as 7 tabelas ⭐ NOVO
  *
- * DEPOIS DESTE SCRIPT, VOCÊ DEVE:
- * - ⚠️  Executar SQL 06: Reabilitar triggers
- * - ⚠️  Executar SQL 07: Validação final
+ * DEPOIS DESTE SCRIPT:
+ * ✅ Tudo pronto! Apenas testar e fazer deploy
  *
  * USO:
  * node run-full-migration.js [--dry-run] [--skip-validation]
@@ -412,6 +419,98 @@ async function main() {
       'Popular wp_users_legacy a partir de wp_users_raw'
     );
     logSuccess('wp_users_legacy populada com sucesso');
+
+    // ========================================
+    // PASSO 17: Garantir RLS em todas as tabelas
+    // ========================================
+    logStep(17, 'Garantir proteção RLS em todas as tabelas');
+
+    // Habilitar RLS
+    await runSql(
+      `ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.shelters ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.volunteers ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.vacancies ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.shelter_dynamics ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.shelter_volunteers ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.shelter_history ENABLE ROW LEVEL SECURITY;`,
+      'Habilitar RLS em todas as tabelas'
+    );
+
+    // Re-criar policies principais
+    await runSql(
+      `-- Profiles
+       DROP POLICY IF EXISTS "Users can view their own profile" ON public.profiles;
+       CREATE POLICY "Users can view their own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
+
+       DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
+       CREATE POLICY "Users can update their own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+
+       -- Shelters
+       DROP POLICY IF EXISTS "Shelters are viewable by everyone" ON public.shelters;
+       CREATE POLICY "Shelters are viewable by everyone" ON public.shelters FOR SELECT USING (true);
+
+       -- Volunteers
+       DROP POLICY IF EXISTS "Volunteers are viewable by everyone" ON public.volunteers;
+       CREATE POLICY "Volunteers are viewable by everyone" ON public.volunteers FOR SELECT USING (true);
+
+       -- Vacancies
+       DROP POLICY IF EXISTS "Vacancies are viewable by everyone" ON public.vacancies;
+       CREATE POLICY "Vacancies are viewable by everyone" ON public.vacancies FOR SELECT USING (true);
+
+       -- Shelter Dynamics
+       DROP POLICY IF EXISTS "Shelter dynamics are viewable by everyone" ON public.shelter_dynamics;
+       CREATE POLICY "Shelter dynamics are viewable by everyone" ON public.shelter_dynamics FOR SELECT USING (true);
+
+       -- Shelter Volunteers
+       DROP POLICY IF EXISTS "Shelter volunteers are viewable by everyone" ON public.shelter_volunteers;
+       CREATE POLICY "Shelter volunteers are viewable by everyone" ON public.shelter_volunteers FOR SELECT USING (true);
+
+       -- Shelter History
+       DROP POLICY IF EXISTS "Users can view their own shelter history" ON public.shelter_history;
+       CREATE POLICY "Users can view their own shelter history" ON public.shelter_history FOR SELECT USING (auth.uid() = profile_id);
+
+       DROP POLICY IF EXISTS "System can insert shelter history" ON public.shelter_history;
+       CREATE POLICY "System can insert shelter history" ON public.shelter_history FOR INSERT WITH CHECK (true);`,
+      'Restaurar políticas RLS'
+    );
+
+    // Verificar RLS
+    const rlsCheck = await runSql(
+      `SELECT
+         tablename,
+         rowsecurity as rls_enabled,
+         (SELECT COUNT(*) FROM pg_policies WHERE schemaname = 'public' AND pg_policies.tablename = pg_tables.tablename) as policy_count
+       FROM pg_tables
+       WHERE schemaname = 'public'
+         AND tablename IN ('profiles', 'shelters', 'volunteers', 'vacancies', 'shelter_dynamics', 'shelter_volunteers', 'shelter_history')
+       ORDER BY tablename;`,
+      'Verificar status RLS'
+    );
+
+    if (rlsCheck && rlsCheck.rows) {
+      logInfo('\nStatus RLS:');
+      rlsCheck.rows.forEach(row => {
+        const icon = row.rls_enabled && row.policy_count > 0 ? '✅' : '❌';
+        logInfo(`  ${icon} ${row.tablename}: RLS=${row.rls_enabled}, Policies=${row.policy_count}`);
+      });
+
+      // Verificar se alguma tabela está sem RLS ou policies
+      const tablesWithoutRls = rlsCheck.rows.filter(r => !r.rls_enabled);
+      const tablesWithoutPolicies = rlsCheck.rows.filter(r => r.policy_count === 0);
+
+      if (tablesWithoutRls.length > 0) {
+        logError(`ERRO: ${tablesWithoutRls.length} tabela(s) sem RLS: ${tablesWithoutRls.map(t => t.tablename).join(', ')}`);
+        throw new Error('RLS não habilitado em todas as tabelas!');
+      }
+
+      if (tablesWithoutPolicies.length > 0) {
+        logError(`ERRO: ${tablesWithoutPolicies.length} tabela(s) sem policies: ${tablesWithoutPolicies.map(t => t.tablename).join(', ')}`);
+        throw new Error('Policies não configuradas em todas as tabelas!');
+      }
+    }
+
+    logSuccess('RLS configurado e validado em todas as 7 tabelas');
 
     // ========================================
     // RESUMO FINAL

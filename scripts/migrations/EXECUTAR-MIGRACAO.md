@@ -72,7 +72,7 @@ node run-full-migration.js
 
 ### O que acontece
 
-O script executa **16 passos 100% automaticamente**:
+O script executa **17 passos 100% automaticamente**:
 
 0. ✅ **AUTOMÁTICO** → Desabilita trigger de histórico (SQL 05)
 1. ✅ Migra abrigos (297)
@@ -90,6 +90,7 @@ O script executa **16 passos 100% automaticamente**:
 13. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
 14. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
 15. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
+16. ✅ **AUTOMÁTICO** → Garante RLS e policies em todas as 7 tabelas
 
 🎉 **Zero pausas! 100% automático!** (requer `DATABASE_URL` no `.env.local`)
 

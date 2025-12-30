@@ -49,3 +49,4 @@ SUPABASE.md
 
 # migration outputs
 scripts/migrations/**/output/
+scripts/migrations/migration-output.log
