@@ -18,7 +18,8 @@ const path = require('path');
 
 const FILES_TO_FIX = [
   'wp_users.csv',
-  'wp_posts.csv'
+  'wp_posts.csv',
+  'wp_postmeta.csv'
 ];
 
 // Padrões de data inválida do MySQL
@@ -46,6 +47,59 @@ function fixInvalidDates(line) {
   return fixed;
 }
 
+function fixMultilineValues(content) {
+  // Esta função corrige valores que contêm quebras de linha dentro de campos com aspas
+  // Problema: valores com \n dentro de "campo" quebram o CSV em múltiplas linhas
+
+  const lines = [];
+  let currentLine = '';
+  let inQuotedField = false;
+  let fieldStart = 0;
+
+  for (let i = 0; i < content.length; i++) {
+    const char = content[i];
+    const nextChar = content[i + 1];
+
+    if (char === '"') {
+      // Verifica se é aspas duplas (escape)
+      if (nextChar === '"') {
+        currentLine += '""';
+        i++; // Pula a próxima aspas
+        continue;
+      }
+
+      // Alterna estado de campo entre aspas
+      inQuotedField = !inQuotedField;
+      currentLine += char;
+    } else if (char === '\n') {
+      if (inQuotedField) {
+        // Dentro de campo com aspas: substitui \n por espaço
+        currentLine += ' ';
+      } else {
+        // Fora de campo com aspas: é uma quebra de linha real
+        lines.push(currentLine);
+        currentLine = '';
+      }
+    } else if (char === '\r') {
+      // Ignora \r se vier antes de \n
+      if (nextChar !== '\n') {
+        if (inQuotedField) {
+          currentLine += ' ';
+        }
+      }
+    } else {
+      currentLine += char;
+    }
+  }
+
+  // Adiciona última linha se não estiver vazia
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return lines.join('\n');
+}
+
 function fixCsvFile(filePath) {
   console.log(`\n📄 Processando: ${path.basename(filePath)}`);
 
@@ -55,7 +109,25 @@ function fixCsvFile(filePath) {
   }
 
   // Ler arquivo
-  const content = fs.readFileSync(filePath, 'utf8');
+  let content = fs.readFileSync(filePath, 'utf8');
+  const originalLineCount = content.split('\n').length;
+
+  // ========================================
+  // 1. Corrigir valores multilinha (quebras dentro de campos)
+  // ========================================
+  console.log(`   🔍 Corrigindo valores multilinha...`);
+  const fixedContent = fixMultilineValues(content);
+  const multilineFixed = fixedContent !== content;
+
+  if (multilineFixed) {
+    const newLineCount = fixedContent.split('\n').length;
+    const linesJoined = originalLineCount - newLineCount;
+    console.log(`   🔧 Multilinha: ${linesJoined} quebras de linha incorretas corrigidas`);
+    content = fixedContent;
+  } else {
+    console.log(`   ✅ Multilinha: nenhum problema encontrado`);
+  }
+
   const lines = content.split('\n');
 
   if (lines.length === 0) {
@@ -65,10 +137,10 @@ function fixCsvFile(filePath) {
 
   let headerFixed = false;
   let datesFixed = 0;
-  let anyChange = false;
+  let anyChange = multilineFixed;
 
   // ========================================
-  // 1. Corrigir header (primeira linha)
+  // 2. Corrigir header (primeira linha)
   // ========================================
   const originalHeader = lines[0];
   // Corrigir "ID" (com ou sem aspas) para "id"
@@ -84,7 +156,7 @@ function fixCsvFile(filePath) {
   }
 
   // ========================================
-  // 2. Corrigir datas inválidas
+  // 3. Corrigir datas inválidas
   // ========================================
   console.log(`   🔍 Verificando datas inválidas...`);
 
@@ -106,18 +178,19 @@ function fixCsvFile(filePath) {
   }
 
   // ========================================
-  // 3. Salvar se houve mudanças
+  // 4. Salvar se houve mudanças
   // ========================================
   if (!anyChange) {
     console.log(`   ✅ Arquivo já está totalmente correto!`);
-    return { fixed: false, stats: { headerFixed, datesFixed } };
+    return { fixed: false, stats: { headerFixed, datesFixed, multilineFixed: 0 } };
   }
 
   // Escrever arquivo corrigido diretamente (sem backup)
   fs.writeFileSync(filePath, lines.join('\n'), 'utf8');
   console.log(`   ✅ Arquivo corrigido e salvo!`);
 
-  return { fixed: true, stats: { headerFixed, datesFixed } };
+  const multilineCount = multilineFixed ? (originalLineCount - lines.length) : 0;
+  return { fixed: true, stats: { headerFixed, datesFixed, multilineFixed: multilineCount } };
 }
 
 function main() {
@@ -129,6 +202,7 @@ function main() {
   let totalFixed = 0;
   let totalHeadersFixed = 0;
   let totalDatesFixed = 0;
+  let totalMultilineFixed = 0;
 
   for (const fileName of FILES_TO_FIX) {
     const filePath = path.join(scriptDir, fileName);
@@ -138,15 +212,17 @@ function main() {
       totalFixed++;
       if (result.stats.headerFixed) totalHeadersFixed++;
       totalDatesFixed += result.stats.datesFixed;
+      totalMultilineFixed += result.stats.multilineFixed;
     }
   }
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('\n📊 RESUMO:\n');
-  console.log(`   Arquivos processados:  ${FILES_TO_FIX.length}`);
-  console.log(`   Arquivos modificados:  ${totalFixed}`);
-  console.log(`   Headers corrigidos:    ${totalHeadersFixed}`);
-  console.log(`   Linhas com datas fix:  ${totalDatesFixed}\n`);
+  console.log(`   Arquivos processados:     ${FILES_TO_FIX.length}`);
+  console.log(`   Arquivos modificados:     ${totalFixed}`);
+  console.log(`   Headers corrigidos:       ${totalHeadersFixed}`);
+  console.log(`   Linhas com datas fix:     ${totalDatesFixed}`);
+  console.log(`   Quebras multilinha fix:   ${totalMultilineFixed}\n`);
 
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   console.log('✅ Arquivos prontos para importar no Supabase!\n');

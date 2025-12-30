@@ -74,29 +74,9 @@
 "159","19","_yoast_wpseo_content_score","90"
 "160","19","_yoast_wpseo_estimated-reading-time-minutes","1"
 "161","19","_yoast_wpseo_wordproof_timestamp",
-"162","93","_form","[text* Nome class:form-control class:mb-3 placeholder ""Nome""]
-
-[email* E-mail class:form-control class:mb-3 placeholder ""E-mail""]
-
-[tel* Assunto class:form-control class:mb-3 placeholder ""Assunto""]
-
-[textarea* Mensagem class:form-control class:mb-3 placeholder ""Mensagem""]
-
-[submit class:btn class:btn-primary class:btn-sample class:d-block class:btn-lg  class:w-100 ""Enviar Contato""]
-
-<div class=""text-center"">
-<p>Ou chame no Whatsapp</p>
-<a target=""_blank"" class=""btn btn-primary btn-lg btn-sample"" href=""https://api.whatsapp.com/send?phone=5541995192977""><i class=""bi bi-whatsapp""></i> WhatsApp</a>
-</div>"
-"163","93","_mail","a:9:{s:6:""active"";b:1;s:7:""subject"";s:15:""Contato Website"";s:6:""sender"";s:30:""contato@mvabrigosbrasil.com.br"";s:9:""recipient"";s:30:""contato@mvabrigosbrasil.com.br"";s:4:""body"";s:69:""Nome: [Nome]
-E-mail: [E-mail]
-Assunto: [Assunto]
-Mensagem: [Mensagem]"";s:18:""additional_headers"";s:0:"""";s:11:""attachments"";s:0:"""";s:8:""use_html"";b:0;s:13:""exclude_blank"";b:0;}"
-"164","93","_mail_2","a:9:{s:6:""active"";b:0;s:7:""subject"";s:30:""[_site_title] ""[your-subject]"""";s:6:""sender"";s:48:""[_site_title] <wordpress@mvabrigosbrasil.com.br>"";s:9:""recipient"";s:12:""[your-email]"";s:4:""body"";s:122:""Corpo da mensagem:
-[your-message]
-
--- 
-Este e-mail foi enviado de um formulário de contato em [_site_title] ([_site_url])"";s:18:""additional_headers"";s:29:""Reply-To: [_site_admin_email]"";s:11:""attachments"";s:0:"""";s:8:""use_html"";b:0;s:13:""exclude_blank"";b:0;}"
+"162","93","_form","[text* Nome class:form-control class:mb-3 placeholder ""Nome""]  [email* E-mail class:form-control class:mb-3 placeholder ""E-mail""]  [tel* Assunto class:form-control class:mb-3 placeholder ""Assunto""]  [textarea* Mensagem class:form-control class:mb-3 placeholder ""Mensagem""]  [submit class:btn class:btn-primary class:btn-sample class:d-block class:btn-lg  class:w-100 ""Enviar Contato""]  <div class=""text-center""> <p>Ou chame no Whatsapp</p> <a target=""_blank"" class=""btn btn-primary btn-lg btn-sample"" href=""https://api.whatsapp.com/send?phone=5541995192977""><i class=""bi bi-whatsapp""></i> WhatsApp</a> </div>"
+"163","93","_mail","a:9:{s:6:""active"";b:1;s:7:""subject"";s:15:""Contato Website"";s:6:""sender"";s:30:""contato@mvabrigosbrasil.com.br"";s:9:""recipient"";s:30:""contato@mvabrigosbrasil.com.br"";s:4:""body"";s:69:""Nome: [Nome] E-mail: [E-mail] Assunto: [Assunto] Mensagem: [Mensagem]"";s:18:""additional_headers"";s:0:"""";s:11:""attachments"";s:0:"""";s:8:""use_html"";b:0;s:13:""exclude_blank"";b:0;}"
+"164","93","_mail_2","a:9:{s:6:""active"";b:0;s:7:""subject"";s:30:""[_site_title] ""[your-subject]"""";s:6:""sender"";s:48:""[_site_title] <wordpress@mvabrigosbrasil.com.br>"";s:9:""recipient"";s:12:""[your-email]"";s:4:""body"";s:122:""Corpo da mensagem: [your-message]  --  Este e-mail foi enviado de um formulário de contato em [_site_title] ([_site_url])"";s:18:""additional_headers"";s:29:""Reply-To: [_site_admin_email]"";s:11:""attachments"";s:0:"""";s:8:""use_html"";b:0;s:13:""exclude_blank"";b:0;}"
 "165","93","_messages","a:22:{s:12:""mail_sent_ok"";s:27:""Agradecemos a sua mensagem."";s:12:""mail_sent_ng"";s:74:""Ocorreu um erro ao tentar enviar sua mensagem. Tente novamente mais tarde."";s:16:""validation_error"";s:63:""Um ou mais campos possuem um erro. Verifique e tente novamente."";s:4:""spam"";s:74:""Ocorreu um erro ao tentar enviar sua mensagem. Tente novamente mais tarde."";s:12:""accept_terms"";s:72:""Você deve aceitar os termos e condições antes de enviar sua mensagem."";s:16:""invalid_required"";s:20:""Preencha este campo."";s:16:""invalid_too_long"";s:39:""Este campo tem uma entrada muito longa."";s:17:""invalid_too_short"";s:39:""Este campo tem uma entrada muito curta."";s:13:""upload_failed"";s:49:""Ocorreu um erro desconhecido ao enviar o arquivo."";s:24:""upload_file_type_invalid"";s:59:""Você não tem permissão para enviar esse tipo de arquivo."";s:21:""upload_file_too_large"";s:34:""O arquivo enviado é muito grande."";s:23:""upload_failed_php_error"";s:36:""Ocorreu um erro ao enviar o arquivo."";s:12:""invalid_date"";s:38:""Digite uma data no formato AAAA-MM-DD."";s:14:""date_too_early"";s:39:""Este campo tem uma data muito próxima."";s:13:""date_too_late"";s:39:""Este campo tem uma data muito distante."";s:14:""invalid_number"";s:18:""Digite um número."";s:16:""number_too_small"";s:41:""Este campo tem um número pequeno demais."";s:16:""number_too_large"";s:40:""Este campo tem um número grande demais."";s:23:""quiz_answer_not_correct"";s:39:""A resposta para o quiz está incorreta."";s:13:""invalid_email"";s:30:""Digite um endereço de e-mail."";s:11:""invalid_url"";s:14:""Digite um URL."";s:11:""invalid_tel"";s:30:""Digite um número de telefone."";}"
 "166","93","_additional_settings",
 "167","93","_locale","pt_BR"
@@ -440,25 +420,11 @@ Este e-mail foi enviado de um formulário de contato em [_site_title] ([_site_ur
 "697","249","_edit_last","1"
 "698","246","_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "699","246","__0_pergunta","field_6346bf58a2110"
-"700","246","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"700","246","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "701","246","__0_resposta","field_6346bf5da2111"
 "702","246","_1_pergunta","Por que meu abrigo deve participar?"
 "703","246","__1_pergunta","field_6346bf58a2110"
-"704","246","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-Com a sua participação, você:
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"704","246","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  Com a sua participação, você: <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "705","246","__1_resposta","field_6346bf5da2111"
 "706","246","_2_pergunta","Quais são os termos de participação?"
 "707","246","__2_pergunta","field_6346bf58a2110"
@@ -471,25 +437,11 @@ Com a sua participação, você:
 "714","246","_","field_6346bf46a210f"
 "715","253","_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "716","253","__0_pergunta","field_6346bf58a2110"
-"717","253","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"717","253","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "718","253","__0_resposta","field_6346bf5da2111"
 "719","253","_1_pergunta","Por que meu abrigo deve participar?"
 "720","253","__1_pergunta","field_6346bf58a2110"
-"721","253","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-Com a sua participação, você:
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"721","253","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  Com a sua participação, você: <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "722","253","__1_resposta","field_6346bf5da2111"
 "723","253","_2_pergunta","Quais são os termos de participação?"
 "724","253","__2_pergunta","field_6346bf58a2110"
@@ -505,47 +457,19 @@ Com a sua participação, você:
 "734","253","_perguntas_frequentes","field_6346bf46a210f"
 "735","246","perguntas_frequentes_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "736","246","_perguntas_frequentes_0_pergunta","field_6346bf58a2110"
-"737","246","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"737","246","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "738","246","_perguntas_frequentes_0_resposta","field_6346bf5da2111"
 "739","246","perguntas_frequentes_1_pergunta","Por que meu abrigo deve participar?"
 "740","246","_perguntas_frequentes_1_pergunta","field_6346bf58a2110"
-"741","246","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-<strong>Com a sua participação, você:</strong>
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"741","246","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  <strong>Com a sua participação, você:</strong> <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "742","246","_perguntas_frequentes_1_resposta","field_6346bf5da2111"
 "743","254","_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "744","254","__0_pergunta","field_6346bf58a2110"
-"745","254","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"745","254","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "746","254","__0_resposta","field_6346bf5da2111"
 "747","254","_1_pergunta","Por que meu abrigo deve participar?"
 "748","254","__1_pergunta","field_6346bf58a2110"
-"749","254","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-Com a sua participação, você:
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"749","254","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  Com a sua participação, você: <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "750","254","__1_resposta","field_6346bf5da2111"
 "751","254","_2_pergunta","Quais são os termos de participação?"
 "752","254","__2_pergunta","field_6346bf58a2110"
@@ -559,25 +483,11 @@ Com a sua participação, você:
 "760","254","_perguntas_frequentes","field_6346bf46a210f"
 "761","254","perguntas_frequentes_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "762","254","_perguntas_frequentes_0_pergunta","field_6346bf58a2110"
-"763","254","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"763","254","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "764","254","_perguntas_frequentes_0_resposta","field_6346bf5da2111"
 "765","254","perguntas_frequentes_1_pergunta","Por que meu abrigo deve participar?"
 "766","254","_perguntas_frequentes_1_pergunta","field_6346bf58a2110"
-"767","254","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-Com a sua participação, você:
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"767","254","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  Com a sua participação, você: <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "768","254","_perguntas_frequentes_1_resposta","field_6346bf5da2111"
 "769","246","perguntas_frequentes_2_pergunta","Quais são os termos de participação?"
 "770","246","_perguntas_frequentes_2_pergunta","field_6346bf58a2110"
@@ -585,23 +495,15 @@ Com a sua participação, você:
 "772","246","_perguntas_frequentes_2_resposta","field_6346bf5da2111"
 "773","246","perguntas_frequentes_3_pergunta","O que a Medicina de Abrigos Brasil faz com os dados?"
 "774","246","_perguntas_frequentes_3_pergunta","field_6346bf58a2110"
-"775","246","perguntas_frequentes_3_resposta","O banco de dados nacional pretende ser uma ferramenta para você e sua comunidade em nível local entender as tendências, oportunidades e desafios que você enfrenta e ajudar a criar uma imagem de como eles evoluem para os níveis regional e nacional.
-
-A Medicina de Abrigos Brasil é composta por profissionais da medicina veterinária do coletivo e atuantes da causa animal como você, muitos dos quais têm longa experiência ou relacionamentos ativos com as principais organizações de bem-estar animal em todo o país. Nós nos unimos para promover um esforço nacional de coleta de dados aberto, baseado em fatos e respeitoso.
-
-Ao fornecer dados abrangentes e de origem colaborativa, possibilitamos uma maior compreensão do estado do bem-estar animal e dos abrigos no Brasil e como todos podemos aumentar nosso impacto positivo para os animais que estão em situação de abrigo."
+"775","246","perguntas_frequentes_3_resposta","O banco de dados nacional pretende ser uma ferramenta para você e sua comunidade em nível local entender as tendências, oportunidades e desafios que você enfrenta e ajudar a criar uma imagem de como eles evoluem para os níveis regional e nacional.  A Medicina de Abrigos Brasil é composta por profissionais da medicina veterinária do coletivo e atuantes da causa animal como você, muitos dos quais têm longa experiência ou relacionamentos ativos com as principais organizações de bem-estar animal em todo o país. Nós nos unimos para promover um esforço nacional de coleta de dados aberto, baseado em fatos e respeitoso.  Ao fornecer dados abrangentes e de origem colaborativa, possibilitamos uma maior compreensão do estado do bem-estar animal e dos abrigos no Brasil e como todos podemos aumentar nosso impacto positivo para os animais que estão em situação de abrigo."
 "776","246","_perguntas_frequentes_3_resposta","field_6346bf5da2111"
 "777","246","perguntas_frequentes_4_pergunta","Com quem esses dados serão compartilhados?"
 "778","246","_perguntas_frequentes_4_pergunta","field_6346bf58a2110"
-"779","246","perguntas_frequentes_4_resposta","O banco de dados nacional terá a capacidade de compartilhar dados públicos por meio desse site (mvabrigosbrasil.com.br) e poderá liberar os dados em um arquivo de exportação mediante solicitação. Os abrigos participantes não terão seus dados individuais divulgados, somente serão divulgados resultados totais.
-
-Os dados poderão servir de relatórios técnicos e pesquisas científicas para mostrar as tendências mensais e anuais da dinâmica populacional de cães e gatos de abrigos no Brasil."
+"779","246","perguntas_frequentes_4_resposta","O banco de dados nacional terá a capacidade de compartilhar dados públicos por meio desse site (mvabrigosbrasil.com.br) e poderá liberar os dados em um arquivo de exportação mediante solicitação. Os abrigos participantes não terão seus dados individuais divulgados, somente serão divulgados resultados totais.  Os dados poderão servir de relatórios técnicos e pesquisas científicas para mostrar as tendências mensais e anuais da dinâmica populacional de cães e gatos de abrigos no Brasil."
 "780","246","_perguntas_frequentes_4_resposta","field_6346bf5da2111"
 "781","246","perguntas_frequentes_5_pergunta","Existe algum risco em compartilhar esses dados?"
 "782","246","_perguntas_frequentes_5_pergunta","field_6346bf58a2110"
-"783","246","perguntas_frequentes_5_resposta","<u>Lembre-se: nós não iremos divulgar nenhum dado individual seu ou do seu Abrigo! Os dados serão demonstrados em sua totalidade conforme mostra o nosso Banco de Dados, devido a isso, os riscos são quase nulos!</u>
-
-Embora o compartilhamento de dados possa levar a algumas conversas potencialmente difíceis ou mal-entendidos sobre porque sua organização toma determinadas decisões ou opera de determinada maneira, também oferece acesso aberto a dados claros e concretos que você pode usar para ajudar a dissipar mitos ou rumores e pavimentar o caminho para um diálogo honesto, permitindo que você construa confiança dentro de sua comunidade e angariando apoiadores para sua causa."
+"783","246","perguntas_frequentes_5_resposta","<u>Lembre-se: nós não iremos divulgar nenhum dado individual seu ou do seu Abrigo! Os dados serão demonstrados em sua totalidade conforme mostra o nosso Banco de Dados, devido a isso, os riscos são quase nulos!</u>  Embora o compartilhamento de dados possa levar a algumas conversas potencialmente difíceis ou mal-entendidos sobre porque sua organização toma determinadas decisões ou opera de determinada maneira, também oferece acesso aberto a dados claros e concretos que você pode usar para ajudar a dissipar mitos ou rumores e pavimentar o caminho para um diálogo honesto, permitindo que você construa confiança dentro de sua comunidade e angariando apoiadores para sua causa."
 "784","246","_perguntas_frequentes_5_resposta","field_6346bf5da2111"
 "785","246","perguntas_frequentes_6_pergunta","Tem outras questões que não foi citada?"
 "786","246","_perguntas_frequentes_6_pergunta","field_6346bf58a2110"
@@ -609,25 +511,11 @@ Embora o compartilhamento de dados possa levar a algumas conversas potencialment
 "788","246","_perguntas_frequentes_6_resposta","field_6346bf5da2111"
 "789","255","_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "790","255","__0_pergunta","field_6346bf58a2110"
-"791","255","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"791","255","_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "792","255","__0_resposta","field_6346bf5da2111"
 "793","255","_1_pergunta","Por que meu abrigo deve participar?"
 "794","255","__1_pergunta","field_6346bf58a2110"
-"795","255","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-Com a sua participação, você:
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"795","255","_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  Com a sua participação, você: <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "796","255","__1_resposta","field_6346bf5da2111"
 "797","255","_2_pergunta","Quais são os termos de participação?"
 "798","255","__2_pergunta","field_6346bf58a2110"
@@ -641,25 +529,11 @@ Com a sua participação, você:
 "806","255","_perguntas_frequentes","field_6346bf46a210f"
 "807","255","perguntas_frequentes_0_pergunta","Quais dados seremos obrigados a compartilhar?"
 "808","255","_perguntas_frequentes_0_pergunta","field_6346bf58a2110"
-"809","255","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.
-
-O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
+"809","255","perguntas_frequentes_0_resposta","Você fornecerá dados de resumo mensais ao Banco de Dados Nacional. Isso inclui informações sobre as espécies que você gerencia e informações de entrada e saída (número de animais que entraram, número de animais de saíram por adoção, número de animais que morreram naturalmente, número de eutanásias e número de devoluções); todas em periodicidade mensal.  O nosso Banco de Dados é intencionalmente básico em seu esforço para fornecer uma estrutura comum para coleta de dados, independentemente de as organizações já coletarem uma grande quantidade de dados ou apenas reunirem o básico."
 "810","255","_perguntas_frequentes_0_resposta","field_6346bf5da2111"
 "811","255","perguntas_frequentes_1_pergunta","Por que meu abrigo deve participar?"
 "812","255","_perguntas_frequentes_1_pergunta","field_6346bf58a2110"
-"813","255","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.
-
-A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!
-
-<strong>Com a sua participação, você:</strong>
-<ul>
- 	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>
- 	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>
- 	<li>Auxilia a promover melhores práticas e operações;</li>
- 	<li>Ajuda a obter um conjunto de dados nacional anual;</li>
- 	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>
- 	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li>
-</ul>"
+"813","255","perguntas_frequentes_1_resposta","Este esforço para salvar vidas depende de todos nós – seus dados têm o poder de ajudar não apenas os animais sob seus cuidados, mas animais em todos os lugares! Além de ajudá-lo a entender melhor os detalhes de suas operações de abrigo, o banco de dados nacional oferece a oportunidade de visualizar dados de organizações semelhantes ​​que afetam o trabalho que fazemos.  A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendências nacionais que podem afetar sua organização, melhora a visibilidade e as opções de relatórios para solicitações de subsídios, angariação de fundos e esforços de construção de coalizões e abre as portas para um mundo onde todos estamos trabalhando melhor – e mais inteligentes – juntos. Mas não podemos fazer isso sem você!  <strong>Com a sua participação, você:</strong> <ul>  	<li>Ajuda a promover políticas públicas mais eficazes para os animais;</li>  	<li>Ajuda a estimar o número de animais abandonados e em risco;</li>  	<li>Auxilia a promover melhores práticas e operações;</li>  	<li>Ajuda a obter um conjunto de dados nacional anual;</li>  	<li>Ajuda na avaliação dos resultados das estratégias de manejo existentes de cães e gatos abandonados e que estão em situação de rua;</li>  	<li>Facilita a alocação eficaz de recursos do governo e em organizações de bem-estar animal.</li> </ul>"
 "814","255","_perguntas_frequentes_1_resposta","field_6346bf5da2111"
 "815","255","perguntas_frequentes_2_pergunta","Quais são os termos de participação?"
 "816","255","_perguntas_frequentes_2_pergunta","field_6346bf58a2110"
@@ -667,23 +541,15 @@ A Medicina de Abrigos Brasil fornece uma riqueza de informações sobre tendênc
 "818","255","_perguntas_frequentes_2_resposta","field_6346bf5da2111"
 "819","255","perguntas_frequentes_3_pergunta","O que a Medicina de Abrigos Brasil faz com os dados?"
 "820","255","_perguntas_frequentes_3_pergunta","field_6346bf58a2110"
-"821","255","perguntas_frequentes_3_resposta","O banco de dados nacional pretende ser uma ferramenta para você e sua comunidade em nível local entender as tendências, oportunidades e desafios que você enfrenta e ajudar a criar uma imagem de como eles evoluem para os níveis regional e nacional.
-
-A Medicina de Abrigos Brasil é composta por profissionais da medicina veterinária do coletivo e atuantes da causa animal como você, muitos dos quais têm longa experiência ou relacionamentos ativos com as principais organizações de bem-estar animal em todo o país. Nós nos unimos para promover um esforço nacional de coleta de dados aberto, baseado em fatos e respeitoso.
-
-Ao fornecer dados abrangentes e de origem colaborativa, possibilitamos uma maior compreensão do estado do bem-estar animal e dos abrigos no Brasil e como todos podemos aumentar nosso impacto positivo para os animais que estão em situação de abrigo."
+"821","255","perguntas_frequentes_3_resposta","O banco de dados nacional pretende ser uma ferramenta para você e sua comunidade em nível local entender as tendências, oportunidades e desafios que você enfrenta e ajudar a criar uma imagem de como eles evoluem para os níveis regional e nacional.  A Medicina de Abrigos Brasil é composta por profissionais da medicina veterinária do coletivo e atuantes da causa animal como você, muitos dos quais têm longa experiência ou relacionamentos ativos com as principais organizações de bem-estar animal em todo o país. Nós nos unimos para promover um esforço nacional de coleta de dados aberto, baseado em fatos e respeitoso.  Ao fornecer dados abrangentes e de origem colaborativa, possibilitamos uma maior compreensão do estado do bem-estar animal e dos abrigos no Brasil e como todos podemos aumentar nosso impacto positivo para os animais que estão em situação de abrigo."
 "822","255","_perguntas_frequentes_3_resposta","field_6346bf5da2111"
 "823","255","perguntas_frequentes_4_pergunta","Com quem esses dados serão compartilhados?"
 "824","255","_perguntas_frequentes_4_pergunta","field_6346bf58a2110"
-"825","255","perguntas_frequentes_4_resposta","O banco de dados nacional terá a capacidade de compartilhar dados públicos por meio desse site (mvabrigosbrasil.com.br) e poderá liberar os dados em um arquivo de exportação mediante solicitação. Os abrigos participantes não terão seus dados individuais divulgados, somente serão divulgados resultados totais.
-
-Os dados poderão servir de relatórios técnicos e pesquisas científicas para mostrar as tendências mensais e anuais da dinâmica populacional de cães e gatos de abrigos no Brasil."
+"825","255","perguntas_frequentes_4_resposta","O banco de dados nacional terá a capacidade de compartilhar dados públicos por meio desse site (mvabrigosbrasil.com.br) e poderá liberar os dados em um arquivo de exportação mediante solicitação. Os abrigos participantes não terão seus dados individuais divulgados, somente serão divulgados resultados totais.  Os dados poderão servir de relatórios técnicos e pesquisas científicas para mostrar as tendências mensais e anuais da dinâmica populacional de cães e gatos de abrigos no Brasil."
 "826","255","_perguntas_frequentes_4_resposta","field_6346bf5da2111"
 "827","255","perguntas_frequentes_5_pergunta","Existe algum risco em compartilhar esses dados?"
 "828","255","_perguntas_frequentes_5_pergunta","field_6346bf58a2110"
-"829","255","perguntas_frequentes_5_resposta","<u>Lembre-se: nós não iremos divulgar nenhum dado individual seu ou do seu Abrigo! Os dados serão demonstrados em sua totalidade conforme mostra o nosso Banco de Dados, devido a isso, os riscos são quase nulos!</u>
-
-Embora o compartilhamento de dados possa levar a algumas conversas potencialmente difíceis ou mal-entendidos sobre porque sua organização toma determinadas decisões ou opera de determinada maneira, também oferece acesso aberto a dados claros e concretos que você pode usar para ajudar a dissipar mitos ou rumores e pavimentar o caminho para um diálogo honesto, permitindo que você construa confiança dentro de sua comunidade e angariando apoiadores para sua causa."
+"829","255","perguntas_frequentes_5_resposta","<u>Lembre-se: nós não iremos divulgar nenhum dado individual seu ou do seu Abrigo! Os dados serão demonstrados em sua totalidade conforme mostra o nosso Banco de Dados, devido a isso, os riscos são quase nulos!</u>  Embora o compartilhamento de dados possa levar a algumas conversas potencialmente difíceis ou mal-entendidos sobre porque sua organização toma determinadas decisões ou opera de determinada maneira, também oferece acesso aberto a dados claros e concretos que você pode usar para ajudar a dissipar mitos ou rumores e pavimentar o caminho para um diálogo honesto, permitindo que você construa confiança dentro de sua comunidade e angariando apoiadores para sua causa."
 "830","255","_perguntas_frequentes_5_resposta","field_6346bf5da2111"
 "831","255","perguntas_frequentes_6_pergunta","Tem outras questões que não foi citada?"
 "832","255","_perguntas_frequentes_6_pergunta","field_6346bf58a2110"
@@ -1365,9 +1231,7 @@ Embora o compartilhamento de dados possa levar a algumas conversas potencialment
 "3733","644","cidade","São José"
 "3734","644","disponibilidade","8h"
 "3735","644","experiencia","sim"
-"3736","644","descricao","Conhecimento prático de veterinária
-Paciência 
-Equilíbrio emocional "
+"3736","644","descricao","Conhecimento prático de veterinária Paciência  Equilíbrio emocional "
 "3737","644","comentarios","Tenho um abrigo particular para gatos fiv e felv com 67 gatos especiais "
 "3738","645","telefone","(13) 9 9761-8538"
 "3739","645","profissao","Medico VETERINÁRIO "
@@ -1378,13 +1242,7 @@ Equilíbrio emocional "
 "3744","645","cidade","Itanhaém"
 "3745","645","disponibilidade","8h"
 "3746","645","experiencia","sim"
-"3747","645","descricao","Fui presidente 12 anos de um abrigo 
-Tenho um coletivo de PROTEÇÃO E BEM ESTAR ANIMAL DE ITANHAÉM  
-Trabalho com doações 
-Medicina coletiva
-Medicina de Desastre 
-Fiz o curso FOCA
-"
+"3747","645","descricao","Fui presidente 12 anos de um abrigo  Tenho um coletivo de PROTEÇÃO E BEM ESTAR ANIMAL DE ITANHAÉM   Trabalho com doações  Medicina coletiva Medicina de Desastre  Fiz o curso FOCA "
 "3748","645","comentarios",
 "3749","646","tipo","Privado"
 "3750","646","endereco","Rua Pedro Alves 509"
@@ -1760,11 +1618,7 @@ Fiz o curso FOCA
 "4140","669","cidade","Planaltina"
 "4141","669","disponibilidade","8h"
 "4142","669","experiencia","sim"
-"4143","669","descricao","Cuidado com animais doentes (medicação), curativas...
-Banco 
-Passeio
-Lavagem de baías
-Higiene do local"
+"4143","669","descricao","Cuidado com animais doentes (medicação), curativas... Banco  Passeio Lavagem de baías Higiene do local"
 "4144","669","comentarios","Meus horários disponíveis são aos fins de semana "
 "4145","670","tipo","Privado"
 "4146","670","endereco","Av DR Joaquim Nabuco,1637,Bloco A1,apto 102"
@@ -2369,8 +2223,7 @@ Higiene do local"
 "4820","722","cidade","São Paulo"
 "4821","722","disponibilidade","1h"
 "4822","722","experiencia","sim"
-"4823","722","descricao","Não ter medo dos animais.
-Não assustá-los ou usar de manejo agressivo."
+"4823","722","descricao","Não ter medo dos animais. Não assustá-los ou usar de manejo agressivo."
 "4824","722","comentarios",
 "4825","723","tipo","Público"
 "4826","723","endereco","av brasil 4356"
@@ -3768,8 +3621,7 @@ Não assustá-los ou usar de manejo agressivo."
 "6379","874","cidade","Curitiba"
 "6380","874","disponibilidade","3h"
 "6381","874","experiencia","sim"
-"6382","874","descricao","Sou estudante de medicina veterinária com interesse na especialização de medicina veterinária de abrigos! 
-Trabalho bem em equipe, sou comunicativa e proativa! "
+"6382","874","descricao","Sou estudante de medicina veterinária com interesse na especialização de medicina veterinária de abrigos!  Trabalho bem em equipe, sou comunicativa e proativa! "
 "6383","874","comentarios",
 "6384","875","tipo","Privado"
 "6385","875","endereco","Rua treze 235"
@@ -4211,8 +4063,7 @@ Trabalho bem em equipe, sou comunicativa e proativa! "
 "6866","918","disponibilidade","2h"
 "6867","918","experiencia","sim"
 "6868","918","descricao","pretendo dar muito amor e atencao pois em ja fui uma moradora em abrigos das meninas e entendo oque cada um tem e sente por isso seria uma honra poder ajudar essas criancas e adolescentes que precisam de funcionarios que os amom e cuidariam muito."
-"6869","918","comentarios","meu sonho sempre sera poder ajudar aqueles que precisam 
-"
+"6869","918","comentarios","meu sonho sempre sera poder ajudar aqueles que precisam  "
 "6870","919","entradas_de_animais",NULL
 "6871","919","adocoes_de_animais",NULL
 "6872","919","devolucoes_de_animais",NULL
@@ -4907,10 +4758,7 @@ Trabalho bem em equipe, sou comunicativa e proativa! "
 "7634","1006","cidade","São Paulo"
 "7635","1006","disponibilidade","8h"
 "7636","1006","experiencia","sim"
-"7637","1006","descricao","Clínica geral de cães e gatos 
-Gestão de pessoas
-Planejamento e estratégia 
-Gestão do abrigo "
+"7637","1006","descricao","Clínica geral de cães e gatos  Gestão de pessoas Planejamento e estratégia  Gestão do abrigo "
 "7638","1006","comentarios",
 "7639","1007","tipo","Público"
 "7640","1007","endereco","Rua Principal "
@@ -5113,77 +4961,15 @@ Gestão do abrigo "
 "7837","1027","periodo","Integral"
 "7838","1027","carga_horaria","1h"
 "7839","1027","quantidade","7"
-"7840","1027","habilidades_e_funcoes","Abaixo segue algumas possibilidades:
-
-• Criação de artes - conhecimento em qualquer programa de edição de imagens (eu uso o Canva)
-
-• Edição de vídeos - conhecimento em qualquer programa de edição de vídeo (eu uso CapCut)
-
-• Organização dos perfis dos seguidores - conhecimento em Excel
-
-• Fazer contato com empresas em busca de parcerias 
-
-• Auxiliar na venda de rifas 
-
-• Fazer contato mensal com adotantes para pedir notícias 
-
-• Auxiliar no planejamento de ações 
-
-• Auxiliar na moderação do grupo do Facebook 
-
-• Auxiliar na moderação do grupo do WhatsApp 
-
-• Auxiliar na pesquisa dos temas das lives
-
-• Auxiliar na criação dos roteiros das lives 
-
-• Auxiliar a conseguir parcerias com profissionais para as lives
-
-• Auxiliar na pesquisa de temas relevantes 
-
-• Assumir um tema para pesquisa, criação e publicação como por exemplo: datas comemorativas, notícias do universo pet, informações úteis e curiosidades do universo pet (sobre doenças, vacinas, castração, comportamento, etc) ou curiosidades e informações sobre astros do rock com pets
-
-• Entre outros"
-"7841","1027","perfil_dos_voluntarios","Para essa vaga é necessário saber mexer no celular/computador. Não é necessário saber mexer em tudo, mas para algumas funções será necessário ter conhecimento em um ou mais aplicativos como:
-
-• Canva (ou outro editor de imagens)
-
-• CapCut (ou outro editor de vídeos)
-
-• Excel
-
-• Word
-
-• Instagram
-
-• Facebook 
-
-• WhatsApp 
-
-• Google 
-
-Obs: para a pesquisa dos temas das lives e para assumir o tema de informações úteis e curiosidades do universo pet, ser veterinário ou estudante é um diferencial."
+"7840","1027","habilidades_e_funcoes","Abaixo segue algumas possibilidades:  • Criação de artes - conhecimento em qualquer programa de edição de imagens (eu uso o Canva)  • Edição de vídeos - conhecimento em qualquer programa de edição de vídeo (eu uso CapCut)  • Organização dos perfis dos seguidores - conhecimento em Excel  • Fazer contato com empresas em busca de parcerias   • Auxiliar na venda de rifas   • Fazer contato mensal com adotantes para pedir notícias   • Auxiliar no planejamento de ações   • Auxiliar na moderação do grupo do Facebook   • Auxiliar na moderação do grupo do WhatsApp   • Auxiliar na pesquisa dos temas das lives  • Auxiliar na criação dos roteiros das lives   • Auxiliar a conseguir parcerias com profissionais para as lives  • Auxiliar na pesquisa de temas relevantes   • Assumir um tema para pesquisa, criação e publicação como por exemplo: datas comemorativas, notícias do universo pet, informações úteis e curiosidades do universo pet (sobre doenças, vacinas, castração, comportamento, etc) ou curiosidades e informações sobre astros do rock com pets  • Entre outros"
+"7841","1027","perfil_dos_voluntarios","Para essa vaga é necessário saber mexer no celular/computador. Não é necessário saber mexer em tudo, mas para algumas funções será necessário ter conhecimento em um ou mais aplicativos como:  • Canva (ou outro editor de imagens)  • CapCut (ou outro editor de vídeos)  • Excel  • Word  • Instagram  • Facebook   • WhatsApp   • Google   Obs: para a pesquisa dos temas das lives e para assumir o tema de informações úteis e curiosidades do universo pet, ser veterinário ou estudante é um diferencial."
 "7842","1028","cidade","Vila Velha"
 "7843","1028","estado","ES"
 "7844","1028","abrigo","Animal’s Resgattus"
 "7845","1028","periodo","Integral"
 "7846","1028","carga_horaria","8h"
 "7847","1028","quantidade","5"
-"7848","1028","habilidades_e_funcoes","• Tomar conta dos animais (gatos ficam em gaiolas, cães filhotes em cercadinhos e cães adultos em guias e, nesse caso, sendo 1 animal por pessoa)
-
-• Manter o ambiente limpo e organizado 
-
-• Limpar xixi e cocô
-
-• Controlar os animais para que não façam muita bagunça, barulho e evitar brigas 
-
-• Auxiliar na montagem e desmontagem da feira 
-
-• Ter compromisso em ficar na feira durante toda sua duração 
-
-• Interagir com os visitantes para incentivar a adoção e divulgar o perfil do projeto e rifa (se houver)
-
-Obs: caso surjam pessoas interessadas em adotar a responsabilidade de entrevistar os candidatos e liberar ou não é do Rock N Love Pets, não dos voluntários."
+"7848","1028","habilidades_e_funcoes","• Tomar conta dos animais (gatos ficam em gaiolas, cães filhotes em cercadinhos e cães adultos em guias e, nesse caso, sendo 1 animal por pessoa)  • Manter o ambiente limpo e organizado   • Limpar xixi e cocô  • Controlar os animais para que não façam muita bagunça, barulho e evitar brigas   • Auxiliar na montagem e desmontagem da feira   • Ter compromisso em ficar na feira durante toda sua duração   • Interagir com os visitantes para incentivar a adoção e divulgar o perfil do projeto e rifa (se houver)  Obs: caso surjam pessoas interessadas em adotar a responsabilidade de entrevistar os candidatos e liberar ou não é do Rock N Love Pets, não dos voluntários."
 "7849","1028","perfil_dos_voluntarios","Gostar de animais, ter disponibilidade para ficar durante todo o período da feira e ter compromisso e responsabilidade."
 "7850","1029","cidade","Vila Velha"
 "7851","1029","estado","ES"
@@ -5191,9 +4977,7 @@ Obs: caso surjam pessoas interessadas em adotar a responsabilidade de entrevista
 "7853","1029","periodo","Integral"
 "7854","1029","carga_horaria","1h"
 "7855","1029","quantidade","1"
-"7856","1029","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7856","1029","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7857","1029","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7858","1030","cidade","Vila Velha"
 "7859","1030","estado","ES"
@@ -5201,9 +4985,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7861","1030","periodo","Integral"
 "7862","1030","carga_horaria","2h"
 "7863","1030","quantidade","2"
-"7864","1030","habilidades_e_funcoes","É necessário ter carro.
-
-É possível escolher se quer/pode fazer o transporte apenas quando a feira for em determinado shopping. Também é possível fazer apenas a ida ou a volta, desde que seja comunicado."
+"7864","1030","habilidades_e_funcoes","É necessário ter carro.  É possível escolher se quer/pode fazer o transporte apenas quando a feira for em determinado shopping. Também é possível fazer apenas a ida ou a volta, desde que seja comunicado."
 "7865","1030","perfil_dos_voluntarios","Para essa vaga a pessoa deve possuir CNH, gostar de animais, concordar em transportar animais dentro do carro e ter compromisso e responsabilidade com horário."
 "7866","1031","cidade","Vila Velha"
 "7867","1031","estado","ES"
@@ -5211,13 +4993,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7869","1031","periodo","Integral"
 "7870","1031","carga_horaria","1h"
 "7871","1031","quantidade","10"
-"7872","1031","habilidades_e_funcoes","• Catar cocô
-• Varrer quintal
-• Lavar caminhas e comedouros 
-• Estender e recolher panos do varal 
-• Limpar áreas de circulação dos animais 
-• Dar banho nos animais 
-• Entre outros"
+"7872","1031","habilidades_e_funcoes","• Catar cocô • Varrer quintal • Lavar caminhas e comedouros  • Estender e recolher panos do varal  • Limpar áreas de circulação dos animais  • Dar banho nos animais  • Entre outros"
 "7873","1031","perfil_dos_voluntarios","Para essa vaga os candidatos devem gostar de animais e ter disposição para trabalho braçal."
 "7874","1032","cidade","Vila Velha"
 "7875","1032","estado","ES"
@@ -5225,9 +5001,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7877","1032","periodo","Integral"
 "7878","1032","carga_horaria","1h"
 "7879","1032","quantidade","1"
-"7880","1032","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7880","1032","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7881","1032","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7882","1033","cidade","Vila Velha"
 "7883","1033","estado","ES"
@@ -5235,14 +5009,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7885","1033","periodo","Integral"
 "7886","1033","carga_horaria","1h"
 "7887","1033","quantidade","3"
-"7888","1033","habilidades_e_funcoes","Existem várias atividades e é possível escolher uma ou mais:
-
-• Lavar / limpar roupas, bolsas, calçados e demais itens que houver necessidade 
-
-• Tirar fotos dos itens 
-
-• Postar os itens no Instagram
-"
+"7888","1033","habilidades_e_funcoes","Existem várias atividades e é possível escolher uma ou mais:  • Lavar / limpar roupas, bolsas, calçados e demais itens que houver necessidade   • Tirar fotos dos itens   • Postar os itens no Instagram "
 "7889","1033","perfil_dos_voluntarios","Para essa vaga basta o candidato ter conhecimento e disponibilidade para realizar a atividade para a qual se propor."
 "7890","1034","cidade","Vila Velha"
 "7891","1034","estado","ES"
@@ -5250,9 +5017,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7893","1034","periodo","Integral"
 "7894","1034","carga_horaria","1h"
 "7895","1034","quantidade","1"
-"7896","1034","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7896","1034","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7897","1034","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7898","1035","cidade","Vila Velha"
 "7899","1035","estado","ES"
@@ -5260,9 +5025,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7901","1035","periodo","Integral"
 "7902","1035","carga_horaria","1h"
 "7903","1035","quantidade","1"
-"7904","1035","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7904","1035","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7905","1035","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7906","1036","cidade","Vila Velha"
 "7907","1036","estado","ES"
@@ -5270,9 +5033,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7909","1036","periodo","Integral"
 "7910","1036","carga_horaria","1h"
 "7911","1036","quantidade","1"
-"7912","1036","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7912","1036","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7913","1036","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7914","1037","cidade","Vila Velha"
 "7915","1037","estado","ES"
@@ -5280,9 +5041,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "7917","1037","periodo","Integral"
 "7918","1037","carga_horaria","1h"
 "7919","1037","quantidade","1"
-"7920","1037","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.
-
-O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
+"7920","1037","habilidades_e_funcoes","É necessário ter conhecimento em picpay, Excel e Instagram.  O trabalho consiste em fazer o controle de entrada e saída das doações e fazer a prestação de contas no Instagram 1x/mês."
 "7921","1037","perfil_dos_voluntarios","É necessário ter afinidade e conhecimento em matemática. Ser profissional ou estudante de contabilidade ou administração é um diferencial. Exigimos compromisso e responsabilidade."
 "7922","1038","entradas_de_animais",NULL
 "7923","1038","adocoes_de_animais",NULL
@@ -7097,8 +6856,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "10084","1270","periodo","Vespertino"
 "10085","1270","carga_horaria","3h"
 "10086","1270","quantidade","5"
-"10087","1270","habilidades_e_funcoes","Boa comunicação, educação, paciência para lidar com o público, dinamismo
-"
+"10087","1270","habilidades_e_funcoes","Boa comunicação, educação, paciência para lidar com o público, dinamismo "
 "10088","1270","perfil_dos_voluntarios","Todas as idades são bem- vindas! acima de 18 anos! "
 "10089","1271","entradas_de_animais",NULL
 "10090","1271","adocoes_de_animais",NULL
@@ -7150,8 +6908,7 @@ O trabalho consiste em fazer o controle de entrada e saída das doações e faze
 "10166","1278","periodo","Vespertino"
 "10167","1278","carga_horaria","3h"
 "10168","1278","quantidade","02"
-"10169","1278","habilidades_e_funcoes","Como citado acima, profissional da área de adestramento comportamental. O ideal seria ter conhecimento médico veterinário. 
-Função de socializar o cão para que tenha confiança e prazer em participar das campanhas de adoção, facilitando o encontro de uma família "
+"10169","1278","habilidades_e_funcoes","Como citado acima, profissional da área de adestramento comportamental. O ideal seria ter conhecimento médico veterinário.  Função de socializar o cão para que tenha confiança e prazer em participar das campanhas de adoção, facilitando o encontro de uma família "
 "10170","1278","perfil_dos_voluntarios","Pessoas a partir dos 25 anos já com experiência comprovada na área, com referências "
 "10171","1279","cidade","Cachoeiras de Macacu"
 "10172","1279","estado","RJ"
@@ -7189,8 +6946,7 @@ Função de socializar o cão para que tenha confiança e prazer em participar d
 "10204","1282","periodo","Integral"
 "10205","1282","carga_horaria","5h"
 "10206","1282","quantidade","03"
-"10207","1282","habilidades_e_funcoes","Deve ter habilidade, paciência e ternura ao manipular o animal, passear de vez em quando em área permitida para desestressar o animal e vigiando para ver se o mesmo fará suas necessidades ou não. 
-"
+"10207","1282","habilidades_e_funcoes","Deve ter habilidade, paciência e ternura ao manipular o animal, passear de vez em quando em área permitida para desestressar o animal e vigiando para ver se o mesmo fará suas necessidades ou não.  "
 "10208","1282","perfil_dos_voluntarios","Ser simpático, solícito, paciente com os animais e pessoas e deverá saber dar informações sobre o animal e nosso trabalho, mostrando nosso perfil na mídia "
 "10209","1283","entradas_de_animais","02"
 "10210","1283","adocoes_de_animais","04"
@@ -7431,8 +7187,7 @@ Função de socializar o cão para que tenha confiança e prazer em participar d
 "10445","1305","carga_horaria","3h"
 "10446","1305","quantidade","10"
 "10447","1305","habilidades_e_funcoes","Ser estudante ou ter concluído o curso de nível superior em medicina veterinária, ser técnico em veterinária ou estar cursando o curso de auxiliar de medicina veterinária."
-"10448","1305","perfil_dos_voluntarios","Para estudantes de medicina veterinária formados, ou auxiliares de veterinária que tenham disponibilidade de prestar serviço gratuito ou a baixo custo no
-atendimento veterinário aos animais da ong."
+"10448","1305","perfil_dos_voluntarios","Para estudantes de medicina veterinária formados, ou auxiliares de veterinária que tenham disponibilidade de prestar serviço gratuito ou a baixo custo no atendimento veterinário aos animais da ong."
 "10449","1306","cidade","Fortaleza"
 "10450","1306","estado","CE"
 "10451","1306","abrigo","Abrace"
@@ -7636,10 +7391,7 @@ atendimento veterinário aos animais da ong."
 "10669","1332","cidade","Porto Velho"
 "10670","1332","disponibilidade","2h"
 "10671","1332","experiencia","sim"
-"10672","1332","descricao","Gostar do que está fazendo
-Ser atencioso
-Prestativo
-Ter empatia"
+"10672","1332","descricao","Gostar do que está fazendo Ser atencioso Prestativo Ter empatia"
 "10673","1332","comentarios","Eu amo trabalhar com animais. Tenho 3 cachorros que cuido dentro das minhas possibilidades. Também ajudo pessoas com doações e alimentos. "
 "10674","1333","tipo","Público"
 "10675","1333","endereco","Rua 406h1"
@@ -8019,8 +7771,7 @@ Ter empatia"
 "11120","1376","disponibilidade","1h"
 "11121","1376","experiencia","sim"
 "11122","1376","descricao","CONHECIMENTO TÉCNICO, COM AMOR E PACIÊNCIA COM OS ANIMAIS"
-"11123","1376","comentarios","FAÇO AJUDAS ESPORÁDICAS A UM ABRIGO, MAS A FALTA DE TEMPO E A DISTÃNCIA NÃO ME PERMIE AJUDAR MUITO MAIS.
-FAÇO COLETAS DE AMOSTRAS GRATUITAS E VACINAS COM PREÇO MAIS ACESSÍVEL, ALÉM DE AJUDA TÉCNICA."
+"11123","1376","comentarios","FAÇO AJUDAS ESPORÁDICAS A UM ABRIGO, MAS A FALTA DE TEMPO E A DISTÃNCIA NÃO ME PERMIE AJUDAR MUITO MAIS. FAÇO COLETAS DE AMOSTRAS GRATUITAS E VACINAS COM PREÇO MAIS ACESSÍVEL, ALÉM DE AJUDA TÉCNICA."
 "11124","1377","entradas_de_animais","8"
 "11125","1377","adocoes_de_animais","0"
 "11126","1377","devolucoes_de_animais","0"
@@ -8359,8 +8110,7 @@ FAÇO COLETAS DE AMOSTRAS GRATUITAS E VACINAS COM PREÇO MAIS ACESSÍVEL, ALÉM 
 "11536","1422","cidade","Brasília"
 "11537","1422","disponibilidade","3h"
 "11538","1422","experiencia","sim"
-"11539","1422","descricao","Amor aos animais, habilidades interpessoais como: empatia, paciência, atitude positiva, colaboração.
-Formação e experiência como auxiliar veterinária."
+"11539","1422","descricao","Amor aos animais, habilidades interpessoais como: empatia, paciência, atitude positiva, colaboração. Formação e experiência como auxiliar veterinária."
 "11540","1422","comentarios",
 "11541","1423","entradas_de_animais",NULL
 "11542","1423","adocoes_de_animais",NULL
@@ -8425,8 +8175,7 @@ Formação e experiência como auxiliar veterinária."
 "11601","1428","cidade","São José dos Pinhais"
 "11602","1428","disponibilidade","2h"
 "11603","1428","experiencia","sim"
-"11604","1428","descricao","Redação de Textos
-Cuidados Práticos com os Animais"
+"11604","1428","descricao","Redação de Textos Cuidados Práticos com os Animais"
 "11605","1428","comentarios",
 "11606","1427","inscritos","347,446,585,566,626,719,851"
 "11607","1429","entradas_de_animais",NULL
@@ -8494,8 +8243,7 @@ Cuidados Práticos com os Animais"
 "11742","1442","cidade","Brasília"
 "11743","1442","disponibilidade","4h"
 "11744","1442","experiencia","sim"
-"11745","1442","descricao","Disposto a fazer qualquer função necessária. Intimidade com cães. Paciente e respeitoso.
-"
+"11745","1442","descricao","Disposto a fazer qualquer função necessária. Intimidade com cães. Paciente e respeitoso. "
 "11746","1442","comentarios",
 "11758","1444","entradas_de_animais","4"
 "11759","1444","adocoes_de_animais","7"
@@ -8880,8 +8628,7 @@ Cuidados Práticos com os Animais"
 "12310","1501","cidade","Goiânia"
 "12311","1501","disponibilidade","4h"
 "12312","1501","experiencia","sim"
-"12313","1501","descricao","Sou apaixonada por animais, faço medicina veterinária, e gostaria de adquirir mais conhecimento.
-Sou organizada, calma, Pró-ativa. "
+"12313","1501","descricao","Sou apaixonada por animais, faço medicina veterinária, e gostaria de adquirir mais conhecimento. Sou organizada, calma, Pró-ativa. "
 "12314","1501","comentarios",
 "12315","1502","telefone","(21) 9 9092-5191"
 "12316","1502","profissao","Consultor de Negócios"
@@ -9064,8 +8811,7 @@ Sou organizada, calma, Pró-ativa. "
 "12513","1523","cidade","Uberaba"
 "12514","1523","disponibilidade","4h"
 "12515","1523","experiencia","sim"
-"12516","1523","descricao","Sou protetora de animais independente, cuido de 20 animais de rua por dia, onde levo agua e ração.
-Amo os animais, sou vegana, e tenho 4 animais em casa."
+"12516","1523","descricao","Sou protetora de animais independente, cuido de 20 animais de rua por dia, onde levo agua e ração. Amo os animais, sou vegana, e tenho 4 animais em casa."
 "12517","1523","comentarios",
 "12518","1524","tipo","Misto"
 "12519","1524","endereco","Rua C 24 Q 29 L 10 Jardim América "
@@ -9103,9 +8849,7 @@ Amo os animais, sou vegana, e tenho 4 animais em casa."
 "12551","1526","cidade","Olinda"
 "12552","1526","disponibilidade","2h"
 "12553","1526","experiencia","sim"
-"12554","1526","descricao","Limpeza local  higiene e tosa cães 
-
-Administração medicamentos"
+"12554","1526","descricao","Limpeza local  higiene e tosa cães   Administração medicamentos"
 "12555","1526","comentarios","Protetora independente"
 "12556","1527","telefone","(73) 9 9825-4455"
 "12557","1527","profissao","Micro empresaria"
@@ -9363,11 +9107,8 @@ Administração medicamentos"
 "12809","1545","cidade","Aracaju"
 "12810","1545","disponibilidade","1h"
 "12811","1545","experiencia","sim"
-"12812","1545","descricao","Na minha casa sempre aparece pets em
-Especial gatas, chegam doentes, magras, algumas grávidas e eu as abrigo e cuido. Ponho pra adoção mas é difícil, após cuidar delas, levar pro veterinário e tudo mais faço a castração e deixo disponível pra adoção mas muitas ficam aqui até o fim da vida delas. Recentemente adotei um pet em situação delicada, está em tratamento. Também já adotamos um coelho que foi rejeitado enfim. 
-Banho, remédio, toda parte da higiene eu faço, alimentação e lazer "
-"12813","1545","comentarios","Não sou uma ong mas acolho quando os
-Pets chegam aqui. A depender da Situação com remédios. Alimento também gatos de rua, a maioria sempre são gatos. "
+"12812","1545","descricao","Na minha casa sempre aparece pets em Especial gatas, chegam doentes, magras, algumas grávidas e eu as abrigo e cuido. Ponho pra adoção mas é difícil, após cuidar delas, levar pro veterinário e tudo mais faço a castração e deixo disponível pra adoção mas muitas ficam aqui até o fim da vida delas. Recentemente adotei um pet em situação delicada, está em tratamento. Também já adotamos um coelho que foi rejeitado enfim.  Banho, remédio, toda parte da higiene eu faço, alimentação e lazer "
+"12813","1545","comentarios","Não sou uma ong mas acolho quando os Pets chegam aqui. A depender da Situação com remédios. Alimento também gatos de rua, a maioria sempre são gatos. "
 "12814","1546","tipo","Privado"
 "12815","1546","endereco","Rua Durval Boaventura "
 "12816","1546","cidade","Itaberaba"
@@ -9957,17 +9698,8 @@ Pets chegam aqui. A depender da Situação com remédios. Alimento também gatos
 "13426","1604","cidade","Barra do Piraí"
 "13427","1604","disponibilidade","8h"
 "13428","1604","experiencia","sim"
-"13429","1604","descricao","Tenho experiência em cirurgia(castração de cães e gatos) e anestesiologia veterinária. Atuo desde 2021 em um projeto de castração e em um abrigo de animais.
-
-
-Social mídia: atuo desenvolvendo te tos e e realizando edições de vídeos para uma ONG.
-
-
-Tenho experiência em escrever projetos e também em regularização de projetos de castração de animais."
-"13430","1604","comentarios","Tenho disponibilidade para viajar se for no Estado do Rio de Janeiro, em outros locais preciso me programar, pois tenho um filho de 1 ano de idade. 
-
-
-"
+"13429","1604","descricao","Tenho experiência em cirurgia(castração de cães e gatos) e anestesiologia veterinária. Atuo desde 2021 em um projeto de castração e em um abrigo de animais.   Social mídia: atuo desenvolvendo te tos e e realizando edições de vídeos para uma ONG.   Tenho experiência em escrever projetos e também em regularização de projetos de castração de animais."
+"13430","1604","comentarios","Tenho disponibilidade para viajar se for no Estado do Rio de Janeiro, em outros locais preciso me programar, pois tenho um filho de 1 ano de idade.    "
 "13431","1606","_edit_last","1"
 "13434","1606","link","https://www.crmv-ce.org.br/noticias/101235-crmv-ce-convida-abrigos-de-animais-a-se-cadastrarem-em-1-mapeamento-nacional.html"
 "13435","1606","_link","field_643962310b3ac"
@@ -11713,11 +11445,7 @@ Tenho experiência em escrever projetos e também em regularização de projetos
 "15398","1805","cidade","São Paulo"
 "15399","1805","disponibilidade","4h"
 "15400","1805","experiencia","sim"
-"15401","1805","descricao","Boa comunicação: facilidade em interagir com equipes e colaboradores, garantindo um ambiente organizado.
-Proatividade: sempre pronta para auxiliar em diversas tarefas, como limpeza, alimentação e cuidados diretos com os animais.
-Capacidade de lidar com situações desafiadoras: mantendo a calma e o foco para garantir o bem-estar dos animais.
-Experiência com diferentes perfis de pets: habilidade em manejar animais com diferentes personalidades e necessidades.
-Dedicação ao cuidado: comprometida em oferecer atenção e cuidados necessários para cada animal, visando uma convivência harmoniosa."
+"15401","1805","descricao","Boa comunicação: facilidade em interagir com equipes e colaboradores, garantindo um ambiente organizado. Proatividade: sempre pronta para auxiliar em diversas tarefas, como limpeza, alimentação e cuidados diretos com os animais. Capacidade de lidar com situações desafiadoras: mantendo a calma e o foco para garantir o bem-estar dos animais. Experiência com diferentes perfis de pets: habilidade em manejar animais com diferentes personalidades e necessidades. Dedicação ao cuidado: comprometida em oferecer atenção e cuidados necessários para cada animal, visando uma convivência harmoniosa."
 "15402","1805","comentarios",
 "15403","1806","entradas_de_animais","6"
 "15404","1806","adocoes_de_animais","5"
@@ -11759,9 +11487,7 @@ Dedicação ao cuidado: comprometida em oferecer atenção e cuidados necessári
 "15440","1810","cidade","Mogi das Cruzes"
 "15441","1810","disponibilidade","6h"
 "15442","1810","experiencia","sim"
-"15443","1810","descricao","Boa experiência na área relacionado a animais e cuidados.
-
-- Banho e tosa é minha melhor habilidade."
+"15443","1810","descricao","Boa experiência na área relacionado a animais e cuidados.  - Banho e tosa é minha melhor habilidade."
 "15444","1810","comentarios",
 "15445","1811","entradas_de_animais","2"
 "15446","1811","adocoes_de_animais","1"
@@ -12018,8 +11744,7 @@ Dedicação ao cuidado: comprometida em oferecer atenção e cuidados necessári
 "15721","1838","cidade","Belo Horizonte"
 "15722","1838","disponibilidade","6h"
 "15723","1838","experiencia","sim"
-"15724","1838","descricao","Estava fazendo estágio voluntário no hospital veterinário do colégio Arnaldo. Tenho pouca experiência. 
-Lá fazemos apenas acompanhamento dos procedimentos realizados nos animais. "
+"15724","1838","descricao","Estava fazendo estágio voluntário no hospital veterinário do colégio Arnaldo. Tenho pouca experiência.  Lá fazemos apenas acompanhamento dos procedimentos realizados nos animais. "
 "15725","1838","comentarios",
 "15726","1839","telefone","(67) 9 9612-0032"
 "15727","1839","profissao","Zootecnista"
@@ -12131,10 +11856,7 @@ Lá fazemos apenas acompanhamento dos procedimentos realizados nos animais. "
 "15833","1848","cidade","Teresina"
 "15834","1848","disponibilidade","4h"
 "15835","1848","experiencia","sim"
-"15836","1848","descricao","eu tenho ótima relação com qualquer tipo de animal como gatos, cachorros, aves e etc. 
-tenho uma boa comunicação para conversar com os possíveis adotantes se necessário.
-posso trocar água, comida, limpar o local e dar comida para os bixinhos bem como ajudar em alguns resgates se necessário.
-"
+"15836","1848","descricao","eu tenho ótima relação com qualquer tipo de animal como gatos, cachorros, aves e etc.  tenho uma boa comunicação para conversar com os possíveis adotantes se necessário. posso trocar água, comida, limpar o local e dar comida para os bixinhos bem como ajudar em alguns resgates se necessário. "
 "15837","1848","comentarios",
 "15848","1850","entradas_de_animais","7"
 "15849","1850","adocoes_de_animais","15"
@@ -12718,10 +12440,7 @@ posso trocar água, comida, limpar o local e dar comida para os bixinhos bem com
 "16490","1919","cidade","Campinas"
 "16491","1919","disponibilidade","5h"
 "16492","1919","experiencia","sim"
-"16493","1919","descricao","Estou no 2º semestre da graduação de Medicina Veterinária. Ainda não tenho experiência profissional nessa área, mas tenho muita força de vontade para aprender e me desenvolver.
-Trabalho a 3 anos como banhista de animais. Tenho experiência com manejo, contenção, tosa higiênica, organização do ambiente e comunicação com o cliente. 
-Tenho experiência como social mídia, dentro da minha loja de roupas. 
-Além de muita paixão e carinho pelos animais."
+"16493","1919","descricao","Estou no 2º semestre da graduação de Medicina Veterinária. Ainda não tenho experiência profissional nessa área, mas tenho muita força de vontade para aprender e me desenvolver. Trabalho a 3 anos como banhista de animais. Tenho experiência com manejo, contenção, tosa higiênica, organização do ambiente e comunicação com o cliente.  Tenho experiência como social mídia, dentro da minha loja de roupas.  Além de muita paixão e carinho pelos animais."
 "16494","1919","comentarios",
 "16495","1920","entradas_de_animais",NULL
 "16496","1920","adocoes_de_animais",NULL
@@ -12973,9 +12692,7 @@ Além de muita paixão e carinho pelos animais."
 "16820","1955","experiencia","sim"
 "16821","1955","atuacao","Presencial"
 "16822","1955","periodo","Semanal"
-"16823","1955","descricao","gentileza
-extrovertida 
-amo animais"
+"16823","1955","descricao","gentileza extrovertida  amo animais"
 "16824","1955","comentarios",
 "16825","1956","telefone","(62) 9 8600-9692"
 "16826","1956","profissao","Autônoma"
@@ -12988,9 +12705,7 @@ amo animais"
 "16833","1956","experiencia","sim"
 "16834","1956","atuacao","Presencial"
 "16835","1956","periodo","Diário"
-"16836","1956","descricao","Tenho grande empatia e facilidade para me comunicar, o que me permite oferecer apoio e acolhimento às pessoas (ou animais) no abrigo. Sei trabalhar bem em equipe, colaborando com outros voluntários e funcionários para garantir um ambiente organizado e acolhedor. Além disso, sou proativa e organizada, sempre buscando maneiras de contribuir, seja na distribuição de alimentos, na limpeza do espaço ou em outras tarefas necessárias.  
-
-Também sou resiliente e paciente, o que me ajuda a lidar com situações delicadas de forma tranquila e respeitosa. Se for necessário, estou disposta a aprender e aplicar conhecimentos específicos, como primeiros socorros, cuidados com animais ou recreação para crianças. Quero fazer a diferença e contribuir da melhor forma possível para quem precisa."
+"16836","1956","descricao","Tenho grande empatia e facilidade para me comunicar, o que me permite oferecer apoio e acolhimento às pessoas (ou animais) no abrigo. Sei trabalhar bem em equipe, colaborando com outros voluntários e funcionários para garantir um ambiente organizado e acolhedor. Além disso, sou proativa e organizada, sempre buscando maneiras de contribuir, seja na distribuição de alimentos, na limpeza do espaço ou em outras tarefas necessárias.    Também sou resiliente e paciente, o que me ajuda a lidar com situações delicadas de forma tranquila e respeitosa. Se for necessário, estou disposta a aprender e aplicar conhecimentos específicos, como primeiros socorros, cuidados com animais ou recreação para crianças. Quero fazer a diferença e contribuir da melhor forma possível para quem precisa."
 "16837","1956","comentarios",
 "16838","1957","telefone","(71) 9 9974-8971"
 "16839","1957","profissao","Aposentada"
@@ -13021,8 +12736,7 @@ Também sou resiliente e paciente, o que me ajuda a lidar com situações delica
 "16879","1961","experiencia","sim"
 "16880","1961","atuacao","Híbrido"
 "16881","1961","periodo","Quinzenal"
-"16882","1961","descricao","Possuo habilidades para ajudar no cuidado e manejo dos animais como alimentar, cuidar da higiene. Também estou disposta a ajudar na limpeza e organização do abrigo, assim como em tarefas que possam exigir esforço físico como passear com os cães ou carregar sacos de ração. Mas sobretudo, tenho muito amor aos animais e sinto a necessidade de ajudar como posso para que esses bichinhos se sintam muito amados e cuidados. 
-Ficarei muito feliz e realizada em poder ajudar, com o mínimo que seja :)"
+"16882","1961","descricao","Possuo habilidades para ajudar no cuidado e manejo dos animais como alimentar, cuidar da higiene. Também estou disposta a ajudar na limpeza e organização do abrigo, assim como em tarefas que possam exigir esforço físico como passear com os cães ou carregar sacos de ração. Mas sobretudo, tenho muito amor aos animais e sinto a necessidade de ajudar como posso para que esses bichinhos se sintam muito amados e cuidados.  Ficarei muito feliz e realizada em poder ajudar, com o mínimo que seja :)"
 "16883","1961","comentarios",
 "16884","1962","entradas_de_animais",NULL
 "16885","1962","adocoes_de_animais",NULL
@@ -13116,9 +12830,7 @@ Ficarei muito feliz e realizada em poder ajudar, com o mínimo que seja :)"
 "16973","1970","experiencia","sim"
 "16974","1970","atuacao","Presencial"
 "16975","1970","periodo","Diário"
-"16976","1970","descricao","comunicativa 
-gosto de trabalho em grupo
-aprendo rápido "
+"16976","1970","descricao","comunicativa  gosto de trabalho em grupo aprendo rápido "
 "16977","1970","comentarios","vou começar a fazer medicina veterinária em fevereiro "
 "16978","1971","tipo","Privado"
 "16979","1971","endereco","Rua Aluisio Tancredo Bello Gonçalves de Azevedo,  214"
@@ -13202,11 +12914,7 @@ aprendo rápido "
 "17057","1977","tipo_demanda","Contínua"
 "17058","1977","area_atuacao","Programador"
 "17059","1977","quantidade","1"
-"17060","1977","habilidades_e_funcoes","- Conhecimento básico em Swift (para iOS) e Kotlin ou Java (para Android)
-- Experiência com Xcode para iOS e Android Studio para Android.
--  Conhecimento em Git para controle de versões e colaboração em equipe.
-- Entendimento básico de integração com APIs para comunicação entre o aplicativo e servidores.
-- Conhecimento de práticas ágeis, como Scrum ou Kanban, irá ajudar bastante!"
+"17060","1977","habilidades_e_funcoes","- Conhecimento básico em Swift (para iOS) e Kotlin ou Java (para Android) - Experiência com Xcode para iOS e Android Studio para Android. -  Conhecimento em Git para controle de versões e colaboração em equipe. - Entendimento básico de integração com APIs para comunicação entre o aplicativo e servidores. - Conhecimento de práticas ágeis, como Scrum ou Kanban, irá ajudar bastante!"
 "17061","1977","perfil_dos_voluntarios","Desenvolvedores que estejam querendo participar de um projeto real e por em pratica diversas habilidades e ajudar um abrigo que ajuda muitos animais todos os dias."
 "17062","1978","tipo","LT-PI"
 "17063","1978","endereco","Rua Muncio de Souza Campos, 33 "
@@ -14619,8 +14327,7 @@ aprendo rápido "
 "18534","2085","experiencia","sim"
 "18535","2085","atuacao","Híbrido"
 "18536","2085","periodo","Semanal"
-"18537","2085","descricao","Elaboração de Projetos para Captação de Recursos;
-Gestão de Abrigos"
+"18537","2085","descricao","Elaboração de Projetos para Captação de Recursos; Gestão de Abrigos"
 "18538","2085","comentarios",
 "18539","2086","tipo","LT-PI"
 "18540","2086","endereco","Curitiba 36 santos dumont Sao leopoldo"
@@ -14754,9 +14461,7 @@ Gestão de Abrigos"
 "18668","2097","experiencia","sim"
 "18669","2097","atuacao","Presencial"
 "18670","2097","periodo","Semanal"
-"18671","2097","descricao","Experiência em lidar com público 
-Experiência em cuidar de animais 
-Estudante de medicina veterinária (1° período)"
+"18671","2097","descricao","Experiência em lidar com público  Experiência em cuidar de animais  Estudante de medicina veterinária (1° período)"
 "18672","2097","comentarios",
 "18673","2098","tipo","Privado"
 "18674","2098","endereco","Maurício Caillet, 104"
@@ -15529,8 +15234,7 @@ Estudante de medicina veterinária (1° período)"
 "19601","2126","experiencia","sim"
 "19602","2126","atuacao","Presencial"
 "19603","2126","periodo","Semanal"
-"19604","2126","descricao","Amo animais 
-Estou cursando: Auxiliar veterinário "
+"19604","2126","descricao","Amo animais  Estou cursando: Auxiliar veterinário "
 "19605","2126","comentarios",
 "19619","2128","entradas_de_animais","1"
 "19620","2128","adocoes_de_animais","2"
@@ -15669,10 +15373,7 @@ Estou cursando: Auxiliar veterinário "
 "19766","2138","experiencia","sim"
 "19767","2138","atuacao","Presencial"
 "19768","2138","periodo","Semanal"
-"19769","2138","descricao","Meu nome é Evellyn, eu sou estudante de Medicina Veterinária (iniciei meu curso em 2024). 
-Sou uma pessoa extremamente paciente e empática, creio que para lidar com pessoas e animais isso é essencial, também tenho uma comunicação muito clara e prezo um trabalho em equipe de eficiência.
-Eu procuro estar sempre praticando a caridade, procuro estar sempre ajudando as pessoas como posso, e creio que a oportunidade de ser voluntario em abrigos e projeto é um dos melhores meios para que eu possa continuar ajudando quem eu puder.
-"
+"19769","2138","descricao","Meu nome é Evellyn, eu sou estudante de Medicina Veterinária (iniciei meu curso em 2024).  Sou uma pessoa extremamente paciente e empática, creio que para lidar com pessoas e animais isso é essencial, também tenho uma comunicação muito clara e prezo um trabalho em equipe de eficiência. Eu procuro estar sempre praticando a caridade, procuro estar sempre ajudando as pessoas como posso, e creio que a oportunidade de ser voluntario em abrigos e projeto é um dos melhores meios para que eu possa continuar ajudando quem eu puder. "
 "19770","2138","comentarios",
 "19771","2139","telefone","(81) 9 9616-1616"
 "19772","2139","profissao","Estudante"
@@ -17162,9 +16863,7 @@ Eu procuro estar sempre praticando a caridade, procuro estar sempre ajudando as 
 "22080","2311","experiencia","sim"
 "22081","2311","atuacao","Presencial"
 "22082","2311","periodo","Diário"
-"22083","2311","descricao","Sou uma pessoa empática e sensível, qualidades que considero essenciais para lidar com pessoas e animais em situação de vulnerabilidade. Prezo pela responsabilidade e pelo comprometimento, buscando sempre cumprir as tarefas com seriedade e respeito às orientações recebidas.
-
-Tenho facilidade para trabalhar em equipe, sou discreta e organizada, sempre atenta às necessidades do ambiente e dos indivíduos atendidos. Além disso, estou constantemente disposta a aprender e a desenvolver novas competências, a fim de melhorar minha atuação e colaborar da melhor forma possível."
+"22083","2311","descricao","Sou uma pessoa empática e sensível, qualidades que considero essenciais para lidar com pessoas e animais em situação de vulnerabilidade. Prezo pela responsabilidade e pelo comprometimento, buscando sempre cumprir as tarefas com seriedade e respeito às orientações recebidas.  Tenho facilidade para trabalhar em equipe, sou discreta e organizada, sempre atenta às necessidades do ambiente e dos indivíduos atendidos. Além disso, estou constantemente disposta a aprender e a desenvolver novas competências, a fim de melhorar minha atuação e colaborar da melhor forma possível."
 "22084","2311","comentarios",
 "22085","2312","telefone","(19) 9 9857-0872"
 "22086","2312","profissao","Educadora"
@@ -17797,8 +17496,7 @@ Tenho facilidade para trabalhar em equipe, sou discreta e organizada, sempre ate
 "22781","2374","experiencia","sim"
 "22782","2374","atuacao","Presencial"
 "22783","2374","periodo","Diário"
-"22784","2374","descricao","Atenção,carinho,afeto,zelo ,entre outros.
-Amo animais é queria uma oportunidade de ser voluntário para ter experiências"
+"22784","2374","descricao","Atenção,carinho,afeto,zelo ,entre outros. Amo animais é queria uma oportunidade de ser voluntário para ter experiências"
 "22785","2374","comentarios",
 "22786","2375","tipo","LT-PI"
 "22787","2375","cep","83702420"
@@ -17847,9 +17545,7 @@ Amo animais é queria uma oportunidade de ser voluntário para ter experiências
 "22869","2382","experiencia","sim"
 "22870","2382","atuacao","Presencial"
 "22871","2382","periodo","Diário"
-"22872","2382","descricao","Já cuidei de animais de estimação e de rua, auxiliando na alimentação, higienização de ambientes e cuidados gerais. Tenho prática em limpeza e manejo de higiene animal, e também gosto de fotografar animais e divulgar seu perfil em redes sociais. Prefiro atuar diretamente com os próprias bichos e também no atendimento ao público, oferecendo suporte e informações aos visitantes. Sou responsável, procuro manter a calma em situações desafiadoras e trabalho bem em equipe, sempre disposto a aprender e a ajudar no que for preciso.
-
-"
+"22872","2382","descricao","Já cuidei de animais de estimação e de rua, auxiliando na alimentação, higienização de ambientes e cuidados gerais. Tenho prática em limpeza e manejo de higiene animal, e também gosto de fotografar animais e divulgar seu perfil em redes sociais. Prefiro atuar diretamente com os próprias bichos e também no atendimento ao público, oferecendo suporte e informações aos visitantes. Sou responsável, procuro manter a calma em situações desafiadoras e trabalho bem em equipe, sempre disposto a aprender e a ajudar no que for preciso.  "
 "22873","2382","comentarios",
 "22874","2383","entradas_de_animais","3"
 "22875","2383","adocoes_de_animais","1"
@@ -18593,10 +18289,7 @@ Amo animais é queria uma oportunidade de ser voluntário para ter experiências
 "23812","2469","experiencia","sim"
 "23813","2469","atuacao","Presencial"
 "23814","2469","periodo","Semanal"
-"23815","2469","descricao","Educador
-Entregador físico
-Adiestrador de cachorros 
-Palestrante motivador "
+"23815","2469","descricao","Educador Entregador físico Adiestrador de cachorros  Palestrante motivador "
 "23816","2469","comentarios","Sou humanista e racionalista, além de poeta e cantor, sou um homem integral "
 "23817","2470","entradas_de_animais","10"
 "23818","2470","adocoes_de_animais","0"
@@ -18931,12 +18624,7 @@ Palestrante motivador "
 "24199","2498","experiencia","sim"
 "24200","2498","atuacao","Presencial"
 "24201","2498","periodo","Diário"
-"24202","2498","descricao","Olá, bom dia!
-Me chamo Rita, tenho 32 anos, Resido em Salvador -Ba, cursando 2° período de medicina veterinária e estou em busca de serviço voluntário.
-Sou proativa, cuidadosa e amo cuidar de animais.
-Sempre foi um sonho desde criança e prometi que seria para servir.
-É com muito amor que eu me disponibilizo para ajudar no que for necessário.
-Agradeço desde já por esta oportunidade tão valiosa!."
+"24202","2498","descricao","Olá, bom dia! Me chamo Rita, tenho 32 anos, Resido em Salvador -Ba, cursando 2° período de medicina veterinária e estou em busca de serviço voluntário. Sou proativa, cuidadosa e amo cuidar de animais. Sempre foi um sonho desde criança e prometi que seria para servir. É com muito amor que eu me disponibilizo para ajudar no que for necessário. Agradeço desde já por esta oportunidade tão valiosa!."
 "24203","2498","comentarios",
 "24204","2499","entradas_de_animais","0"
 "24205","2499","adocoes_de_animais","0"
@@ -19066,11 +18754,7 @@ Agradeço desde já por esta oportunidade tão valiosa!."
 "24394","2513","experiencia","sim"
 "24395","2513","atuacao","Híbrido"
 "24396","2513","periodo","Semanal"
-"24397","2513","descricao","Amo animais
-Tenho experiência na clínica de pequenos animais. 
-Sou professora e gostaria de agregar com meus alunos 
-Tenho aptidão para lidar com os animais 
-Sou proativa e me preocupo com o bem estar animal e das pessoas"
+"24397","2513","descricao","Amo animais Tenho experiência na clínica de pequenos animais.  Sou professora e gostaria de agregar com meus alunos  Tenho aptidão para lidar com os animais  Sou proativa e me preocupo com o bem estar animal e das pessoas"
 "24398","2513","comentarios","Nasci pra cuidar dos animais com zelo, respeito e responsabilidade. "
 "24399","2514","entradas_de_animais","0"
 "24400","2514","adocoes_de_animais","0"
@@ -19291,9 +18975,7 @@ Sou proativa e me preocupo com o bem estar animal e das pessoas"
 "24615","2531","experiencia","sim"
 "24616","2531","atuacao","Híbrido"
 "24617","2531","periodo","Diário"
-"24618","2531","descricao","Aplicação de medicamentos 
-Aferição de paramentos vitais
-Urgência e emergência "
+"24618","2531","descricao","Aplicação de medicamentos  Aferição de paramentos vitais Urgência e emergência "
 "24619","2531","comentarios",
 "24620","2532","telefone","(41) 9 9867-5450"
 "24621","2532","profissao","Estudante"
@@ -19554,12 +19236,7 @@ Urgência e emergência "
 "24917","2556","experiencia","sim"
 "24918","2556","atuacao","Presencial"
 "24919","2556","periodo","Quinzenal"
-"24920","2556","descricao","Ola, bom dia
-
-Me chamo Victória Elysa e estou cursando Técnico em Medicina Veterinária e gostaria de uma oportunidade de fazer estágio ou até mesmo participar de algum evento com vocês para que eu possa ter mais conhecimento na prática sem custo algum.
-
-Estarei aguardando um retorno
-Obrigada"
+"24920","2556","descricao","Ola, bom dia  Me chamo Victória Elysa e estou cursando Técnico em Medicina Veterinária e gostaria de uma oportunidade de fazer estágio ou até mesmo participar de algum evento com vocês para que eu possa ter mais conhecimento na prática sem custo algum.  Estarei aguardando um retorno Obrigada"
 "24921","2556","comentarios","Gostaria de aplicar meus conhecimentos e ajudar a sua equipe"
 "24922","2557","tipo","Público"
 "24923","2557","cep","89069-001"
@@ -19939,9 +19616,7 @@ Obrigada"
 "25382","2591","tipo_demanda","Contínua"
 "25383","2591","area_atuacao","Outros"
 "25384","2591","quantidade","10"
-"25385","2591","habilidades_e_funcoes","LIMPEZA DE AMBIENTE:VARRER, APANHAR FEZES, LAVAR O AMBIENTE, PASSAR PANO, AJUDAR NA LAVAGEM DOS PANOS DOS ANIMAIS.
-CONHECIMENTOS EM CORTAR UNHA, LIMPAR OUVIDA, BANHO E ATÉ TOSA, REALIZAR CURATIVOS SE NECESSARIO.
-MEDICO VETERINARIO PARA ATENDIMENTO BASICO"
+"25385","2591","habilidades_e_funcoes","LIMPEZA DE AMBIENTE:VARRER, APANHAR FEZES, LAVAR O AMBIENTE, PASSAR PANO, AJUDAR NA LAVAGEM DOS PANOS DOS ANIMAIS. CONHECIMENTOS EM CORTAR UNHA, LIMPAR OUVIDA, BANHO E ATÉ TOSA, REALIZAR CURATIVOS SE NECESSARIO. MEDICO VETERINARIO PARA ATENDIMENTO BASICO"
 "25386","2591","perfil_dos_voluntarios","PESSOAS ACIMA DE 18 ANOS QUE NÃO TENHA MEDO NEM ALERGIA A ANIMAIS. QUE UTILIZEM SEUS PROPRIOS MEIOS PARA CHEGAR A ONG. INFELISMENTE A ONG NÃO DISPOÉM DE RECURSOS PARA AJUDAR COM CUSTAS DE TRANSPORTES. PREFERENCIALMENTE NA PARTE DA MANHÃ PODENDO SER DE SEGUNDA A SABADO."
 "25387","2592","entradas_de_animais","0"
 "25388","2592","adocoes_de_animais","0"
@@ -20638,8 +20313,7 @@ MEDICO VETERINARIO PARA ATENDIMENTO BASICO"
 "26384","2652","experiencia","sim"
 "26385","2652","atuacao","Presencial"
 "26386","2652","periodo","Diário"
-"26387","2652","descricao","Olá, sou estudante e estou a procura de conhecimento e aprender com pratica 
-Sou uma pessoa esforçada e focada"
+"26387","2652","descricao","Olá, sou estudante e estou a procura de conhecimento e aprender com pratica  Sou uma pessoa esforçada e focada"
 "26388","2652","comentarios",
 "26389","2650","_edit_lock","1758660374:1"
 "26390","2654","telefone","(11) 9 6443-2237"
@@ -23400,15 +23074,7 @@ Sou uma pessoa esforçada e focada"
 "29828","2835","experiencia","sim"
 "29829","2835","atuacao","Híbrido"
 "29830","2835","periodo","Diário"
-"29831","2835","descricao","• Comunicação 
-• Empatia
-• Proatividade 
-• Criação de planilha Excel
-• Colaboração 
-• Objetividade
-• Competência
-• Calma 
-"
+"29831","2835","descricao","• Comunicação  • Empatia • Proatividade  • Criação de planilha Excel • Colaboração  • Objetividade • Competência • Calma  "
 "29832","2835","comentarios",
 "29833","2837","_edit_last","1"
 "29834","2837","_wp_page_template","default"
@@ -24518,11 +24184,8 @@ Sou uma pessoa esforçada e focada"
 "31160","2913","experiencia","sim"
 "31161","2913","atuacao","Híbrido"
 "31162","2913","periodo","Diário"
-"31163","2913","descricao","Tenho grande interesse em atuar com animais e estou sempre buscando aprender mais. Apesar de não ter experiência ampla em abrigos ou qualquer outra coisa ainda, mas já cuidei do meu gato Gabriel durante um tratamento de esporotricose, o que me ensinou sobre responsabilidade, rotina de medicamentos e atenção aos sinais de saúde.
-
-Possuo um curso online de Auxiliar Veterinário pela Brastec Treinamentos e estudo conteúdos de medicina veterinária e biologia por conta própria por ter uma paixão imensa pelos animais e natureza, pois pretendo seguir carreira como Veterinária e Bióloga futuramente. Sou dedicada, aprendo rápido, tenho facilidade em seguir orientações e me esforço ao máximo para executar cada tarefa com cuidado. Tenho força de vontade, disciplina e muita motivação para contribuir com o bem-estar dos animais do abrigo."
-"31164","2913","comentarios","Sou uma jovem iniciando minha caminhada no mundo dos animais, descobrindo a cada dia um pouco mais sobre eles e aprendendo com cada passo, cada olhar e cada comportamento. Tenho um profundo desejo de entender, cuidar e evoluir ao lado deles. Estou me dedicando aos estudos e às experiências que surgem no caminho, sempre com o coração aberto, humildade para aprender e vontade de fazer a diferença. Cada oportunidade representa um novo avanço nessa jornada que escolhi trilhar com amor e responsabilidade.
-Amaria ter uma oportunidade com o contato com os animais ❤️‍🩹"
+"31163","2913","descricao","Tenho grande interesse em atuar com animais e estou sempre buscando aprender mais. Apesar de não ter experiência ampla em abrigos ou qualquer outra coisa ainda, mas já cuidei do meu gato Gabriel durante um tratamento de esporotricose, o que me ensinou sobre responsabilidade, rotina de medicamentos e atenção aos sinais de saúde.  Possuo um curso online de Auxiliar Veterinário pela Brastec Treinamentos e estudo conteúdos de medicina veterinária e biologia por conta própria por ter uma paixão imensa pelos animais e natureza, pois pretendo seguir carreira como Veterinária e Bióloga futuramente. Sou dedicada, aprendo rápido, tenho facilidade em seguir orientações e me esforço ao máximo para executar cada tarefa com cuidado. Tenho força de vontade, disciplina e muita motivação para contribuir com o bem-estar dos animais do abrigo."
+"31164","2913","comentarios","Sou uma jovem iniciando minha caminhada no mundo dos animais, descobrindo a cada dia um pouco mais sobre eles e aprendendo com cada passo, cada olhar e cada comportamento. Tenho um profundo desejo de entender, cuidar e evoluir ao lado deles. Estou me dedicando aos estudos e às experiências que surgem no caminho, sempre com o coração aberto, humildade para aprender e vontade de fazer a diferença. Cada oportunidade representa um novo avanço nessa jornada que escolhi trilhar com amor e responsabilidade. Amaria ter uma oportunidade com o contato com os animais ❤️‍🩹"
 "31165","2914","telefone","(11) 9 7787-6298"
 "31166","2914","profissao","Analista de compra"
 "31167","2914","faixa_etaria","18 a 35"
@@ -26605,6 +26268,5 @@ Amaria ter uma oportunidade com o contato com os animais ❤️‍🩹"
 "33254","3059","tipo_demanda","Pontual"
 "33255","3059","area_atuacao","Outros"
 "33256","3059","quantidade","1"
-"33257","3059","habilidades_e_funcoes","artista habilidoso(a) com desenho e pintura de aves, animais do cerrado e plantas para pintura em metal (casa container).
-habilidade para planejar e pintar grandes áreas."
+"33257","3059","habilidades_e_funcoes","artista habilidoso(a) com desenho e pintura de aves, animais do cerrado e plantas para pintura em metal (casa container). habilidade para planejar e pintar grandes áreas."
 "33258","3059","perfil_dos_voluntarios","apaixonada por arte e animais, com habilidade para planejar e executar projetos de pintura em grandes áreas."
