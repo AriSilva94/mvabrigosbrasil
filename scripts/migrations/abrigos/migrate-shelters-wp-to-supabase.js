@@ -18,6 +18,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
+const { executeSql } = require('../utils/execute-sql');
 
 // ========================================
 // CARREGAMENTO DE VARIÁVEIS DE AMBIENTE
@@ -332,12 +333,14 @@ async function fetchLegacyShelters(offset = 0, pageSize = PAGE_SIZE) {
   const postIds = posts.map(p => p.id);
 
   // Buscar TODOS os metadados em lotes
+  // IMPORTANTE: CHUNK_SIZE precisa ser pequeno para não bater no limite de 1000 registros do Supabase
+  // Com ~20 meta_keys por post, CHUNK_SIZE=40 dá ~800 metas (seguro)
   let allMetas = [];
-  const CHUNK_SIZE = 50;
+  const CHUNK_SIZE = 40;
 
   for (let i = 0; i < postIds.length; i += CHUNK_SIZE) {
     const chunk = postIds.slice(i, i + CHUNK_SIZE);
-    const { data: metas, error: metasError } = await supabase
+    const { data: metas, error: metasError} = await supabase
       .from('wp_postmeta_raw')
       .select('post_id, meta_key, meta_value')
       .in('post_id', chunk)
@@ -463,6 +466,20 @@ async function main() {
   };
 
   try {
+    // 0. Desabilitar trigger de histórico
+    if (!isDryRun) {
+      console.log('🔧 Desabilitando trigger de histórico...');
+      try {
+        await executeSql(
+          'ALTER TABLE public.shelters DISABLE TRIGGER trigger_shelter_history;',
+          { verbose: false }
+        );
+        console.log('   ✅ Trigger desabilitado\n');
+      } catch (error) {
+        console.log('   ⚠️  Não foi possível desabilitar trigger (pode já estar desabilitado)\n');
+      }
+    }
+
     // 1. Contar total de abrigos legados
     console.log('📊 Contando abrigos no legado...');
     stats.totalLegacy = await countLegacyShelters();
@@ -501,15 +518,6 @@ async function main() {
         const shelter = mapLegacyShelterToNew(post, metas);
         const validation = validateShelter(shelter);
 
-        // DEBUG: Log primeiro registro
-        if (post.id === 685) {
-          console.log('\n[DEBUG] Abrigo 685:');
-          console.log('  authorized_name:', shelter.authorized_name);
-          console.log('  authorized_email:', shelter.authorized_email);
-          console.log('  authorized_phone:', shelter.authorized_phone);
-          console.log('  species:', shelter.species);
-          console.log('\n');
-        }
 
         if (validation.ok) {
           validShelters.push(shelter);
@@ -596,6 +604,20 @@ async function main() {
     console.error('\n❌ Erro fatal durante a migração:', error.message);
     console.error(error.stack);
     process.exit(1);
+  } finally {
+    // Reabilitar trigger de histórico
+    if (!isDryRun) {
+      console.log('🔧 Reabilitando trigger de histórico...');
+      try {
+        await executeSql(
+          'ALTER TABLE public.shelters ENABLE TRIGGER trigger_shelter_history;',
+          { verbose: false }
+        );
+        console.log('   ✅ Trigger reabilitado\n');
+      } catch (error) {
+        console.log('   ⚠️  Não foi possível reabilitar trigger:', error.message, '\n');
+      }
+    }
   }
 }
 

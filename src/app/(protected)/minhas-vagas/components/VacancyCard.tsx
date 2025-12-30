@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Heading, Text } from "@/components/ui/typography";
 import type { VacancyProfile } from "@/types/vacancies.types";
+import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
 
 interface VacancyCardProps {
   vacancy: VacancyProfile;
@@ -17,7 +18,7 @@ export default function VacancyCard({
   editHref,
 }: VacancyCardProps) {
   const location = [vacancy.city, vacancy.state].filter(Boolean).join(" - ");
-  const details = [vacancy.period, vacancy.workload].filter(Boolean).join(" · ");
+  const details = [vacancy.period, normalizeWorkload(vacancy.workload)].filter(Boolean).join(" · ");
   const slug = vacancy.slug || vacancy.id;
 
   return (
@@ -33,7 +34,7 @@ export default function VacancyCard({
 
       {vacancy.quantity && (
         <Text className="text-sm text-[#68707b]">
-          Quantidade de vagas: {vacancy.quantity}
+          Vagas disponíveis: {vacancy.quantity}
         </Text>
       )}
 

@@ -15,6 +15,7 @@
  */
 
 const { createClient } = require('@supabase/supabase-js');
+const { randomUUID } = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -122,10 +123,10 @@ function slugifyName(name) {
     .replace(/-{2,}/g, '-');
 }
 
-function generateVacancySlug(title, wpPostId) {
+function generateVacancySlug(title, uuid) {
   const base = slugifyName(title || 'vaga');
-  const idSuffix = String(wpPostId).slice(-4).padStart(4, '0');
-  return `${base}-${idSuffix}`;
+  const uuidPrefix = uuid.replace(/-/g, '').slice(0, 8);
+  return `${base}-${uuidPrefix}`;
 }
 
 // ========================================
@@ -135,49 +136,46 @@ function generateVacancySlug(title, wpPostId) {
 /**
  * Transforma uma vaga do WordPress para o formato Supabase
  */
-function mapLegacyVacancyToNew(wpPost, metaArray) {
+function mapLegacyVacancyToNew(wpPost, metaArray, uuid) {
   const title = wpPost.post_title || null;
   const cidade = normalizeText(extractMeta(metaArray, 'cidade'));
   const estado = normalizeState(extractMeta(metaArray, 'estado'));
   const periodo = normalizeText(extractMeta(metaArray, 'periodo'));
   const cargaHoraria = normalizeText(extractMeta(metaArray, 'carga_horaria'));
+  const quantidade = normalizeText(extractMeta(metaArray, 'quantidade'));
   const habilidades = normalizeText(extractMeta(metaArray, 'habilidades_e_funcoes'));
   const perfilVoluntarios = normalizeText(extractMeta(metaArray, 'perfil_dos_voluntarios'));
   const tipoDemanda = normalizeText(extractMeta(metaArray, 'tipo_demanda'));
   const areaAtuacao = normalizeText(extractMeta(metaArray, 'area_atuacao'));
-  const quantidade = normalizeText(extractMeta(metaArray, 'quantidade'));
   const abrigo = normalizeText(extractMeta(metaArray, 'abrigo') || extractMeta(metaArray, '_abrigo'));
 
   const isPublic = wpPost.post_status === 'publish';
   const createdAt = parseWpDate(wpPost.post_date);
   const updatedAt = parseWpDate(wpPost.post_modified);
 
-  // Gerar slug: prioriza post_name do WP, senão gera a partir do título
-  const slug = wpPost.post_name
-    ? normalizeWpSlug(wpPost.post_name)
-    : generateVacancySlug(title || 'vaga', wpPost.id);
+  // Gerar slug usando o UUID gerado
+  const slug = generateVacancySlug(title || 'vaga', uuid);
 
-  // Montar description como JSON com todos os campos extras
-  const description = JSON.stringify({
-    post_content: wpPost.post_content || null,
-    post_habilidades_e_funcoes: habilidades,
-    post_perfil_dos_voluntarios: perfilVoluntarios,
-    post_periodo: periodo,
-    post_carga: cargaHoraria,
-    post_tipo_demanda: tipoDemanda,
-    post_area_atuacao: areaAtuacao,
-    post_quantidade: quantidade,
-    cidade,
-    estado,
-    abrigo,
-  });
+  // Description é o post_content
+  const description = wpPost.post_content || null;
 
   return {
+    id: uuid, // UUID pré-gerado
     wp_post_id: wpPost.id,
-    shelter_id: null, // Será vinculado posteriormente se necessário
+    shelter_id: null, // Será vinculado posteriormente
     title: title || 'Vaga de Voluntariado',
     slug,
     description,
+    cidade,
+    estado,
+    area_atuacao: areaAtuacao,
+    carga_horaria: cargaHoraria,
+    periodo,
+    quantidade,
+    is_published: isPublic, // TRUE se post_status === 'publish', FALSE se 'draft'
+    habilidades_e_funcoes: habilidades,
+    perfil_dos_voluntarios: perfilVoluntarios,
+    tipo_demanda: tipoDemanda,
     status: isPublic ? 'active' : 'inactive',
     created_at: createdAt,
     updated_at: updatedAt,
@@ -230,7 +228,8 @@ async function fetchLegacyVacancies(offset = 0, pageSize = PAGE_SIZE) {
 
   // Buscar TODOS os metadados em lotes (chunks de 50)
   let allMetas = [];
-  const CHUNK_SIZE = 50;
+  // IMPORTANTE: CHUNK_SIZE precisa ser pequeno para não bater no limite de 1000 registros do Supabase
+  const CHUNK_SIZE = 40;
 
   for (let i = 0; i < postIds.length; i += CHUNK_SIZE) {
     const chunk = postIds.slice(i, i + CHUNK_SIZE);
@@ -318,9 +317,11 @@ async function main() {
 
       stats.total += legacyVacancies.length;
 
-      const mappedVacancies = legacyVacancies.map(({ post, metas }) =>
-        mapLegacyVacancyToNew(post, metas)
-      );
+      // Gerar UUIDs para cada vaga antes do mapeamento
+      const mappedVacancies = legacyVacancies.map(({ post, metas }) => {
+        const uuid = randomUUID();
+        return mapLegacyVacancyToNew(post, metas, uuid);
+      });
 
       const validVacancies = [];
       mappedVacancies.forEach(vacancy => {
