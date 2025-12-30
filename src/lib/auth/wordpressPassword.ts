@@ -1,15 +1,14 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
-// Lazy import do PasswordHash para evitar problemas de inicialização
-let PasswordHashClass: any = null;
+// Lazy import do wordpress-hash-node
+let wordpressHashModule: any = null;
 
-function getPasswordHash() {
-  if (!PasswordHashClass) {
-    // wordpress-hash-node exporta diretamente a classe, não um objeto
-    PasswordHashClass = require("wordpress-hash-node");
+function getWordpressHashModule() {
+  if (!wordpressHashModule) {
+    wordpressHashModule = require("wordpress-hash-node");
   }
-  return PasswordHashClass;
+  return wordpressHashModule;
 }
 
 /**
@@ -18,9 +17,9 @@ function getPasswordHash() {
  */
 export function generateWordpressHash(password: string): string {
   try {
-    const PasswordHash = getPasswordHash();
-    const phpass = new PasswordHash(8, true);
-    const hash = phpass.HashPassword(password);
+    const module = getWordpressHashModule();
+    // wordpress-hash-node exporta HashPassword e CheckPassword diretamente
+    const hash = module.HashPassword(password);
     return hash ?? "";
   } catch (error) {
     console.error("Erro ao gerar hash WordPress", error);
@@ -76,9 +75,9 @@ export async function verifyWordpressPassword(
     }
 
     if (trimmedHash.startsWith("$P") || trimmedHash.startsWith("$H")) {
-      const PasswordHash = getPasswordHash();
-      const phpass = new PasswordHash(8, true);
-      return Boolean(phpass.CheckPassword(trimmedPassword, trimmedHash));
+      const module = getWordpressHashModule();
+      // wordpress-hash-node exporta CheckPassword diretamente
+      return Boolean(module.CheckPassword(trimmedPassword, trimmedHash));
     }
 
     // Fallback: MD5 temporário (usado para reset de senha em testes/migração)
