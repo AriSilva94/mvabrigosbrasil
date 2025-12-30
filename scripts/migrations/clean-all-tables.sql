@@ -14,6 +14,46 @@
 -- Desabilitar foreign key checks temporariamente
 SET session_replication_role = 'replica';
 
+-- ========================================
+-- PASSO 1: LIMPAR AUTH (HARD DELETE - ORDEM CORRETA)
+-- ========================================
+
+-- IMPORTANTE: Deletar na ordem correta para respeitar foreign keys
+
+-- 1. Deletar audit logs
+DELETE FROM auth.audit_log_entries;
+
+-- 2. Deletar MFA (autenticação de dois fatores)
+DELETE FROM auth.mfa_amr_claims;
+DELETE FROM auth.mfa_challenges;
+DELETE FROM auth.mfa_factors;
+
+-- 3. Deletar SSO
+DELETE FROM auth.saml_relay_states;
+DELETE FROM auth.saml_providers;
+DELETE FROM auth.sso_domains;
+DELETE FROM auth.sso_providers;
+
+-- 4. Deletar flow states
+DELETE FROM auth.flow_state;
+
+-- 5. Deletar sessions (depende de users)
+DELETE FROM auth.sessions;
+
+-- 6. Deletar refresh tokens (depende de sessions)
+DELETE FROM auth.refresh_tokens;
+
+-- 7. Deletar identities (depende de users)
+DELETE FROM auth.identities;
+
+-- 8. DELETAR TODOS OS USUÁRIOS (último, pois outros dependem dele)
+-- Isso remove TODOS, incluindo soft-deleted e corrompidos
+DELETE FROM auth.users;
+
+-- ========================================
+-- PASSO 2: LIMPAR TABELAS DE DOMÍNIO
+-- ========================================
+
 -- Deletar em ordem (dependentes primeiro)
 DELETE FROM shelter_dynamics;
 DELETE FROM shelter_history;
@@ -21,16 +61,12 @@ DELETE FROM shelter_volunteers;
 DELETE FROM volunteers;
 DELETE FROM vacancies;
 DELETE FROM shelters;
-
--- Deletar todos os profiles (exceto os de auth.users ativos)
--- Se quiser deletar TUDO mesmo, remova a condição WHERE
 DELETE FROM profiles;
 
--- ⚠️  DELETAR USUÁRIOS DO AUTH (CUIDADO!)
--- Isso remove TODOS os usuários autenticados do Supabase
-DELETE FROM auth.users;
+-- ========================================
+-- PASSO 3: LIMPAR TABELAS LEGADAS
+-- ========================================
 
--- Tabelas WordPress legadas
 DELETE FROM wp_postmeta_raw;
 DELETE FROM wp_posts_raw;
 DELETE FROM wp_users_raw;
