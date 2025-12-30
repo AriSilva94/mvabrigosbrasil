@@ -1,0 +1,102 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  Verificação Pós-Migração: Abrigos                         ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 Contando abrigos no legado...
+   Total no legado: 297
+
+📊 Contando abrigos migrados no Supabase...
+   Total migrado: 297
+
+🔍 Verificando duplicatas...
+   Duplicatas encontradas: 0
+
+🔍 Verificando abrigos sem nome...
+   Sem nome: 0
+
+🔍 Verificando vínculos de perfil...
+   Com profile_id vinculado: 0
+
+📊 Analisando distribuição por tipo...
+   Distribuição calculada
+
+🎲 Buscando amostra aleatória...
+   Amostra coletada: 10 registros
+
+╔════════════════════════════════════════════════════════════╗
+║  RESUMO DA VERIFICAÇÃO                                     ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 CONTAGENS:
+   Legado (WordPress):       297
+   Migrados (Supabase):      297
+   Nativos (sem wp_post_id): 0
+   Total (Supabase):         297
+
+📈 TAXA DE MIGRAÇÃO: 100.0%
+
+🔍 VALIDAÇÕES:
+   Duplicatas:               0
+   Sem nome:                 0
+   Com profile_id:           0
+
+📊 DISTRIBUIÇÃO POR TIPO:
+   private           189 (63.6%)
+   temporary          61 (20.5%)
+   public             30 (10.1%)
+   mixed              17 (5.7%)
+
+📊 DISTRIBUIÇÃO POR ESTADO (TOP 10):
+   SP                 84 (28.3%)
+   PR                 48 (16.2%)
+   MG                 32 (10.8%)
+   RJ                 16 (5.4%)
+   RS                 15 (5.1%)
+   DF                 11 (3.7%)
+   ES                 11 (3.7%)
+   BA                  9 (3.0%)
+   SC                  9 (3.0%)
+   PE                  7 (2.4%)
+
+🎲 AMOSTRA ALEATÓRIA:
+   [1] Projeto Viva Gato
+       wp_post_id: 621, tipo: private
+       local: Aparecida de Goiânia - GO, ativo: true
+   [2] Bradock
+       wp_post_id: 624, tipo: private
+       local: Nazaré Paulista - SP, ativo: true
+   [3] Cheirinho de Miau
+       wp_post_id: 625, tipo: private
+       local: Jacareí - SP, ativo: true
+   [4] Associação Anjos de Patas
+       wp_post_id: 626, tipo: private
+       local: Alfenas - MG, ativo: true
+   [5] Camila
+       wp_post_id: 628, tipo: temporary
+       local: Boa Vista - RR, ativo: true
+   [6] Projeto Adota Mogi
+       wp_post_id: 631, tipo: private
+       local: Mogi das Cruzes - SP, ativo: true
+   [7] Departamento de proteção e bem estar animal
+       wp_post_id: 633, tipo: public
+       local: Hortolândia - SP, ativo: true
+   [8] Fundação Michel Amigo Beija Flor
+       wp_post_id: 634, tipo: private
+       local: Balsas - MA, ativo: true
+   [9] CCA Fiutinha
+       wp_post_id: 635, tipo: private
+       local: Romaria - MG, ativo: true
+   [10] Aucioni Protetora
+       wp_post_id: 636, tipo: private
+       local: São Lourenço - MG, ativo: true
+
+📄 Relatório salvo em: C:\Users\ariov\Desktop\projetos\mvabrigosbrasil\scripts\migrations\abrigos\output\verify-migration-report.json
+
+╔════════════════════════════════════════════════════════════╗
+║  CONCLUSÃO                                                 ║
+╚════════════════════════════════════════════════════════════╝
+
+✅ Migração VALIDADA com sucesso!
+   Todos os abrigos foram migrados corretamente.
+

@@ -1,0 +1,22 @@
+🚀 Iniciando migração de vagas de voluntariado...
+
+📋 Modo: EXECUÇÃO REAL
+📥 Buscando vagas (offset: 0)...
+✅ Válidos: 54 / Total: 54
+💾 Salvos: 54
+📥 Buscando vagas (offset: 500)...
+
+═══════════════════════════════════════
+📊 RELATÓRIO FINAL
+═══════════════════════════════════════
+Total de vagas processadas: 54
+Válidas: 54
+Inválidas: 0
+Atualizadas: 54
+Erros: 0
+═══════════════════════════════════════
+
+✅ Migração concluída com sucesso!
+
+💾 Relatório salvo em: C:\Users\ariov\Desktop\projetos\mvabrigosbrasil\scripts\migrations\vagas-voluntariado\output\migrate-vacancies-report.json
+

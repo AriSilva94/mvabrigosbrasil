@@ -1,26 +1,13 @@
 {
-  "timestamp": "2025-12-30T04:34:17.459Z",
+  "timestamp": "2025-12-30T05:08:50.198Z",
   "mode": "production",
   "limit": "unlimited",
   "stats": {
     "totalLegacy": 297,
-    "processed": 0,
+    "processed": 297,
     "inserted": 0,
-    "updated": 0,
+    "updated": 297,
     "invalid": 0,
-    "errors": [
-      {
-        "batch": 1,
-        "error": "Erro ao fazer upsert: null value in column \"profile_id\" of relation \"shelter_history\" violates not-null constraint"
-      },
-      {
-        "batch": 2,
-        "error": "Erro ao fazer upsert: null value in column \"profile_id\" of relation \"shelter_history\" violates not-null constraint"
-      },
-      {
-        "batch": 3,
-        "error": "Erro ao fazer upsert: null value in column \"profile_id\" of relation \"shelter_history\" violates not-null constraint"
-      }
-    ]
+    "errors": []
   }
 }

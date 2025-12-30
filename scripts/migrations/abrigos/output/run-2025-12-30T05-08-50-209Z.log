@@ -1,0 +1,38 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  Migração de Abrigos: WordPress → Supabase                ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 Contando abrigos no legado...
+   Total encontrado: 297
+
+🔄 Processando lote (offset: 0)...
+
+[DEBUG] Abrigo 685:
+  authorized_name: Raquel Ferreira Viana
+  authorized_email: raquelferreiraviana@gmail.com
+  authorized_phone: 91984306006
+  species: caes e gatos
+
+
+   ✅ Válidos: 297
+   ❌ Inválidos: 0
+   📦 Batch 1: 100 registros processados
+   📦 Batch 2: 100 registros processados
+   📦 Batch 3: 97 registros processados
+🔄 Processando lote (offset: 500)...
+
+╔════════════════════════════════════════════════════════════╗
+║  RESUMO DA MIGRAÇÃO                                        ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 Total no legado:        297
+✅ Processados:            297
+📝 Inseridos/Atualizados:  297
+❌ Inválidos:              0
+⚠️  Erros:                  0
+
+📄 Relatório salvo em: C:\Users\ariov\Desktop\projetos\mvabrigosbrasil\scripts\migrations\abrigos\output\migrate-shelters-report.json
+
+✅ Migração concluída com sucesso!
+

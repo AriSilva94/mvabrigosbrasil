@@ -77,7 +77,7 @@ async function setupTestLoginByEmail(email) {
   if (wpPost) {
     const { data: sh } = await supabase
       .from('shelters')
-      .select('wp_post_id, name, state, city, shelter_type, street, number, district, cep, authorized_phone, authorized_email, website, cnpj, foundation_date')
+      .select('*')
       .eq('wp_post_id', wpPost.id)
       .single();
 
@@ -112,18 +112,31 @@ async function setupTestLoginByEmail(email) {
 
   if (shelter) {
     console.log('📋 DADOS DO ABRIGO (esperados no perfil após login):\n');
-    console.log(`   Nome:            ${shelter.name || '(não informado)'}`);
-    console.log(`   Tipo:            ${shelter.shelter_type || '(não informado)'}`);
-    console.log(`   Estado:          ${shelter.state || '(não informado)'}`);
-    console.log(`   Cidade:          ${shelter.city || '(não informado)'}`);
-    console.log(`   Endereço:        ${shelter.street || '(não informado)'} ${shelter.number || ''}`);
-    console.log(`   Bairro:          ${shelter.district || '(não informado)'}`);
-    console.log(`   CEP:             ${shelter.cep || '(não informado)'}`);
-    console.log(`   Telefone:        ${shelter.authorized_phone || '(não informado)'}`);
-    console.log(`   Email:           ${shelter.authorized_email || '(não informado)'}`);
-    console.log(`   Website:         ${shelter.website || '(não informado)'}`);
-    console.log(`   CNPJ:            ${shelter.cnpj || '(não informado)'}`);
-    console.log(`   Fundação:        ${shelter.foundation_date || '(não informado)'}\n`);
+    console.log(`   Nome:              ${shelter.name || '(não informado)'}`);
+    console.log(`   Tipo:              ${shelter.shelter_type || '(não informado)'}`);
+    console.log(`   CNPJ:              ${shelter.cnpj || '(não informado)'}`);
+    console.log(`   CPF:               ${shelter.cpf || '(não informado)'}`);
+    console.log(`   Fundação:          ${shelter.foundation_date || '(não informado)'}`);
+    console.log(`\n   📍 Endereço:`);
+    console.log(`   Estado:            ${shelter.state || '(não informado)'}`);
+    console.log(`   Cidade:            ${shelter.city || '(não informado)'}`);
+    console.log(`   Rua:               ${shelter.street || '(não informado)'}`);
+    console.log(`   Número:            ${shelter.number || '(não informado)'}`);
+    console.log(`   Bairro:            ${shelter.district || '(não informado)'}`);
+    console.log(`   CEP:               ${shelter.cep || '(não informado)'}`);
+    console.log(`\n   👤 Responsável:`);
+    console.log(`   Nome:              ${shelter.authorized_name || '(não informado)'}`);
+    console.log(`   Função:            ${shelter.authorized_role || '(não informado)'}`);
+    console.log(`   Email:             ${shelter.authorized_email || '(não informado)'}`);
+    console.log(`   Telefone:          ${shelter.authorized_phone || '(não informado)'}`);
+    console.log(`\n   🐾 Sobre os Animais:`);
+    console.log(`   Espécies:          ${shelter.species || '(não informado)'}`);
+    console.log(`   Outras espécies:   ${shelter.additional_species || '(não informado)'}`);
+    console.log(`   População cães:    ${shelter.initial_dogs || 0}`);
+    console.log(`   População gatos:   ${shelter.initial_cats || 0}`);
+    console.log(`   Lares temporários: ${shelter.temporary_agreement ? 'Sim' : 'Não'}`);
+    console.log(`\n   🌐 Outros:`);
+    console.log(`   Website:           ${shelter.website || '(não informado)'}\n`);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   } else {
     console.log('⚠️  Este usuário não possui cadastro de abrigo migrado\n');

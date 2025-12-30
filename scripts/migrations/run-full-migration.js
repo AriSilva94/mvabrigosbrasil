@@ -219,6 +219,16 @@ async function main() {
     };
 
     // ========================================
+    // PASSO 0: Desabilitar Triggers
+    // ========================================
+    logStep(0, 'Desabilitar triggers de histórico');
+    await runSql(
+      `ALTER TABLE public.shelters DISABLE TRIGGER trigger_shelter_history;`,
+      'Desabilitar trigger de histórico em shelters'
+    );
+    logSuccess('Trigger de histórico desabilitado');
+
+    // ========================================
     // PASSO 1: Migrar Abrigos
     // ========================================
     logStep(1, 'Migração de Abrigos');

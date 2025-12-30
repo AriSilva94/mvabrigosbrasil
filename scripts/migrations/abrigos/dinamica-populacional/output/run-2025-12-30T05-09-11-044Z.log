@@ -1,0 +1,50 @@
+
+╔════════════════════════════════════════════════════════════╗
+║  VERIFICAÇÃO: Migração de Dinâmica Populacional           ║
+╚════════════════════════════════════════════════════════════╝
+
+📊 CONTAGENS:
+
+WordPress (wp_posts_raw):
+   dinamica:       844
+   dinamica_lar:   156
+   TOTAL:          1000
+
+Supabase (shelter_dynamics):
+   dinamica:       164
+   dinamica_lar:   81
+   TOTAL:          245
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  ATENÇÃO: 755 registros NÃO foram migrados
+
+   Possíveis motivos:
+   - Posts sem id_abrigo
+   - Abrigos não migrados (sem shelter_id)
+   - Posts sem período de referência válido
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 VALIDAÇÃO DETALHADA (amostra de 5 registros):
+
+Post 1219: ❌ NÃO ENCONTRADO no Supabase
+Post 2346: ❌ NÃO ENCONTRADO no Supabase
+Post 627: ✅ OK
+Post 632: ❌ NÃO ENCONTRADO no Supabase
+Post 649: ❌ NÃO ENCONTRADO no Supabase
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏠 ABRIGOS COM DINÂMICA MIGRADA:
+
+   Total de abrigos únicos com dinâmica: 40
+
+   - Maria Luiza (wp_post_id: 790): 7 registros
+   - Aujudeum4patas (wp_post_id: 754): 15 registros
+   - Catland Adoção de Gatinhos (wp_post_id: 982): 11 registros
+   - Resgatitos (wp_post_id: 2151): 3 registros
+   - Projeto Social Crazy Cat Lady House (wp_post_id: 1679): 10 registros
+
+✅ Verificação concluída!
+

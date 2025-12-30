@@ -11,7 +11,7 @@
 - Region: São Paulo
 - **Anote a Service Role Key** (Settings → API)
 
-### 2. Executar SQLs de preparação (00-05)
+### 2. Executar SQLs de preparação (00-04)
 
 No Supabase SQL Editor, execute **NA ORDEM**:
 
@@ -21,8 +21,9 @@ sql/01-criar-tabelas-legadas.sql
 sql/02-criar-tabelas-dominio.sql
 sql/03-criar-triggers-funcoes.sql
 sql/04-configurar-rls.sql
-sql/05-pre-migracao-desabilitar-triggers.sql
 ```
+
+**Nota:** O SQL 05 (desabilitar triggers) agora é executado **automaticamente** pelo script de migração!
 
 ### 3. Importar backup WordPress
 
@@ -71,8 +72,9 @@ node run-full-migration.js
 
 ### O que acontece
 
-O script executa **15 passos 100% automaticamente**:
+O script executa **16 passos 100% automaticamente**:
 
+0. ✅ **AUTOMÁTICO** → Desabilita trigger de histórico (SQL 05)
 1. ✅ Migra abrigos (297)
 2. ✅ Migra dinâmicas populacionais
 3. ✅ Migra voluntários (232)
@@ -134,9 +136,9 @@ git push origin main
 ANTES DO SCRIPT:              SCRIPT:                         DEPOIS DO SCRIPT:
 ─────────────────              ───────                         ──────────────────
 ✅ Criar Supabase         →    node run-full-migration    →    Testar
-✅ SQL 00-05              →    (100% automático)          →    Deploy
+✅ SQL 00-04              →    (100% automático)          →    Deploy
 ✅ Importar WP            →    (10-15 min)                →
-✅ .env.local             →    + SQL 06-07 automático     →
+✅ .env.local             →    + SQL 05-06-07 automático  →
 ```
 
 **Tempo total**: ~45 minutos (30 prep + 15 migração)
@@ -148,7 +150,7 @@ ANTES DO SCRIPT:              SCRIPT:                         DEPOIS DO SCRIPT:
 Antes de executar `run-full-migration.js`:
 
 - [ ] Supabase criado
-- [ ] SQLs 00-05 executados
+- [ ] SQLs 00-04 executados (SQL 05 é automático!)
 - [ ] Backup WP importado (wp_*_raw)
 - [ ] .env.local criado na raiz **com DATABASE_URL**
 - [ ] npm install executado
