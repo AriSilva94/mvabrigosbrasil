@@ -8,6 +8,13 @@ if (process.env.NEXT_TURBOPACK_USE_WORKER === undefined) {
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  // Suprimir avisos de source map em desenvolvimento
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.devtool = false;
+    }
+    return config;
+  },
   images: {
     qualities: [50, 75, 85, 100],
     remotePatterns: [
