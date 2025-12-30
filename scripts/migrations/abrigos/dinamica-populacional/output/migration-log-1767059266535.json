@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-12-30T01:47:46.546Z",
+  "mode": "production",
+  "limit": null,
+  "stats": {
+    "processed": 1000,
+    "successful": 1000,
+    "skipped": 0,
+    "errors": 0,
+    "skippedReasons": {
+      "noIdAbrigo": 0,
+      "shelterNotMigrated": 0,
+      "noPeriod": 0,
+      "noMetadata": 0
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-12-30T02:57:05.960Z",
+  "legacy": {
+    "total": 297
+  },
+  "supabase": {
+    "total": 297,
+    "withWpPostId": 297,
+    "withoutWpPostId": 0,
+    "withProfileId": 0,
+    "byType": {
+      "private": 189,
+      "temporary": 61,
+      "public": 30,
+      "mixed": 17
+    },
+    "byState": {
+      "SP": 84,
+      "GO": 6,
+      "MG": 32,
+      "RR": 1,
+      "MA": 1,
+      "BA": 9,
+      "SC": 9,
+      "PA": 5,
+      "AM": 3,
+      "RJ": 16,
+      "DF": 11,
+      "PE": 7,
+      "PI": 6,
+      "RS": 15,
+      "PB": 7,
+      "PR": 48,
+      "ES": 11,
+      "MS": 4,
+      "AP": 1,
+      "MT": 4,
+      "RN": 5,
+      "CE": 6,
+      "TO": 2,
+      "SE": 1,
+      "AL": 3
+    }
+  },
+  "validation": {
+    "duplicates": [],
+    "noName": [],
+    "sample": [
+      {
+        "id": "c4680043-9b77-45ae-ad3d-c6c104694ce5",
+        "wp_post_id": 711,
+        "name": "Orfagato",
+        "shelter_type": "private",
+        "state": "SP",
+        "city": "São Paulo",
+        "active": true
+      },
+      {
+        "id": "cb6c988f-2132-4f3f-a385-c705859f7521",
+        "wp_post_id": 621,
+        "name": "Projeto Viva Gato",
+        "shelter_type": "private",
+        "state": "GO",
+        "city": "Aparecida de Goiânia",
+        "active": true
+      },
+      {
+        "id": "cb0d1b8b-64fa-4e24-811d-c993f54f2064",
+        "wp_post_id": 624,
+        "name": "Bradock",
+        "shelter_type": "private",
+        "state": "SP",
+        "city": "Nazaré Paulista",
+        "active": true
+      },
+      {
+        "id": "1f633fee-6069-4578-ab07-6ecee85f2b33",
+        "wp_post_id": 625,
+        "name": "Cheirinho de Miau",
+        "shelter_type": "private",
+        "state": "SP",
+        "city": "Jacareí",
+        "active": true
+      },
+      {
+        "id": "6df02100-5a9a-4138-8f09-3af2da311b3d",
+        "wp_post_id": 626,
+        "name": "Associação Anjos de Patas",
+        "shelter_type": "private",
+        "state": "MG",
+        "city": "Alfenas",
+        "active": true
+      },
+      {
+        "id": "11c0665c-d854-4a49-9b10-b2eca768ef35",
+        "wp_post_id": 628,
+        "name": "Camila",
+        "shelter_type": "temporary",
+        "state": "RR",
+        "city": "Boa Vista",
+        "active": true
+      },
+      {
+        "id": "be1eddec-ebe9-41dc-8027-6212b3036657",
+        "wp_post_id": 631,
+        "name": "Projeto Adota Mogi",
+        "shelter_type": "private",
+        "state": "SP",
+        "city": "Mogi das Cruzes",
+        "active": true
+      },
+      {
+        "id": "3ad6da33-a692-4542-90c9-3ff892a97873",
+        "wp_post_id": 633,
+        "name": "Departamento de proteção e bem estar animal",
+        "shelter_type": "public",
+        "state": "SP",
+        "city": "Hortolândia",
+        "active": true
+      },
+      {
+        "id": "71f9c1a5-1aef-408c-a58a-3b4079d7766b",
+        "wp_post_id": 634,
+        "name": "Fundação Michel Amigo Beija Flor",
+        "shelter_type": "private",
+        "state": "MA",
+        "city": "Balsas",
+        "active": true
+      },
+      {
+        "id": "13881392-c1e6-4c95-a851-4a7eef88e70f",
+        "wp_post_id": 635,
+        "name": "CCA Fiutinha",
+        "shelter_type": "private",
+        "state": "MG",
+        "city": "Romaria",
+        "active": true
+      }
+    ]
+  }
+}

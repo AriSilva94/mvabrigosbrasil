@@ -1,0 +1,164 @@
+/**
+ * Script: Corrigir Headers e Datas dos CSVs do WordPress
+ *
+ * Problemas corrigidos:
+ *   1. Colunas em uppercase (ID → id)
+ *   2. Datas inválidas do MySQL (0000-00-00 00:00:00 → NULL)
+ *
+ * Arquivos processados:
+ *   - wp_users.csv (header + datas)
+ *   - wp_posts.csv (header + datas)
+ *
+ * Uso:
+ *   node fix-csv-headers.js
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const FILES_TO_FIX = [
+  'wp_users.csv',
+  'wp_posts.csv'
+];
+
+// Padrões de data inválida do MySQL
+const INVALID_DATE_PATTERNS = [
+  '"0000-00-00 00:00:00"',
+  '0000-00-00 00:00:00',
+  '"0000-00-00"',
+  '0000-00-00'
+];
+
+function fixInvalidDates(line) {
+  let fixed = line;
+
+  // Substituir todas as datas inválidas por string vazia (NULL no CSV)
+  for (const pattern of INVALID_DATE_PATTERNS) {
+    // Se estiver entre aspas, substituir por aspas vazias ""
+    if (pattern.startsWith('"')) {
+      fixed = fixed.replaceAll(pattern, '""');
+    } else {
+      // Se não tiver aspas, substituir por vazio
+      fixed = fixed.replaceAll(pattern, '');
+    }
+  }
+
+  return fixed;
+}
+
+function fixCsvFile(filePath) {
+  console.log(`\n📄 Processando: ${path.basename(filePath)}`);
+
+  if (!fs.existsSync(filePath)) {
+    console.log(`   ⚠️  Arquivo não encontrado, pulando...`);
+    return { fixed: false, stats: null };
+  }
+
+  // Ler arquivo
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+
+  if (lines.length === 0) {
+    console.log(`   ⚠️  Arquivo vazio, pulando...`);
+    return { fixed: false, stats: null };
+  }
+
+  let headerFixed = false;
+  let datesFixed = 0;
+  let anyChange = false;
+
+  // ========================================
+  // 1. Corrigir header (primeira linha)
+  // ========================================
+  const originalHeader = lines[0];
+  // Corrigir "ID" (com ou sem aspas) para "id"
+  const fixedHeader = originalHeader.replace(/^"?ID"?(,|$)/, '"id"$1');
+
+  if (originalHeader !== fixedHeader) {
+    console.log(`   🔧 Header: "ID" → "id"`);
+    lines[0] = fixedHeader;
+    headerFixed = true;
+    anyChange = true;
+  } else {
+    console.log(`   ✅ Header: já está correto`);
+  }
+
+  // ========================================
+  // 2. Corrigir datas inválidas
+  // ========================================
+  console.log(`   🔍 Verificando datas inválidas...`);
+
+  for (let i = 1; i < lines.length; i++) {
+    const original = lines[i];
+    const fixed = fixInvalidDates(original);
+
+    if (original !== fixed) {
+      lines[i] = fixed;
+      datesFixed++;
+      anyChange = true;
+    }
+  }
+
+  if (datesFixed > 0) {
+    console.log(`   🔧 Datas: ${datesFixed} linhas com datas inválidas corrigidas`);
+  } else {
+    console.log(`   ✅ Datas: nenhuma data inválida encontrada`);
+  }
+
+  // ========================================
+  // 3. Salvar se houve mudanças
+  // ========================================
+  if (!anyChange) {
+    console.log(`   ✅ Arquivo já está totalmente correto!`);
+    return { fixed: false, stats: { headerFixed, datesFixed } };
+  }
+
+  // Escrever arquivo corrigido diretamente (sem backup)
+  fs.writeFileSync(filePath, lines.join('\n'), 'utf8');
+  console.log(`   ✅ Arquivo corrigido e salvo!`);
+
+  return { fixed: true, stats: { headerFixed, datesFixed } };
+}
+
+function main() {
+  console.log('\n╔════════════════════════════════════════════════════════════╗');
+  console.log('║  Corrigir Headers e Datas dos CSVs do WordPress          ║');
+  console.log('╚════════════════════════════════════════════════════════════╝');
+
+  const scriptDir = __dirname;
+  let totalFixed = 0;
+  let totalHeadersFixed = 0;
+  let totalDatesFixed = 0;
+
+  for (const fileName of FILES_TO_FIX) {
+    const filePath = path.join(scriptDir, fileName);
+    const result = fixCsvFile(filePath);
+
+    if (result.fixed) {
+      totalFixed++;
+      if (result.stats.headerFixed) totalHeadersFixed++;
+      totalDatesFixed += result.stats.datesFixed;
+    }
+  }
+
+  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('\n📊 RESUMO:\n');
+  console.log(`   Arquivos processados:  ${FILES_TO_FIX.length}`);
+  console.log(`   Arquivos modificados:  ${totalFixed}`);
+  console.log(`   Headers corrigidos:    ${totalHeadersFixed}`);
+  console.log(`   Linhas com datas fix:  ${totalDatesFixed}\n`);
+
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+  console.log('✅ Arquivos prontos para importar no Supabase!\n');
+  console.log('📌 Próximos passos:');
+  console.log('   1. No Supabase, vá em Table Editor');
+  console.log('   2. Importe os CSVs:');
+  console.log('      • wp_users.csv → wp_users_raw');
+  console.log('      • wp_posts.csv → wp_posts_raw');
+  console.log('      • wp_postmeta.csv → wp_postmeta_raw');
+  console.log('   3. Execute os scripts de migração\n');
+
+  process.exit(0);
+}
+
+main();

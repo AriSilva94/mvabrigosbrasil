@@ -1,0 +1,877 @@
+{
+  "timestamp": "2025-12-30T00:54:01.499Z",
+  "total_posts": 1000,
+  "dinamica_count": 847,
+  "dinamica_lar_count": 153,
+  "shelters_count": 124,
+  "shelters": [
+    {
+      "wp_post_id": "2868",
+      "wp_author": 1,
+      "dinamica_records": 0,
+      "dinamica_lar_records": 1,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "621",
+      "wp_author": 36,
+      "dinamica_records": 16,
+      "dinamica_lar_records": 0,
+      "total_records": 16
+    },
+    {
+      "wp_post_id": "758",
+      "wp_author": 37,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "626",
+      "wp_author": 42,
+      "dinamica_records": 14,
+      "dinamica_lar_records": 9,
+      "total_records": 23
+    },
+    {
+      "wp_post_id": "631",
+      "wp_author": 45,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "635",
+      "wp_author": 50,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "648",
+      "wp_author": 67,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "647",
+      "wp_author": 73,
+      "dinamica_records": 40,
+      "dinamica_lar_records": 7,
+      "total_records": 47
+    },
+    {
+      "wp_post_id": "972",
+      "wp_author": 84,
+      "dinamica_records": 8,
+      "dinamica_lar_records": 3,
+      "total_records": 11
+    },
+    {
+      "wp_post_id": "657",
+      "wp_author": 85,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "663",
+      "wp_author": 95,
+      "dinamica_records": 34,
+      "dinamica_lar_records": 0,
+      "total_records": 34
+    },
+    {
+      "wp_post_id": "670",
+      "wp_author": 100,
+      "dinamica_records": 13,
+      "dinamica_lar_records": 0,
+      "total_records": 13
+    },
+    {
+      "wp_post_id": "697",
+      "wp_author": 111,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "699",
+      "wp_author": 113,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "701",
+      "wp_author": 115,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "716",
+      "wp_author": 129,
+      "dinamica_records": 35,
+      "dinamica_lar_records": 6,
+      "total_records": 41
+    },
+    {
+      "wp_post_id": "720",
+      "wp_author": 130,
+      "dinamica_records": 11,
+      "dinamica_lar_records": 5,
+      "total_records": 16
+    },
+    {
+      "wp_post_id": "721",
+      "wp_author": 131,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "746",
+      "wp_author": 139,
+      "dinamica_records": 4,
+      "dinamica_lar_records": 0,
+      "total_records": 4
+    },
+    {
+      "wp_post_id": "752",
+      "wp_author": 142,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "754",
+      "wp_author": 143,
+      "dinamica_records": 35,
+      "dinamica_lar_records": 6,
+      "total_records": 41
+    },
+    {
+      "wp_post_id": "756",
+      "wp_author": 144,
+      "dinamica_records": 35,
+      "dinamica_lar_records": 5,
+      "total_records": 40
+    },
+    {
+      "wp_post_id": "765",
+      "wp_author": 152,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "768",
+      "wp_author": 153,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "787",
+      "wp_author": 159,
+      "dinamica_records": 0,
+      "dinamica_lar_records": 1,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "790",
+      "wp_author": 161,
+      "dinamica_records": 34,
+      "dinamica_lar_records": 7,
+      "total_records": 41
+    },
+    {
+      "wp_post_id": "792",
+      "wp_author": 162,
+      "dinamica_records": 14,
+      "dinamica_lar_records": 5,
+      "total_records": 19
+    },
+    {
+      "wp_post_id": "802",
+      "wp_author": 163,
+      "dinamica_records": 33,
+      "dinamica_lar_records": 7,
+      "total_records": 40
+    },
+    {
+      "wp_post_id": "801",
+      "wp_author": 164,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "835",
+      "wp_author": 165,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "796",
+      "wp_author": 166,
+      "dinamica_records": 12,
+      "dinamica_lar_records": 0,
+      "total_records": 12
+    },
+    {
+      "wp_post_id": "799",
+      "wp_author": 168,
+      "dinamica_records": 24,
+      "dinamica_lar_records": 5,
+      "total_records": 29
+    },
+    {
+      "wp_post_id": "805",
+      "wp_author": 169,
+      "dinamica_records": 9,
+      "dinamica_lar_records": 0,
+      "total_records": 9
+    },
+    {
+      "wp_post_id": "807",
+      "wp_author": 170,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "837",
+      "wp_author": 171,
+      "dinamica_records": 25,
+      "dinamica_lar_records": 0,
+      "total_records": 25
+    },
+    {
+      "wp_post_id": "840",
+      "wp_author": 175,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "841",
+      "wp_author": 176,
+      "dinamica_records": 7,
+      "dinamica_lar_records": 0,
+      "total_records": 7
+    },
+    {
+      "wp_post_id": "848",
+      "wp_author": 178,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "849",
+      "wp_author": 179,
+      "dinamica_records": 7,
+      "dinamica_lar_records": 0,
+      "total_records": 7
+    },
+    {
+      "wp_post_id": "851",
+      "wp_author": 181,
+      "dinamica_records": 35,
+      "dinamica_lar_records": 7,
+      "total_records": 42
+    },
+    {
+      "wp_post_id": "853",
+      "wp_author": 183,
+      "dinamica_records": 14,
+      "dinamica_lar_records": 0,
+      "total_records": 14
+    },
+    {
+      "wp_post_id": "854",
+      "wp_author": 184,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "862",
+      "wp_author": 190,
+      "dinamica_records": 21,
+      "dinamica_lar_records": 0,
+      "total_records": 21
+    },
+    {
+      "wp_post_id": "864",
+      "wp_author": 191,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "870",
+      "wp_author": 195,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "877",
+      "wp_author": 200,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "885",
+      "wp_author": 202,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "886",
+      "wp_author": 203,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "891",
+      "wp_author": 207,
+      "dinamica_records": 6,
+      "dinamica_lar_records": 1,
+      "total_records": 7
+    },
+    {
+      "wp_post_id": "901",
+      "wp_author": 208,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "923",
+      "wp_author": 213,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "967",
+      "wp_author": 217,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "982",
+      "wp_author": 224,
+      "dinamica_records": 33,
+      "dinamica_lar_records": 7,
+      "total_records": 40
+    },
+    {
+      "wp_post_id": "995",
+      "wp_author": 227,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "1008",
+      "wp_author": 232,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1054",
+      "wp_author": 234,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "1084",
+      "wp_author": 246,
+      "dinamica_records": 15,
+      "dinamica_lar_records": 0,
+      "total_records": 15
+    },
+    {
+      "wp_post_id": "1179",
+      "wp_author": 260,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "1181",
+      "wp_author": 261,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "1183",
+      "wp_author": 262,
+      "dinamica_records": 8,
+      "dinamica_lar_records": 0,
+      "total_records": 8
+    },
+    {
+      "wp_post_id": "1246",
+      "wp_author": 274,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1249",
+      "wp_author": 276,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1256",
+      "wp_author": 277,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "1262",
+      "wp_author": 278,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1269",
+      "wp_author": 280,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1277",
+      "wp_author": 281,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "1288",
+      "wp_author": 283,
+      "dinamica_records": 4,
+      "dinamica_lar_records": 0,
+      "total_records": 4
+    },
+    {
+      "wp_post_id": "1286",
+      "wp_author": 285,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1304",
+      "wp_author": 286,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1327",
+      "wp_author": 296,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "1418",
+      "wp_author": 343,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "1426",
+      "wp_author": 346,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "1487",
+      "wp_author": 352,
+      "dinamica_records": 10,
+      "dinamica_lar_records": 5,
+      "total_records": 15
+    },
+    {
+      "wp_post_id": "1450",
+      "wp_author": 357,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1499",
+      "wp_author": 367,
+      "dinamica_records": 25,
+      "dinamica_lar_records": 6,
+      "total_records": 31
+    },
+    {
+      "wp_post_id": "1541",
+      "wp_author": 404,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1559",
+      "wp_author": 420,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1573",
+      "wp_author": 433,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1577",
+      "wp_author": 436,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "1587",
+      "wp_author": 440,
+      "dinamica_records": 17,
+      "dinamica_lar_records": 10,
+      "total_records": 27
+    },
+    {
+      "wp_post_id": "1616",
+      "wp_author": 447,
+      "dinamica_records": 9,
+      "dinamica_lar_records": 0,
+      "total_records": 9
+    },
+    {
+      "wp_post_id": "1655",
+      "wp_author": 448,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1649",
+      "wp_author": 449,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1648",
+      "wp_author": 450,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1675",
+      "wp_author": 453,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1679",
+      "wp_author": 456,
+      "dinamica_records": 10,
+      "dinamica_lar_records": 6,
+      "total_records": 16
+    },
+    {
+      "wp_post_id": "1691",
+      "wp_author": 459,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1699",
+      "wp_author": 462,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1701",
+      "wp_author": 463,
+      "dinamica_records": 17,
+      "dinamica_lar_records": 10,
+      "total_records": 27
+    },
+    {
+      "wp_post_id": "1703",
+      "wp_author": 466,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2022",
+      "wp_author": 470,
+      "dinamica_records": 10,
+      "dinamica_lar_records": 5,
+      "total_records": 15
+    },
+    {
+      "wp_post_id": "1778",
+      "wp_author": 506,
+      "dinamica_records": 8,
+      "dinamica_lar_records": 0,
+      "total_records": 8
+    },
+    {
+      "wp_post_id": "1923",
+      "wp_author": 600,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1928",
+      "wp_author": 603,
+      "dinamica_records": 5,
+      "dinamica_lar_records": 0,
+      "total_records": 5
+    },
+    {
+      "wp_post_id": "1971",
+      "wp_author": 635,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1981",
+      "wp_author": 640,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1984",
+      "wp_author": 642,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1987",
+      "wp_author": 644,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1990",
+      "wp_author": 646,
+      "dinamica_records": 6,
+      "dinamica_lar_records": 0,
+      "total_records": 6
+    },
+    {
+      "wp_post_id": "1992",
+      "wp_author": 649,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "1996",
+      "wp_author": 651,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "2000",
+      "wp_author": 656,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2003",
+      "wp_author": 658,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2006",
+      "wp_author": 661,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2009",
+      "wp_author": 663,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2011",
+      "wp_author": 666,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2013",
+      "wp_author": 670,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2016",
+      "wp_author": 674,
+      "dinamica_records": 11,
+      "dinamica_lar_records": 5,
+      "total_records": 16
+    },
+    {
+      "wp_post_id": "2025",
+      "wp_author": 681,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2046",
+      "wp_author": 684,
+      "dinamica_records": 11,
+      "dinamica_lar_records": 10,
+      "total_records": 21
+    },
+    {
+      "wp_post_id": "2029",
+      "wp_author": 685,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2033",
+      "wp_author": 687,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2399",
+      "wp_author": 689,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2106",
+      "wp_author": 692,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "2052",
+      "wp_author": 695,
+      "dinamica_records": 2,
+      "dinamica_lar_records": 0,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "2057",
+      "wp_author": 697,
+      "dinamica_records": 9,
+      "dinamica_lar_records": 4,
+      "total_records": 13
+    },
+    {
+      "wp_post_id": "2059",
+      "wp_author": 699,
+      "dinamica_records": 9,
+      "dinamica_lar_records": 4,
+      "total_records": 13
+    },
+    {
+      "wp_post_id": "2090",
+      "wp_author": 703,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 0,
+      "total_records": 1
+    },
+    {
+      "wp_post_id": "2098",
+      "wp_author": 705,
+      "dinamica_records": 1,
+      "dinamica_lar_records": 1,
+      "total_records": 2
+    },
+    {
+      "wp_post_id": "2103",
+      "wp_author": 707,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "2151",
+      "wp_author": 727,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "2179",
+      "wp_author": 739,
+      "dinamica_records": 3,
+      "dinamica_lar_records": 0,
+      "total_records": 3
+    },
+    {
+      "wp_post_id": "2192",
+      "wp_author": 747,
+      "dinamica_records": 7,
+      "dinamica_lar_records": 4,
+      "total_records": 11
+    },
+    {
+      "wp_post_id": "2211",
+      "wp_author": 751,
+      "dinamica_records": 8,
+      "dinamica_lar_records": 1,
+      "total_records": 9
+    }
+  ]
+}

@@ -1,0 +1,6019 @@
+{
+  "timestamp": "2025-12-30T01:59:16.821Z",
+  "mode": "dry-run",
+  "optimized": true,
+  "batch_size": 100,
+  "stats": {
+    "processed": 1000,
+    "successful": 0,
+    "skipped": 1000,
+    "skippedReasons": {
+      "noIdAbrigo": 92,
+      "shelterNotMigrated": 0,
+      "noPeriod": 0,
+      "noMetadata": 908
+    }
+  },
+  "detailedLog": [
+    {
+      "postId": 627,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 632,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 649,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 658,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 671,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 672,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 675,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 676,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 678,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 679,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 680,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 681,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 683,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 689,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 690,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 691,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 692,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 693,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 694,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 702,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 703,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 704,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 705,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 708,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 717,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 718,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 719,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 747,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 748,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 749,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 751,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 753,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 755,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 757,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 764,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 766,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 767,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 769,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 791,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 793,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 795,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 797,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 800,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 803,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 804,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 806,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 808,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 809,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 810,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 836,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 838,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 839,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 842,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 844,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 845,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 846,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 847,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 858,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 859,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 860,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 863,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 867,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 869,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 871,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 872,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 873,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 878,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 887,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 889,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 893,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 894,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 896,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 897,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 898,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 899,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 900,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 902,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 903,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 904,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 905,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 906,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 907,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 908,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 909,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 910,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 912,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 913,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 917,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 919,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 921,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 924,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 925,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_id_abrigo"
+    },
+    {
+      "postId": 926,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 927,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 928,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 929,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 930,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 931,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 932,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 933,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 934,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 935,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 936,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 937,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 938,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 939,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 940,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 941,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 962,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 968,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 977,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 978,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 981,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 983,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 984,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 985,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 986,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 987,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 988,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 990,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 996,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 997,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 998,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 999,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1000,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1001,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1004,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1009,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1012,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1013,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1014,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1015,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1016,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1017,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1018,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1019,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1022,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1023,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1024,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1025,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1026,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1038,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1061,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1062,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1063,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1064,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1066,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1071,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1072,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1075,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1079,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1080,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1081,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1082,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1083,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1085,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1091,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1093,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1099,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1101,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1102,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1103,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1104,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1105,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1106,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1107,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1148,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1149,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1150,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1151,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1152,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1155,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1156,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1157,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1158,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1159,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1160,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1161,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1162,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1163,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1164,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1165,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1166,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1169,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1170,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1171,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1172,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1173,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1180,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1182,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1184,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1185,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1186,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1191,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1192,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1194,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1196,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1197,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1198,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1199,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1200,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1201,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1202,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1205,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1207,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1208,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1209,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1210,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1211,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1213,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1214,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1215,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1216,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1217,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1218,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1219,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1220,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1227,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1228,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1229,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1232,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1233,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1234,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1235,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1239,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1240,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1241,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1242,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1243,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1244,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1245,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1247,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1250,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1252,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1253,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1254,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1255,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1258,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1261,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1264,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1265,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1267,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1268,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1271,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1275,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1276,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1283,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1284,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1285,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1287,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1289,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1290,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1291,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1292,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1293,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1294,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1295,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1296,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1297,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1298,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1299,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1300,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1301,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1302,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1303,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1309,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1311,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1329,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1330,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1346,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1347,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1351,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1353,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1354,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1356,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1358,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1359,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1360,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1361,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1362,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1364,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1365,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1366,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1371,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1373,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1374,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1375,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1377,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1379,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1380,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1382,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1384,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1399,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1410,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1411,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1412,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1413,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1414,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1415,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1416,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1417,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1419,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1420,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1423,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1425,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1429,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1430,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1431,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1432,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1433,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1444,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1451,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1452,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1455,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1460,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1463,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1465,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1466,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1467,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1468,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1469,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1470,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1472,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1473,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1474,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1475,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1483,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1484,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1485,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1500,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1503,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1504,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1548,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1549,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1550,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1551,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1554,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1556,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1557,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1560,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1563,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1564,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1566,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1567,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1574,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1578,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1579,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1580,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1581,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1582,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1583,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1584,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1588,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1589,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1590,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1592,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1593,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1595,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1600,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1601,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1610,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1611,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1612,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1613,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1614,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1615,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1617,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1618,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1619,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1620,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1621,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1622,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1623,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1624,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1625,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1626,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1627,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1628,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1629,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1630,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1631,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1632,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1633,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1634,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1635,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1636,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1637,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1638,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1639,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1640,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1641,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1642,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1644,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1645,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1646,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1647,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1650,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1651,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1652,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1653,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1654,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1656,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1657,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1658,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1659,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1660,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1661,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1666,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1667,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1668,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1669,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1670,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1672,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1673,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1676,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1677,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1678,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1680,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1681,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1682,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1683,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1684,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1685,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1686,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1687,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1688,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1689,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1692,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1697,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1698,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1700,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1704,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1707,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1712,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1714,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1715,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1717,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1719,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1720,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1721,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1723,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1724,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1725,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1726,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1727,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1728,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1729,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1730,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1731,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1732,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1733,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1734,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1736,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1769,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1774,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1779,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1780,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1781,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1782,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1783,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1784,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1785,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1786,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1795,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1796,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1797,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1798,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1803,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1804,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1806,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1808,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1811,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1812,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1813,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1814,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1818,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1819,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1820,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1821,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1824,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1825,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1826,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1827,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1828,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1829,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1830,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1831,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1832,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1833,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1834,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1835,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1842,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1843,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1847,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1850,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1851,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1854,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1881,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1882,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1885,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1887,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1888,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1890,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1891,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1892,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1893,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1894,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1895,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1896,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1897,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1898,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1899,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1900,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1901,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1902,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1903,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1904,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1920,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1921,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1925,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1962,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1969,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1972,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1973,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1974,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1975,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1982,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1988,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1991,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1993,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1997,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1998,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 1999,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2001,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2004,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2007,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2010,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2012,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2014,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2017,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2018,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2019,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2026,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2030,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2031,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2032,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2036,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2037,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2038,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2040,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2041,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2042,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2043,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2044,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2045,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2047,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2049,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2050,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2051,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2053,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2054,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2055,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2056,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2058,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2060,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2061,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2062,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2064,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2068,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2069,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2070,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2071,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2072,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2073,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2074,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2075,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2076,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2077,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2078,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2079,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2080,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2081,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2082,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2083,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2084,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2088,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2091,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2092,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2093,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2094,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2095,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2101,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2104,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2105,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2107,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2123,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2124,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2125,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2128,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2129,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2131,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2132,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2133,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2134,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2135,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2136,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2140,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2141,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2152,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2153,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2154,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2156,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2157,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2159,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2164,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2165,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2166,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2168,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2169,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2170,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2171,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2173,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2174,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2180,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2182,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2183,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2184,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2185,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2186,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2189,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2190,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2191,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2193,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2196,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2208,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2209,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2210,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2212,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2214,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2216,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2217,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2218,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2220,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2223,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2224,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2225,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2263,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2264,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2267,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2269,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2271,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2272,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2273,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2274,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2277,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2279,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2282,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2284,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2285,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2290,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2294,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2295,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2296,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2297,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2298,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2299,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2300,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2301,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2306,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2307,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2309,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2314,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2316,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2317,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2320,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2321,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2323,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2324,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2325,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2326,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2327,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2328,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2329,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2330,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2332,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2334,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2335,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2336,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2337,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2338,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2339,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2340,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2341,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2342,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2344,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2345,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2346,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2347,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2348,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2349,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2350,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2351,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2352,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2353,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2354,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2379,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2383,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2386,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2387,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2389,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2391,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2392,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2394,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2396,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2397,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2398,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2400,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2402,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2404,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2406,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2407,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2408,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2409,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2410,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2438,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2439,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2441,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2442,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2443,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2444,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2445,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2446,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2447,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2448,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2449,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2450,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2451,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2452,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2453,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2454,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2455,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2456,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2457,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2458,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2459,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2460,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2462,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2463,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2464,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2465,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2466,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2467,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2468,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2470,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2471,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2472,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2473,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2474,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2475,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2477,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2479,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2480,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2482,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2483,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2484,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2486,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2487,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2488,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2490,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2491,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2492,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2493,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2494,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2495,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2496,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2499,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2500,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2502,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2504,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2506,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2507,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2508,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2510,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2512,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2514,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2515,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2516,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2517,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2519,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2520,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2521,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2522,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2523,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2524,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2525,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2526,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2527,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2528,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2534,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2535,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2536,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2542,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2543,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2545,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2546,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2547,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2549,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2550,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2551,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2552,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2553,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2554,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2555,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2565,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2567,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2569,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2571,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2573,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2574,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2575,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2576,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2577,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2578,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2579,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2580,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2581,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2583,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2584,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2585,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2586,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2587,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2588,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2589,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2590,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2592,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2593,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2595,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2596,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2597,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2598,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2600,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2601,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2603,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2604,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2605,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2606,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2607,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2608,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2609,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2610,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2611,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2612,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2613,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2614,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2616,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2621,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2622,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2640,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2641,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2642,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2643,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2644,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2645,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2646,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2647,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2648,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2649,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2650,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2651,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2656,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2657,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2658,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2659,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2660,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2661,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2662,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2663,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2664,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2665,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2666,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2667,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2668,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2669,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2671,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2672,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2673,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2674,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2675,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2676,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2677,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2678,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2679,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2681,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2682,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2683,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2684,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2688,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2689,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2693,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2695,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2697,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2699,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2701,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2703,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2705,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2707,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2709,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2711,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2713,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2714,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2715,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2716,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2717,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2718,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2719,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2721,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2723,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2724,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2725,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2726,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2727,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2729,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2730,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2731,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2732,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2733,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2734,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2741,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2742,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2746,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2747,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2751,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2752,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2753,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2754,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2755,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2757,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2758,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2763,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2764,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2767,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2768,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2769,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2770,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2771,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2772,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2774,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2775,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2776,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2778,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2779,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2780,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2781,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2782,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2783,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2784,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2785,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2786,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2787,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2788,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2789,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2790,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2791,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2792,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2793,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2794,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2795,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2796,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2797,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2798,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2799,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2800,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2802,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2803,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2804,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2805,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2806,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2807,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2809,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2811,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2812,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2813,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2814,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2815,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2816,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2817,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2821,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2826,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2827,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2829,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2830,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2833,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2834,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2848,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2849,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2851,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2852,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2853,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2854,
+      "postType": "dinamica_lar",
+      "status": "skipped",
+      "reason": "no_metadata"
+    },
+    {
+      "postId": 2856,
+      "postType": "dinamica",
+      "status": "skipped",
+      "reason": "no_metadata"
+    }
+  ]
+}
