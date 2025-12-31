@@ -20,14 +20,14 @@ type DynamicsRecord = {
   kind: string;
   entradas_de_animais: number | null;
   entradas_de_gatos: number | null;
-  adocoes_de_animais: number | null;
-  adocoes_de_gatos: number | null;
-  devolucoes_de_animais: number | null;
-  devolucoes_de_gatos: number | null;
-  eutanasias_de_animais: number | null;
-  eutanasias_de_gatos: number | null;
-  mortes_naturais_de_animais: number | null;
-  mortes_naturais_de_gatos: number | null;
+  adocoes_caes: number | null;
+  adocoes_gatos: number | null;
+  devolucoes_caes: number | null;
+  devolucoes_gatos: number | null;
+  eutanasias_caes: number | null;
+  eutanasias_gatos: number | null;
+  mortes_naturais_caes: number | null;
+  mortes_naturais_gatos: number | null;
   doencas_caes: number | null;
   doencas_gatos: number | null;
   retorno_de_caes: number | null;
@@ -159,14 +159,14 @@ function mapRecordToRow(record: DynamicsRecord): DynamicsTableRow {
   const metrics: DynamicsTableRow["metrics"] = {
     entriesDogs: record.entradas_de_animais ?? 0,
     entriesCats: record.entradas_de_gatos ?? 0,
-    returnsDogs: record.devolucoes_de_animais ?? 0,
-    returnsCats: record.devolucoes_de_gatos ?? 0,
-    adoptionsDogs: record.adocoes_de_animais ?? 0,
-    adoptionsCats: record.adocoes_de_gatos ?? 0,
-    euthanasiasDogs: record.eutanasias_de_animais ?? 0,
-    euthanasiasCats: record.eutanasias_de_gatos ?? 0,
-    naturalDeathsDogs: record.mortes_naturais_de_animais ?? 0,
-    naturalDeathsCats: record.mortes_naturais_de_gatos ?? 0,
+    returnsDogs: record.devolucoes_caes ?? 0,
+    returnsCats: record.devolucoes_gatos ?? 0,
+    adoptionsDogs: record.adocoes_caes ?? 0,
+    adoptionsCats: record.adocoes_gatos ?? 0,
+    euthanasiasDogs: record.eutanasias_caes ?? 0,
+    euthanasiasCats: record.eutanasias_gatos ?? 0,
+    naturalDeathsDogs: record.mortes_naturais_caes ?? 0,
+    naturalDeathsCats: record.mortes_naturais_gatos ?? 0,
     diseasesDogs: record.doencas_caes ?? 0,
     diseasesCats: record.doencas_gatos ?? 0,
     tutorReturnDogs: record.retorno_de_caes ?? 0,
@@ -268,9 +268,10 @@ export async function fetchDynamicsDisplays(params: {
   const { data, error } = await supabaseAdmin
     .from("shelter_dynamics")
     .select(
-      "id, shelter_id, dynamic_type, reference_period, reference_date, kind, entradas_de_animais, entradas_de_gatos, adocoes_de_animais, adocoes_de_gatos, devolucoes_de_animais, devolucoes_de_gatos, eutanasias_de_animais, eutanasias_de_gatos, mortes_naturais_de_animais, mortes_naturais_de_gatos, doencas_caes, doencas_gatos, retorno_de_caes, retorno_de_gatos, retorno_local_caes, retorno_local_gatos",
+      "id, shelter_id, dynamic_type, reference_period, reference_date, kind, entradas_de_animais, entradas_de_gatos, adocoes_caes, adocoes_gatos, devolucoes_caes, devolucoes_gatos, eutanasias_caes, eutanasias_gatos, mortes_naturais_caes, mortes_naturais_gatos, doencas_caes, doencas_gatos, retorno_de_caes, retorno_de_gatos, retorno_local_caes, retorno_local_gatos",
     )
-    .eq("shelter_id", shelterId);
+    .eq("shelter_id", shelterId)
+    .returns<DynamicsRecord[]>();
 
   if (error) {
     console.error("dynamicsService: erro ao buscar registros", error);
@@ -294,7 +295,7 @@ export async function fetchDynamicsDisplays(params: {
     ];
   }
 
-  const records = (data ?? []) as DynamicsRecord[];
+  const records = data ?? [];
   return [
     buildDisplay(
       records,
@@ -355,14 +356,14 @@ export async function saveDynamicsRecord(params: {
         reference_date: referenceDate,
         entradas_de_animais: metrics.entriesDogs,
         entradas_de_gatos: metrics.entriesCats,
-        adocoes_de_animais: metrics.adoptionsDogs,
-        adocoes_de_gatos: metrics.adoptionsCats,
-        devolucoes_de_animais: metrics.returnsDogs,
-        devolucoes_de_gatos: metrics.returnsCats,
-        eutanasias_de_animais: metrics.euthanasiasDogs,
-        eutanasias_de_gatos: metrics.euthanasiasCats,
-        mortes_naturais_de_animais: metrics.naturalDeathsDogs,
-        mortes_naturais_de_gatos: metrics.naturalDeathsCats,
+        adocoes_caes: metrics.adoptionsDogs,
+        adocoes_gatos: metrics.adoptionsCats,
+        devolucoes_caes: metrics.returnsDogs,
+        devolucoes_gatos: metrics.returnsCats,
+        eutanasias_caes: metrics.euthanasiasDogs,
+        eutanasias_gatos: metrics.euthanasiasCats,
+        mortes_naturais_caes: metrics.naturalDeathsDogs,
+        mortes_naturais_gatos: metrics.naturalDeathsCats,
         doencas_caes: metrics.diseasesDogs,
         doencas_gatos: metrics.diseasesCats,
         retorno_de_caes: metrics.tutorReturnDogs,
