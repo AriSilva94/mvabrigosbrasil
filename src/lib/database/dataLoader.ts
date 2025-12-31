@@ -7,33 +7,8 @@ import type { DatabaseDataset, MovementRecord, ShelterRecord } from "@/types/dat
 
 dayjs.extend(customParseFormat);
 
-type WpPostRow = Database["public"]["Tables"]["wp_posts_raw"]["Row"];
-type WpPostMetaRow = Database["public"]["Tables"]["wp_postmeta_raw"]["Row"];
-
-type FetchWpDataResult = {
-  posts: WpPostRow[];
-  meta: WpPostMetaRow[];
-};
-
-const META_KEYS = [
-  "estado",
-  "tipo",
-  "id_abrigo",
-  "entradas_de_animais",
-  "entradas_de_gatos",
-  "adocoes_de_animais",
-  "adocoes_de_gatos",
-  "devolucoes_de_animais",
-  "devolucoes_de_gatos",
-  "eutanasias_de_animais",
-  "eutanasias_de_gatos",
-  "mortes_naturais_de_animais",
-  "mortes_naturais_de_gatos",
-  "retorno_de_caes",
-  "retorno_de_gatos",
-  "retorno_local_caes",
-  "retorno_local_gatos",
-];
+type ShelterRow = Database["public"]["Tables"]["shelters"]["Row"];
+type ShelterDynamicsRow = Database["public"]["Tables"]["shelter_dynamics"]["Row"];
 
 function parseDate(date: string | null | undefined) {
   if (!date) return dayjs(Number.NaN);
@@ -73,26 +48,32 @@ function parseMetaNumber(value: string | number | null | undefined): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function buildMetaLookup(meta: WpPostMetaRow[]): Map<number, Record<string, string | null>> {
-  const lookup = new Map<number, Record<string, string | null>>();
-
-  meta.forEach((entry) => {
-    if (!entry.meta_key || entry.meta_key.startsWith("_")) return;
-    if (entry.post_id === null || entry.post_id === undefined) return;
-    const current = lookup.get(entry.post_id) ?? {};
-    current[entry.meta_key] = entry.meta_value;
-    lookup.set(entry.post_id, current);
-  });
-
-  return lookup;
-}
-
 function normalizeState(state: string | null | undefined): string | undefined {
   const trimmed = state?.trim();
   return trimmed ? trimmed.toUpperCase() : undefined;
 }
 
-async function fetchWpData(): Promise<FetchWpDataResult> {
+/**
+ * Normaliza o tipo de abrigo da forma armazenada no Supabase para o formato esperado
+ * pela aplicação (compatível com o formato legado do WordPress).
+ */
+function normalizeShelterTypeFromSupabase(shelterType: string | null | undefined): string | undefined {
+  if (!shelterType) return undefined;
+
+  const typeMap: Record<string, string> = {
+    "public": "Público",
+    "private": "Privado",
+    "mixed": "Misto",
+    "temporary": "LT-PI",
+  };
+
+  return typeMap[shelterType] || shelterType;
+}
+
+async function fetchSupabaseData(): Promise<{
+  shelters: ShelterRow[];
+  dynamics: ShelterDynamicsRow[];
+}> {
   const supabase = getSupabaseAdminClient();
 
   async function fetchAllRows<T>(
@@ -104,8 +85,6 @@ async function fetchWpData(): Promise<FetchWpDataResult> {
     const rows: T[] = [];
     let from = 0;
 
-    // Paginate to avoid default Supabase row limits.
-    // Stop when a page returns fewer items than requested.
     for (;;) {
       const to = from + pageSize - 1;
       let query = supabase.from(table as string).select(select).range(from, to);
@@ -129,80 +108,111 @@ async function fetchWpData(): Promise<FetchWpDataResult> {
     return rows;
   }
 
-  const posts = await fetchAllRows<WpPostRow>(
-    "wp_posts_raw",
-    "id, post_date, post_title, post_type, post_status"
+  const shelters = await fetchAllRows<ShelterRow>(
+    "shelters",
+    "id, wp_post_id, name, state, shelter_type, foundation_date, created_at"
   );
 
-  const meta = await fetchAllRows<WpPostMetaRow>(
-    "wp_postmeta_raw",
-    "post_id, meta_key, meta_value",
-    (query) => query.in("meta_key", META_KEYS)
+  const dynamics = await fetchAllRows<ShelterDynamicsRow>(
+    "shelter_dynamics",
+    `
+      id,
+      shelter_id,
+      kind,
+      dynamic_type,
+      reference_date,
+      reference_period,
+      entradas_de_animais,
+      entradas_de_gatos,
+      adocoes_caes,
+      adocoes_gatos,
+      devolucoes_caes,
+      devolucoes_gatos,
+      eutanasias_caes,
+      eutanasias_gatos,
+      mortes_naturais_caes,
+      mortes_naturais_gatos,
+      retorno_de_caes,
+      retorno_de_gatos,
+      retorno_local_caes,
+      retorno_local_gatos
+    `
   );
 
-  return { posts, meta };
+  return { shelters, dynamics };
 }
 
 export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
-  const { posts, meta } = await fetchWpData();
-  const metaLookup = buildMetaLookup(meta);
+  const { shelters: shelterRows, dynamics: dynamicsRows } = await fetchSupabaseData();
 
-  const shelters: ShelterRecord[] = posts
-    .filter((post) => post.post_type === "abrigo")
-    .map((post) => {
-      const meta = metaLookup.get(post.id) ?? {};
+  // Processar abrigos
+  const shelters: ShelterRecord[] = shelterRows.map((shelter): ShelterRecord => {
+    // Usar created_at (equivalente ao post_date do WordPress)
+    // IMPORTANTE: No sistema legado, year/month são baseados em post_date, não foundation_date
+    const dateToUse = String(shelter.created_at ?? "");
 
-      return {
-        id: Number.isFinite(post.id) ? post.id : 0,
-        title: post.post_title ?? "",
-        postDate: post.post_date ?? "",
-        year: parseYear(post.post_date ?? ""),
-        month: parseMonth(post.post_date ?? ""),
-        state: normalizeState(meta.estado),
-        type: meta.tipo?.trim(),
-      };
-    });
+    return {
+      id: Number(shelter.wp_post_id ?? 0),
+      title: shelter.name ?? "",
+      postDate: dateToUse,
+      year: parseYear(dateToUse),
+      month: parseMonth(dateToUse),
+      state: normalizeState(shelter.state),
+      type: normalizeShelterTypeFromSupabase(shelter.shelter_type),
+    };
+  });
 
-  const shelterLookup = new Map<number, ShelterRecord>();
-  shelters.forEach((shelter) => shelterLookup.set(shelter.id, shelter));
+  // Criar lookup de shelter_id (UUID) -> ShelterRecord
+  const shelterLookupByUuid = new Map<string, ShelterRecord>();
+  shelterRows.forEach((shelterRow) => {
+    const shelterRecord = shelters.find((s) => s.id === shelterRow.wp_post_id);
+    if (shelterRecord) {
+      shelterLookupByUuid.set(shelterRow.id, shelterRecord);
+    }
+  });
 
-  const movements: MovementRecord[] = posts
-    .filter((post) => post.post_type === "dinamica" || post.post_type === "dinamica_lar")
-    .map((post) => {
-      const meta = metaLookup.get(post.id) ?? {};
-      const parsedShelterId = meta.id_abrigo ? Number.parseInt(meta.id_abrigo, 10) : Number.NaN;
-      const shelterId = Number.isFinite(parsedShelterId) ? parsedShelterId : null;
-      const shelter = shelterId !== null ? shelterLookup.get(shelterId) : undefined;
+  // Processar dinâmicas
+  // Nota: Como a tabela shelter_dynamics não tem wp_post_id, usamos um ID hash baseado
+  // na combinação shelter_id + reference_period + dynamic_type para garantir unicidade
+  const movements: MovementRecord[] = dynamicsRows.map((dynamic, index) => {
+    const shelter = shelterLookupByUuid.get(dynamic.shelter_id);
 
-      return {
-        id: Number.isFinite(post.id) ? post.id : 0,
-        postType: post.post_type as MovementRecord["postType"],
-        year: parseYear(post.post_date),
-        month: parseMonth(post.post_date),
-        shelterId,
-        shelterState: shelter?.state,
-        shelterType: shelter?.type,
-        metrics: {
-          entradas: parseMetaNumber(meta.entradas_de_animais),
-          entradasGatos: parseMetaNumber(meta.entradas_de_gatos),
-          adocoes: parseMetaNumber(meta.adocoes_de_animais),
-          adocoesGatos: parseMetaNumber(meta.adocoes_de_gatos),
-          devolucoes: parseMetaNumber(meta.devolucoes_de_animais),
-          devolucoesGatos: parseMetaNumber(meta.devolucoes_de_gatos),
-          eutanasias: parseMetaNumber(meta.eutanasias_de_animais),
-          eutanasiasGatos: parseMetaNumber(meta.eutanasias_de_gatos),
-          mortesNaturais: parseMetaNumber(meta.mortes_naturais_de_animais),
-          mortesNaturaisGatos: parseMetaNumber(meta.mortes_naturais_de_gatos),
-          retornoTutor:
-            parseMetaNumber(meta.retorno_de_caes) + parseMetaNumber(meta.retorno_de_gatos),
-          retornoTutorGatos: parseMetaNumber(meta.retorno_de_gatos),
-          retornoLocal:
-            parseMetaNumber(meta.retorno_local_caes) +
-            parseMetaNumber(meta.retorno_local_gatos),
-          retornoLocalGatos: parseMetaNumber(meta.retorno_local_gatos),
-        },
-      };
-    });
+    // Gerar um ID numérico único baseado no hash da string
+    // Isso mantém compatibilidade com o sistema legado que espera IDs numéricos
+    const hashString = `${dynamic.shelter_id}-${dynamic.reference_period}-${dynamic.dynamic_type}`;
+    const id = Math.abs(hashString.split('').reduce((hash, char) => {
+      return ((hash << 5) - hash) + char.charCodeAt(0);
+    }, 0));
+
+    return {
+      id,
+      postType: (dynamic.dynamic_type === "dinamica_lar" ? "dinamica_lar" : "dinamica") as MovementRecord["postType"],
+      year: parseYear(dynamic.reference_date),
+      month: parseMonth(dynamic.reference_date),
+      shelterId: shelter?.id ?? null,
+      shelterState: shelter?.state,
+      shelterType: shelter?.type,
+      metrics: {
+        entradas: parseMetaNumber(dynamic.entradas_de_animais),
+        entradasGatos: parseMetaNumber(dynamic.entradas_de_gatos),
+        adocoes: parseMetaNumber(dynamic.adocoes_caes),
+        adocoesGatos: parseMetaNumber(dynamic.adocoes_gatos),
+        devolucoes: parseMetaNumber(dynamic.devolucoes_caes),
+        devolucoesGatos: parseMetaNumber(dynamic.devolucoes_gatos),
+        eutanasias: parseMetaNumber(dynamic.eutanasias_caes),
+        eutanasiasGatos: parseMetaNumber(dynamic.eutanasias_gatos),
+        mortesNaturais: parseMetaNumber(dynamic.mortes_naturais_caes),
+        mortesNaturaisGatos: parseMetaNumber(dynamic.mortes_naturais_gatos),
+        retornoTutor:
+          parseMetaNumber(dynamic.retorno_de_caes) + parseMetaNumber(dynamic.retorno_de_gatos),
+        retornoTutorGatos: parseMetaNumber(dynamic.retorno_de_gatos),
+        retornoLocal:
+          parseMetaNumber(dynamic.retorno_local_caes) +
+          parseMetaNumber(dynamic.retorno_local_gatos),
+        retornoLocalGatos: parseMetaNumber(dynamic.retorno_local_gatos),
+      },
+    };
+  });
 
   const years = Array.from(
     new Set([...shelters.map((item) => item.year), ...movements.map((item) => item.year)])

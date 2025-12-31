@@ -2,7 +2,7 @@ import type { JSX } from "react";
 
 import DatabaseDashboard from "@/components/data/database/DatabaseDashboard";
 import PageHeader from "@/components/layout/PageHeader";
-import { loadDatabaseDatasetNew } from "@/lib/database/dataLoaderNew";
+import { loadDatabaseDataset } from "@/lib/database/dataLoader";
 import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
-  const dataset = await loadDatabaseDatasetNew();
+  const dataset = await loadDatabaseDataset();
 
   return (
     <main>
