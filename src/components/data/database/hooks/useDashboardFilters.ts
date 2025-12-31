@@ -11,7 +11,13 @@ type UseDashboardFiltersParams = {
 };
 
 export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
-  const defaultYear = dataset.years[0] ?? new Date().getFullYear();
+  // Se não houver anos no dataset, usar os últimos 4 anos como fallback
+  const currentYear = new Date().getFullYear();
+  const availableYears = dataset.years.length > 0
+    ? dataset.years
+    : [currentYear, currentYear - 1, currentYear - 2, currentYear - 3];
+
+  const defaultYear = availableYears[0] ?? currentYear;
   const [year, setYear] = useState<number>(defaultYear);
   const [state, setState] = useState<string>(ALL_STATES_VALUE);
   const [pendingYear, setPendingYear] = useState<number>(defaultYear);
@@ -59,6 +65,7 @@ export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
     state,
     pendingYear,
     pendingState,
+    availableYears,
     stateOptions,
     stateLabel,
     setPendingYear,

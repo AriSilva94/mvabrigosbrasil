@@ -10,6 +10,7 @@ import MonthlyEntriesChart from "./MonthlyEntriesChart";
 import OutcomesStackedChart from "./OutcomesStackedChart";
 import SpeciesEntriesChart from "./SpeciesEntriesChart";
 import TypeEntriesChart from "./TypeEntriesChart";
+import EmptyState from "./EmptyState";
 import { useDashboardAggregations } from "./hooks/useDashboardAggregations";
 import { useDashboardFilters } from "./hooks/useDashboardFilters";
 
@@ -23,6 +24,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
     state,
     pendingYear,
     pendingState,
+    availableYears,
     stateOptions,
     stateLabel,
     setPendingYear,
@@ -40,6 +42,9 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
     outcomesCats,
     adoptionsByType,
   } = useDashboardAggregations({ dataset, year, state });
+
+  // Detectar se não há dados para os filtros selecionados
+  const hasData = overview.totalShelters > 0;
 
   return (
     <section className="bg-white pb-16 pt-12">
@@ -60,7 +65,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
             </p>
 
             <FiltersPanel
-              years={dataset.years}
+              years={availableYears}
               states={stateOptions}
               selectedYear={pendingYear}
               selectedState={pendingState}
@@ -70,60 +75,68 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
             />
           </div>
 
-          <IndicatorsGrid
-            metrics={overview}
-            year={year}
-            stateLabel={stateLabel}
-          />
+          {hasData ? (
+            <IndicatorsGrid
+              metrics={overview}
+              year={year}
+              stateLabel={stateLabel}
+            />
+          ) : null}
         </div>
 
-        <AnimalFlowChart
-          data={monthlyFlow}
-          year={year}
-          stateLabel={stateLabel}
-        />
+        {!hasData ? (
+          <EmptyState year={year} stateLabel={stateLabel} />
+        ) : (
+          <>
+            <AnimalFlowChart
+              data={monthlyFlow}
+              year={year}
+              stateLabel={stateLabel}
+            />
 
-        <div className="flex items-center gap-2 text-slate-700">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
-            <ArrowUp size={16} strokeWidth={2.5} />
-          </span>
-          <span className="font-18 font-semibold">Entradas de Animais</span>
-        </div>
+            <div className="flex items-center gap-2 text-slate-700">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white">
+                <ArrowUp size={16} strokeWidth={2.5} />
+              </span>
+              <span className="font-18 font-semibold">Entradas de Animais</span>
+            </div>
 
-        <MonthlyEntriesChart data={speciesEntries} />
+            <MonthlyEntriesChart data={speciesEntries} />
 
-        <div className="grid gap-4 lg:grid-cols-2 min-w-0 *:min-w-0">
-          <TypeEntriesChart
-            title="Entrada por Tipo de Abrigo - Cão"
-            data={monthlyTypeEntriesDogs}
-          />
-          <TypeEntriesChart
-            title="Entrada por Tipo de Abrigo - Gato"
-            data={monthlyTypeEntriesCats}
-          />
-        </div>
+            <div className="grid gap-4 lg:grid-cols-2 min-w-0 *:min-w-0">
+              <TypeEntriesChart
+                title="Entrada por Tipo de Abrigo - Cão"
+                data={monthlyTypeEntriesDogs}
+              />
+              <TypeEntriesChart
+                title="Entrada por Tipo de Abrigo - Gato"
+                data={monthlyTypeEntriesCats}
+              />
+            </div>
 
-        <div className="flex items-center gap-2 text-slate-700">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-red text-white">
-            <ArrowDown size={16} strokeWidth={2.5} />
-          </span>
-          <span className="font-18 font-semibold">Saída de Animais</span>
-        </div>
+            <div className="flex items-center gap-2 text-slate-700">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-red text-white">
+                <ArrowDown size={16} strokeWidth={2.5} />
+              </span>
+              <span className="font-18 font-semibold">Saída de Animais</span>
+            </div>
 
-        <SpeciesEntriesChart data={exitsBySpecies} />
+            <SpeciesEntriesChart data={exitsBySpecies} />
 
-        <div className="grid gap-4 lg:grid-cols-2 min-w-0 *:min-w-0">
-          <OutcomesStackedChart
-            title="Saída por Classificação (cão)"
-            data={outcomesDogs}
-          />
-          <OutcomesStackedChart
-            title="Saída por Classificação (gato)"
-            data={outcomesCats}
-          />
-        </div>
+            <div className="grid gap-4 lg:grid-cols-2 min-w-0 *:min-w-0">
+              <OutcomesStackedChart
+                title="Saída por Classificação (cão)"
+                data={outcomesDogs}
+              />
+              <OutcomesStackedChart
+                title="Saída por Classificação (gato)"
+                data={outcomesCats}
+              />
+            </div>
 
-        <AdoptionsByTypeChart data={adoptionsByType} />
+            <AdoptionsByTypeChart data={adoptionsByType} />
+          </>
+        )}
       </div>
     </section>
   );
