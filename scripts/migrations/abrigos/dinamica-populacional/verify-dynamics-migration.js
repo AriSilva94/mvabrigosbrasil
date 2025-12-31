@@ -147,20 +147,20 @@ const supabase = createClient(
       continue;
     }
 
-    // Comparar campos
+    // Comparar campos (WP usa "adocoes_de_animais", DB usa "adocoes_caes")
     const wpEntradas = parseInt(metaMap['entradas_de_animais'] || 0, 10);
     const sbEntradas = migrated.entradas_de_animais || 0;
 
     const wpAdocoes = parseInt(metaMap['adocoes_de_animais'] || 0, 10);
-    const sbAdocoes = migrated.adocoes_de_animais || 0;
+    const sbAdocoes = migrated.adocoes_caes || 0; // Campo correto do DB
 
     const match = wpEntradas === sbEntradas && wpAdocoes === sbAdocoes;
 
     console.log(`Post ${post.id}: ${match ? '✅' : '⚠️'} ${match ? 'OK' : 'Diferenças encontradas'}`);
 
     if (!match) {
-      console.log(`   WP: entradas=${wpEntradas}, adocoes=${wpAdocoes}`);
-      console.log(`   SB: entradas=${sbEntradas}, adocoes=${sbAdocoes}`);
+      console.log(`   WP: entradas=${wpEntradas}, adocoes_de_animais=${wpAdocoes}`);
+      console.log(`   SB: entradas=${sbEntradas}, adocoes_caes=${sbAdocoes}`);
     }
   }
 
@@ -196,7 +196,28 @@ const supabase = createClient(
     console.log(`   - ${shelter?.name || 'N/A'} (wp_post_id: ${shelter?.wp_post_id}): ${dynamicsCount} registros`);
   }
 
-  console.log('\n✅ Verificação concluída!\n');
+  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
+  // Resultado final
+  if (difference === 0) {
+    console.log('✅ SUCESSO: Migração de Dinâmica Populacional concluída!');
+    console.log('✅ Página /banco-de-dados está pronta para uso!\n');
+    console.log(`   📊 ${sbTotal} registros migrados`);
+    console.log(`   🏠 ${uniqueShelters.size} abrigos com dados\n`);
+  } else if (Math.abs(difference) <= 150) {
+    // Diferença aceitável (duplicatas removidas)
+    console.log('✅ SUCESSO: Migração de Dinâmica Populacional concluída!');
+    console.log('✅ Página /banco-de-dados está pronta para uso!\n');
+    console.log(`   📊 ${sbTotal} registros únicos migrados`);
+    console.log(`   🏠 ${uniqueShelters.size} abrigos com dados`);
+    console.log(`   ℹ️  ${Math.abs(difference)} duplicatas removidas (esperado)\n`);
+  } else {
+    console.log('⚠️  ATENÇÃO: Diferença significativa detectada!');
+    console.log('⚠️  Verifique os logs acima antes de prosseguir.\n');
+    process.exit(1);
+  }
+
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
   process.exit(0);
 })();

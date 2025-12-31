@@ -107,47 +107,47 @@ export default function PopulationTable({
               : "pointer-events-none absolute inset-0 translate-y-3 opacity-0"
           }`}
         >
-          <div className="overflow-x-auto">
+          <div className="max-h-150 overflow-auto">
             <table className="min-w-full border-collapse text-xs text-slate-800">
-              <thead>
+              <thead className="sticky top-0 z-10">
                 <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-600">
-                  <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
+                  <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
                     Data
                   </th>
                   {GROUPED_HEADERS.map((label) => (
                     <th
                       key={label}
-                      className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold"
+                      className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold"
                       colSpan={2}
                     >
                       {label}
                     </th>
                   ))}
-                  <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                  <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                     Saldo
                   </th>
-                  <th className="border-b border-slate-200 px-6 py-2 text-center font-semibold">
+                  <th className="sticky top-0 border-b border-slate-200 bg-slate-50 px-6 py-2 text-center font-semibold">
                     Ações
                   </th>
                 </tr>
                 <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
-                  <th className="border-b border-r border-slate-200 px-3 py-2 text-left font-semibold">
+                  <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
                     &nbsp;
                   </th>
                   {GROUPED_HEADERS.map((label) => (
                     <React.Fragment key={`${label}-sub`}>
-                      <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                      <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                         Cães
                       </th>
-                      <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                      <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                         Gatos
                       </th>
                     </React.Fragment>
                   ))}
-                  <th className="border-b border-r border-slate-200 px-3 py-2 text-center font-semibold">
+                  <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                     &nbsp;
                   </th>
-                  <th className="border-b border-slate-200 px-3 py-2 text-center font-semibold">
+                  <th className="sticky top-10.5 border-b border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                     &nbsp;
                   </th>
                 </tr>
@@ -196,7 +196,8 @@ export default function PopulationTable({
                   >
                     <div className="flex flex-col items-start gap-1">
                       {populationCurrent ?? "—"}
-                      {(populationCurrentDogs ?? populationCurrentCats ??
+                      {(populationCurrentDogs ??
+                        populationCurrentCats ??
                         null) !== null && (
                         <span className="text-xs font-semibold text-slate-600">
                           Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
