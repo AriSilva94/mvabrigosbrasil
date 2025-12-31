@@ -21,7 +21,7 @@
 
 ### 3. Atualização do Código
 
-- ✅ **page.tsx** - Agora usa `loadDatabaseDatasetNew`
+- ✅ **page.tsx** - Agora usa `loadDatabaseDataset`
 - ✅ **types.ts** - Tipos corrigidos (`adocoes_caes`, `devolucoes_caes`, etc)
 - ✅ **Todos os testes de compilação** passando
 
@@ -94,7 +94,6 @@ Integridade:          100%
 
 3. 📝 **Limpeza (após 30-60 dias)**
    - Considerar remover `wp_posts_raw` e `wp_postmeta_raw` (manter como backup)
-   - Remover `dataLoader.ts` antigo
 
 ---
 
@@ -139,8 +138,8 @@ Sugestão de mensagem:
 
 ### Arquivos Principais Alterados
 
-1. `src/app/(data)/banco-de-dados/page.tsx` → Usa novo dataLoader
-2. `src/lib/database/dataLoaderNew.ts` → Lê de Supabase
+1. `src/app/(data)/banco-de-dados/page.tsx` → Usa dataLoader
+2. `src/lib/database/dataLoader.ts` → Lê de Supabase
 3. `src/lib/supabase/types.ts` → Tipos atualizados
 4. `scripts/migrations/abrigos/dinamica-populacional/` → Scripts de migração
 

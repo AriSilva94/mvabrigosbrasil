@@ -5,12 +5,12 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { loadDatabaseDatasetNew } from "../../src/lib/database/dataLoaderNew";
+import { loadDatabaseDataset } from "@/lib/database/dataLoader";
 import {
   computeOverview,
   computeMonthlyAnimalFlow,
   ALL_STATES_VALUE,
-} from "../../src/lib/database/aggregations";
+} from "@/lib/database/aggregations";
 
 function loadEnvFile() {
   const envPath = path.join(__dirname, "../../.env.local");
@@ -39,7 +39,7 @@ async function finalValidation() {
   console.log("╚══════════════════════════════════════════════════════════════════╝\n");
 
   console.log("📥 Carregando dados NOVOS (shelter_dynamics)...\n");
-  const dataset = await loadDatabaseDatasetNew();
+  const dataset = await loadDatabaseDataset();
 
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
   console.log("📊 ESTATÍSTICAS:\n");
@@ -56,8 +56,8 @@ async function finalValidation() {
   const overview2024 = computeOverview(dataset, 2024, ALL_STATES_VALUE);
   console.log("VISÃO GERAL - 2024 (Todos os estados):");
   console.log(`  Total de abrigos:    ${overview2024.totalShelters}`);
-  console.log(`  Abrigos com cachorr: ${overview2024.withDogs}`);
-  console.log(`  Abrigos com gatos:   ${overview2024.withCats}\n`);
+  console.log(`  Abrigos públicos:    ${overview2024.publicCount}`);
+  console.log(`  Abrigos privados:    ${overview2024.privateCount}\n`);
 
   // Testar fluxo mensal 2024
   const flow2024 = computeMonthlyAnimalFlow(dataset, 2024, ALL_STATES_VALUE);
@@ -108,9 +108,8 @@ async function finalValidation() {
   console.log("✅ VALIDAÇÃO CONCLUÍDA!\n");
   console.log("Os dados estão prontos para produção.\n");
   console.log("Próximos passos:");
-  console.log("  1. Substituir dataLoader.ts por dataLoaderNew.ts em page.tsx");
-  console.log("  2. Testar a página /banco-de-dados");
-  console.log("  3. Validar todos os gráficos e filtros\n");
+  console.log("  1. Testar a página /banco-de-dados");
+  console.log("  2. Validar todos os gráficos e filtros\n");
 }
 
 finalValidation().catch((error) => {
