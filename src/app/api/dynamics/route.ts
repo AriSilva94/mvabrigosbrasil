@@ -5,6 +5,7 @@ import { loadUserAccess } from "@/lib/auth/teamAccess";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { registerSchema } from "@/app/(protected)/dinamica-populacional/validations";
 import { deleteDynamicsRecord, fetchDynamicsDisplays, saveDynamicsRecord } from "@/services/dynamicsService";
+import { invalidateDatabaseDataset } from "@/lib/cache/revalidate";
 
 const submitSchema = registerSchema.extend({
   dynamicType: z.enum(["dinamica", "dinamica_lar"]),
@@ -104,6 +105,9 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "save_failed" }, { status: 500 });
   }
 
+  // Invalidar cache do banco de dados
+  invalidateDatabaseDataset();
+
   const populationInitial =
     typeof shelter.initial_dogs === "number" && typeof shelter.initial_cats === "number"
       ? (shelter.initial_dogs ?? 0) + (shelter.initial_cats ?? 0)
@@ -152,6 +156,9 @@ export async function DELETE(request: Request): Promise<NextResponse> {
   } catch {
     return NextResponse.json({ error: "delete_failed" }, { status: 500 });
   }
+
+  // Invalidar cache do banco de dados
+  invalidateDatabaseDataset();
 
   const populationInitial =
     typeof shelter.initial_dogs === "number" && typeof shelter.initial_cats === "number"

@@ -8,6 +8,7 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { fetchVacanciesByShelter, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { invalidateVacanciesPublic } from "@/lib/cache/revalidate";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
@@ -114,6 +115,9 @@ export async function POST(request: Request) {
     console.error("api/vacancies POST insert error", insertError);
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
+
+  // Invalidar cache de vagas públicas
+  invalidateVacanciesPublic();
 
   const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
   return NextResponse.json({ vacancy });

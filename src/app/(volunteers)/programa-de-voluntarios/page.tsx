@@ -4,6 +4,9 @@ import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { Heading, Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
+import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import { fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
+import { fetchVacancyCards } from "@/repositories/vacanciesRepository";
 
 export const metadata = buildMetadata({
   title: "Programa de Voluntários",
@@ -12,7 +15,14 @@ export const metadata = buildMetadata({
   canonical: "/programa-de-voluntarios",
 });
 
-export default function Page() {
+export default async function Page() {
+  const supabase = getSupabaseAdminClient();
+
+  // Buscar dados no servidor (com cache)
+  const [volunteersResult, vacanciesResult] = await Promise.all([
+    fetchCombinedVolunteerCards(supabase),
+    fetchVacancyCards(supabase),
+  ]);
   return (
     <main>
       <PageHeader
@@ -77,7 +87,12 @@ export default function Page() {
         </div>
       </section>
 
-      <VolunteerTabsSection />
+      <VolunteerTabsSection
+        volunteers={volunteersResult.volunteers}
+        vacancies={vacanciesResult.vacancies}
+        volunteersError={volunteersResult.error}
+        vacanciesError={vacanciesResult.error}
+      />
     </main>
   );
 }

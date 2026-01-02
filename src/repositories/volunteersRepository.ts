@@ -110,8 +110,6 @@ export async function fetchVolunteerCardsFromWp(
         location: city && state ? `${city} - ${state}` : city || state || undefined,
         gender,
         availability,
-        wpPostId: String(post.id),
-        source: "wp",
       };
     });
 
@@ -188,8 +186,6 @@ export async function fetchVolunteerProfileBySlugFromWp(
       skills: meta[VOLUNTEER_META_KEYS.SKILLS]?.trim() ?? undefined,
       period: meta[VOLUNTEER_META_KEYS.PERIOD]?.trim() ?? undefined,
       notes: meta[VOLUNTEER_META_KEYS.NOTES]?.trim() ?? undefined,
-      wpPostId: String(post.id),
-      source: "wp",
     };
 
     return { profile, error: null };

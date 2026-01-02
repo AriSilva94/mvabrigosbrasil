@@ -9,6 +9,7 @@ import {
 } from "@/modules/volunteer/volunteerProfileSchema";
 import type { VolunteerProfileFormData } from "@/types/volunteer.types";
 import { generateVolunteerSlug } from "@/repositories/newVolunteersRepository";
+import { invalidateVolunteersPublic } from "@/lib/cache/revalidate";
 
 type CurrentUser = { id: string; email: string | null };
 
@@ -245,6 +246,9 @@ export async function POST(request: Request) {
       console.error("volunteer-profile POST: erro ao salvar volunteers", error);
       return NextResponse.json({ error: "Erro ao salvar cadastro" }, { status: 500 });
     }
+
+    // Invalidar cache de voluntários públicos
+    invalidateVolunteersPublic();
 
     return NextResponse.json({
       ok: true,

@@ -1,13 +1,15 @@
+import { unstable_cache } from "next/cache";
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { VacancyCard } from "@/types/vacancy.types";
 import { normalizePeriod, normalizeWorkload } from "@/constants/vacancyFilters";
+import { CACHE_TAGS, CACHE_TIMES } from "@/lib/cache/tags";
 
 type VacancyRow = {
   id: string;
-  title: string;
-  slug: string;
+  title: string | null;
+  slug: string | null;
   description: string | null;
-  status: string;
+  status: string | null;
   periodo: string | null;
   carga_horaria: string | null;
   cidade: string | null;
@@ -17,7 +19,7 @@ type VacancyRow = {
   updated_at: string | null;
 };
 
-export async function fetchVacancyCards(
+async function fetchVacancyCardsUncached(
   supabase: SupabaseClientType
 ): Promise<{ vacancies: VacancyCard[]; error: Error | null }> {
   try {
@@ -33,7 +35,7 @@ export async function fetchVacancyCards(
       return { vacancies: [], error };
     }
 
-    const vacancies: VacancyCard[] = (data ?? []).map((vacancy: any) => {
+    const vacancies: VacancyCard[] = (data ?? []).map((vacancy: VacancyRow) => {
       const city = vacancy.cidade?.trim();
       const state = vacancy.estado?.trim();
       const slugFromDb = typeof vacancy.slug === 'string' ? vacancy.slug : String(vacancy.id);
@@ -54,4 +56,24 @@ export async function fetchVacancyCards(
     console.error("vacanciesRepository.fetchVacancyCards - unexpected error:", error);
     return { vacancies: [], error: error as Error };
   }
+}
+
+/**
+ * Busca lista pública de vagas com cache de 10 minutos
+ *
+ * Cache: 10 minutos
+ * Tag: vacancies-public
+ * Invalidação: ao criar/editar/deletar vaga
+ */
+export async function fetchVacancyCards(
+  supabase: SupabaseClientType
+): Promise<{ vacancies: VacancyCard[]; error: Error | null }> {
+  return unstable_cache(
+    async () => fetchVacancyCardsUncached(supabase),
+    ['vacancies-public'],
+    {
+      revalidate: CACHE_TIMES.SHORT, // 10 minutos
+      tags: [CACHE_TAGS.VACANCIES_PUBLIC],
+    }
+  )();
 }

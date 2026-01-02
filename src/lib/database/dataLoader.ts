@@ -1,9 +1,11 @@
+import { unstable_cache } from "next/cache";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import type { Database } from "@/lib/supabase/types";
 import type { DatabaseDataset, MovementRecord, ShelterRecord } from "@/types/database.types";
+import { CACHE_TAGS, CACHE_TIMES } from "@/lib/cache/tags";
 
 dayjs.extend(customParseFormat);
 
@@ -142,7 +144,7 @@ async function fetchSupabaseData(): Promise<{
   return { shelters, dynamics };
 }
 
-export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
+async function loadDatabaseDatasetUncached(): Promise<DatabaseDataset> {
   const { shelters: shelterRows, dynamics: dynamicsRows } = await fetchSupabaseData();
 
   // Processar abrigos
@@ -230,4 +232,22 @@ export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
     years,
     states,
   };
+}
+
+/**
+ * Carrega dataset completo do banco de dados com cache de 6 horas
+ *
+ * Cache: 6 horas (atualizado mensalmente)
+ * Tag: database-dataset
+ * Invalidação: ao criar/deletar dinâmica populacional
+ */
+export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
+  return unstable_cache(
+    async () => loadDatabaseDatasetUncached(),
+    ['database-dataset'],
+    {
+      revalidate: CACHE_TIMES.VERY_LONG, // 6 horas
+      tags: [CACHE_TAGS.DATABASE_DATASET],
+    }
+  )();
 }

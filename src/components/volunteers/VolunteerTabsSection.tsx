@@ -8,19 +8,27 @@ import clsx from "clsx";
 import { Heading, Text } from "@/components/ui/typography";
 import { VOLUNTEER_TABS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
-import type { VolunteerTabId } from "@/types/volunteer.types";
-import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
-import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
-import { FormLoading } from "@/components/loading/FormLoading";
+import type { VolunteerTabId, VolunteerCard } from "@/types/volunteer.types";
+import type { VacancyCard } from "@/types/vacancy.types";
 import { ChevronDown } from "lucide-react";
 
-export default function VolunteerTabsSection() {
+type VolunteerTabsSectionProps = {
+  volunteers: VolunteerCard[];
+  vacancies: VacancyCard[];
+  volunteersError: Error | null;
+  vacanciesError: Error | null;
+};
+
+export default function VolunteerTabsSection({
+  volunteers,
+  vacancies,
+  volunteersError,
+  vacanciesError,
+}: VolunteerTabsSectionProps) {
   const [activeTab, setActiveTab] = useState<VolunteerTabId>("volunteers");
   const [openFaqId, setOpenFaqId] = useState<string | null>(
     VOLUNTEER_FAQ[0]?.id ?? null
   );
-  const { volunteers, loading: loadingVolunteers } = useVolunteerCards();
-  const { vacancies, loading: loadingVacancies } = useVacancyCards();
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));
@@ -60,8 +68,10 @@ export default function VolunteerTabsSection() {
                 Voluntários Disponíveis
               </Heading>
 
-              {loadingVolunteers ? (
-                <FormLoading />
+              {volunteersError ? (
+                <Text className="text-red-600">
+                  Erro ao carregar voluntários. Por favor, tente novamente.
+                </Text>
               ) : volunteers.length === 0 ? (
                 <Text className="text-[#68707b]">
                   Nenhum voluntário disponível no momento.
@@ -103,8 +113,10 @@ export default function VolunteerTabsSection() {
                 Vagas Disponíveis
               </Heading>
 
-              {loadingVacancies ? (
-                <FormLoading />
+              {vacanciesError ? (
+                <Text className="text-red-600">
+                  Erro ao carregar vagas. Por favor, tente novamente.
+                </Text>
               ) : vacancies.length === 0 ? (
                 <Text className="text-[#68707b]">
                   Nenhuma vaga disponível no momento.

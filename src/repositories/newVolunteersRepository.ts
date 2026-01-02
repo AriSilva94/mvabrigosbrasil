@@ -1,5 +1,7 @@
+import { unstable_cache } from "next/cache";
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { VolunteerCard, VolunteerProfile } from "@/types/volunteer.types";
+import { CACHE_TAGS, CACHE_TIMES } from "@/lib/cache/tags";
 
 function slugifyName(name: string): string {
   return name
@@ -36,7 +38,7 @@ type VolunteerRow = {
   comentarios?: string | null;
 };
 
-export async function fetchVolunteerCardsFromNew(
+async function fetchVolunteerCardsFromNewUncached(
   supabase: SupabaseClientType
 ): Promise<{ volunteers: VolunteerCard[]; error: Error | null }> {
   try {
@@ -79,6 +81,26 @@ export async function fetchVolunteerCardsFromNew(
     console.error("newVolunteersRepository.fetchVolunteerCardsFromNew - unexpected error:", error);
     return { volunteers: [], error: error as Error };
   }
+}
+
+/**
+ * Busca lista pública de voluntários com cache de 15 minutos
+ *
+ * Cache: 15 minutos
+ * Tag: volunteers-public
+ * Invalidação: ao criar/editar voluntário
+ */
+export async function fetchVolunteerCardsFromNew(
+  supabase: SupabaseClientType
+): Promise<{ volunteers: VolunteerCard[]; error: Error | null }> {
+  return unstable_cache(
+    async () => fetchVolunteerCardsFromNewUncached(supabase),
+    ['volunteers-public'],
+    {
+      revalidate: CACHE_TIMES.MEDIUM, // 15 minutos
+      tags: [CACHE_TAGS.VOLUNTEERS_PUBLIC],
+    }
+  )();
 }
 
 export async function fetchVolunteerProfileBySlugFromNew(
