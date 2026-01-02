@@ -3,11 +3,11 @@
 import SelectField from "./SelectField";
 
 type FiltersPanelProps = {
-  years: number[];
+  years: Array<number | string>;
   states: Array<{ value: string; label: string; count?: number }>;
-  selectedYear: number;
+  selectedYear: number | string;
   selectedState: string;
-  onYearChange: (year: number) => void;
+  onYearChange: (year: number | string) => void;
   onStateChange: (state: string) => void;
   onApply?: () => void;
 };
@@ -29,9 +29,9 @@ export default function FiltersPanel({
         value={selectedYear}
         options={years.map((year) => ({
           value: year,
-          label: year.toString(),
+          label: typeof year === "string" ? "Todos os anos" : year.toString(),
         }))}
-        onChange={(value) => onYearChange(Number(value))}
+        onChange={onYearChange}
         className="sm:min-w-[50]"
       />
 

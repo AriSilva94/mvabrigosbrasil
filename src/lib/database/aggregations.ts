@@ -5,6 +5,8 @@ import type {
 } from "@/types/database.types";
 
 export const ALL_STATES_VALUE = "all";
+export const ALL_YEARS_VALUE = "all-years";
+export type YearFilter = number | typeof ALL_YEARS_VALUE;
 
 const MONTH_LABELS = [
   "JAN",
@@ -21,6 +23,11 @@ const MONTH_LABELS = [
   "DEZ",
 ];
 
+function matchesYear(recordYear: number | undefined, selectedYear: YearFilter): boolean {
+  if (selectedYear === ALL_YEARS_VALUE) return true;
+  return recordYear === selectedYear;
+}
+
 function matchesState(recordState: string | undefined, selectedState: string): boolean {
   if (selectedState === ALL_STATES_VALUE) return true;
   return (recordState ?? "").toUpperCase() === selectedState.toUpperCase();
@@ -28,11 +35,11 @@ function matchesState(recordState: string | undefined, selectedState: string): b
 
 export function computeOverview(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string
 ): OverviewMetrics {
   const shelters = dataset.shelters.filter(
-    (shelter) => shelter.year === year && matchesState(shelter.state, state)
+    (shelter) => matchesYear(shelter.year, year) && matchesState(shelter.state, state)
   );
 
   return shelters.reduce<OverviewMetrics>(
@@ -52,11 +59,11 @@ export function computeOverview(
 
 export function computeMonthlyAnimalFlow(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string
 ): MonthlyAnimalFlow[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -108,12 +115,12 @@ type TypeBreakdown = {
 
 export function computeMonthlyEntriesByType(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string,
   species: "all" | "cat" = "all"
 ): TypeBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -147,11 +154,11 @@ type SpeciesEntries = {
 
 export function computeMonthlySpeciesEntries(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string
 ): SpeciesEntries[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -175,11 +182,11 @@ export function computeMonthlySpeciesEntries(
 
 export function computeMonthlyAnimalExits(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string
 ): SpeciesEntries[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -219,12 +226,12 @@ type OutcomesBreakdown = {
 
 export function computeMonthlyOutcomes(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string,
   species: "all" | "cat" | "dog" = "all"
 ): OutcomesBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -262,11 +269,11 @@ export function computeMonthlyOutcomes(
 
 export function computeMonthlyAdoptionsByType(
   dataset: DatabaseDataset,
-  year: number,
+  year: YearFilter,
   state: string
 ): TypeBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => movement.year === year && matchesState(movement.shelterState, state)
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
   );
 
   return MONTH_LABELS.map((label, index) => {
