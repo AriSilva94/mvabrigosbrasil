@@ -262,7 +262,8 @@ function mapLegacyShelterToNew(wpPost, metaArray) {
 
   return {
     wp_post_id: wpPost.id,
-    profile_id: null, // Será vinculado no login
+    wp_post_author: wpPost.post_author, // IMPORTANTE: necessário para vincular ao profile do dono
+    profile_id: null, // Será vinculado pela migração de equipe
     shelter_type: shelterType,
     cnpj,
     cpf,

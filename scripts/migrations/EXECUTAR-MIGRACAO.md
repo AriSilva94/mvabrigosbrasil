@@ -1,6 +1,6 @@
 # 🚀 Executar Migração WordPress → Supabase
 
-**Versão**: 1.0.0 | **Data**: 29/12/2025 | **Status**: ✅ Pronto
+**Versão**: 1.1.0 | **Data**: 30/12/2025 | **Status**: ✅ Pronto
 
 ---
 
@@ -31,6 +31,7 @@ Você já fez isso! ✅
 - wp_posts_raw
 - wp_postmeta_raw
 - wp_users_raw
+- wp_usermeta_raw  ← **novo (integrantes de equipe)**
 
 ### 3.1. ~~Popular wp_users_legacy~~ (Agora automático!)
 
@@ -72,25 +73,27 @@ node run-full-migration.js
 
 ### O que acontece
 
-O script executa **17 passos 100% automaticamente**:
+O script executa **19 passos 100% automaticamente**:
 
 0. ✅ **AUTOMÁTICO** → Desabilita trigger de histórico (SQL 05)
 1. ✅ Migra abrigos (297)
 2. ✅ Migra dinâmicas populacionais
-3. ✅ Migra voluntários (232)
-4. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `volunteers`
-5. ✅ Gera slugs para voluntários
-6. ✅ Verifica duplicatas de slugs
-7. ✅ **AUTOMÁTICO** → Cria índice único em `volunteers.slug`
-8. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `vacancies`
-9. ✅ Migra vagas (53)
-10. ✅ Verifica duplicatas de slugs
-11. ✅ **AUTOMÁTICO** → Cria índice único em `vacancies.slug`
-12. ✅ Valida tudo
-13. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
-14. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
-15. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
-16. ✅ **AUTOMÁTICO** → Garante RLS e policies em todas as 7 tabelas
+3. ✅ Migra integrantes de equipe (id_abrigo/_id_abrigo → team_memberships)
+4. ✅ Migra voluntários (232)
+5. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `volunteers`
+6. ✅ Gera slugs para voluntários
+7. ✅ Verifica duplicatas de slugs
+8. ✅ **AUTOMÁTICO** → Cria índice único em `volunteers.slug`
+9. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `vacancies`
+10. ✅ Migra vagas (53)
+11. ✅ Vincula vagas aos abrigos
+12. ✅ Verifica duplicatas de slugs
+13. ✅ **AUTOMÁTICO** → Cria índice único em `vacancies.slug`
+14. ✅ Valida tudo (parcial)
+15. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
+16. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
+17. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
+18. ✅ **AUTOMÁTICO** → Garante RLS e policies (incluindo `team_memberships`)
 
 🎉 **Zero pausas! 100% automático!** (requer `DATABASE_URL` no `.env.local`)
 

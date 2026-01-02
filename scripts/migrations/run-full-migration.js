@@ -27,13 +27,25 @@
  * 8. Adicionar coluna slug em vacancies
  * 9. Migração de vagas
  * 10. Vincular vagas aos abrigos
- * 11. Verificar duplicatas de slugs (vacancies)
- * 12. Criar índice único em vacancies.slug
- * 13. Validações parciais
- * 14. Reabilitar triggers (SQL 06)
- * 15. Validação final completa (SQL 07)
- * 16. Popular wp_users_legacy para autenticação
- * 17. Garantir RLS e policies em todas as 7 tabelas ⭐ NOVO
+ * 0. Desabilitar triggers de histórico
+ * 1. Migrar abrigos
+ * 2. Migrar dinâmicas populacionais
+ * 3. Migrar integrantes de equipe (WP → Supabase)
+ * 4. Migrar voluntários
+ * 5. Adicionar coluna slug em volunteers
+ * 6. Backfill de slugs (volunteers)
+ * 7. Verificar duplicatas de slugs (volunteers)
+ * 8. Criar índice único em volunteers.slug
+ * 9. Adicionar coluna slug em vacancies
+ * 10. Migrar vagas
+ * 11. Vincular vagas aos abrigos
+ * 12. Verificar duplicatas de slugs (vacancies)
+ * 13. Criar índice único em vacancies.slug
+ * 14. Validações parciais
+ * 15. Reabilitar triggers (SQL 06)
+ * 16. Validação final completa (SQL 07)
+ * 17. Popular wp_users_legacy para autenticação
+ * 18. Garantir RLS e policies em todas as tabelas
  *
  * DEPOIS DESTE SCRIPT:
  * ✅ Tudo pronto! Apenas testar e fazer deploy
@@ -257,55 +269,65 @@ async function main() {
     stats.steps.push({ name: 'Dinâmicas', ...step2 });
 
     // ========================================
-    // PASSO 3: Migrar Voluntários
+    // PASSO 3: Migrar Integrantes de Equipe
     // ========================================
-    logStep(3, 'Migração de Voluntários');
+    logStep(3, 'Migração de Integrantes de Equipe');
     const step3 = runScript(
+      'equipe/migrate-team-members-wp-to-supabase.js',
+      'Migrar integrantes de equipe (WordPress para Supabase)'
+    );
+    stats.steps.push({ name: 'Integrantes', ...step3 });
+
+    // ========================================
+    // PASSO 4: Migrar Voluntários
+    // ========================================
+    logStep(4, 'Migração de Voluntários');
+    const step4 = runScript(
       'voluntarios/migrate-volunteers-wp-to-supabase.js',
       'Migrar voluntários do WordPress para Supabase'
     );
-    stats.steps.push({ name: 'Voluntários', ...step3 });
+    stats.steps.push({ name: 'Voluntários', ...step4 });
 
     // ========================================
-    // PASSO 4: Adicionar coluna slug em volunteers
+    // PASSO 5: Adicionar coluna slug em volunteers
     // ========================================
-    logStep(4, 'Adicionar coluna slug em volunteers');
+    logStep(5, 'Adicionar coluna slug em volunteers');
     await runSql(
       'ALTER TABLE public.volunteers ADD COLUMN IF NOT EXISTS slug TEXT;',
       'Adicionar coluna slug em volunteers'
     );
 
     // ========================================
-    // PASSO 5: Backfill Slugs (Voluntários)
+    // PASSO 6: Backfill Slugs (Voluntários)
     // ========================================
-    logStep(5, 'Backfill de Slugs para Voluntários');
-    const step5 = runScript(
+    logStep(6, 'Backfill de Slugs para Voluntários');
+    const step6 = runScript(
       'programa-de-voluntarios/backfill-slug.js',
       'Gerar slugs únicos para voluntários'
     );
-    stats.steps.push({ name: 'Backfill Slugs', ...step5 });
+    stats.steps.push({ name: 'Backfill Slugs', ...step6 });
 
     // ========================================
-    // PASSO 6: Verificar Duplicatas de Slugs
+    // PASSO 7: Verificar Duplicatas de Slugs
     // ========================================
     if (!skipValidation) {
-      logStep(6, 'Verificar Duplicatas de Slugs (Voluntários)');
-      const step6 = runScript(
+      logStep(7, 'Verificar Duplicatas de Slugs (Voluntários)');
+      const step7 = runScript(
         'programa-de-voluntarios/check-slug-duplicates.js',
         'Verificar se há slugs duplicados'
       );
-      stats.steps.push({ name: 'Check Duplicatas (Voluntários)', ...step6 });
+      stats.steps.push({ name: 'Check Duplicatas (Voluntários)', ...step7 });
 
-      if (step6.hasWarnings) {
+      if (step7.hasWarnings) {
         logError('ATENÇÃO: Duplicatas encontradas! Não prossiga sem resolver.');
         process.exit(1);
       }
     }
 
     // ========================================
-    // PASSO 7: Criar índice único de slug em volunteers
+    // PASSO 8: Criar índice único de slug em volunteers
     // ========================================
-    logStep(7, 'Criar índice único de slug em volunteers');
+    logStep(8, 'Criar índice único de slug em volunteers');
     await runSql(
       `CREATE UNIQUE INDEX IF NOT EXISTS idx_volunteers_slug
        ON public.volunteers(slug)
@@ -314,55 +336,55 @@ async function main() {
     );
 
     // ========================================
-    // PASSO 8: Adicionar coluna slug em vacancies
+    // PASSO 9: Adicionar coluna slug em vacancies
     // ========================================
-    logStep(8, 'Adicionar coluna slug em vacancies');
+    logStep(9, 'Adicionar coluna slug em vacancies');
     await runSql(
       'ALTER TABLE public.vacancies ADD COLUMN IF NOT EXISTS slug TEXT;',
       'Adicionar coluna slug em vacancies'
     );
 
     // ========================================
-    // PASSO 9: Migrar Vagas
+    // PASSO 10: Migrar Vagas
     // ========================================
-    logStep(9, 'Migração de Vagas de Voluntariado');
-    const step9 = runScript(
+    logStep(10, 'Migração de Vagas de Voluntariado');
+    const step10 = runScript(
       'vagas-voluntariado/migrate-vacancies-wp-to-supabase.js',
       'Migrar vagas do WordPress para Supabase'
     );
-    stats.steps.push({ name: 'Vagas', ...step9 });
+    stats.steps.push({ name: 'Vagas', ...step10 });
 
     // ========================================
-    // PASSO 10: Vincular Vagas aos Abrigos
+    // PASSO 11: Vincular Vagas aos Abrigos
     // ========================================
-    logStep(10, 'Vincular Vagas aos Abrigos');
-    const step10 = runScript(
+    logStep(11, 'Vincular Vagas aos Abrigos');
+    const step11 = runScript(
       'vagas-voluntariado/link-vacancies-to-shelters.js',
       'Vincular vagas migradas aos seus respectivos abrigos'
     );
-    stats.steps.push({ name: 'Vincular Vagas', ...step10 });
+    stats.steps.push({ name: 'Vincular Vagas', ...step11 });
 
     // ========================================
-    // PASSO 11: Verificar Duplicatas de Slugs (Vagas)
+    // PASSO 12: Verificar Duplicatas de Slugs (Vagas)
     // ========================================
     if (!skipValidation) {
-      logStep(11, 'Verificar Duplicatas de Slugs (Vagas)');
-      const step11 = runScript(
+      logStep(12, 'Verificar Duplicatas de Slugs (Vagas)');
+      const step12 = runScript(
         'vagas-voluntariado/check-slug-duplicates.js',
         'Verificar se há slugs duplicados em vagas'
       );
-      stats.steps.push({ name: 'Check Duplicatas (Vagas)', ...step11 });
+      stats.steps.push({ name: 'Check Duplicatas (Vagas)', ...step12 });
 
-      if (step11.hasWarnings) {
+      if (step12.hasWarnings) {
         logError('ATENÇÃO: Duplicatas encontradas! Não prossiga sem resolver.');
         process.exit(1);
       }
     }
 
     // ========================================
-    // PASSO 12: Criar índice único de slug em vacancies
+    // PASSO 13: Criar índice único de slug em vacancies
     // ========================================
-    logStep(12, 'Criar índice único de slug em vacancies');
+    logStep(13, 'Criar índice único de slug em vacancies');
     await runSql(
       `CREATE UNIQUE INDEX IF NOT EXISTS idx_vacancies_slug
        ON public.vacancies(slug)
@@ -371,10 +393,10 @@ async function main() {
     );
 
     // ========================================
-    // PASSO 13: Validações Finais
+    // PASSO 14: Validações Finais
     // ========================================
     if (!skipValidation) {
-      logStep(13, 'Validações Finais');
+      logStep(14, 'Validações Finais');
 
       logInfo('Validando migração de abrigos...');
       const val1 = runScript(
@@ -392,25 +414,25 @@ async function main() {
     }
 
     // ========================================
-    // PASSO 14: Reabilitar Triggers
+    // PASSO 15: Reabilitar Triggers
     // ========================================
-    logStep(14, 'Reabilitar Triggers');
+    logStep(15, 'Reabilitar Triggers');
     const sql06Path = path.join(__dirname, 'sql', '06-pos-migracao-reabilitar-triggers.sql');
     await executeSqlFile(sql06Path, { verbose: true });
     logSuccess('Triggers reabilitados');
 
     // ========================================
-    // PASSO 15: Validação Final
+    // PASSO 16: Validação Final
     // ========================================
-    logStep(15, 'Validação Final da Migração');
+    logStep(16, 'Validação Final da Migração');
     const sql07Path = path.join(__dirname, 'sql', '07-validacao-final.sql');
     await executeSqlFile(sql07Path, { verbose: true });
     logSuccess('Validação final concluída');
 
     // ========================================
-    // PASSO 16: Popular wp_users_legacy
+    // PASSO 17: Popular wp_users_legacy
     // ========================================
-    logStep(16, 'Popular wp_users_legacy');
+    logStep(17, 'Popular wp_users_legacy');
     await runSql(
       `INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
        SELECT id, user_login, user_email, user_pass, display_name
@@ -421,9 +443,9 @@ async function main() {
     logSuccess('wp_users_legacy populada com sucesso');
 
     // ========================================
-    // PASSO 17: Garantir RLS em todas as tabelas
+    // PASSO 18: Garantir RLS em todas as tabelas
     // ========================================
-    logStep(17, 'Garantir proteção RLS em todas as tabelas');
+    logStep(18, 'Garantir proteção RLS em todas as tabelas');
 
     // Habilitar RLS
     await runSql(
@@ -433,7 +455,8 @@ async function main() {
        ALTER TABLE public.vacancies ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.shelter_dynamics ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.shelter_volunteers ENABLE ROW LEVEL SECURITY;
-       ALTER TABLE public.shelter_history ENABLE ROW LEVEL SECURITY;`,
+       ALTER TABLE public.shelter_history ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.team_memberships ENABLE ROW LEVEL SECURITY;`,
       'Habilitar RLS em todas as tabelas'
     );
 
@@ -471,7 +494,20 @@ async function main() {
        CREATE POLICY "Users can view their own shelter history" ON public.shelter_history FOR SELECT USING (auth.uid() = profile_id);
 
        DROP POLICY IF EXISTS "System can insert shelter history" ON public.shelter_history;
-       CREATE POLICY "System can insert shelter history" ON public.shelter_history FOR INSERT WITH CHECK (true);`,
+       CREATE POLICY "System can insert shelter history" ON public.shelter_history FOR INSERT WITH CHECK (true);
+
+       -- Team memberships (somente backend/service_role)
+       DROP POLICY IF EXISTS "Team memberships readable by service role" ON public.team_memberships;
+       CREATE POLICY "Team memberships readable by service role" ON public.team_memberships FOR SELECT USING (auth.role() = 'service_role');
+
+       DROP POLICY IF EXISTS "Team memberships writable by service role" ON public.team_memberships;
+       CREATE POLICY "Team memberships writable by service role" ON public.team_memberships FOR INSERT WITH CHECK (auth.role() = 'service_role');
+
+       DROP POLICY IF EXISTS "Team memberships updatable by service role" ON public.team_memberships;
+       CREATE POLICY "Team memberships updatable by service role" ON public.team_memberships FOR UPDATE USING (auth.role() = 'service_role');
+
+       DROP POLICY IF EXISTS "Team memberships deletable by service role" ON public.team_memberships;
+       CREATE POLICY "Team memberships deletable by service role" ON public.team_memberships FOR DELETE USING (auth.role() = 'service_role');`,
       'Restaurar políticas RLS'
     );
 
@@ -483,7 +519,7 @@ async function main() {
          (SELECT COUNT(*) FROM pg_policies WHERE schemaname = 'public' AND pg_policies.tablename = pg_tables.tablename) as policy_count
        FROM pg_tables
        WHERE schemaname = 'public'
-         AND tablename IN ('profiles', 'shelters', 'volunteers', 'vacancies', 'shelter_dynamics', 'shelter_volunteers', 'shelter_history')
+         AND tablename IN ('profiles', 'shelters', 'volunteers', 'vacancies', 'shelter_dynamics', 'shelter_volunteers', 'shelter_history', 'team_memberships')
        ORDER BY tablename;`,
       'Verificar status RLS'
     );

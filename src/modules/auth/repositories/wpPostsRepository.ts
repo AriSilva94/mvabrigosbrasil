@@ -13,7 +13,7 @@ export async function findPostTypeByAuthorId(
     .in("post_type", ["abrigo", "voluntario"])
     .eq("post_status", "publish")
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("wpPostsRepository.findPostTypeByAuthorId", { postAuthorId, error });

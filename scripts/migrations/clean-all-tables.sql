@@ -58,6 +58,7 @@ DELETE FROM auth.users;
 DELETE FROM shelter_dynamics;
 DELETE FROM shelter_history;
 DELETE FROM shelter_volunteers;
+DELETE FROM team_memberships;
 DELETE FROM volunteers;
 DELETE FROM vacancies;
 DELETE FROM shelters;
@@ -70,6 +71,7 @@ DELETE FROM profiles;
 DELETE FROM wp_postmeta_raw;
 DELETE FROM wp_posts_raw;
 DELETE FROM wp_users_raw;
+DELETE FROM wp_usermeta_raw;
 DELETE FROM wp_users_legacy;
 
 -- Reabilitar foreign key checks
@@ -85,6 +87,8 @@ SELECT 'shelter_history', COUNT(*) FROM shelter_history
 UNION ALL
 SELECT 'shelter_volunteers', COUNT(*) FROM shelter_volunteers
 UNION ALL
+SELECT 'team_memberships', COUNT(*) FROM team_memberships
+UNION ALL
 SELECT 'volunteers', COUNT(*) FROM volunteers
 UNION ALL
 SELECT 'vacancies', COUNT(*) FROM vacancies
@@ -96,6 +100,8 @@ UNION ALL
 SELECT 'wp_postmeta_raw', COUNT(*) FROM wp_postmeta_raw
 UNION ALL
 SELECT 'wp_posts_raw', COUNT(*) FROM wp_posts_raw
+UNION ALL
+SELECT 'wp_usermeta_raw', COUNT(*) FROM wp_usermeta_raw
 UNION ALL
 SELECT 'wp_users_raw', COUNT(*) FROM wp_users_raw
 UNION ALL

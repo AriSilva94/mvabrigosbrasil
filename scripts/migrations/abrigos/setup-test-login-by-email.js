@@ -99,7 +99,33 @@ async function setupTestLoginByEmail(email) {
     process.exit(1);
   }
 
-  console.log('✅ Senha alterada com sucesso!\n');
+  console.log('✅ Senha alterada no wp_users_legacy!\n');
+
+  // Verificar e atualizar senha no Auth também
+  console.log('🔑 Verificando se usuário existe no Auth...\n');
+
+  const { data: authUsers } = await supabase.auth.admin.listUsers();
+  const authUser = authUsers?.users?.find(u => u.email?.toLowerCase() === wpUser.user_email.toLowerCase());
+
+  if (authUser) {
+    console.log(`   ℹ️  Usuário encontrado no Auth (${authUser.id})`);
+    console.log('   🔄 Atualizando senha no Auth...\n');
+
+    const { error: authUpdateError } = await supabase.auth.admin.updateUserById(
+      authUser.id,
+      { password: TEST_PASSWORD }
+    );
+
+    if (authUpdateError) {
+      console.error('   ❌ Erro ao atualizar senha no Auth:', authUpdateError.message);
+    } else {
+      console.log('   ✅ Senha atualizada no Auth!');
+    }
+  } else {
+    console.log('   ℹ️  Usuário não existe no Auth (será criado no primeiro login)');
+  }
+
+  console.log();
 
   // Exibir informações
   console.log('╔════════════════════════════════════════════════════════════╗');
