@@ -8,6 +8,7 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { revalidateVacancies } from "@/lib/cache/revalidate";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
@@ -71,7 +72,10 @@ export async function GET(
       return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
+    const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
+    await revalidateVacancies(vacancy.slug);
+
+    return NextResponse.json({ vacancy });
   }
 
   return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
@@ -162,5 +166,8 @@ export async function PUT(
     return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
   }
 
-  return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
+  const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
+  await revalidateVacancies(vacancy.slug);
+
+  return NextResponse.json({ vacancy });
 }
