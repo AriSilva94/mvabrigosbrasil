@@ -15,6 +15,9 @@ export const metadata = buildMetadata({
   canonical: "/programa-de-voluntarios",
 });
 
+// Renderizar sempre e confiar no Data Cache com tags para frescor
+export const revalidate = 0;
+
 export default async function Page() {
   const supabase = getSupabaseAdminClient();
 

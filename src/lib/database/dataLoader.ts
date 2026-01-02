@@ -5,7 +5,11 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import type { Database } from "@/lib/supabase/types";
 import type { DatabaseDataset, MovementRecord, ShelterRecord } from "@/types/database.types";
-import { CACHE_TAGS, CACHE_TIMES } from "@/lib/cache/tags";
+import { CACHE_TAGS } from "@/lib/cache/tags";
+
+const CACHE_TIMES = {
+  VERY_LONG: 60 * 60 * 6, // 6 horas
+} as const;
 
 dayjs.extend(customParseFormat);
 
@@ -238,16 +242,15 @@ async function loadDatabaseDatasetUncached(): Promise<DatabaseDataset> {
  * Carrega dataset completo do banco de dados com cache de 6 horas
  *
  * Cache: 6 horas (atualizado mensalmente)
- * Tag: database-dataset
- * Invalidação: ao criar/deletar dinâmica populacional
+ * Invalidação: revalidatePath('/banco-de-dados')
  */
 export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
   return unstable_cache(
     async () => loadDatabaseDatasetUncached(),
-    ['database-dataset'],
+    ["database-dataset"],
     {
       revalidate: CACHE_TIMES.VERY_LONG, // 6 horas
-      tags: [CACHE_TAGS.DATABASE_DATASET],
+      tags: [CACHE_TAGS.databaseDataset],
     }
   )();
 }

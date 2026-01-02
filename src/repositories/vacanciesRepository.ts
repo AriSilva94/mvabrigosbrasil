@@ -2,7 +2,11 @@ import { unstable_cache } from "next/cache";
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { VacancyCard } from "@/types/vacancy.types";
 import { normalizePeriod, normalizeWorkload } from "@/constants/vacancyFilters";
-import { CACHE_TAGS, CACHE_TIMES } from "@/lib/cache/tags";
+import { CACHE_TAGS } from "@/lib/cache/tags";
+
+const CACHE_TIMES = {
+  SHORT: 60 * 10, // 10 minutos
+} as const;
 
 type VacancyRow = {
   id: string;
@@ -62,18 +66,17 @@ async function fetchVacancyCardsUncached(
  * Busca lista pública de vagas com cache de 10 minutos
  *
  * Cache: 10 minutos
- * Tag: vacancies-public
- * Invalidação: ao criar/editar/deletar vaga
+ * Invalidação: revalidatePath('/programa-de-voluntarios')
  */
 export async function fetchVacancyCards(
   supabase: SupabaseClientType
 ): Promise<{ vacancies: VacancyCard[]; error: Error | null }> {
   return unstable_cache(
     async () => fetchVacancyCardsUncached(supabase),
-    ['vacancies-public'],
+    ["vacancies-public"],
     {
       revalidate: CACHE_TIMES.SHORT, // 10 minutos
-      tags: [CACHE_TAGS.VACANCIES_PUBLIC],
+      tags: [CACHE_TAGS.vacanciesPublic],
     }
   )();
 }
