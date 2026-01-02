@@ -9,7 +9,7 @@ export async function fetchVacancyCards(
 ): Promise<{ vacancies: VacancyCard[]; error: Error | null }> {
   try {
     const { data, error } = await supabase
-      .from<VacancyRow>("vacancies")
+      .from("vacancies")
       .select("id, title, slug, description, status, wp_post_id, periodo, carga_horaria, cidade, estado, is_published, created_at, updated_at")
       .eq("status", "active")
       .eq("is_published", true)
@@ -20,10 +20,11 @@ export async function fetchVacancyCards(
       return { vacancies: [], error };
     }
 
-    const vacancies: VacancyCard[] = (data ?? []).map((vacancy) => {
+    const rows = (data ?? []) as VacancyRow[];
+    const vacancies: VacancyCard[] = rows.map((vacancy) => {
       const city = vacancy.cidade?.trim();
       const state = vacancy.estado?.trim();
-      const slugFromDb = typeof vacancy.slug === 'string' ? vacancy.slug : String(vacancy.id);
+      const slugFromDb = typeof vacancy.slug === "string" ? vacancy.slug : String(vacancy.id);
 
       return {
         id: String(vacancy.wp_post_id || vacancy.id),
