@@ -1,20 +1,9 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { fetchVacancyCards } from "@/repositories/vacanciesRepository";
+import { getCachedVacancyCards } from "@/lib/cache/publicData";
 
 export async function GET() {
   try {
-    const supabase = getSupabaseAdminClient();
-    const { vacancies, error } = await fetchVacancyCards(supabase);
-
-    if (error) {
-      console.error("API /api/public-vacancies - error:", error);
-      return NextResponse.json(
-        { error: "Erro ao buscar vagas" },
-        { status: 500 }
-      );
-    }
-
+    const vacancies = await getCachedVacancyCards();
     return NextResponse.json({ vacancies });
   } catch (error) {
     console.error("API /api/public-vacancies - unexpected error:", error);

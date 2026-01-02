@@ -4,6 +4,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { Heading, Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
+import { getCachedVolunteerCards, getCachedVacancyCards } from "@/lib/cache/publicData";
 
 export const metadata = buildMetadata({
   title: "Programa de Voluntários",
@@ -12,7 +13,12 @@ export const metadata = buildMetadata({
   canonical: "/programa-de-voluntarios",
 });
 
-export default function Page() {
+export default async function Page() {
+  const [volunteers, vacancies] = await Promise.all([
+    getCachedVolunteerCards(),
+    getCachedVacancyCards(),
+  ]);
+
   return (
     <main>
       <PageHeader
@@ -77,7 +83,10 @@ export default function Page() {
         </div>
       </section>
 
-      <VolunteerTabsSection />
+      <VolunteerTabsSection
+        initialVolunteers={volunteers}
+        initialVacancies={vacancies}
+      />
     </main>
   );
 }

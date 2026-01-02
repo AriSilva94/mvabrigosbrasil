@@ -9,9 +9,9 @@ type UseVacancyCardsResult = {
   error: Error | null;
 };
 
-export function useVacancyCards(): UseVacancyCardsResult {
-  const [vacancies, setVacancies] = useState<VacancyCard[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacancyCardsResult {
+  const [vacancies, setVacancies] = useState<VacancyCard[]>(initialVacancies);
+  const [loading, setLoading] = useState(initialVacancies.length === 0);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -37,8 +37,12 @@ export function useVacancyCards(): UseVacancyCardsResult {
       }
     }
 
-    loadVacancies();
-  }, []);
+    if (initialVacancies.length === 0) {
+      loadVacancies();
+    } else {
+      setLoading(false);
+    }
+  }, [initialVacancies]);
 
   return { vacancies, loading, error };
 }
