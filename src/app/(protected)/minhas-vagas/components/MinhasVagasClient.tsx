@@ -48,6 +48,10 @@ export default function MinhasVagasClient({
     setIsModalOpen(false);
   }
 
+  function handleDeleted(vacancyId: string) {
+    setItems((prev) => prev.filter((v) => v.id !== vacancyId));
+  }
+
   return (
     <div className="container px-6 py-12 space-y-6">
       <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -110,6 +114,7 @@ export default function MinhasVagasClient({
                 vacancy={vacancy}
                 showEditLink
                 editHref={`/minhas-vagas/editar/${vacancy.slug || vacancy.id}`}
+                onDeleted={() => handleDeleted(vacancy.id)}
               />
             </li>
           ))}
