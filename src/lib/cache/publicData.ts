@@ -1,6 +1,9 @@
 import { unstable_cache } from "next/cache";
 
-import { fetchVolunteerProfileBySlugCombined, fetchCombinedVolunteerCards } from "@/services/volunteersAggregator";
+import {
+  fetchVolunteerCardsFromSupabase,
+  fetchVolunteerProfileBySlugFromSupabase,
+} from "@/services/volunteersAggregator";
 import { fetchVacancyCards } from "@/repositories/vacanciesRepository";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
@@ -19,7 +22,7 @@ async function getAdminClient(): Promise<SupabaseClientType> {
 const cachedVolunteerCards = unstable_cache(
   async (): Promise<VolunteerCard[]> => {
     const supabase = await getAdminClient();
-    const { volunteers, error } = await fetchCombinedVolunteerCards(supabase);
+    const { volunteers, error } = await fetchVolunteerCardsFromSupabase(supabase);
 
     if (error) {
       console.error("cachedVolunteerCards: error", error);
@@ -47,7 +50,10 @@ export function getCachedVolunteerProfile(slug: string): Promise<VolunteerProfil
   return unstable_cache(
     async (targetSlug: string): Promise<VolunteerProfile | null> => {
       const supabase = await getAdminClient();
-      const { profile, error } = await fetchVolunteerProfileBySlugCombined(supabase, targetSlug);
+      const { profile, error } = await fetchVolunteerProfileBySlugFromSupabase(
+        supabase,
+        targetSlug,
+      );
 
       if (error) {
         console.error("getCachedVolunteerProfile: error", error);
