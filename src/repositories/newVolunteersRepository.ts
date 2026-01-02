@@ -26,7 +26,6 @@ type VolunteerRow = {
   slug?: string | null;
   genero: string | null;
   disponibilidade: string | null;
-  wp_post_id: number | null;
   created_at: string | null;
   profissao?: string | null;
   escolaridade?: string | null;
@@ -44,7 +43,7 @@ export async function fetchVolunteerCardsFromNew(
     const { data, error } = await supabase
       .from("volunteers")
       .select(
-        "id, name, slug, cidade, estado, genero, disponibilidade, wp_post_id, created_at"
+        "id, name, slug, cidade, estado, genero, disponibilidade, created_at"
       )
       .eq("accept_terms", true)
       .eq("is_public", true)
@@ -72,8 +71,6 @@ export async function fetchVolunteerCardsFromNew(
         location: city && state ? `${city} - ${state}` : city || state || undefined,
         gender: volunteer.genero ?? undefined,
         availability: volunteer.disponibilidade ?? undefined,
-        wpPostId: volunteer.wp_post_id ? String(volunteer.wp_post_id) : undefined,
-        source: "new",
       };
     });
 
@@ -92,7 +89,7 @@ export async function fetchVolunteerProfileBySlugFromNew(
     const { data, error } = await supabase
       .from("volunteers")
       .select(
-        "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at"
+        "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, created_at"
       )
       .eq("slug", slug)
       .eq("accept_terms", true)
@@ -124,8 +121,6 @@ export async function fetchVolunteerProfileBySlugFromNew(
       skills: row.descricao ?? row.atuacao ?? undefined,
       period: row.periodo ?? undefined,
       notes: row.comentarios ?? undefined,
-      wpPostId: row.wp_post_id ? String(row.wp_post_id) : undefined,
-      source: "new",
     };
 
     return { profile, error: null };

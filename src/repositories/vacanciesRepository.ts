@@ -8,7 +8,6 @@ type VacancyRow = {
   slug: string;
   description: string | null;
   status: string;
-  wp_post_id: number | null;
   periodo: string | null;
   carga_horaria: string | null;
   cidade: string | null;
@@ -24,7 +23,7 @@ export async function fetchVacancyCards(
   try {
     const { data, error } = await supabase
       .from("vacancies")
-      .select("id, title, slug, description, status, wp_post_id, periodo, carga_horaria, cidade, estado, is_published, created_at, updated_at")
+      .select("id, title, slug, description, status, periodo, carga_horaria, cidade, estado, is_published, created_at, updated_at")
       .eq("status", "active")
       .eq("is_published", true)
       .order("created_at", { ascending: false });
@@ -40,7 +39,7 @@ export async function fetchVacancyCards(
       const slugFromDb = typeof vacancy.slug === 'string' ? vacancy.slug : String(vacancy.id);
 
       return {
-        id: String(vacancy.wp_post_id || vacancy.id),
+        id: vacancy.id,
         title: vacancy.title ?? "Vaga",
         slug: slugFromDb,
         period: normalizePeriod(vacancy.periodo) || undefined,

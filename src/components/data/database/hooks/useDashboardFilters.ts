@@ -24,10 +24,29 @@ export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
   const [pendingState, setPendingState] = useState<string>(ALL_STATES_VALUE);
 
   const stateOptions = useMemo(() => {
+    // Contar quantos abrigos têm dinâmicas para o ano pendente
+    // Isso garante que a contagem reflita dados reais disponíveis
+    const shelterIdsWithDynamics = new Set(
+      dataset.movements
+        .filter((movement) => movement.year === pendingYear)
+        .map((movement) => movement.shelterId)
+        .filter(Boolean)
+    );
+
+    // Contar também todos os abrigos que têm dinâmicas em qualquer ano
+    const allShelterIdsWithDynamics = new Set(
+      dataset.movements
+        .map((movement) => movement.shelterId)
+        .filter(Boolean)
+    );
+
     const counts = dataset.shelters.reduce<Record<string, number>>(
       (acc, shelter) => {
         if (!shelter.state) return acc;
-        acc[shelter.state] = (acc[shelter.state] ?? 0) + 1;
+        // Só conta se o abrigo tem dinâmicas para o ano selecionado
+        if (shelterIdsWithDynamics.has(shelter.id)) {
+          acc[shelter.state] = (acc[shelter.state] ?? 0) + 1;
+        }
         return acc;
       },
       {}
@@ -39,14 +58,17 @@ export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
       count: counts[meta.code] ?? 0,
     }));
 
+    // Para "Todos", contar todos os abrigos que têm dinâmicas em qualquer ano
+    const totalWithData = allShelterIdsWithDynamics.size;
+
     return [
       {
         value: ALL_STATES_VALUE,
-        label: `Todos (${dataset.shelters.length})`,
+        label: `Todos (${totalWithData})`,
       },
       ...options,
     ];
-  }, [dataset.shelters]);
+  }, [dataset.shelters, dataset.movements, pendingYear]);
 
   const stateLabel = useMemo(
     () =>

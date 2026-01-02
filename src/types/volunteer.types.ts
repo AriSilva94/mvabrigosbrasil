@@ -16,8 +16,6 @@ export type VolunteerCard = {
   gender?: string;
   availability?: string;
   createdAt?: string;
-  wpPostId?: string;
-  source?: "wp" | "new";
 };
 
 export type VolunteerTabId = "volunteers" | "vacancies" | "faq";
@@ -36,8 +34,6 @@ export type VolunteerProfile = {
   period?: string;
   notes?: string;
   createdAt?: string;
-  wpPostId?: string;
-  source?: "wp" | "new";
 };
 
 export type VolunteerFaq = {
