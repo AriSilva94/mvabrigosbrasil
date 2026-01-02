@@ -16,11 +16,19 @@ type UseDashboardFiltersParams = {
 };
 
 export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
-  // Se não houver anos no dataset, usar os últimos 4 anos como fallback
+  // Garantir que o ano atual sempre apareça na lista
   const currentYear = new Date().getFullYear();
-  const baseYears = dataset.years.length > 0
+  const datasetYears = dataset.years.length > 0
     ? dataset.years
-    : [currentYear, currentYear - 1, currentYear - 2, currentYear - 3];
+    : [currentYear - 1, currentYear - 2, currentYear - 3];
+
+  // Adicionar ano atual se não estiver na lista
+  const yearsSet = new Set(datasetYears);
+  if (!yearsSet.has(currentYear)) {
+    yearsSet.add(currentYear);
+  }
+
+  const baseYears = Array.from(yearsSet).sort((a, b) => b - a);
   const availableYears: YearFilter[] = [ALL_YEARS_VALUE, ...baseYears];
 
   const defaultYear = baseYears[0] ?? currentYear;
