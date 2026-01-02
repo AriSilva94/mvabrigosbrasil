@@ -16,6 +16,8 @@ export default function ReportCard({
   href,
   image,
 }: ReportCardProps): JSX.Element {
+  const isExternalLink = href.startsWith("http");
+
   return (
     <article className="flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row">
       <div className="flex-shrink-0">
@@ -34,8 +36,8 @@ export default function ReportCard({
 
         <Link
           href={href}
-          target="_blank"
-          rel="noreferrer"
+          target={isExternalLink ? "_blank" : undefined}
+          rel={isExternalLink ? "noreferrer" : undefined}
           className="mt-6 inline-flex w-fit items-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary"
         >
           Acessar

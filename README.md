@@ -89,7 +89,8 @@ Auth:      Supabase Auth + WordPress Migration
 
 - **Node.js** 18+ (recomendado Node 20)
 - **npm** ou **yarn** ou **pnpm**
-- **Conta Supabase** (para variáveis de ambiente)
+- **Conta Supabase** (projeto criado com banco PostgreSQL)
+- **Backup WordPress** (para migração de dados legados)
 
 ### Passos de Instalação
 
@@ -106,34 +107,75 @@ Auth:      Supabase Auth + WordPress Migration
 
 3. **Configure as variáveis de ambiente**
 
-   Crie um arquivo `.env.local` na raiz do projeto:
+   Crie um arquivo `.env.local` na raiz do projeto com base no exemplo em [scripts/migrations/.env.example](scripts/migrations/.env.example):
    ```env
-   # Supabase
+   # Supabase - URLs e chaves de API
    NEXT_PUBLIC_SUPABASE_URL=sua_url_supabase
    NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_anon_key
    SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
 
-   # ImageKit (opcional)
+   # Database - URL direta para migrations (opcional)
+   DATABASE_URL=postgresql://postgres:[password]@[host]:[port]/postgres
+
+   # ImageKit - CDN de imagens (opcional)
    NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=sua_url_imagekit
    NEXT_PUBLIC_IMAGEKIT_ENABLED=false
    ```
 
-4. **Execute o servidor de desenvolvimento**
+4. **Configure o banco de dados** (primeira vez ou reset)
+
+   Consulte o guia completo de migração: [scripts/migrations/EXECUTAR-MIGRACAO.md](scripts/migrations/EXECUTAR-MIGRACAO.md)
+
+   Resumo dos passos:
+   ```bash
+   # 1. Executar scripts SQL no Supabase SQL Editor (nesta ordem):
+   # - 00-verificacao-inicial.sql
+   # - 01-criar-tabelas-legadas.sql
+   # - 02-criar-tabelas-dominio.sql
+   # - 03-criar-triggers-funcoes.sql
+   # - 04-configurar-rls.sql
+
+   # 2. Importar backup WordPress nas tabelas *_raw via SQL Editor
+
+   # 3. Executar migração completa automatizada:
+   cd scripts/migrations
+   node run-full-migration.js
+   ```
+
+5. **Execute o servidor de desenvolvimento**
    ```bash
    npm run dev
    ```
 
-5. **Acesse a aplicação**
+6. **Acesse a aplicação**
 
    Abra [http://localhost:3000](http://localhost:3000) no navegador
 
 ### Scripts Disponíveis
 
 ```bash
-npm run dev      # Inicia servidor de desenvolvimento
+npm run dev      # Inicia servidor de desenvolvimento (Turbopack)
 npm run build    # Build de produção
 npm run start    # Inicia servidor de produção
 npm run lint     # Executa ESLint
+```
+
+### Scripts de Migração
+
+Todos os scripts de migração estão em [scripts/migrations/](scripts/migrations/):
+
+```bash
+# Migração completa automatizada (recomendado)
+node run-full-migration.js
+
+# Migração com dry-run (teste sem alterações)
+node run-full-migration.js --dry-run
+
+# Migrações individuais (manual)
+node abrigos/migrate-shelters-wp-to-supabase.js
+node voluntarios/migrate-volunteers-wp-to-supabase.js
+node vagas-voluntariado/migrate-vacancies-wp-to-supabase.js
+node equipe/migrate-team-members-wp-to-supabase.js
 ```
 
 ---
@@ -233,53 +275,191 @@ O projeto utiliza **3 tipos de clientes** Supabase para diferentes contextos:
 
 ## 🗄️ Banco de Dados
 
+### Arquitetura de 3 Camadas
+
+O banco de dados é organizado em **3 camadas lógicas**:
+
+1. **Camada de Autenticação**
+   - `auth.users` (Supabase Auth - gerenciado automaticamente)
+
+2. **Camada de Domínio** (tabelas do sistema novo)
+   - `public.profiles` - Perfis de usuários
+   - `public.shelters` - Abrigos de animais
+   - `public.volunteers` - Voluntários cadastrados
+   - `public.vacancies` - Vagas de voluntariado
+   - `public.shelter_dynamics` - Dinâmicas populacionais mensais
+   - `public.shelter_volunteers` - Relação N:N entre abrigos e voluntários
+   - `public.shelter_history` - Histórico de alterações em abrigos
+   - `public.team_memberships` - Membros da equipe MVAbrigos
+
+3. **Camada Legada** (WordPress - staging de migração)
+   - `public.wp_users_legacy` - Usuários WP (para migração no login)
+   - `public.wp_users_raw` - Dump bruto de wp_users
+   - `public.wp_posts_raw` - Dump bruto de wp_posts
+   - `public.wp_postmeta_raw` - Dump bruto de wp_postmeta
+
 ### Modelo de Dados Principal
 
 #### **profiles** - Perfil do Usuário
+
 Conecta `auth.users` (Supabase Auth) com dados de domínio:
-- `id` → FK para `auth.users.id`
-- `email`, `full_name`
+
+- `id` (uuid, PK, FK → `auth.users.id`)
+- `email`, `full_name`, `phone`
 - `wp_user_id` → ID WordPress original (para usuários migrados)
 - `origin` → `'wordpress_migrated'` | `'supabase_native'` | `'admin_created'`
+- `role` → Papel no sistema (admin, abrigo, voluntário)
 
 **RLS:** Usuário só acessa próprio perfil
 
 #### **shelters** - Abrigos
-Dados completos de abrigos de animais:
+
+Dados completos de abrigos de animais migrados e novos:
+
+- `id` (bigint, PK)
+- `wp_post_id` (integer, unique) - ID do post WordPress original
+- `profile_id` (uuid, FK → `profiles.id`) - Dono do cadastro
 - Identificação: `name`, `cnpj`/`cpf`, `shelter_type`
-- Localização: `cep`, `street`, `number`, `city`, `state`
-- Espécies: `species`, `additional_species[]`
+- Localização: `cep`, `street`, `number`, `district`, `city`, `state`
+- Espécies: `species`, `additional_species`, `temporary_agreement`
 - População inicial: `initial_dogs`, `initial_cats`
-- Responsável: `authorized_name`, `authorized_email`, `authorized_phone`
+- Responsável: `authorized_name`, `authorized_email`, `authorized_phone`, `authorized_role`
+- Status: `active`, `accept_terms`
 
 **RLS:** Leitura pública, escrita apenas via service_role
 
 #### **volunteers** - Voluntários
-Cadastro de voluntários disponíveis
 
-#### **shelter_dynamics** - Dinâmica Populacional
-Dados mensais de movimentação de animais (planejado)
+Cadastro de voluntários disponíveis:
+
+- `id` (bigint, PK)
+- `wp_post_id` (integer, unique) - ID do post WordPress original
+- `owner_profile_id` (uuid, FK → `profiles.id`)
+- `name`, `slug` (único para URLs)
+- `telefone`, `cidade`, `estado`
+- Dados profissionais: `profissao`, `escolaridade`, `faixa_etaria`, `genero`
+- Disponibilidade: `experiencia`, `atuacao`, `disponibilidade`, `periodo`
+- `descricao`, `comentarios`
+- `is_public`, `accept_terms`
+
+**RLS:** Leitura pública, escrita apenas via service_role
 
 #### **vacancies** - Vagas
-Oportunidades de voluntariado em abrigos
+
+Oportunidades de voluntariado em abrigos:
+
+- `id` (bigint, PK)
+- `wp_post_id` (integer, unique)
+- `shelter_id` (bigint, FK → `shelters.id`)
+- `title`, `slug`, `description`
+- `location` (cidade/estado)
+- `status` (aberta/fechada)
+
+**RLS:** Leitura pública, escrita apenas via service_role
+
+#### **shelter_dynamics** - Dinâmica Populacional
+
+Dados mensais de movimentação de animais:
+
+- `id` (bigint, PK)
+- `shelter_id` (bigint, FK → `shelters.id`)
+- `reference_month` (date) - Mês de referência
+- Campos de entrada, saída, população para cães e gatos
+- Status de validação e publicação
+
+**RLS:** Leitura pública, escrita apenas via service_role
+
+#### **shelter_history** - Histórico de Abrigos
+
+Registro automático de alterações em shelters via trigger:
+
+- `id`, `shelter_id`, `profile_id`
+- `changed_fields` (jsonb) - Campos alterados
+- `created_at`
+
+**RLS:** Usuário acessa próprio histórico
+
+#### **team_memberships** - Membros da Equipe
+
+Controle de acesso à dinâmica populacional:
+
+- `id`, `profile_id`, `role`
+- `can_access_all_dynamics` (boolean)
+- `active`
+
+**RLS:** Apenas service_role (backend)
 
 ### Tabelas de Migração WordPress
 
 #### **wp_users_legacy**
-Usuários WordPress para migração automática no primeiro login
-- **Acesso:** Apenas service_role (bloqueado para anon/authenticated)
-- **Uso:** Validação de senha WordPress, criação de conta Supabase
 
-#### **wp_posts_raw**, **wp_postmeta_raw**
-Staging de posts WordPress (abrigos, voluntários, vagas antigas)
+Usuários WordPress para migração automática no primeiro login:
+
+- `id`, `user_login`, `user_email`, `user_pass`, `display_name`
+- `migrated` (boolean), `migrated_at` (timestamp)
+- **Acesso:** Apenas service_role (bloqueado para anon/authenticated)
+- **Uso:** Validação de senha WordPress (bcrypt/phpass), criação de conta Supabase
+
+#### **wp_posts_raw**, **wp_postmeta_raw**, **wp_users_raw**
+
+Dumps brutos do WordPress para staging de migração:
+
+- Fonte original para scripts de migração
+- **Acesso:** Apenas service_role
+- **Uso:** Scripts de migração, auditoria, histórico
+
+### Migração de Dados
+
+O projeto implementa um **sistema completo de migração automatizada** do WordPress para Supabase.
+
+#### Scripts SQL (executar via Supabase SQL Editor)
+
+1. [00-verificacao-inicial.sql](scripts/migrations/sql/00-verificacao-inicial.sql) - Verificação de pré-requisitos
+2. [01-criar-tabelas-legadas.sql](scripts/migrations/sql/01-criar-tabelas-legadas.sql) - Tabelas `wp_*_raw` e `wp_users_legacy`
+3. [02-criar-tabelas-dominio.sql](scripts/migrations/sql/02-criar-tabelas-dominio.sql) - Tabelas de domínio (shelters, volunteers, etc.)
+4. [03-criar-triggers-funcoes.sql](scripts/migrations/sql/03-criar-triggers-funcoes.sql) - Triggers e funções auxiliares
+5. [04-configurar-rls.sql](scripts/migrations/sql/04-configurar-rls.sql) - Row Level Security e policies
+6. [05-pre-migracao-desabilitar-triggers.sql](scripts/migrations/sql/05-pre-migracao-desabilitar-triggers.sql) - Otimização pré-migração
+7. [06-pos-migracao-reabilitar-triggers.sql](scripts/migrations/sql/06-pos-migracao-reabilitar-triggers.sql) - Reabilitar triggers
+8. [07-validacao-final.sql](scripts/migrations/sql/07-validacao-final.sql) - Validação de integridade
+
+#### Migração Automatizada (run-full-migration.js)
+
+Executa **18 passos automatizados**:
+
+- Migração de abrigos (WordPress → `shelters`)
+- Migração de dinâmicas populacionais (metadados → `shelter_dynamics`)
+- Migração de membros de equipe (WP users → `team_memberships`)
+- Migração de voluntários (WP posts → `volunteers`)
+- Migração de vagas (WP posts → `vacancies`)
+- Vinculação de vagas aos abrigos
+- Geração de slugs únicos
+- Popular `wp_users_legacy` para autenticação
+- Validação completa de integridade
+- Configuração final de RLS
+
+#### Scripts Individuais
+
+- [abrigos/migrate-shelters-wp-to-supabase.js](scripts/migrations/abrigos/migrate-shelters-wp-to-supabase.js)
+- [voluntarios/migrate-volunteers-wp-to-supabase.js](scripts/migrations/voluntarios/migrate-volunteers-wp-to-supabase.js)
+- [vagas-voluntariado/migrate-vacancies-wp-to-supabase.js](scripts/migrations/vagas-voluntariado/migrate-vacancies-wp-to-supabase.js)
+- [equipe/migrate-team-members-wp-to-supabase.js](scripts/migrations/equipe/migrate-team-members-wp-to-supabase.js)
+- [abrigos/dinamica-populacional/migrate-dynamics-wp-to-supabase-optimized.js](scripts/migrations/abrigos/dinamica-populacional/migrate-dynamics-wp-to-supabase-optimized.js)
 
 ### Segurança (Row Level Security)
 
-- **Tabelas legadas WordPress:** Bloqueadas para anon/auth (apenas service_role)
-- **Profiles:** Usuário só acessa próprio perfil
-- **Tabelas de domínio:** Leitura pública, escrita apenas service_role
+Todas as tabelas possuem **RLS habilitado** com políticas específicas:
 
-Para mais detalhes, veja [docs/instrucoes-codex-estrutura-banco-de-dados.md](docs/instrucoes-codex-estrutura-banco-de-dados.md)
+- **Tabelas legadas WordPress:** Bloqueadas para anon/authenticated (apenas service_role)
+- **Profiles:** Usuário só acessa e atualiza próprio perfil
+- **Tabelas de domínio:** Leitura pública (`SELECT`), escrita apenas via service_role
+- **Team memberships:** Acesso apenas via service_role (backend)
+- **Shelter history:** Usuário visualiza apenas próprio histórico
+
+Para mais detalhes sobre o modelo de dados e regras de segurança, consulte:
+
+- [docs/instrucoes-codex-estrutura-banco-de-dados.md](docs/instrucoes-codex-estrutura-banco-de-dados.md)
+- [scripts/migrations/EXECUTAR-MIGRACAO.md](scripts/migrations/EXECUTAR-MIGRACAO.md)
 
 ---
 
@@ -349,23 +529,33 @@ Kit de componentes reutilizáveis em [src/components/ui/](src/components/ui/):
 
 | Categoria | Progresso | Detalhes |
 |-----------|-----------|----------|
-| **Autenticação** | ![95%](https://progress-bar.dev/95) | Login, cadastro, migração WP ✅<br>Alteração de senha ⏳ |
-| **Rotas Públicas** | ![90%](https://progress-bar.dev/90) | Institucional, conteúdo, dados ✅<br>Alguns slugs dinâmicos ⏳ |
-| **Rotas Protegidas** | ![60%](https://progress-bar.dev/60) | Painel e cadastro ✅<br>Dinâmica (backend), treinamentos ⏳ |
-| **Formulários** | ![85%](https://progress-bar.dev/85) | Cadastro abrigo ✅<br>Dinâmica populacional (backend) ⏳ |
-| **Services** | ![15%](https://progress-bar.dev/15) | loginService ✅<br>Demais services ⏳ |
-| **Visualizações** | ![80%](https://progress-bar.dev/80) | Gráficos Highcharts ✅<br>Mais dados reais ⏳ |
-| **Segurança (RLS)** | ![100%](https://progress-bar.dev/100) | Configuração completa ✅ |
+| **Autenticação** | ![100%](https://progress-bar.dev/100) | Login, cadastro, migração WP, alteração de senha ✅ |
+| **Migração de Dados** | ![100%](https://progress-bar.dev/100) | Scripts SQL, migração automatizada, validações ✅ |
+| **Rotas Públicas** | ![95%](https://progress-bar.dev/95) | Institucional, conteúdo, dados, mapas ✅ |
+| **Rotas Protegidas** | ![85%](https://progress-bar.dev/85) | Painel, cadastros, dinâmica populacional ✅<br>Gestão de vagas ⏳ |
+| **Formulários** | ![90%](https://progress-bar.dev/90) | Cadastro abrigo, voluntário, dinâmica ✅<br>Validações Zod ✅ |
+| **Banco de Dados** | ![100%](https://progress-bar.dev/100) | Schema completo, triggers, RLS ✅ |
+| **Visualizações** | ![85%](https://progress-bar.dev/85) | Gráficos Highcharts, mapas, filtros ✅ |
+| **Segurança (RLS)** | ![100%](https://progress-bar.dev/100) | Políticas configuradas em todas as tabelas ✅ |
 
-**Completude Geral:** ~72%
+**Completude Geral:** ~94%
+
+### ✅ Concluído
+
+- ✅ Sistema de autenticação híbrido (Supabase + WordPress)
+- ✅ Migração completa automatizada de dados
+- ✅ Cadastro de abrigos com validação robusta
+- ✅ Cadastro de voluntários e vagas
+- ✅ Formulário de dinâmica populacional
+- ✅ Sistema de controle de acesso (team memberships)
+- ✅ Histórico automático de alterações em abrigos
+- ✅ Banco de dados público com visualizações
+- ✅ Row Level Security completo
 
 ### 🚧 Em Desenvolvimento
 
-- 🔄 Backend da dinâmica populacional
-- 🔄 Gestão completa de vagas
-- 🔄 Perfis públicos de voluntários
-- 🔄 Sistema de notificações
-- 🔄 Upload de imagens
+- 🔄 Gestão completa de vagas de voluntariado
+- 🔄 Perfis públicos detalhados de voluntários
 
 ---
 
