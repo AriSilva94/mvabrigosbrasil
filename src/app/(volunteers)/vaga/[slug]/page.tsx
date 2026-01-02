@@ -15,6 +15,7 @@ import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
+import { getCachedPublicVacancyBySlug } from "@/lib/cache/publicData";
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
@@ -48,39 +49,33 @@ async function loadVacancy(slug: string): Promise<{
 }> {
   const { postType, shelterId } = await loadUserContext();
 
-  const supabaseAdmin = getSupabaseAdminClient();
-  const { data: supabaseData } = await supabaseAdmin
-    .from("vacancies")
-    .select("*")
-    .eq("slug", slug)
-    .limit(1)
-    .maybeSingle();
+  if (postType === REGISTER_TYPES.shelter && shelterId) {
+    const supabaseAdmin = getSupabaseAdminClient();
+    const { data: ownVacancy } = await supabaseAdmin
+      .from("vacancies")
+      .select("*")
+      .eq("slug", slug)
+      .eq("shelter_id", shelterId)
+      .limit(1)
+      .maybeSingle();
 
-  if (!supabaseData) {
-    return { vacancy: null, canEdit: false };
+    if (ownVacancy) {
+      type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
+      const mapped = {
+        ...mapVacancyRow(ownVacancy as VacancyRow),
+        source: "supabase",
+      } as UiVacancy;
+
+      return { vacancy: mapped, canEdit: true };
+    }
   }
 
-  // Cast para o tipo correto da tabela vacancies
-  type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
-  const vacancyRow = supabaseData as VacancyRow;
-
-  // Verificar se o usuário pode editar a vaga (é o dono)
-  const canEdit =
-    postType === REGISTER_TYPES.shelter &&
-    !!shelterId &&
-    vacancyRow.shelter_id === shelterId;
-
-  // Se a vaga não está publicada E o usuário NÃO é o dono, bloquear acesso
-  if (vacancyRow.is_published === false && !canEdit) {
-    return { vacancy: null, canEdit: false };
+  const publicVacancy = await getCachedPublicVacancyBySlug(slug);
+  if (publicVacancy) {
+    return { vacancy: publicVacancy, canEdit: false };
   }
 
-  const mapped = {
-    ...mapVacancyRow(vacancyRow),
-    source: "supabase",
-  } as UiVacancy;
-
-  return { vacancy: mapped, canEdit };
+  return { vacancy: null, canEdit: false };
 }
 
 export async function generateMetadata({

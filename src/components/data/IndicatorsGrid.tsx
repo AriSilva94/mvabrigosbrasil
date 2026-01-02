@@ -6,7 +6,7 @@ import ShelterTypesModal from "./ShelterTypesModal";
 
 type IndicatorsGridProps = {
   metrics: OverviewMetrics;
-  year: number;
+  yearLabel: string;
   stateLabel: string;
 };
 
@@ -24,7 +24,7 @@ const cards: Array<{
 
 export default function IndicatorsGrid({
   metrics,
-  year,
+  yearLabel,
   stateLabel,
 }: IndicatorsGridProps) {
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +35,7 @@ export default function IndicatorsGrid({
       <div className="flex items-center gap-2 text-brand-secondary">
         <Home size={18} />
         <h3 id="overview-title" className="font-18 font-semibold">
-          Visão Geral : {year} - {stateLabel}
+          Visão Geral : {yearLabel} - {stateLabel}
         </h3>
       </div>
 

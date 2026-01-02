@@ -30,7 +30,8 @@ async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVa
     console.error("minhas-vagas/editar: erro ao buscar vagas do abrigo", error);
   }
 
-  const match = data?.find((row: any) => {
+  const rows = (data ?? []) as VacancyRow[];
+  const match = rows.find((row) => {
     const candidateSlug = buildVacancySlug(row.title ?? "Vaga", row.id);
     return candidateSlug === slug;
   });

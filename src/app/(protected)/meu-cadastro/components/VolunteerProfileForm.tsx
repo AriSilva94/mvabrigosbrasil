@@ -130,6 +130,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       toast.success("Cadastro de voluntário salvo com sucesso.");
       await refresh();
       router.push("/painel");
+      router.refresh(); // força o Router Cache a descartar dados antigos antes da próxima navegação
     } catch (error) {
       console.error("Erro ao salvar cadastro de voluntário", error);
       const message =

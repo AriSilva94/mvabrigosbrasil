@@ -9,9 +9,9 @@ type UseVolunteerCardsResult = {
   error: Error | null;
 };
 
-export function useVolunteerCards(): UseVolunteerCardsResult {
-  const [volunteers, setVolunteers] = useState<VolunteerCard[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useVolunteerCards(initialVolunteers: VolunteerCard[] = []): UseVolunteerCardsResult {
+  const [volunteers, setVolunteers] = useState<VolunteerCard[]>(initialVolunteers);
+  const [loading, setLoading] = useState(initialVolunteers.length === 0);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -37,8 +37,12 @@ export function useVolunteerCards(): UseVolunteerCardsResult {
       }
     }
 
-    loadVolunteers();
-  }, []);
+    if (initialVolunteers.length === 0) {
+      loadVolunteers();
+    } else {
+      setLoading(false);
+    }
+  }, [initialVolunteers]);
 
   return { volunteers, loading, error };
 }
