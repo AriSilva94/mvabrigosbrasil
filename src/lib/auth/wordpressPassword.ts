@@ -1,15 +1,14 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
-// Lazy import do wordpress-hash-node
-let wordpressHashModule: any = null;
+import wordpressHashNode from "wordpress-hash-node";
 
-function getWordpressHashModule() {
-  if (!wordpressHashModule) {
-    wordpressHashModule = require("wordpress-hash-node");
-  }
-  return wordpressHashModule;
-}
+type WordpressHashModule = {
+  HashPassword: (password: string) => string;
+  CheckPassword: (password: string, hash: string) => boolean;
+};
+
+const wordpressHash: WordpressHashModule = wordpressHashNode as WordpressHashModule;
 
 /**
  * Gera um hash PHPass do WordPress para uma senha
@@ -17,9 +16,8 @@ function getWordpressHashModule() {
  */
 export function generateWordpressHash(password: string): string {
   try {
-    const module = getWordpressHashModule();
     // wordpress-hash-node exporta HashPassword e CheckPassword diretamente
-    const hash = module.HashPassword(password);
+    const hash = wordpressHash.HashPassword(password);
     return hash ?? "";
   } catch (error) {
     console.error("Erro ao gerar hash WordPress", error);
@@ -75,9 +73,8 @@ export async function verifyWordpressPassword(
     }
 
     if (trimmedHash.startsWith("$P") || trimmedHash.startsWith("$H")) {
-      const module = getWordpressHashModule();
       // wordpress-hash-node exporta CheckPassword diretamente
-      return Boolean(module.CheckPassword(trimmedPassword, trimmedHash));
+      return Boolean(wordpressHash.CheckPassword(trimmedPassword, trimmedHash));
     }
 
     // Fallback: MD5 temporário (usado para reset de senha em testes/migração)

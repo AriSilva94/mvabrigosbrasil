@@ -1,22 +1,8 @@
-import type { SupabaseClientType } from "@/lib/supabase/types";
+import type { Database, SupabaseClientType } from "@/lib/supabase/types";
 import type { VacancyCard } from "@/types/vacancy.types";
 import { normalizePeriod, normalizeWorkload } from "@/constants/vacancyFilters";
 
-type VacancyRow = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string | null;
-  status: string;
-  wp_post_id: number | null;
-  periodo: string | null;
-  carga_horaria: string | null;
-  cidade: string | null;
-  estado: string | null;
-  is_published: boolean | null;
-  created_at: string | null;
-  updated_at: string | null;
-};
+type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
 export async function fetchVacancyCards(
   supabase: SupabaseClientType
@@ -34,10 +20,11 @@ export async function fetchVacancyCards(
       return { vacancies: [], error };
     }
 
-    const vacancies: VacancyCard[] = (data ?? []).map((vacancy: any) => {
+    const rows = (data ?? []) as VacancyRow[];
+    const vacancies: VacancyCard[] = rows.map((vacancy) => {
       const city = vacancy.cidade?.trim();
       const state = vacancy.estado?.trim();
-      const slugFromDb = typeof vacancy.slug === 'string' ? vacancy.slug : String(vacancy.id);
+      const slugFromDb = typeof vacancy.slug === "string" ? vacancy.slug : String(vacancy.id);
 
       return {
         id: String(vacancy.wp_post_id || vacancy.id),

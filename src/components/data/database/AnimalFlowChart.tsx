@@ -9,7 +9,7 @@ import { useChartReflow } from "./hooks/useChartReflow";
 
 type AnimalFlowChartProps = {
   data: MonthlyAnimalFlow[];
-  year: number;
+  yearLabel: string;
   stateLabel: string;
 };
 
@@ -25,7 +25,7 @@ const SERIES_COLORS = {
 
 export default function AnimalFlowChart({
   data,
-  year,
+  yearLabel,
   stateLabel,
 }: AnimalFlowChartProps) {
   const chartRef = useRef<HighchartsReact.RefObject | null>(null);
@@ -140,7 +140,7 @@ export default function AnimalFlowChart({
           Entradas x Saídas de Animais
         </h3>
         <p className="text-xs text-slate-600">
-          Movimentação mensal de {year} · {stateLabel}
+          Movimentação mensal de {yearLabel} · {stateLabel}
         </p>
       </div>
 

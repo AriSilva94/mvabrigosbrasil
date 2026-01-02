@@ -9,18 +9,28 @@ import { Heading, Text } from "@/components/ui/typography";
 import { VOLUNTEER_TABS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
 import type { VolunteerTabId } from "@/types/volunteer.types";
+import type { VolunteerCard } from "@/types/volunteer.types";
+import type { VacancyCard } from "@/types/vacancy.types";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
 import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
 import { FormLoading } from "@/components/loading/FormLoading";
 import { ChevronDown } from "lucide-react";
 
-export default function VolunteerTabsSection() {
+type VolunteerTabsSectionProps = {
+  initialVolunteers?: VolunteerCard[];
+  initialVacancies?: VacancyCard[];
+};
+
+export default function VolunteerTabsSection({
+  initialVolunteers = [],
+  initialVacancies = [],
+}: VolunteerTabsSectionProps) {
   const [activeTab, setActiveTab] = useState<VolunteerTabId>("volunteers");
   const [openFaqId, setOpenFaqId] = useState<string | null>(
     VOLUNTEER_FAQ[0]?.id ?? null
   );
-  const { volunteers, loading: loadingVolunteers } = useVolunteerCards();
-  const { vacancies, loading: loadingVacancies } = useVacancyCards();
+  const { volunteers, loading: loadingVolunteers } = useVolunteerCards(initialVolunteers);
+  const { vacancies, loading: loadingVacancies } = useVacancyCards(initialVacancies);
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));

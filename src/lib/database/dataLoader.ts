@@ -174,7 +174,7 @@ export async function loadDatabaseDataset(): Promise<DatabaseDataset> {
   // Processar dinâmicas
   // Nota: Como a tabela shelter_dynamics não tem wp_post_id, usamos um ID hash baseado
   // na combinação shelter_id + reference_period + dynamic_type para garantir unicidade
-  const movements: MovementRecord[] = dynamicsRows.map((dynamic, index) => {
+  const movements: MovementRecord[] = dynamicsRows.map((dynamic) => {
     const shelter = shelterLookupByUuid.get(dynamic.shelter_id);
 
     // Gerar um ID numérico único baseado no hash da string

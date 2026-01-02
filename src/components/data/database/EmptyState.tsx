@@ -1,11 +1,11 @@
 import { Database, FileQuestion, AlertCircle } from "lucide-react";
 
 type EmptyStateProps = {
-  year: number;
+  yearLabel: string;
   stateLabel: string;
 };
 
-export default function EmptyState({ year, stateLabel }: EmptyStateProps) {
+export default function EmptyState({ yearLabel, stateLabel }: EmptyStateProps) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
@@ -22,7 +22,9 @@ export default function EmptyState({ year, stateLabel }: EmptyStateProps) {
             Não foram encontrados dados de abrigos para os filtros selecionados:
           </p>
           <div className="flex items-center justify-center gap-2 text-sm font-medium text-slate-700">
-            <span className="rounded-md bg-slate-100 px-3 py-1.5">{year}</span>
+            <span className="rounded-md bg-slate-100 px-3 py-1.5">
+              {yearLabel}
+            </span>
             <span className="text-slate-400">•</span>
             <span className="rounded-md bg-slate-100 px-3 py-1.5">
               {stateLabel}
@@ -51,8 +53,8 @@ export default function EmptyState({ year, stateLabel }: EmptyStateProps) {
                 <li className="flex items-start gap-2">
                   <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-blue-600" />
                   <span>
-                    Selecione <strong>"Todos"</strong> no filtro de estados para
-                    ver dados nacionais
+                    Selecione <strong>Todos</strong> no filtro de estados para ver
+                    dados nacionais
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
