@@ -1,14 +1,11 @@
 import type { JSX } from "react";
 
+import type { Report } from "@/constants/reports";
+
 import ReportCard from "./ReportCard";
 
 type ReportsSectionProps = {
-  reports: ReadonlyArray<{
-    title: string;
-    description: string;
-    href: string;
-    image: string;
-  }>;
+  reports: ReadonlyArray<Report>;
 };
 
 export default function ReportsSection({
@@ -29,7 +26,13 @@ export default function ReportsSection({
 
         <div className="mt-10 space-y-6">
           {reports.map((report) => (
-            <ReportCard key={report.href} {...report} />
+            <ReportCard
+              key={report.slug}
+              title={report.title}
+              description={report.description}
+              image={report.image}
+              href={`/relatorios/${report.slug}`}
+            />
           ))}
         </div>
       </div>
