@@ -15,6 +15,9 @@ export type VolunteerCard = {
   state?: string;
   gender?: string;
   availability?: string;
+  period?: string;
+  experience?: string;
+  profession?: string;
   createdAt?: string;
   wpPostId?: string;
   source?: "wp" | "new";
