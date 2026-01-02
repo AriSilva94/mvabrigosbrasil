@@ -8,6 +8,7 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { fetchVacanciesByShelter, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { revalidateVacancies } from "@/lib/cache/revalidate";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
@@ -116,5 +117,6 @@ export async function POST(request: Request) {
   }
 
   const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
+  await revalidateVacancies(vacancy.slug);
   return NextResponse.json({ vacancy });
 }
