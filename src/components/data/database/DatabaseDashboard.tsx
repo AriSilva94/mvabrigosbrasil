@@ -4,6 +4,7 @@ import FiltersPanel from "@/components/data/FiltersPanel";
 import IndicatorsGrid from "@/components/data/IndicatorsGrid";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import type { DatabaseDataset } from "@/types/database.types";
+import type { YearFilter } from "@/lib/database/aggregations";
 import AnimalFlowChart from "./AnimalFlowChart";
 import AdoptionsByTypeChart from "./AdoptionsByTypeChart";
 import MonthlyEntriesChart from "./MonthlyEntriesChart";
@@ -26,11 +27,15 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
     pendingState,
     availableYears,
     stateOptions,
+    yearLabel,
     stateLabel,
     setPendingYear,
     setPendingState,
     applyFilters,
   } = useDashboardFilters({ dataset });
+
+  const handlePendingYearChange = (nextYear: number | string) =>
+    setPendingYear(nextYear as YearFilter);
   const {
     overview,
     monthlyFlow,
@@ -69,7 +74,7 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
               states={stateOptions}
               selectedYear={pendingYear}
               selectedState={pendingState}
-              onYearChange={setPendingYear}
+              onYearChange={handlePendingYearChange}
               onStateChange={setPendingState}
               onApply={applyFilters}
             />
@@ -78,19 +83,19 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
           {hasData ? (
             <IndicatorsGrid
               metrics={overview}
-              year={year}
+              yearLabel={yearLabel}
               stateLabel={stateLabel}
             />
           ) : null}
         </div>
 
         {!hasData ? (
-          <EmptyState year={year} stateLabel={stateLabel} />
+          <EmptyState yearLabel={yearLabel} stateLabel={stateLabel} />
         ) : (
           <>
             <AnimalFlowChart
               data={monthlyFlow}
-              year={year}
+              yearLabel={yearLabel}
               stateLabel={stateLabel}
             />
 

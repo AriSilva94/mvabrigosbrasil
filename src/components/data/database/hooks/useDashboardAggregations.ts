@@ -10,12 +10,13 @@ import {
   computeMonthlyOutcomes,
   computeMonthlySpeciesEntries,
   computeOverview,
+  type YearFilter,
 } from "@/lib/database/aggregations";
 import type { DatabaseDataset } from "@/types/database.types";
 
 type UseDashboardAggregationsParams = {
   dataset: DatabaseDataset;
-  year: number;
+  year: YearFilter;
   state: string;
 };
 
