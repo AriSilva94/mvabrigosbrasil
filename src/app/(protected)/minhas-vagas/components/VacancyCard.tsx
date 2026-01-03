@@ -1,22 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 import { Heading, Text } from "@/components/ui/typography";
 import type { VacancyProfile } from "@/types/vacancies.types";
 import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
+import DeleteVacancyDialog from "@/app/(protected)/minhas-vagas/components/DeleteVacancyDialog";
 
 interface VacancyCardProps {
   vacancy: VacancyProfile;
   showEditLink?: boolean;
   editHref?: string;
+  onDeleted?: () => void;
+  applicationsCount?: number;
 }
 
 export default function VacancyCard({
   vacancy,
   showEditLink = false,
   editHref,
+  onDeleted,
+  applicationsCount,
 }: VacancyCardProps) {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const location = [vacancy.city, vacancy.state].filter(Boolean).join(" - ");
   const details = [vacancy.period, normalizeWorkload(vacancy.workload)].filter(Boolean).join(" · ");
   const slug = vacancy.slug || vacancy.id;
@@ -50,16 +57,52 @@ export default function VacancyCard({
         </Text>
       )}
 
+      {applicationsCount !== undefined && applicationsCount > 0 && (
+        <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">
+          <span>👥</span>
+          <span>{applicationsCount} candidato{applicationsCount !== 1 ? "s" : ""}</span>
+        </div>
+      )}
+
       <div className="mt-auto flex flex-wrap gap-2">
         {showEditLink && slug && (
-          <Link
-            href={editHref ?? `/vaga/${slug}`}
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-[#f5f5f6] px-3 py-1 text-sm font-semibold text-brand-secondary transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(16,130,89,0.08)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary"
-          >
-            Editar
-          </Link>
+          <>
+            <Link
+              href={editHref ?? `/vaga/${slug}`}
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-[#f5f5f6] px-3 py-1 text-sm font-semibold text-brand-secondary transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(16,130,89,0.08)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary"
+            >
+              Editar
+            </Link>
+
+            {applicationsCount !== undefined && applicationsCount > 0 && (
+              <Link
+                href={`/minhas-vagas/${slug}/candidatos`}
+                className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700 transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(37,99,235,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              >
+                Ver Candidatos ({applicationsCount})
+              </Link>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsDeleteDialogOpen(true)}
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-700 transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(220,53,69,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            >
+              Excluir
+            </button>
+          </>
         )}
       </div>
+
+      {onDeleted && (
+        <DeleteVacancyDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+          vacancyId={vacancy.id}
+          vacancyTitle={vacancy.title}
+          onDeleted={onDeleted}
+        />
+      )}
     </article>
   );
 }
