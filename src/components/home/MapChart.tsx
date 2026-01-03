@@ -4,43 +4,20 @@ import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import brMapData from "@highcharts/map-collection/countries/br/br-all.geo.json";
 
-type MapPoint = {
+export type MapPoint = {
   "hc-key": string;
   value: number;
   name?: string;
 };
 
-const SAMPLE_DATA: MapPoint[] = [
-  { "hc-key": "br-ac", value: 0, name: "Acre" },
-  { "hc-key": "br-al", value: 3, name: "Alagoas" },
-  { "hc-key": "br-ap", value: 1, name: "Amapá" },
-  { "hc-key": "br-am", value: 3, name: "Amazonas" },
-  { "hc-key": "br-ba", value: 9, name: "Bahia" },
-  { "hc-key": "br-ce", value: 6, name: "Ceará" },
-  { "hc-key": "br-df", value: 10, name: "Distrito Federal" },
-  { "hc-key": "br-es", value: 7, name: "Espírito Santo" },
-  { "hc-key": "br-go", value: 6, name: "Goiás" },
-  { "hc-key": "br-ma", value: 1, name: "Maranhão" },
-  { "hc-key": "br-mt", value: 3, name: "Mato Grosso" },
-  { "hc-key": "br-ms", value: 5, name: "Mato Grosso do Sul" },
-  { "hc-key": "br-mg", value: 32, name: "Minas Gerais" },
-  { "hc-key": "br-pa", value: 5, name: "Pará" },
-  { "hc-key": "br-pb", value: 6, name: "Paraíba" },
-  { "hc-key": "br-pr", value: 48, name: "Paraná" },
-  { "hc-key": "br-pe", value: 6, name: "Pernambuco" },
-  { "hc-key": "br-pi", value: 6, name: "Piauí" },
-  { "hc-key": "br-rj", value: 16, name: "Rio de Janeiro" },
-  { "hc-key": "br-rn", value: 5, name: "Rio Grande do Norte" },
-  { "hc-key": "br-rs", value: 15, name: "Rio Grande do Sul" },
-  { "hc-key": "br-ro", value: 0, name: "Rondônia" },
-  { "hc-key": "br-rr", value: 1, name: "Roraima" },
-  { "hc-key": "br-sc", value: 9, name: "Santa Catarina" },
-  { "hc-key": "br-sp", value: 83, name: "São Paulo" },
-  { "hc-key": "br-se", value: 1, name: "Sergipe" },
-  { "hc-key": "br-to", value: 1, name: "Tocantins" },
-];
+interface MapChartProps {
+  data?: MapPoint[];
+  isLoading?: boolean;
+}
 
-export default function MapChart() {
+export default function MapChart({ data, isLoading }: MapChartProps) {
+  // Se não houver dados, mostra mapa vazio
+  const mapData = data ?? [];
   const options: Highcharts.Options = {
     chart: {
       backgroundColor: "transparent",
@@ -80,7 +57,7 @@ export default function MapChart() {
       {
         type: "map",
         name: "Abrigos",
-        data: SAMPLE_DATA,
+        data: mapData,
         mapData: brMapData as Highcharts.GeoJSON,
         states: {
           hover: {
@@ -122,6 +99,19 @@ export default function MapChart() {
       ],
     },
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full overflow-hidden rounded-xl bg-white shadow-sm" style={{ minHeight: "420px" }}>
+        <div className="flex h-full items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-brand-primary" />
+            <p className="mt-4 text-sm text-slate-600">Carregando dados do mapa...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-hidden rounded-xl bg-white shadow-sm">
