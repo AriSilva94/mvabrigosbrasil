@@ -1,12 +1,15 @@
 "use client";
 
-import type { JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-import type { MapStatistic } from "@/types/home.types";
+import type { MapStatisticItem } from "@/types/map.types";
+import type { MapStatistics } from "@/app/api/map-statistics/route";
 import StatCard from "@/components/ui/StatCard";
 import { Heading, Text } from "@/components/ui/typography";
+import { convertStateDataToMapPoints } from "@/lib/utils/stateMapping";
+import type { MapPoint } from "./MapChart";
 
 const MapChart = dynamic(() => import("./MapChart"), {
   ssr: false,
@@ -25,15 +28,61 @@ const MapChart = dynamic(() => import("./MapChart"), {
 const MAP_DESCRIPTION =
   "O Projeto está em seu desenvolvimento inicial, dessa maneira, o banco de dados e mapeamento está ainda com poucas informações.\nAjude esse movimento a crescer, faça parte dele registrando os dados do seu abrigo/lar temporário!!";
 
-const MAP_STATISTICS: MapStatistic[] = [
-  { value: "288", label: "Abrigos", variant: "primary" },
-  { value: "29", label: "Públicos" },
-  { value: "185", label: "Privados" },
-  { value: "16", label: "Mistos" },
-  { value: "58", label: "LT/P.I" },
-];
-
 export default function MapSection(): JSX.Element {
+  const [mapData, setMapData] = useState<MapPoint[]>([]);
+  const [statistics, setStatistics] = useState<MapStatisticItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchMapStatistics() {
+      try {
+        const response = await fetch("/api/map-statistics");
+        if (!response.ok) {
+          throw new Error("Failed to fetch map statistics");
+        }
+
+        const data: MapStatistics = await response.json();
+
+        // Converter dados para o formato do mapa
+        const mapPoints = convertStateDataToMapPoints(data.byState);
+        setMapData(mapPoints);
+
+        // Criar estatísticas para exibição
+        const stats: MapStatisticItem[] = [
+          {
+            value: data.byType.total.toString(),
+            label: "Abrigos",
+            variant: "primary"
+          },
+          {
+            value: data.byType.public.toString(),
+            label: "Públicos"
+          },
+          {
+            value: data.byType.private.toString(),
+            label: "Privados"
+          },
+          {
+            value: data.byType.mixed.toString(),
+            label: "Mistos"
+          },
+          {
+            value: data.byType.temporary.toString(),
+            label: "LT/P.I"
+          },
+        ];
+        setStatistics(stats);
+      } catch (error) {
+        console.error("Error fetching map statistics:", error);
+        // Em caso de erro, manter arrays vazios
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchMapStatistics();
+  }, []);
+
   return (
     <section className="bg-white">
       <div className="mx-auto px-4 py-16 md:px-6 md:py-20">
@@ -45,7 +94,7 @@ export default function MapSection(): JSX.Element {
 
         <div className="mt-10 flex w-full justify-center">
           <div className="w-full max-w-5xl">
-            <MapChart />
+            <MapChart data={mapData} isLoading={isLoading} />
           </div>
         </div>
 
@@ -66,7 +115,7 @@ export default function MapSection(): JSX.Element {
             </div>
 
             <div className="grid grid-cols-2 gap-6 text-center md:grid-cols-5 md:gap-8">
-              {MAP_STATISTICS.map((statistic) => (
+              {statistics.map((statistic) => (
                 <StatCard key={statistic.label} {...statistic} />
               ))}
             </div>
