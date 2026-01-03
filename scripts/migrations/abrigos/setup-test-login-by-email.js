@@ -104,8 +104,26 @@ async function setupTestLoginByEmail(email) {
   // Verificar e atualizar senha no Auth também
   console.log('🔑 Verificando se usuário existe no Auth...\n');
 
-  const { data: authUsers } = await supabase.auth.admin.listUsers();
-  const authUser = authUsers?.users?.find(u => u.email?.toLowerCase() === wpUser.user_email.toLowerCase());
+  // Buscar TODOS os auth users com paginação
+  let allAuthUsers = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data: authData } = await supabase.auth.admin.listUsers({
+      page,
+      perPage: 1000
+    });
+
+    if (authData?.users && authData.users.length > 0) {
+      allAuthUsers.push(...authData.users);
+      page++;
+    } else {
+      hasMore = false;
+    }
+  }
+
+  const authUser = allAuthUsers.find(u => u.email?.toLowerCase() === wpUser.user_email.toLowerCase());
 
   if (authUser) {
     console.log(`   ℹ️  Usuário encontrado no Auth (${authUser.id})`);

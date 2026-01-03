@@ -15,12 +15,15 @@ export type VolunteerCard = {
   state?: string;
   gender?: string;
   availability?: string;
+  period?: string;
+  experience?: string;
+  profession?: string;
   createdAt?: string;
   wpPostId?: string;
   source?: "wp" | "new";
 };
 
-export type VolunteerTabId = "volunteers" | "vacancies" | "faq";
+export type VolunteerTabId = "volunteers" | "faq";
 
 export type VolunteerProfile = {
   id: string;

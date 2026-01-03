@@ -393,10 +393,40 @@ async function main() {
     );
 
     // ========================================
-    // PASSO 14: Validações Finais
+    // PASSO 14: Criar profiles para donos de abrigos
+    // ========================================
+    logStep(14, 'Criar profiles para donos de abrigos');
+    const step14 = runScript(
+      'abrigos/create-shelter-owner-profiles-optimized.js',
+      'Criar auth.users + profiles para donos de abrigos sem equipe'
+    );
+    stats.steps.push({ name: 'Profiles Donos', ...step14 });
+
+    // ========================================
+    // PASSO 15: Vincular abrigos aos profiles
+    // ========================================
+    logStep(15, 'Vincular abrigos aos profiles');
+    const step15 = runScript(
+      'abrigos/link-shelters-to-profiles.js',
+      'Atualizar shelters.profile_id com os profiles dos donos'
+    );
+    stats.steps.push({ name: 'Link Shelters', ...step15 });
+
+    // ========================================
+    // PASSO 16: Migrar Candidaturas de Vagas
+    // ========================================
+    logStep(16, 'Migração de Candidaturas de Vagas');
+    const step16 = runScript(
+      'vagas-voluntariado/migrate-vacancy-applications.js',
+      'Migrar candidaturas de voluntários em vagas'
+    );
+    stats.steps.push({ name: 'Candidaturas', ...step16 });
+
+    // ========================================
+    // PASSO 17: Validações de Componentes
     // ========================================
     if (!skipValidation) {
-      logStep(14, 'Validações Finais');
+      logStep(17, 'Validações de Componentes');
 
       logInfo('Validando migração de abrigos...');
       const val1 = runScript(
@@ -414,25 +444,25 @@ async function main() {
     }
 
     // ========================================
-    // PASSO 15: Reabilitar Triggers
+    // PASSO 18: Reabilitar Triggers
     // ========================================
-    logStep(15, 'Reabilitar Triggers');
+    logStep(18, 'Reabilitar Triggers');
     const sql06Path = path.join(__dirname, 'sql', '06-pos-migracao-reabilitar-triggers.sql');
     await executeSqlFile(sql06Path, { verbose: true });
     logSuccess('Triggers reabilitados');
 
     // ========================================
-    // PASSO 16: Validação Final
+    // PASSO 19: Validação Final
     // ========================================
-    logStep(16, 'Validação Final da Migração');
+    logStep(19, 'Validação Final da Migração');
     const sql07Path = path.join(__dirname, 'sql', '07-validacao-final.sql');
     await executeSqlFile(sql07Path, { verbose: true });
     logSuccess('Validação final concluída');
 
     // ========================================
-    // PASSO 17: Popular wp_users_legacy
+    // PASSO 20: Popular wp_users_legacy
     // ========================================
-    logStep(17, 'Popular wp_users_legacy');
+    logStep(20, 'Popular wp_users_legacy');
     await runSql(
       `INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
        SELECT id, user_login, user_email, user_pass, display_name
@@ -443,9 +473,9 @@ async function main() {
     logSuccess('wp_users_legacy populada com sucesso');
 
     // ========================================
-    // PASSO 18: Garantir RLS em todas as tabelas
+    // PASSO 21: Garantir RLS em todas as tabelas
     // ========================================
-    logStep(18, 'Garantir proteção RLS em todas as tabelas');
+    logStep(21, 'Garantir proteção RLS em todas as tabelas');
 
     // Habilitar RLS
     await runSql(
@@ -453,6 +483,7 @@ async function main() {
        ALTER TABLE public.shelters ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.volunteers ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.vacancies ENABLE ROW LEVEL SECURITY;
+       ALTER TABLE public.vacancy_applications ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.shelter_dynamics ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.shelter_volunteers ENABLE ROW LEVEL SECURITY;
        ALTER TABLE public.shelter_history ENABLE ROW LEVEL SECURITY;

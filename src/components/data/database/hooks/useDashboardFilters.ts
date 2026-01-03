@@ -31,7 +31,7 @@ export function useDashboardFilters({ dataset }: UseDashboardFiltersParams) {
   const baseYears = Array.from(yearsSet).sort((a, b) => b - a);
   const availableYears: YearFilter[] = [ALL_YEARS_VALUE, ...baseYears];
 
-  const defaultYear = baseYears[0] ?? currentYear;
+  const defaultYear: YearFilter = ALL_YEARS_VALUE;
   const [year, setYear] = useState<YearFilter>(defaultYear);
   const [state, setState] = useState<string>(ALL_STATES_VALUE);
   const [pendingYear, setPendingYear] = useState<YearFilter>(defaultYear);

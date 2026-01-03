@@ -55,6 +55,7 @@ DELETE FROM auth.users;
 -- ========================================
 
 -- Deletar em ordem (dependentes primeiro)
+DELETE FROM vacancy_applications;
 DELETE FROM shelter_dynamics;
 DELETE FROM shelter_history;
 DELETE FROM shelter_volunteers;
@@ -79,9 +80,11 @@ SET session_replication_role = 'origin';
 
 -- Mostrar contagem final (deve ser 0)
 SELECT
-  'shelter_dynamics' as tabela,
+  'vacancy_applications' as tabela,
   COUNT(*) as registros
-FROM shelter_dynamics
+FROM vacancy_applications
+UNION ALL
+SELECT 'shelter_dynamics', COUNT(*) FROM shelter_dynamics
 UNION ALL
 SELECT 'shelter_history', COUNT(*) FROM shelter_history
 UNION ALL
