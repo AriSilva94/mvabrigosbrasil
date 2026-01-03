@@ -10,22 +10,17 @@ import { VOLUNTEER_TABS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
 import type { VolunteerTabId } from "@/types/volunteer.types";
 import type { VolunteerCard } from "@/types/volunteer.types";
-import type { VacancyCard } from "@/types/vacancy.types";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
-import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
 import { FormLoading } from "@/components/loading/FormLoading";
 import { ChevronDown } from "lucide-react";
 import VolunteerFilters from "@/components/volunteers/VolunteerFilters";
-import VacancyFiltersPublic from "@/components/volunteers/VacancyFiltersPublic";
 
 type VolunteerTabsSectionProps = {
   initialVolunteers?: VolunteerCard[];
-  initialVacancies?: VacancyCard[];
 };
 
 export default function VolunteerTabsSection({
   initialVolunteers = [],
-  initialVacancies = [],
 }: VolunteerTabsSectionProps) {
   const [activeTab, setActiveTab] = useState<VolunteerTabId>("volunteers");
   const [openFaqId, setOpenFaqId] = useState<string | null>(
@@ -33,11 +28,8 @@ export default function VolunteerTabsSection({
   );
   const [selectedState, setSelectedState] = useState("");
   const [selectedAvailability, setSelectedAvailability] = useState("");
-  const [selectedVacancyState, setSelectedVacancyState] = useState("");
-  const [selectedVacancyWorkload, setSelectedVacancyWorkload] = useState("");
 
   const { volunteers: allVolunteers, loading: loadingVolunteers } = useVolunteerCards(initialVolunteers);
-  const { vacancies: allVacancies, loading: loadingVacancies } = useVacancyCards(initialVacancies);
 
   // Filtrar voluntários com base nos filtros selecionados
   const volunteers = useMemo(() => {
@@ -55,23 +47,6 @@ export default function VolunteerTabsSection({
       return true;
     });
   }, [allVolunteers, selectedState, selectedAvailability]);
-
-  // Filtrar vagas com base nos filtros selecionados
-  const vacancies = useMemo(() => {
-    return allVacancies.filter((vacancy) => {
-      // Filtro por estado (verifica se o estado está na location)
-      if (selectedVacancyState && !vacancy.location?.includes(selectedVacancyState)) {
-        return false;
-      }
-
-      // Filtro por carga horária
-      if (selectedVacancyWorkload && vacancy.workload !== selectedVacancyWorkload) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [allVacancies, selectedVacancyState, selectedVacancyWorkload]);
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));
@@ -162,93 +137,13 @@ export default function VolunteerTabsSection({
                           </p>
                         )}
                         <Link
-                          href={`/voluntario/${slug}?from=programa-de-voluntarios`}
+                          href={`/voluntario/${slug}`}
                           className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
                         >
                           Ver Perfil
                         </Link>
                       </div>
                     ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {activeTab === "vacancies" && (
-            <div className="space-y-5">
-              <div className="space-y-4">
-                <Heading
-                  as="h3"
-                  className="text-[18px] font-semibold text-[#68707b]"
-                >
-                  Vagas Disponíveis
-                </Heading>
-
-                <VacancyFiltersPublic
-                  selectedState={selectedVacancyState}
-                  selectedWorkload={selectedVacancyWorkload}
-                  onStateChange={setSelectedVacancyState}
-                  onWorkloadChange={setSelectedVacancyWorkload}
-                />
-              </div>
-
-              {loadingVacancies ? (
-                <FormLoading />
-              ) : vacancies.length === 0 ? (
-                <div className="text-center py-8">
-                  <Text className="text-[#68707b]">
-                    {selectedVacancyState || selectedVacancyWorkload
-                      ? "Nenhuma vaga encontrada com os filtros selecionados."
-                      : "Nenhuma vaga disponível no momento."}
-                  </Text>
-                  {(selectedVacancyState || selectedVacancyWorkload) && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedVacancyState("");
-                        setSelectedVacancyWorkload("");
-                      }}
-                      className="mt-3 text-sm font-semibold text-brand-primary hover:underline"
-                    >
-                      Limpar filtros
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <p className="mb-3 text-sm text-[#68707b]">
-                    Mostrando {vacancies.length} {vacancies.length === 1 ? "vaga" : "vagas"}
-                  </p>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {vacancies.map(
-                      ({ id, title, location, slug, period, workload }) => (
-                        <div
-                          key={id}
-                          className="rounded-xl border border-slate-200 px-4 py-4 shadow-[0_10px_25px_rgba(16,130,89,0.04)]"
-                        >
-                          <p className="text-lg font-semibold text-brand-primary">
-                            {title}
-                          </p>
-                          {(period || workload) && (
-                            <p className="mt-1 text-sm text-[#68707b]">
-                              {[period, workload].filter(Boolean).join(" · ")}
-                            </p>
-                          )}
-                          {location && (
-                            <p className="mt-1 text-sm text-[#68707b]">
-                              {location}
-                            </p>
-                          )}
-                          <Link
-                            href={`/vaga/${slug}`}
-                            className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
-                          >
-                            Ver Vaga
-                          </Link>
-                        </div>
-                      )
-                    )}
                   </div>
                 </div>
               )}

@@ -46,11 +46,6 @@ export default async function ReportDetailPage({
     notFound();
   }
 
-  const relatedReports =
-    REPORTS.length > 1
-      ? REPORTS.filter((entry) => entry.slug !== slug)
-      : REPORTS;
-
   const contentLink = report.contentUrl ?? `/relatorios/${slug}`;
 
   return (

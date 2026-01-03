@@ -4,20 +4,17 @@ import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { Heading, Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
-import { getCachedVolunteerCards, getCachedVacancyCards } from "@/lib/cache/publicData";
+import { getCachedVolunteerCards } from "@/lib/cache/publicData";
 
 export const metadata = buildMetadata({
   title: "Programa de Voluntários",
   description:
-    "Conecte voluntários a abrigos e lares temporários, divulgue vagas e encontre perfis preparados para ajudar.",
+    "Conecte voluntários a abrigos e lares temporários e encontre perfis preparados para ajudar.",
   canonical: "/programa-de-voluntarios",
 });
 
 export default async function Page() {
-  const [volunteers, vacancies] = await Promise.all([
-    getCachedVolunteerCards(),
-    getCachedVacancyCards(),
-  ]);
+  const volunteers = await getCachedVolunteerCards();
 
   return (
     <main>
@@ -42,7 +39,7 @@ export default async function Page() {
             <Text className="text-inherit">
               Esse programa visa conectar pessoas interessadas em atuar como
               voluntários em abrigos de animais/lares temporários com essas
-              organizações de duas formas:
+              organizações por meio de:
             </Text>
 
             <ol className="list-decimal space-y-3 pl-6">
@@ -54,10 +51,8 @@ export default async function Page() {
                 necessidade;
               </li>
               <li>
-                Divulgação de vagas para voluntariado disponibilizado pelos
-                abrigos/lares temporários cadastrados no site, permitindo que
-                voluntários encontrem possibilidades de atuação do seu
-                interesse.
+                Respostas rápidas às dúvidas frequentes para orientar pessoas e
+                organizações sobre o voluntariado.
               </li>
             </ol>
 
@@ -83,10 +78,7 @@ export default async function Page() {
         </div>
       </section>
 
-      <VolunteerTabsSection
-        initialVolunteers={volunteers}
-        initialVacancies={vacancies}
-      />
+      <VolunteerTabsSection initialVolunteers={volunteers} />
     </main>
   );
 }

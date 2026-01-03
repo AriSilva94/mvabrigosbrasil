@@ -14,4 +14,5 @@ export type VacancyProfile = {
   area?: string;
   quantity?: string;
   isPublished?: boolean;
+  applicationsCount?: number;
 };
