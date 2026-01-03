@@ -171,3 +171,58 @@ export async function PUT(
 
   return NextResponse.json({ vacancy });
 }
+
+export async function DELETE(
+  _: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  const { id } = await context.params;
+  const { shelter, error, status } = await getShelterForUser();
+  if (error || !shelter) {
+    return NextResponse.json({ error }, { status });
+  }
+
+  const uuidFromSlug = UUID_REGEX.test(id) ? id : extractVacancyIdFromSlug(id);
+
+  if (!uuidFromSlug) {
+    return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
+  }
+
+  const supabaseAdmin = getSupabaseAdminClient();
+
+  // Primeiro, busca a vaga para verificar ownership e obter o slug para revalidação
+  const { data: vacancy, error: fetchError } = await supabaseAdmin
+    .from("vacancies")
+    .select("id, slug, shelter_id")
+    .eq("id", uuidFromSlug)
+    .eq("shelter_id", shelter.id)
+    .maybeSingle();
+
+  if (fetchError) {
+    console.error("api/vacancies/[id] DELETE fetch error", fetchError);
+    return NextResponse.json({ error: "Erro ao buscar vaga" }, { status: 500 });
+  }
+
+  if (!vacancy) {
+    return NextResponse.json({ error: "Vaga não encontrada ou sem permissão" }, { status: 404 });
+  }
+
+  // Deleta a vaga
+  const { error: deleteError } = await supabaseAdmin
+    .from("vacancies")
+    .delete()
+    .eq("id", uuidFromSlug)
+    .eq("shelter_id", shelter.id);
+
+  if (deleteError) {
+    console.error("api/vacancies/[id] DELETE error", deleteError);
+    return NextResponse.json({ error: "Erro ao deletar vaga" }, { status: 500 });
+  }
+
+  // Revalida o cache
+  if (vacancy.slug) {
+    await revalidateVacancies(vacancy.slug);
+  }
+
+  return NextResponse.json({ success: true, message: "Vaga deletada com sucesso" });
+}

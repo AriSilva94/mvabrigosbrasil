@@ -1,7 +1,7 @@
 // Client-side tabbed section for the Programa de Voluntários page
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -10,27 +10,43 @@ import { VOLUNTEER_TABS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
 import type { VolunteerTabId } from "@/types/volunteer.types";
 import type { VolunteerCard } from "@/types/volunteer.types";
-import type { VacancyCard } from "@/types/vacancy.types";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
-import { useVacancyCards } from "@/components/volunteers/hooks/useVacancyCards";
 import { FormLoading } from "@/components/loading/FormLoading";
 import { ChevronDown } from "lucide-react";
+import VolunteerFilters from "@/components/volunteers/VolunteerFilters";
 
 type VolunteerTabsSectionProps = {
   initialVolunteers?: VolunteerCard[];
-  initialVacancies?: VacancyCard[];
 };
 
 export default function VolunteerTabsSection({
   initialVolunteers = [],
-  initialVacancies = [],
 }: VolunteerTabsSectionProps) {
   const [activeTab, setActiveTab] = useState<VolunteerTabId>("volunteers");
   const [openFaqId, setOpenFaqId] = useState<string | null>(
     VOLUNTEER_FAQ[0]?.id ?? null
   );
-  const { volunteers, loading: loadingVolunteers } = useVolunteerCards(initialVolunteers);
-  const { vacancies, loading: loadingVacancies } = useVacancyCards(initialVacancies);
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedAvailability, setSelectedAvailability] = useState("");
+
+  const { volunteers: allVolunteers, loading: loadingVolunteers } = useVolunteerCards(initialVolunteers);
+
+  // Filtrar voluntários com base nos filtros selecionados
+  const volunteers = useMemo(() => {
+    return allVolunteers.filter((volunteer) => {
+      // Filtro por estado
+      if (selectedState && volunteer.state !== selectedState) {
+        return false;
+      }
+
+      // Filtro por disponibilidade
+      if (selectedAvailability && volunteer.availability !== selectedAvailability) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [allVolunteers, selectedState, selectedAvailability]);
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));
@@ -63,92 +79,72 @@ export default function VolunteerTabsSection({
         <div className="mt-6 rounded-2xl bg-white px-6 py-6 shadow-[0_15px_40px_rgba(16,130,89,0.05)]">
           {activeTab === "volunteers" && (
             <div className="space-y-5">
-              <Heading
-                as="h3"
-                className="text-[18px] font-semibold text-[#68707b]"
-              >
-                Voluntários Disponíveis
-              </Heading>
+              <div className="space-y-4">
+                <Heading
+                  as="h3"
+                  className="text-[18px] font-semibold text-[#68707b]"
+                >
+                  Voluntários Disponíveis
+                </Heading>
+
+                <VolunteerFilters
+                  selectedState={selectedState}
+                  selectedAvailability={selectedAvailability}
+                  onStateChange={setSelectedState}
+                  onAvailabilityChange={setSelectedAvailability}
+                />
+              </div>
 
               {loadingVolunteers ? (
                 <FormLoading />
               ) : volunteers.length === 0 ? (
-                <Text className="text-[#68707b]">
-                  Nenhum voluntário disponível no momento.
-                </Text>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {volunteers.map(({ id, name, location, slug }) => (
-                    <div
-                      key={id}
-                      className="rounded-xl border border-slate-200 px-4 py-4 shadow-[0_10px_25px_rgba(16,130,89,0.04)]"
+                <div className="text-center py-8">
+                  <Text className="text-[#68707b]">
+                    {selectedState || selectedAvailability
+                      ? "Nenhum voluntário encontrado com os filtros selecionados."
+                      : "Nenhum voluntário disponível no momento."}
+                  </Text>
+                  {(selectedState || selectedAvailability) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedState("");
+                        setSelectedAvailability("");
+                      }}
+                      className="mt-3 text-sm font-semibold text-brand-primary hover:underline"
                     >
-                      <p className="text-lg font-semibold text-brand-primary">
-                        {name}
-                      </p>
-                      {location && (
-                        <p className="mt-1 text-sm text-[#68707b]">
-                          {location}
-                        </p>
-                      )}
-                      <Link
-                        href={`/voluntario/${slug}?from=programa-de-voluntarios`}
-                        className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
-                      >
-                        Ver Perfil
-                      </Link>
-                    </div>
-                  ))}
+                      Limpar filtros
+                    </button>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
-
-          {activeTab === "vacancies" && (
-            <div className="space-y-5">
-              <Heading
-                as="h3"
-                className="text-[18px] font-semibold text-[#68707b]"
-              >
-                Vagas Disponíveis
-              </Heading>
-
-              {loadingVacancies ? (
-                <FormLoading />
-              ) : vacancies.length === 0 ? (
-                <Text className="text-[#68707b]">
-                  Nenhuma vaga disponível no momento.
-                </Text>
               ) : (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {vacancies.map(
-                    ({ id, title, location, slug, period, workload }) => (
+                <div>
+                  <p className="mb-3 text-sm text-[#68707b]">
+                    Mostrando {volunteers.length} {volunteers.length === 1 ? "voluntário" : "voluntários"}
+                  </p>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {volunteers.map(({ id, name, location, slug }) => (
                       <div
                         key={id}
                         className="rounded-xl border border-slate-200 px-4 py-4 shadow-[0_10px_25px_rgba(16,130,89,0.04)]"
                       >
                         <p className="text-lg font-semibold text-brand-primary">
-                          {title}
+                          {name}
                         </p>
-                        {(period || workload) && (
-                          <p className="mt-1 text-sm text-[#68707b]">
-                            {[period, workload].filter(Boolean).join(" · ")}
-                          </p>
-                        )}
                         {location && (
                           <p className="mt-1 text-sm text-[#68707b]">
                             {location}
                           </p>
                         )}
                         <Link
-                          href={`/vaga/${slug}`}
+                          href={`/voluntario/${slug}`}
                           className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
                         >
-                          Ver Vaga
+                          Ver Perfil
                         </Link>
                       </div>
-                    )
-                  )}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
