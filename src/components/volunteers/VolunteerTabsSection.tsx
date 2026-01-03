@@ -29,7 +29,8 @@ export default function VolunteerTabsSection({
   const [selectedState, setSelectedState] = useState("");
   const [selectedAvailability, setSelectedAvailability] = useState("");
 
-  const { volunteers: allVolunteers, loading: loadingVolunteers } = useVolunteerCards(initialVolunteers);
+  const { volunteers: allVolunteers, loading: loadingVolunteers } =
+    useVolunteerCards(initialVolunteers);
 
   // Filtrar voluntários com base nos filtros selecionados
   const volunteers = useMemo(() => {
@@ -40,7 +41,10 @@ export default function VolunteerTabsSection({
       }
 
       // Filtro por disponibilidade
-      if (selectedAvailability && volunteer.availability !== selectedAvailability) {
+      if (
+        selectedAvailability &&
+        volunteer.availability !== selectedAvailability
+      ) {
         return false;
       }
 
@@ -53,8 +57,8 @@ export default function VolunteerTabsSection({
   }
 
   return (
-    <section className="container px-6 pb-16">
-      <div className="mx-auto max-w-4xl">
+    <section className="flex items-center justify-center px-4 md:px-6">
+      <div className="mx-auto max-w-4xl rounded-3xl py-4 md:py-10 md:px-10">
         <nav className="flex flex-col items-stretch gap-2 border-b border-slate-200 pb-3 md:flex-row md:items-center md:gap-4">
           {VOLUNTEER_TABS.map(({ id, label }) => {
             const isActive = id === activeTab;
@@ -120,7 +124,8 @@ export default function VolunteerTabsSection({
               ) : (
                 <div>
                   <p className="mb-3 text-sm text-[#68707b]">
-                    Mostrando {volunteers.length} {volunteers.length === 1 ? "voluntário" : "voluntários"}
+                    Mostrando {volunteers.length}{" "}
+                    {volunteers.length === 1 ? "voluntário" : "voluntários"}
                   </p>
                   <div className="grid gap-4 md:grid-cols-2">
                     {volunteers.map(({ id, name, location, slug }) => (
@@ -200,7 +205,12 @@ export default function VolunteerTabsSection({
                         aria-hidden={!isOpen}
                       >
                         <div className="overflow-hidden">
-                          <div className={clsx("text-base text-[#68707b]", isOpen && "p-4")}>
+                          <div
+                            className={clsx(
+                              "text-base text-[#68707b]",
+                              isOpen && "p-4"
+                            )}
+                          >
                             {answer}
                           </div>
                         </div>
