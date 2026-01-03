@@ -13,6 +13,7 @@ interface VacancyCardProps {
   showEditLink?: boolean;
   editHref?: string;
   onDeleted?: () => void;
+  applicationsCount?: number;
 }
 
 export default function VacancyCard({
@@ -20,6 +21,7 @@ export default function VacancyCard({
   showEditLink = false,
   editHref,
   onDeleted,
+  applicationsCount,
 }: VacancyCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const location = [vacancy.city, vacancy.state].filter(Boolean).join(" - ");
@@ -55,6 +57,13 @@ export default function VacancyCard({
         </Text>
       )}
 
+      {applicationsCount !== undefined && applicationsCount > 0 && (
+        <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">
+          <span>👥</span>
+          <span>{applicationsCount} candidato{applicationsCount !== 1 ? "s" : ""}</span>
+        </div>
+      )}
+
       <div className="mt-auto flex flex-wrap gap-2">
         {showEditLink && slug && (
           <>
@@ -64,6 +73,15 @@ export default function VacancyCard({
             >
               Editar
             </Link>
+
+            {applicationsCount !== undefined && applicationsCount > 0 && (
+              <Link
+                href={`/minhas-vagas/${slug}/candidatos`}
+                className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700 transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(37,99,235,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              >
+                Ver Candidatos ({applicationsCount})
+              </Link>
+            )}
 
             <button
               type="button"

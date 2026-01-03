@@ -106,9 +106,11 @@ async function setupTestLogin() {
   // 4. Alterar senha
   console.log('🔐 Alterando senha no banco legado...\n');
 
+  const md5Password = require('crypto').createHash('md5').update(TEST_PASSWORD).digest('hex');
+
   const { error: updateError } = await supabase
     .from('wp_users_legacy')
-    .update({ user_pass: require('crypto').createHash('md5').update(TEST_PASSWORD).digest('hex') })
+    .update({ user_pass: md5Password })
     .eq('id', wpUser.id);
 
   if (updateError) {
@@ -117,6 +119,47 @@ async function setupTestLogin() {
   }
 
   console.log('✅ Senha alterada com sucesso!\n');
+
+  // 4.1 Atualizar senha no Auth (com paginação)
+  console.log('🔑 Verificando se usuário existe no Auth...\n');
+
+  let allAuthUsers = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data: authData } = await supabase.auth.admin.listUsers({
+      page,
+      perPage: 1000
+    });
+
+    if (authData?.users && authData.users.length > 0) {
+      allAuthUsers.push(...authData.users);
+      page++;
+    } else {
+      hasMore = false;
+    }
+  }
+
+  const authUser = allAuthUsers.find(u => u.email?.toLowerCase() === wpUser.user_email.toLowerCase());
+
+  if (authUser) {
+    console.log(`   ℹ️  Usuário encontrado no Auth (${authUser.id})`);
+    console.log('   🔄 Atualizando senha no Auth...\n');
+
+    const { error: authUpdateError } = await supabase.auth.admin.updateUserById(
+      authUser.id,
+      { password: TEST_PASSWORD }
+    );
+
+    if (authUpdateError) {
+      console.error('   ❌ Erro ao atualizar senha no Auth:', authUpdateError.message);
+    } else {
+      console.log('   ✅ Senha atualizada no Auth!');
+    }
+  } else {
+    console.log('   ℹ️  Usuário não existe no Auth (será criado no primeiro login)');
+  }
 
   // 5. Exibir resultado
   console.log('╔════════════════════════════════════════════════════════════╗');

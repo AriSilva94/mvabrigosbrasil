@@ -115,6 +115,7 @@ export default function MinhasVagasClient({
                 showEditLink
                 editHref={`/minhas-vagas/editar/${vacancy.slug || vacancy.id}`}
                 onDeleted={() => handleDeleted(vacancy.id)}
+                applicationsCount={vacancy.applicationsCount}
               />
             </li>
           ))}

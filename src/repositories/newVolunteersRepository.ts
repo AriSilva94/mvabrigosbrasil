@@ -1,6 +1,8 @@
 import type { SupabaseClientType } from "@/lib/supabase/types";
 import type { VolunteerCard, VolunteerProfile } from "@/types/volunteer.types";
 
+const ID_SUFFIX_REGEX = /^[0-9a-f]{8}$/i;
+
 function slugifyName(name: string): string {
   return name
     .normalize("NFD")
@@ -12,10 +14,42 @@ function slugifyName(name: string): string {
     .replace(/-{2,}/g, "-");
 }
 
+function getIdSuffix(id: string): string {
+  return id.replace(/-/g, "").slice(0, 8) || "novo";
+}
+
+function ensureSlugHasIdSuffix(slug: string, id: string): string {
+  const idSuffix = getIdSuffix(id);
+  const cleanedSlug = slug.replace(/-+$/, "");
+  const parts = cleanedSlug.split("-");
+  const lastSegment = parts.at(-1) ?? "";
+
+  if (lastSegment.toLowerCase() === idSuffix.toLowerCase()) {
+    return cleanedSlug;
+  }
+
+  if (ID_SUFFIX_REGEX.test(lastSegment)) {
+    parts.pop();
+    return `${parts.join("-")}-${idSuffix}`;
+  }
+
+  return `${cleanedSlug}-${idSuffix}`;
+}
+
+function stripIdSuffix(slug: string): string {
+  const parts = slug.split("-");
+  if (parts.length <= 1) return slug;
+
+  const lastSegment = parts.at(-1) ?? "";
+  if (!ID_SUFFIX_REGEX.test(lastSegment)) return slug;
+
+  parts.pop();
+  return parts.join("-");
+}
+
 export function generateVolunteerSlug(name: string, id: string): string {
   const base = slugifyName(name || "voluntario");
-  const idSuffix = id.replace(/-/g, "").slice(0, 8) || "novo";
-  return `${base}-${idSuffix}`;
+  return ensureSlugHasIdSuffix(base, id);
 }
 
 type VolunteerRow = {
@@ -56,16 +90,18 @@ export async function fetchVolunteerCardsFromNew(
     }
 
     const volunteers: VolunteerCard[] = (data ?? []).map((volunteer) => {
+      const idSuffix = getIdSuffix(volunteer.id);
       const city = volunteer.cidade?.trim();
       const state = volunteer.estado?.trim();
       // Usar slug do banco ou gerar fallback se não existir (migração em andamento)
       const slugFromDb = typeof volunteer.slug === 'string' ? volunteer.slug : null;
-      const slug = slugFromDb || generateVolunteerSlug(volunteer.name, volunteer.id);
+      const baseSlug = slugFromDb || slugifyName(volunteer.name || "voluntario");
+      const slug = ensureSlugHasIdSuffix(baseSlug, volunteer.id);
 
       return {
         id: volunteer.id,
         name: volunteer.name ?? "Voluntário",
-        slug,
+        slug: slug || `${baseSlug}-${idSuffix}`,
         createdAt: volunteer.created_at ?? undefined,
         city,
         state,
@@ -89,31 +125,54 @@ export async function fetchVolunteerProfileBySlugFromNew(
   slug: string
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
   try {
-    const { data, error } = await supabase
+    const selectColumns =
+      "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at";
+
+    const lookupSlug = slug?.trim();
+    const baseSlug = lookupSlug ? stripIdSuffix(lookupSlug) : "";
+
+    const firstAttempt = await supabase
       .from("volunteers")
-      .select(
-        "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at"
-      )
-      .eq("slug", slug)
+      .select(selectColumns)
+      .eq("slug", lookupSlug)
       .eq("accept_terms", true)
       .eq("is_public", true)
       .maybeSingle();
+
+    let row = (firstAttempt.data as VolunteerRow | null) ?? null;
+    let error: Error | null = firstAttempt.error;
+
+    if (!row && baseSlug && baseSlug !== lookupSlug) {
+      const secondAttempt = await supabase
+        .from("volunteers")
+        .select(selectColumns)
+        .eq("slug", baseSlug)
+        .eq("accept_terms", true)
+        .eq("is_public", true)
+        .maybeSingle();
+
+      row = (secondAttempt.data as VolunteerRow | null) ?? null;
+      error = error || secondAttempt.error;
+    }
 
     if (error) {
       console.error("newVolunteersRepository.fetchVolunteerProfileBySlugFromNew - error:", error);
       return { profile: null, error };
     }
 
-    if (!data) {
+    if (!row) {
       return { profile: null, error: null };
     }
 
-    const row = data as VolunteerRow;
     const slugFromDb = typeof row.slug === "string" ? row.slug : null;
+    const slugWithId = ensureSlugHasIdSuffix(
+      slugFromDb || slugifyName(row.name || "voluntario"),
+      row.id
+    );
     const profile: VolunteerProfile = {
       id: row.id,
       name: row.name ?? "Voluntário",
-      slug: slugFromDb || generateVolunteerSlug(row.name, row.id),
+      slug: slugWithId,
       createdAt: row.created_at ?? undefined,
       city: row.cidade ?? undefined,
       state: row.estado ?? undefined,
