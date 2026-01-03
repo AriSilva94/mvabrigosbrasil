@@ -539,6 +539,49 @@ export type Database = {
         };
         Relationships: [];
       };
+      vacancy_applications: {
+        Row: {
+          id: string;
+          vacancy_id: string;
+          volunteer_id: string;
+          status: string;
+          applied_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          vacancy_id: string;
+          volunteer_id: string;
+          status?: string;
+          applied_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          vacancy_id?: string;
+          volunteer_id?: string;
+          status?: string;
+          applied_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vacancy_applications_vacancy_id_fkey";
+            columns: ["vacancy_id"];
+            referencedRelation: "vacancies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vacancy_applications_volunteer_id_fkey";
+            columns: ["volunteer_id"];
+            referencedRelation: "volunteers";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

@@ -16,6 +16,7 @@ import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
 import { getCachedPublicVacancyBySlug } from "@/lib/cache/publicData";
+import ApplyButton from "./components/ApplyButton";
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
@@ -46,8 +47,12 @@ async function loadUserContext() {
 async function loadVacancy(slug: string): Promise<{
   vacancy: UiVacancy | null;
   canEdit: boolean;
+  hasApplied: boolean;
+  isAuthenticated: boolean;
 }> {
-  const { postType, shelterId } = await loadUserContext();
+  const { userId, postType, shelterId } = await loadUserContext();
+  const isAuthenticated = !!userId;
+  let hasApplied = false;
 
   if (postType === REGISTER_TYPES.shelter && shelterId) {
     const supabaseAdmin = getSupabaseAdminClient();
@@ -66,16 +71,37 @@ async function loadVacancy(slug: string): Promise<{
         source: "supabase",
       } as UiVacancy;
 
-      return { vacancy: mapped, canEdit: true };
+      return { vacancy: mapped, canEdit: true, hasApplied: false, isAuthenticated };
     }
   }
 
   const publicVacancy = await getCachedPublicVacancyBySlug(slug);
-  if (publicVacancy) {
-    return { vacancy: publicVacancy, canEdit: false };
+  if (!publicVacancy) {
+    return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated };
   }
 
-  return { vacancy: null, canEdit: false };
+  // Verificar se usuário já se candidatou
+  if (isAuthenticated && publicVacancy.id) {
+    const supabaseAdmin = getSupabaseAdminClient();
+    const { data: volunteer } = await supabaseAdmin
+      .from("volunteers")
+      .select("id")
+      .eq("owner_profile_id", userId)
+      .maybeSingle();
+
+    if (volunteer) {
+      const { data: existingApplication } = await supabaseAdmin
+        .from("vacancy_applications")
+        .select("id")
+        .eq("vacancy_id", publicVacancy.id)
+        .eq("volunteer_id", volunteer.id)
+        .maybeSingle();
+
+      hasApplied = !!existingApplication;
+    }
+  }
+
+  return { vacancy: publicVacancy, canEdit: false, hasApplied, isAuthenticated };
 }
 
 export async function generateMetadata({
@@ -110,7 +136,7 @@ export default async function Page({
   params,
 }: VacancyPageProps): Promise<JSX.Element> {
   const { slug } = await params;
-  const { vacancy, canEdit } = await loadVacancy(slug);
+  const { vacancy, canEdit, hasApplied, isAuthenticated } = await loadVacancy(slug);
 
   if (!vacancy) redirect("/programa-de-voluntarios");
 
@@ -265,12 +291,12 @@ export default async function Page({
             </div>
 
             <div className="pt-2">
-              <Link
-                href="https://mvabrigosbrasil.com.br/register/?tipo=voluntario"
-                className="inline-flex items-center rounded-full bg-brand-primary px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-              >
-                Quero ser voluntário
-              </Link>
+              <ApplyButton
+                vacancyId={vacancy.id}
+                vacancyTitle={vacancy.title || "Vaga"}
+                hasApplied={hasApplied}
+                isAuthenticated={isAuthenticated}
+              />
             </div>
           </article>
         </div>
