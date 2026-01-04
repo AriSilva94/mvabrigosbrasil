@@ -148,12 +148,12 @@ function ShelterPanel({
                       {title}
                     </Heading>
                     <Text className="mt-1 text-sm text-[#7b8191]">
-                {subtitle}
-              </Text>
-              <Text className="mt-3 text-xs font-semibold text-[#9ba1ad] cursor-not-allowed">
-                Acesso inativo
-              </Text>
-            </div>
+                      {subtitle}
+                    </Text>
+                    <Text className="mt-3 text-xs font-semibold text-[#9ba1ad] cursor-not-allowed">
+                      Acesso inativo
+                    </Text>
+                  </div>
                 ) : (
                   <Link
                     href={href}
@@ -192,16 +192,6 @@ export default async function Page(): Promise<JSX.Element> {
   const isTeamOnly = access.isTeamOnly;
   const isTeamDisabled = access.isTeamDisabled;
 
-  // DEBUG: Log para verificar registerType
-  console.log("🔍 DEBUG PAINEL:", {
-    userId: access.userId,
-    email: access.email,
-    registerType: access.registerType,
-    isManager,
-    isVolunteer,
-    isTeamOnly,
-  });
-
   // Buscar abrigos vinculados ao gerente
   let managerShelters: { id: string; name: string; wp_post_id: number }[] = [];
   if (isManager) {
@@ -227,10 +217,13 @@ export default async function Page(): Promise<JSX.Element> {
         .eq("status", "active");
 
       console.log("🔗 Memberships encontrados:", memberships);
-      if (membershipsError) console.error("❌ Erro ao buscar memberships:", membershipsError);
+      if (membershipsError)
+        console.error("❌ Erro ao buscar memberships:", membershipsError);
 
       if (memberships && memberships.length > 0) {
-        const abrigoIds = (memberships as Array<{ abrigo_post_id: number | null }>)
+        const abrigoIds = (
+          memberships as Array<{ abrigo_post_id: number | null }>
+        )
           .map((m) => m.abrigo_post_id)
           .filter((id): id is number => id !== null);
 
@@ -244,10 +237,12 @@ export default async function Page(): Promise<JSX.Element> {
             .in("wp_post_id", abrigoIds);
 
           console.log("🏢 Abrigos encontrados:", shelters);
-          if (sheltersError) console.error("❌ Erro ao buscar shelters:", sheltersError);
+          if (sheltersError)
+            console.error("❌ Erro ao buscar shelters:", sheltersError);
 
-          managerShelters = (shelters || []).filter((s): s is { id: string; name: string; wp_post_id: number } =>
-            s.id !== null && s.name !== null && s.wp_post_id !== null
+          managerShelters = (shelters || []).filter(
+            (s): s is { id: string; name: string; wp_post_id: number } =>
+              s.id !== null && s.name !== null && s.wp_post_id !== null
           );
 
           console.log("✅ Abrigos finais do gerente:", managerShelters);
