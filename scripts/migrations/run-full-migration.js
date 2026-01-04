@@ -15,22 +15,11 @@
  * - ✅ Importar backup do WordPress nas tabelas *_raw
  * - ✅ Configurar .env.local com SUPABASE_SERVICE_ROLE_KEY e DATABASE_URL
  *
- * ESTE SCRIPT EXECUTA AUTOMATICAMENTE (17 PASSOS):
- * 0. Desabilitar triggers de histórico (SQL 05)
- * 1. Migração de abrigos
- * 2. Migração de dinâmicas populacionais
- * 3. Migração de voluntários
- * 4. Adicionar coluna slug em volunteers
- * 5. Backfill de slugs (volunteers)
- * 6. Verificar duplicatas de slugs (volunteers)
- * 7. Criar índice único em volunteers.slug
- * 8. Adicionar coluna slug em vacancies
- * 9. Migração de vagas
- * 10. Vincular vagas aos abrigos
+ * ESTE SCRIPT EXECUTA AUTOMATICAMENTE (21 PASSOS):
  * 0. Desabilitar triggers de histórico
  * 1. Migrar abrigos
  * 2. Migrar dinâmicas populacionais
- * 3. Migrar integrantes de equipe (WP → Supabase)
+ * 3. Migrar integrantes de equipe (WP → Supabase) - inclui gerentes
  * 4. Migrar voluntários
  * 5. Adicionar coluna slug em volunteers
  * 6. Backfill de slugs (volunteers)
@@ -41,11 +30,14 @@
  * 11. Vincular vagas aos abrigos
  * 12. Verificar duplicatas de slugs (vacancies)
  * 13. Criar índice único em vacancies.slug
- * 14. Validações parciais
- * 15. Reabilitar triggers (SQL 06)
- * 16. Validação final completa (SQL 07)
- * 17. Popular wp_users_legacy para autenticação
- * 18. Garantir RLS e policies em todas as tabelas
+ * 14. Criar profiles para donos de abrigos
+ * 15. Vincular abrigos aos profiles
+ * 16. Migrar candidaturas de vagas
+ * 17. Validações (abrigos, dinâmicas, gerentes)
+ * 18. Reabilitar triggers (SQL 06)
+ * 19. Validação final completa (SQL 07)
+ * 20. Popular wp_users_legacy para autenticação
+ * 21. Garantir RLS e policies em todas as tabelas
  *
  * DEPOIS DESTE SCRIPT:
  * ✅ Tudo pronto! Apenas testar e fazer deploy
@@ -441,6 +433,13 @@ async function main() {
         'Validar migração de dinâmicas'
       );
       stats.steps.push({ name: 'Validação Dinâmicas', ...val2 });
+
+      logInfo('Validando migração de gerentes...');
+      const val3 = runScript(
+        'equipe/verify-manager-migration.js',
+        'Validar migração de gerentes (tipo_cadastro=gerente)'
+      );
+      stats.steps.push({ name: 'Validação Gerentes', ...val3 });
     }
 
     // ========================================

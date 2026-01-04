@@ -126,9 +126,11 @@ export default function PopulationTable({
                   <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                     Saldo
                   </th>
-                  <th className="sticky top-0 border-b border-slate-200 bg-slate-50 px-6 py-2 text-center font-semibold">
-                    Ações
-                  </th>
+                  {onEditRow && (
+                    <th className="sticky top-0 border-b border-slate-200 bg-slate-50 px-6 py-2 text-center font-semibold">
+                      Ações
+                    </th>
+                  )}
                 </tr>
                 <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
                   <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
@@ -147,9 +149,11 @@ export default function PopulationTable({
                   <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
                     &nbsp;
                   </th>
-                  <th className="sticky top-10.5 border-b border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                    &nbsp;
-                  </th>
+                  {onEditRow && (
+                    <th className="sticky top-10.5 border-b border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                      &nbsp;
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -169,16 +173,18 @@ export default function PopulationTable({
                     <td className="border-r border-slate-200 px-3 py-3 text-center text-sm font-semibold">
                       {formatMetricValue(row.balance)}
                     </td>
-                    <td className="px-3 py-3 text-center">
-                      <button
-                        type="button"
-                        onClick={() => onEditRow?.(row.id)}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
-                        aria-label="Editar registro"
-                      >
-                        <Pencil className="h-4 w-4" aria-hidden />
-                      </button>
-                    </td>
+                    {onEditRow && (
+                      <td className="px-3 py-3 text-center">
+                        <button
+                          type="button"
+                          onClick={() => onEditRow(row.id)}
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+                          aria-label="Editar registro"
+                        >
+                          <Pencil className="h-4 w-4" aria-hidden />
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

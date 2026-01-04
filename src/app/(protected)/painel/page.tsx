@@ -9,6 +9,8 @@ import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";
+import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
+import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
 
 export const metadata = buildMetadata({
   title: "Painel",
@@ -184,10 +186,75 @@ function ShelterPanel({
 export default async function Page(): Promise<JSX.Element> {
   const access = await enforceTeamAccess("/painel");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
+  const isManager = access.registerType === REGISTER_TYPES.manager;
   const shortcuts = filterPanelShortcuts(PANEL_SHORTCUTS, access.isTeamOnly);
 
   const isTeamOnly = access.isTeamOnly;
   const isTeamDisabled = access.isTeamDisabled;
+
+  // DEBUG: Log para verificar registerType
+  console.log("🔍 DEBUG PAINEL:", {
+    userId: access.userId,
+    email: access.email,
+    registerType: access.registerType,
+    isManager,
+    isVolunteer,
+    isTeamOnly,
+  });
+
+  // Buscar abrigos vinculados ao gerente
+  let managerShelters: { id: string; name: string; wp_post_id: number }[] = [];
+  if (isManager) {
+    console.log("📋 Buscando abrigos do gerente...");
+    const supabaseAdmin = getSupabaseAdminClient();
+
+    // Buscar profile do gerente para pegar wp_user_id
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("wp_user_id")
+      .eq("id", access.userId)
+      .maybeSingle();
+
+    console.log("👤 Profile do gerente:", profile);
+
+    if (profile?.wp_user_id) {
+      // Buscar abrigos vinculados em team_memberships
+      const { data: memberships, error: membershipsError } = await supabaseAdmin
+        .from("team_memberships")
+        .select("abrigo_post_id")
+        .eq("member_wp_user_id", profile.wp_user_id)
+        .eq("role", "manager")
+        .eq("status", "active");
+
+      console.log("🔗 Memberships encontrados:", memberships);
+      if (membershipsError) console.error("❌ Erro ao buscar memberships:", membershipsError);
+
+      if (memberships && memberships.length > 0) {
+        const abrigoIds = (memberships as Array<{ abrigo_post_id: number | null }>)
+          .map((m) => m.abrigo_post_id)
+          .filter((id): id is number => id !== null);
+
+        console.log("🏠 IDs dos abrigos:", abrigoIds);
+
+        if (abrigoIds.length > 0) {
+          // Buscar dados dos abrigos
+          const { data: shelters, error: sheltersError } = await supabaseAdmin
+            .from("shelters")
+            .select("id, name, wp_post_id")
+            .in("wp_post_id", abrigoIds);
+
+          console.log("🏢 Abrigos encontrados:", shelters);
+          if (sheltersError) console.error("❌ Erro ao buscar shelters:", sheltersError);
+
+          managerShelters = (shelters || []).filter((s): s is { id: string; name: string; wp_post_id: number } =>
+            s.id !== null && s.name !== null && s.wp_post_id !== null
+          );
+
+          console.log("✅ Abrigos finais do gerente:", managerShelters);
+        }
+      }
+    }
+  }
 
   return (
     <main>
@@ -196,7 +263,7 @@ export default async function Page(): Promise<JSX.Element> {
         breadcrumbs={[{ label: "Inicial", href: "/" }, { label: "Painel" }]}
       />
 
-      {isTeamOnly && (
+      {isTeamOnly && !isManager && (
         <section className="bg-white">
           <div className="container px-6 pt-4">
             <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
@@ -208,7 +275,9 @@ export default async function Page(): Promise<JSX.Element> {
         </section>
       )}
 
-      {isVolunteer ? (
+      {isManager ? (
+        <ManagerPanel shelters={managerShelters} />
+      ) : isVolunteer ? (
         <VolunteerPanel />
       ) : (
         <ShelterPanel shortcuts={shortcuts} isTeamDisabled={isTeamDisabled} />

@@ -19,11 +19,13 @@ import { useRouter } from "next/navigation";
 type PopulationDynamicsContentProps = {
   userSummary: PopulationUserSummary | null;
   isTeamOnly?: boolean;
+  shelterWpPostId?: number | null;
 };
 
 export default function PopulationDynamicsContent({
   userSummary,
   isTeamOnly = false,
+  shelterWpPostId,
 }: PopulationDynamicsContentProps): JSX.Element {
   const router = useRouter();
   const [isGlossaryOpen, setGlossaryOpen] = useState(false);
@@ -44,7 +46,7 @@ export default function PopulationDynamicsContent({
     startEditRow,
     onSubmit,
     onDelete,
-  } = useDynamicsData({ userSummary });
+  } = useDynamicsData({ userSummary, shelterWpPostId });
 
   const registerTitle =
     registerType === "dinamica_lar"
@@ -58,6 +60,7 @@ export default function PopulationDynamicsContent({
           <HeaderSection
             onOpenRegister={openRegisterChoice}
             userSummary={userSummary}
+            isReadOnly={isTeamOnly}
           />
 
           <div className="space-y-6">
@@ -65,11 +68,12 @@ export default function PopulationDynamicsContent({
               data={sections[0]}
               isLoading={isLoading}
               onCreate={openRegister}
-              onEditRow={(id) => startEditRow("dinamica", id)}
+              onEditRow={isTeamOnly ? undefined : (id) => startEditRow("dinamica", id)}
               canEditPopulation={!isTeamOnly}
               onEditPopulation={() =>
                 router.push("/meu-cadastro?edit=population#populacao-inicial")
               }
+              isReadOnly={isTeamOnly}
             />
 
             <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
@@ -78,11 +82,12 @@ export default function PopulationDynamicsContent({
               data={sections[1]}
               isLoading={isLoading}
               onCreate={openRegister}
-              onEditRow={(id) => startEditRow("dinamica_lar", id)}
+              onEditRow={isTeamOnly ? undefined : (id) => startEditRow("dinamica_lar", id)}
               canEditPopulation={!isTeamOnly}
               onEditPopulation={() =>
                 router.push("/meu-cadastro?edit=population#populacao-inicial")
               }
+              isReadOnly={isTeamOnly}
             />
           </div>
         </div>
