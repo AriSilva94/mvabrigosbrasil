@@ -107,114 +107,101 @@ export default function PopulationTable({
               : "pointer-events-none absolute inset-0 translate-y-3 opacity-0"
           }`}
         >
-          <div className="max-h-150 overflow-auto">
-            <table className="min-w-full border-collapse text-xs text-slate-800">
-              <thead className="sticky top-0 z-10">
-                <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-600">
-                  <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
-                    Data
-                  </th>
-                  {GROUPED_HEADERS.map((label) => (
-                    <th
-                      key={label}
-                      className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold"
-                      colSpan={2}
-                    >
-                      {label}
+          <div className="space-y-4">
+            <div className="max-h-150 overflow-auto">
+              <table className="min-w-full border-collapse text-xs text-slate-800">
+                <thead className="sticky top-0 z-10">
+                  <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-600">
+                    <th className="sticky top-0 left-0 z-20 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
+                      Data
                     </th>
-                  ))}
-                  <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                    Saldo
-                  </th>
-                  {onEditRow && (
-                    <th className="sticky top-0 border-b border-slate-200 bg-slate-50 px-6 py-2 text-center font-semibold">
-                      Ações
-                    </th>
-                  )}
-                </tr>
-                <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
-                  <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
-                    &nbsp;
-                  </th>
-                  {GROUPED_HEADERS.map((label) => (
-                    <React.Fragment key={`${label}-sub`}>
-                      <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                        Cães
-                      </th>
-                      <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                        Gatos
-                      </th>
-                    </React.Fragment>
-                  ))}
-                  <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                    &nbsp;
-                  </th>
-                  {onEditRow && (
-                    <th className="sticky top-10.5 border-b border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
-                      &nbsp;
-                    </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.id} className="border-b border-slate-100">
-                    <td className="border-r border-slate-200 px-3 py-3 text-sm font-semibold">
-                      {row.referenceLabel}
-                    </td>
-                    {METRIC_COLUMNS.map((column) => (
-                      <td
-                        key={`${row.id}-${column.key}`}
-                        className="border-r border-slate-200 px-3 py-3 text-center text-sm"
+                    {GROUPED_HEADERS.map((label) => (
+                      <th
+                        key={label}
+                        className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold"
+                        colSpan={2}
                       >
-                        {formatMetricValue(row.metrics[column.key])}
-                      </td>
+                        {label}
+                      </th>
                     ))}
-                    <td className="border-r border-slate-200 px-3 py-3 text-center text-sm font-semibold">
-                      {formatMetricValue(row.balance)}
-                    </td>
+                    <th className="sticky top-0 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                      Saldo
+                    </th>
                     {onEditRow && (
-                      <td className="px-3 py-3 text-center">
-                        <button
-                          type="button"
-                          onClick={() => onEditRow(row.id)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
-                          aria-label="Editar registro"
-                        >
-                          <Pencil className="h-4 w-4" aria-hidden />
-                        </button>
-                      </td>
+                      <th className="sticky top-0 border-b border-slate-200 bg-slate-50 px-6 py-2 text-center font-semibold">
+                        Ações
+                      </th>
                     )}
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td
-                    className="px-3 py-3 text-right align-top text-sm font-semibold text-slate-800"
-                    colSpan={METRIC_COLUMNS.length + 1}
-                  >
-                    População Atual:
-                  </td>
-                  <td
-                    className="px-3 py-3 align-top text-left text-sm font-semibold text-brand-primary"
-                    colSpan={2}
-                  >
-                    <div className="flex flex-col items-start gap-1">
-                      {populationCurrent ?? "—"}
-                      {(populationCurrentDogs ??
-                        populationCurrentCats ??
-                        null) !== null && (
-                        <span className="text-xs font-semibold text-slate-600">
-                          Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
-                          {populationCurrentCats ?? 0}
-                        </span>
+                  <tr className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
+                    <th className="sticky top-10.5 left-0 z-20 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold">
+                      &nbsp;
+                    </th>
+                    {GROUPED_HEADERS.map((label) => (
+                      <React.Fragment key={`${label}-sub`}>
+                        <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                          Cães
+                        </th>
+                        <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                          Gatos
+                        </th>
+                      </React.Fragment>
+                    ))}
+                    <th className="sticky top-10.5 border-b border-r border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                      &nbsp;
+                    </th>
+                    {onEditRow && (
+                      <th className="sticky top-10.5 border-b border-slate-200 bg-slate-50 px-3 py-2 text-center font-semibold">
+                        &nbsp;
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr key={row.id} className="border-b border-slate-100">
+                      <td className="sticky left-0 z-10 border-r border-slate-200 bg-white px-3 py-3 text-sm font-semibold">
+                        {row.referenceLabel}
+                      </td>
+                      {METRIC_COLUMNS.map((column) => (
+                        <td
+                          key={`${row.id}-${column.key}`}
+                          className="border-r border-slate-200 px-3 py-3 text-center text-sm"
+                        >
+                          {formatMetricValue(row.metrics[column.key])}
+                        </td>
+                      ))}
+                      <td className="border-r border-slate-200 px-3 py-3 text-center text-sm font-semibold">
+                        {formatMetricValue(row.balance)}
+                      </td>
+                      {onEditRow && (
+                        <td className="px-3 py-3 text-center">
+                          <button
+                            type="button"
+                            onClick={() => onEditRow(row.id)}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+                            aria-label="Editar registro"
+                          >
+                            <Pencil className="h-4 w-4" aria-hidden />
+                          </button>
+                        </td>
                       )}
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="rounded-xl border border-dashed border-brand-primary/40 bg-brand-primary/5 px-4 py-3 text-sm font-semibold text-brand-primary">
+              População Atual:{" "}
+              <span className="text-slate-900">{populationCurrent ?? "—"}</span>{" "}
+              {(populationCurrentDogs ?? populationCurrentCats ?? null) !== null && (
+                <span className="text-xs font-semibold text-slate-600">
+                  (Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
+                  {populationCurrentCats ?? 0})
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
