@@ -42,7 +42,7 @@ export default function Page(): JSX.Element {
               <LoginForm />
             </article>
 
-            <article className="flex flex-col items-center text-center lg:items-start lg:text-left lg:pl-12">
+            <article className="flex flex-col items-center text-center lg:items-center lg:pl-12">
               <header className="max-w-md space-y-2">
                 <Heading
                   as="h2"
@@ -55,7 +55,7 @@ export default function Page(): JSX.Element {
                 </Text>
               </header>
 
-              <div className="mt-8 flex w-full max-w-md flex-col items-center gap-3 lg:items-start">
+              <div className="mt-8 flex w-full max-w-md flex-col items-center gap-3 md:items-center">
                 {REGISTER_OPTIONS.map(({ id, label, href, variant }, index) => (
                   <Fragment key={id}>
                     <Link
@@ -77,7 +77,7 @@ export default function Page(): JSX.Element {
                 ))}
               </div>
 
-              <div className="mt-8 w-full max-w-md space-y-3 text-left">
+              <div className="mt-8 flex flex-col w-full max-w-md space-y-3 text-center items-center justify-center">
                 <Text className="text-base font-semibold text-[#7b8191]">
                   Veja nos tutoriais como é simples se cadastrar:
                 </Text>
@@ -90,7 +90,10 @@ export default function Page(): JSX.Element {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <PlayCircle className="h-5 w-5 text-brand-primary" aria-hidden />
+                        <PlayCircle
+                          className="h-5 w-5 text-brand-primary"
+                          aria-hidden
+                        />
                         {label}
                       </Link>
                     </li>

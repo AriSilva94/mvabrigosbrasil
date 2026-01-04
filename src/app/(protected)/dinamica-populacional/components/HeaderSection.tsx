@@ -6,11 +6,13 @@ import type { PopulationUserSummary } from "../types";
 type HeaderSectionProps = {
   onOpenRegister: () => void;
   userSummary?: PopulationUserSummary | null;
+  isReadOnly?: boolean;
 };
 
 export default function HeaderSection({
   onOpenRegister,
   userSummary,
+  isReadOnly = false,
 }: HeaderSectionProps): JSX.Element {
   const displayName = userSummary?.displayName ?? "—";
   const totalAnimalsLabel =
@@ -51,22 +53,24 @@ export default function HeaderSection({
         </Text>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        {/* TODO: Definir se teremos realmente esta feature */}
-        {/* <button
-          type="button"
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900 cursor-pointer"
-        >
-          Baixar em Excel
-        </button> */}
-        <button
-          type="button"
-          onClick={onOpenRegister}
-          className="rounded-lg bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary cursor-pointer"
-        >
-          Novo Registro
-        </button>
-      </div>
+      {!isReadOnly && (
+        <div className="flex flex-wrap gap-3">
+          {/* TODO: Definir se teremos realmente esta feature */}
+          {/* <button
+            type="button"
+            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900 cursor-pointer"
+          >
+            Baixar em Excel
+          </button> */}
+          <button
+            type="button"
+            onClick={onOpenRegister}
+            className="rounded-lg bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary cursor-pointer"
+          >
+            Novo Registro
+          </button>
+        </div>
+      )}
     </header>
   );
 }

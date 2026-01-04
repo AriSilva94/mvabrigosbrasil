@@ -247,7 +247,11 @@ function buildDisplay(
     populationCurrentDogs: speciesCurrent.dogs,
     populationCurrentCats: speciesCurrent.cats,
     stats: computeRates(rows, populationInitialValue),
-    rows: rows.sort((a, b) => a.referenceLabel.localeCompare(b.referenceLabel)),
+    rows: rows.sort((a, b) => {
+      const dateA = a.referenceDate ?? "";
+      const dateB = b.referenceDate ?? "";
+      return dateA.localeCompare(dateB);
+    }),
   };
 }
 

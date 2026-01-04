@@ -12,6 +12,7 @@ import { BASE_STATS } from "../ui/constants";
 
 type UseDynamicsDataParams = {
   userSummary: PopulationUserSummary | null;
+  shelterWpPostId?: number | null;
 };
 
 type UseDynamicsDataReturn = {
@@ -65,6 +66,7 @@ const buildFallbackSections = (
 
 export function useDynamicsData({
   userSummary,
+  shelterWpPostId,
 }: UseDynamicsDataParams): UseDynamicsDataReturn {
   const [isLoading, setLoading] = useState(true);
   const [isSaving, setSaving] = useState(false);
@@ -80,7 +82,12 @@ export function useDynamicsData({
   const fetchSections = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/dynamics", { cache: "no-store" });
+      // Construir URL com query parameter se shelterWpPostId foi fornecido
+      const url = shelterWpPostId
+        ? `/api/dynamics?shelter_id=${shelterWpPostId}`
+        : "/api/dynamics";
+
+      const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) {
         setSections(buildFallbackSections(userSummary, BASE_STATS));
         return;
@@ -97,7 +104,7 @@ export function useDynamicsData({
     } finally {
       setLoading(false);
     }
-  }, [userSummary]);
+  }, [userSummary, shelterWpPostId]);
 
   useEffect(() => {
     void fetchSections();
