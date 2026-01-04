@@ -11,6 +11,7 @@ import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
+import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
 
 export const metadata = buildMetadata({
   title: "Painel",
@@ -187,6 +188,7 @@ export default async function Page(): Promise<JSX.Element> {
   const access = await enforceTeamAccess("/painel");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
   const isManager = access.registerType === REGISTER_TYPES.manager;
+  const isAdmin = access.registerType === REGISTER_TYPES.admin;
   const shortcuts = filterPanelShortcuts(PANEL_SHORTCUTS, access.isTeamOnly);
 
   const isTeamOnly = access.isTeamOnly;
@@ -270,7 +272,9 @@ export default async function Page(): Promise<JSX.Element> {
         </section>
       )}
 
-      {isManager ? (
+      {isAdmin ? (
+        <AdminPanel />
+      ) : isManager ? (
         <ManagerPanel shelters={managerShelters} />
       ) : isVolunteer ? (
         <VolunteerPanel />
