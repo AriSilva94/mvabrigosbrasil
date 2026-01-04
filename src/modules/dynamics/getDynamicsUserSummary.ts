@@ -8,6 +8,7 @@ type GetDynamicsUserSummaryParams = {
   fallbackEmail: string | null;
   creatorProfileId?: string | null;
   isTeamOnly?: boolean;
+  shelterWpPostId?: number | null;
 };
 
 export async function getDynamicsUserSummary({
@@ -15,6 +16,7 @@ export async function getDynamicsUserSummary({
   fallbackEmail,
   creatorProfileId,
   isTeamOnly,
+  shelterWpPostId,
 }: GetDynamicsUserSummaryParams): Promise<{
   summary: PopulationUserSummary;
   shelterId: string | null;
@@ -22,19 +24,6 @@ export async function getDynamicsUserSummary({
   const supabaseAdmin = getSupabaseAdminClient();
 
   const { profile } = await findProfileById(supabaseAdmin, userId);
-
-  const resolveShelter = async (profileId: string) =>
-    supabaseAdmin
-      .from("shelters")
-      .select("id, name, shelter_type, initial_dogs, initial_cats")
-      .eq("profile_id", profileId)
-      .limit(1)
-      .maybeSingle();
-
-  const attemptOrder = [
-    userId,
-    isTeamOnly && creatorProfileId ? creatorProfileId : null,
-  ].filter(Boolean) as string[];
 
   let shelterRow: {
     id: string;
@@ -45,19 +34,50 @@ export async function getDynamicsUserSummary({
   } | null = null;
   let shelterError: unknown = null;
 
-  for (const profileId of attemptOrder) {
-    const { data, error } = await resolveShelter(profileId);
+  // Se shelter_id foi passado na URL (gerente visualizando abrigo específico)
+  if (shelterWpPostId) {
+    const { data, error } = await supabaseAdmin
+      .from("shelters")
+      .select("id, name, shelter_type, initial_dogs, initial_cats")
+      .eq("wp_post_id", shelterWpPostId)
+      .limit(1)
+      .maybeSingle();
+
     if (error) {
       shelterError = error;
-      console.error(
-        "dinamica-populacional: erro ao buscar abrigo do usuário",
-        error,
-      );
-      break;
-    }
-    if (data) {
+      console.error("dinamica-populacional: erro ao buscar abrigo por wp_post_id", error);
+    } else if (data) {
       shelterRow = data;
-      break;
+    }
+  } else {
+    // Lógica original: buscar por profile_id
+    const resolveShelter = async (profileId: string) =>
+      supabaseAdmin
+        .from("shelters")
+        .select("id, name, shelter_type, initial_dogs, initial_cats")
+        .eq("profile_id", profileId)
+        .limit(1)
+        .maybeSingle();
+
+    const attemptOrder = [
+      userId,
+      isTeamOnly && creatorProfileId ? creatorProfileId : null,
+    ].filter(Boolean) as string[];
+
+    for (const profileId of attemptOrder) {
+      const { data, error } = await resolveShelter(profileId);
+      if (error) {
+        shelterError = error;
+        console.error(
+          "dinamica-populacional: erro ao buscar abrigo do usuário",
+          error,
+        );
+        break;
+      }
+      if (data) {
+        shelterRow = data;
+        break;
+      }
     }
   }
 
@@ -77,8 +97,14 @@ export async function getDynamicsUserSummary({
       (option) => option.value === shelterRow?.shelter_type,
     )?.label ?? null;
 
+  // Se foi passado shelterWpPostId, usar o nome do abrigo
+  // Caso contrário, usar o nome do perfil do usuário
+  const displayName = shelterWpPostId
+    ? (shelterRow?.name ?? null)
+    : (profile?.full_name || profile?.email || fallbackEmail || null);
+
   const summary: PopulationUserSummary = {
-    displayName: profile?.full_name || profile?.email || fallbackEmail || null,
+    displayName,
     totalAnimals,
     shelterTypeLabel,
     dogsCount: hasDogs ? shelterRow?.initial_dogs ?? 0 : null,

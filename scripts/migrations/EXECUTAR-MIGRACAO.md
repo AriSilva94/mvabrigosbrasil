@@ -73,12 +73,15 @@ node run-full-migration.js
 
 ### O que acontece
 
-O script executa **19 passos 100% automaticamente**:
+O script executa **21 passos 100% automaticamente**:
 
 0. ✅ **AUTOMÁTICO** → Desabilita trigger de histórico (SQL 05)
 1. ✅ Migra abrigos (297)
 2. ✅ Migra dinâmicas populacionais
 3. ✅ Migra integrantes de equipe (id_abrigo/_id_abrigo → team_memberships)
+   - Suporta múltiplos IDs separados por vírgula
+   - Detecta e processa gerentes (`tipo_cadastro='gerente'`)
+   - Cria vínculos com `role='manager'` para gerentes
 4. ✅ Migra voluntários (232)
 5. ✅ **AUTOMÁTICO** → Adiciona coluna `slug` em `volunteers`
 6. ✅ Gera slugs para voluntários
@@ -89,15 +92,20 @@ O script executa **19 passos 100% automaticamente**:
 11. ✅ Vincula vagas aos abrigos
 12. ✅ Verifica duplicatas de slugs
 13. ✅ **AUTOMÁTICO** → Cria índice único em `vacancies.slug`
-14. ✅ Valida tudo (parcial)
-15. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
-16. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
-17. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
-18. ✅ **AUTOMÁTICO** → Garante RLS e policies (incluindo `team_memberships`)
+14. ✅ Cria profiles para donos de abrigos
+15. ✅ Vincula abrigos aos profiles
+16. ✅ Migra candidaturas de vagas
+17. ✅ Valida migração (abrigos, dinâmicas, **gerentes**)
+18. ✅ **AUTOMÁTICO** → Reabilita triggers (SQL 06)
+19. ✅ **AUTOMÁTICO** → Validação final completa (SQL 07)
+20. ✅ **AUTOMÁTICO** → Popula `wp_users_legacy` para autenticação
+21. ✅ **AUTOMÁTICO** → Garante RLS e policies (incluindo `team_memberships`)
 
 🎉 **Zero pausas! 100% automático!** (requer `DATABASE_URL` no `.env.local`)
 
 **Tempo estimado**: 10-15 minutos
+
+💡 **Novo**: O script agora detecta e migra corretamente usuários com `tipo_cadastro='gerente'` que possuem múltiplos abrigos vinculados (ex: `id_abrigo="1499, 2192, 1587, 982, 2304"`)
 
 ---
 
