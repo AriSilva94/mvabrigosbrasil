@@ -2,12 +2,13 @@ export const REGISTER_TYPES = {
   shelter: "abrigo",
   volunteer: "voluntario",
   manager: "gerente",
+  admin: "admin",
 } as const;
 
 export type RegisterType = (typeof REGISTER_TYPES)[keyof typeof REGISTER_TYPES];
 
 export function isRegisterType(value?: string | null): value is RegisterType {
-  return value === REGISTER_TYPES.shelter || value === REGISTER_TYPES.volunteer || value === REGISTER_TYPES.manager;
+  return value === REGISTER_TYPES.shelter || value === REGISTER_TYPES.volunteer || value === REGISTER_TYPES.manager || value === REGISTER_TYPES.admin;
 }
 
 export function normalizeRegisterType(raw?: unknown): RegisterType | null {
