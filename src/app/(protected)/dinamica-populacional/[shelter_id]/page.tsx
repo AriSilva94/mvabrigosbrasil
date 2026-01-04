@@ -40,16 +40,16 @@ export default async function Page({
     notFound();
   }
 
-  const access = await enforceTeamAccess(`/dinamica-populacional/${shelter_id}`);
+  const access = await enforceTeamAccess(
+    `/dinamica-populacional/${shelter_id}`
+  );
 
-  // Apenas gerentes podem acessar esta rota
   if (access.registerType !== REGISTER_TYPES.manager) {
     notFound();
   }
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Verificar se o gerente tem acesso a este abrigo
   const { data: profile } = await supabaseAdmin
     .from("profiles")
     .select("wp_user_id")
@@ -69,26 +69,15 @@ export default async function Page({
     .eq("status", "active")
     .maybeSingle();
 
-  if (!membership) {
-    notFound();
-  }
-
-  // Buscar dados do abrigo
-  console.log("🔍 [DYNAMICS MANAGER] Buscando dados para:", {
-    shelterId,
-    userId: access.userId,
-    email: access.email,
-  });
+  if (!membership) notFound();
 
   const { summary: userSummary } = await getDynamicsUserSummary({
     userId: access.userId,
     fallbackEmail: access.email,
     creatorProfileId: access.creatorProfileId,
-    isTeamOnly: false, // Gerente não é team_only
+    isTeamOnly: false,
     shelterWpPostId: shelterId,
   });
-
-  console.log("📊 [DYNAMICS MANAGER] Dados retornados:", userSummary);
 
   return (
     <main>
@@ -103,8 +92,8 @@ export default async function Page({
 
       <PopulationDynamicsContent
         userSummary={userSummary}
-        isTeamOnly={true} // Modo somente-leitura para gerente
-        shelterWpPostId={shelterId} // Passar ID do abrigo para buscar dados
+        isTeamOnly={true}
+        shelterWpPostId={shelterId}
       />
     </main>
   );
