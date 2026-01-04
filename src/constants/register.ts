@@ -11,4 +11,7 @@ export const REGISTER_CONTENT: Record<RegisterType, RegisterFormContent> = {
   [REGISTER_TYPES.manager]: {
     title: "Cadastro de Gerente",
   },
+  [REGISTER_TYPES.admin]: {
+    title: "Acesso Administrativo",
+  },
 };

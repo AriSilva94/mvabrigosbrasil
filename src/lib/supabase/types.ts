@@ -582,6 +582,49 @@ export type Database = {
           }
         ];
       };
+      team_memberships: {
+        Row: {
+          id: string;
+          owner_profile_id: string | null;
+          owner_wp_user_id: number | null;
+          member_profile_id: string | null;
+          member_wp_user_id: number | null;
+          member_email: string | null;
+          abrigo_post_id: number | null;
+          status: string | null;
+          created_at: string | null;
+          updated_at: string | null;
+          role: string | null;
+          [key: string]: Json | undefined;
+        };
+        Insert: {
+          id?: string;
+          owner_profile_id?: string | null;
+          owner_wp_user_id?: number | null;
+          member_profile_id?: string | null;
+          member_wp_user_id?: number | null;
+          member_email?: string | null;
+          abrigo_post_id?: number | null;
+          status?: string | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+          role?: string | null;
+        };
+        Update: {
+          id?: string;
+          owner_profile_id?: string | null;
+          owner_wp_user_id?: number | null;
+          member_profile_id?: string | null;
+          member_wp_user_id?: number | null;
+          member_email?: string | null;
+          abrigo_post_id?: number | null;
+          status?: string | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+          role?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
