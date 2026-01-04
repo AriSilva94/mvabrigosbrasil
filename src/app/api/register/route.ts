@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
-import { REGISTER_TYPES } from "@/constants/registerTypes";
+import { REGISTER_TYPES, isRegisterType } from "@/constants/registerTypes";
 
 type RegisterRequestBody = {
   email?: string;
@@ -50,10 +50,9 @@ export async function POST(request: Request) {
       creatorUserId = session.user.id;
     }
 
-    const normalizedRegisterType =
-      registerType === REGISTER_TYPES.volunteer
-        ? REGISTER_TYPES.volunteer
-        : REGISTER_TYPES.shelter;
+    const normalizedRegisterType = isRegisterType(registerType)
+      ? registerType
+      : REGISTER_TYPES.shelter;
 
     const supabaseAdmin = getSupabaseAdminClient();
     const { data, error } = await supabaseAdmin.auth.admin.createUser({

@@ -16,7 +16,25 @@ const deleteSchema = z.object({
 async function resolveShelter(
   supabaseAdmin: ReturnType<typeof getSupabaseAdminClient>,
   access: Awaited<ReturnType<typeof loadUserAccess>>,
+  shelterWpPostId?: number | null,
 ) {
+  // Se shelterWpPostId foi fornecido (gerente visualizando abrigo específico)
+  if (shelterWpPostId) {
+    const { data, error } = await supabaseAdmin
+      .from("shelters")
+      .select("id, initial_dogs, initial_cats")
+      .eq("wp_post_id", shelterWpPostId)
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error("api/dynamics: erro ao buscar shelter por wp_post_id", error);
+      throw error;
+    }
+    return data;
+  }
+
+  // Lógica original: buscar por profile_id
   const queryShelter = async (profileId: string) =>
     supabaseAdmin
       .from("shelters")
@@ -42,14 +60,19 @@ async function resolveShelter(
   return null;
 }
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
   const access = await loadUserAccess();
   if (!access) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
+  // Extrair shelter_id da URL se fornecido (para gerentes)
+  const { searchParams } = new URL(request.url);
+  const shelterIdParam = searchParams.get("shelter_id");
+  const shelterWpPostId = shelterIdParam ? parseInt(shelterIdParam, 10) : null;
+
   const supabaseAdmin = getSupabaseAdminClient();
-  const shelter = await resolveShelter(supabaseAdmin, access);
+  const shelter = await resolveShelter(supabaseAdmin, access, shelterWpPostId);
 
   if (!shelter) {
     return NextResponse.json({ sections: [] });

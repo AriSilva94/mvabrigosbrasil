@@ -45,14 +45,16 @@ export default function PopulationGrid({
                     </span>
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onEditRow?.(row.id)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
-                  aria-label="Editar registro"
-                >
-                  <Pencil className="h-4 w-4" aria-hidden />
-                </button>
+                {onEditRow ? (
+                  <button
+                    type="button"
+                    onClick={() => onEditRow(row.id)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-brand-primary hover:text-brand-primary cursor-pointer"
+                    aria-label="Editar registro"
+                  >
+                    <Pencil className="h-4 w-4" aria-hidden />
+                  </button>
+                ) : null}
               </header>
 
               <div className="grid gap-2 sm:grid-cols-2">

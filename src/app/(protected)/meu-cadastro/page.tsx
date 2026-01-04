@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { redirect } from "next/navigation";
 
 import PageHeader from "@/components/layout/PageHeader";
 import ShelterProfileForm from "@/app/(protected)/meu-cadastro/components/ShelterProfileForm";
@@ -22,6 +23,13 @@ export default async function Page({
 }): Promise<JSX.Element> {
   const access = await enforceTeamAccess("/meu-cadastro");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
+  const isManager = access.registerType === REGISTER_TYPES.manager;
+
+  // Gerente não tem cadastro próprio, redirecionar para painel
+  if (isManager) {
+    redirect("/painel");
+  }
+
   const resolvedSearch = searchParams ? await searchParams : {};
   const populationEditOnly = resolvedSearch?.edit === "population";
 

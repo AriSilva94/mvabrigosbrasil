@@ -65,7 +65,7 @@ export default async function Page({
   const { slug } = await params;
   const access = await enforceTeamAccess("/minhas-vagas/editar");
 
-  if (access.registerType === REGISTER_TYPES.volunteer) {
+  if (access.registerType === REGISTER_TYPES.volunteer || access.registerType === REGISTER_TYPES.manager) {
     redirect("/painel");
   }
 

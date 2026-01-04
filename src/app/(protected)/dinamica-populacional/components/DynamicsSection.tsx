@@ -13,6 +13,7 @@ type DynamicsSectionProps = {
   isLoading?: boolean;
   onEditPopulation?: () => void;
   canEditPopulation?: boolean;
+  isReadOnly?: boolean;
 };
 
 export default function DynamicsSection({
@@ -22,6 +23,7 @@ export default function DynamicsSection({
   isLoading = false,
   onEditPopulation,
   canEditPopulation = true,
+  isReadOnly = false,
 }: DynamicsSectionProps): JSX.Element {
   const hasData = data.rows.length > 0;
 
@@ -56,13 +58,16 @@ export default function DynamicsSection({
             populationCurrentDogs={data.populationCurrentDogs}
             populationCurrentCats={data.populationCurrentCats}
             rows={data.rows}
-            onEditRow={(id) => onEditRow?.(id, data.dynamicType)}
+            onEditRow={onEditRow ? (id) => onEditRow(id, data.dynamicType) : undefined}
             onEditPopulation={onEditPopulation}
             canEditPopulation={canEditPopulation}
           />
         </div>
       ) : (
-        <EmptyState onOpenRegister={() => onCreate(data.dynamicType)} />
+        <EmptyState
+          onOpenRegister={() => onCreate(data.dynamicType)}
+          isReadOnly={isReadOnly}
+        />
       )}
     </section>
   );

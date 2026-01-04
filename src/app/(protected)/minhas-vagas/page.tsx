@@ -35,7 +35,7 @@ export default async function Page(): Promise<JSX.Element> {
   const shelterName = shelterRow?.name ?? null;
   const shelterId = shelterRow?.id ?? null;
 
-  if (access.registerType === REGISTER_TYPES.volunteer) {
+  if (access.registerType === REGISTER_TYPES.volunteer || access.registerType === REGISTER_TYPES.manager) {
     redirect("/painel");
   }
 
