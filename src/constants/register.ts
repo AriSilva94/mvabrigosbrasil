@@ -8,4 +8,7 @@ export const REGISTER_CONTENT: Record<RegisterType, RegisterFormContent> = {
   [REGISTER_TYPES.volunteer]: {
     title: "Cadastro de Voluntario",
   },
+  [REGISTER_TYPES.manager]: {
+    title: "Cadastro de Gerente",
+  },
 };
