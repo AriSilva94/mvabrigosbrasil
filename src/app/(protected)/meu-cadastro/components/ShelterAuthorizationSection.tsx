@@ -1,8 +1,10 @@
+"use client";
+
 import type { JSX } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import Input from "@/components/ui/Input";
-import MaskedInput from "@/components/ui/MaskedInput";
 import Select from "@/components/ui/Select";
 import FormError from "@/components/ui/FormError";
 import { Heading, Text } from "@/components/ui/typography";
@@ -10,6 +12,7 @@ import { ROLES_OPTIONS } from "@/constants/shelterProfile";
 import clsx from "clsx";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 import { FormField } from "./FormField";
+import { PhoneInput } from "@/components/ui/PhoneInput";
 
 type ShelterAuthorizationSectionProps = {
   data?: Partial<ShelterProfileFormData> | null;
@@ -22,6 +25,14 @@ export default function ShelterAuthorizationSection({
   fieldErrors,
   lockNonPopulation = false,
 }: ShelterAuthorizationSectionProps): JSX.Element {
+  const [authorizedPhone, setAuthorizedPhone] = useState("");
+
+  useEffect(() => {
+    if (data?.authorizedPhone) {
+      setAuthorizedPhone(data.authorizedPhone);
+    }
+  }, [data?.authorizedPhone]);
+
   const lockClass = lockNonPopulation
     ? "pointer-events-none cursor-not-allowed [&_input]:bg-slate-100 [&_input]:text-slate-500 [&_select]:bg-slate-100 [&_select]:text-slate-500"
     : "";
@@ -130,16 +141,16 @@ export default function ShelterAuthorizationSection({
         </FormField>
 
         <FormField id="authorizedPhone" label="Telefone" required>
-          <MaskedInput
+          <PhoneInput
             id="authorizedPhone"
             name="authorizedPhone"
-            mask="phone"
-            defaultValue={data?.authorizedPhone}
+            value={authorizedPhone}
+            onChange={setAuthorizedPhone}
+            disabled={lockNonPopulation}
             required
             aria-invalid={Boolean(fieldErrors?.authorizedPhone)}
             aria-describedby={fieldErrors?.authorizedPhone ? "authorizedPhone-error" : undefined}
             className={clsx(
-              "bg-[#f2f2f2]",
               fieldErrors?.authorizedPhone &&
                 "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
