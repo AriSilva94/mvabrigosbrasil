@@ -31,6 +31,16 @@ export const volunteerProfileSchema = z
         path: ["telefone"],
       });
     }
+
+    // Validação profissão - não permitir apenas números
+    const profissaoOnlyNumbers = /^\d+$/.test(data.profissao.trim());
+    if (profissaoOnlyNumbers) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "A profissão não pode conter apenas números.",
+        path: ["profissao"],
+      });
+    }
   });
 
 export type VolunteerProfileInput = z.infer<typeof volunteerProfileSchema>;

@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Input from "@/components/ui/Input";
 import MaskedInput from "@/components/ui/MaskedInput";
@@ -12,7 +12,6 @@ import {
   ADDITIONAL_SPECIES,
   SHELTER_TYPE_OPTIONS,
   SPECIES_OPTIONS,
-  STATE_OPTIONS,
 } from "@/constants/shelterProfile";
 import FormError from "@/components/ui/FormError";
 import { useCepAutocomplete } from "@/hooks/useCepAutocomplete";
@@ -20,6 +19,10 @@ import clsx from "clsx";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 import { FormField } from "./FormField";
 import ShelterTypeHelp from "./ShelterTypeHelp";
+import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
+import { useLocationData } from "@/hooks/useLocationData";
+import { useAddressCheck } from "@/hooks/useAddressCheck";
+import { DatePicker } from "@/components/ui/DatePicker";
 
 type ShelterInfoSectionProps = {
   data?: Partial<ShelterProfileFormData> | null;
@@ -57,9 +60,43 @@ export default function ShelterInfoSection({
     searchCep,
     clearError,
   } = useCepAutocomplete();
+  const {
+    isLoading: isCheckingAddress,
+    checkAddress,
+    clearError: clearAddressError,
+  } = useAddressCheck();
+  const [addressWarning, setAddressWarning] = useState<string | null>(null);
   const disabledStyles = lockNonPopulation
     ? "disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
     : "";
+
+  // Estados e cidades
+  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } = useLocationData();
+  const [estado, setEstado] = useState(data?.state ?? "");
+  const [cidade, setCidade] = useState(data?.city ?? "");
+  const [fundacao, setFundacao] = useState(data?.foundationDate ?? "");
+  const [rua, setRua] = useState(data?.street ?? "");
+  const [bairro, setBairro] = useState(data?.district ?? "");
+
+  // Converte estados para formato do Combobox
+  const estadosOptions: ComboboxOption[] = estados.map((e) => ({
+    value: e.sigla,
+    label: e.nome,
+  }));
+
+  // Converte cidades para formato do Combobox
+  const cidadesOptions: ComboboxOption[] = cidades.map((c) => ({
+    value: c.nome,
+    label: c.nome,
+  }));
+
+  // Carrega cidades quando estado muda
+  useEffect(() => {
+    if (estado) {
+      fetchCidades(estado);
+      // Não limpa cidade aqui porque pode ser autocomplete do CEP
+    }
+  }, [estado, fetchCidades]);
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onShelterTypeChange?.(event.target.value);
@@ -70,6 +107,11 @@ export default function ShelterInfoSection({
     const value = e.target.value;
     if (!value || value.replace(/\D/g, "").length !== 8) return;
 
+    // Limpa avisos anteriores
+    setAddressWarning(null);
+    clearAddressError();
+
+    // Busca endereço pelo CEP
     const result = await searchCep(value);
     if (result && onCepAutocomplete) {
       onCepAutocomplete({
@@ -78,6 +120,20 @@ export default function ShelterInfoSection({
         city: result.localidade,
         state: result.uf,
       });
+      // Atualiza todos os campos localmente
+      setRua(result.logradouro);
+      setBairro(result.bairro);
+      setEstado(result.uf);
+      setCidade(result.localidade);
+
+      // Verifica se já existe abrigo com mesmo CEP
+      const addressCheck = await checkAddress(value);
+      if (addressCheck?.exists && addressCheck.count > 0) {
+        const shelterNames = addressCheck.shelters.map((s) => s.name).join(', ');
+        setAddressWarning(
+          `Atenção: Já ${addressCheck.count === 1 ? 'existe 1 abrigo cadastrado' : `existem ${addressCheck.count} abrigos cadastrados`} neste CEP: ${shelterNames}. Verifique se não é duplicidade.`
+        );
+      }
     }
   }
 
@@ -183,6 +239,7 @@ export default function ShelterInfoSection({
               onValueChange={(_, masked) => {
                 setCepValue(masked);
                 clearError();
+                setAddressWarning(null);
               }}
               onBlur={handleCepBlur}
               disabled={lockNonPopulation}
@@ -193,16 +250,20 @@ export default function ShelterInfoSection({
                   ? "cep-error"
                   : cepError
                   ? "cep-viacep-error"
+                  : addressWarning
+                  ? "cep-warning"
                   : undefined
               }
               className={clsx(
                 "bg-[#f2f2f2]",
                 disabledStyles,
                 (fieldErrors?.cep || cepError) &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                addressWarning &&
+                  "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/15"
               )}
             />
-            {isCepLoading && (
+            {(isCepLoading || isCheckingAddress) && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 <Spinner />
               </div>
@@ -212,13 +273,22 @@ export default function ShelterInfoSection({
           {cepError && !fieldErrors?.cep && (
             <FormError id="cep-viacep-error" message={cepError} />
           )}
+          {addressWarning && !fieldErrors?.cep && !cepError && (
+            <div id="cep-warning" className="mt-1 flex items-start gap-2 text-sm text-yellow-600">
+              <svg className="h-5 w-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <span>{addressWarning}</span>
+            </div>
+          )}
         </FormField>
 
         <FormField id="street" label="Rua" required hint="não será divulgado">
           <Input
             id="street"
             name="street"
-            defaultValue={data?.street}
+            value={rua}
+            onChange={(e) => setRua(e.target.value)}
             required
             disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.street)}
@@ -268,7 +338,8 @@ export default function ShelterInfoSection({
           <Input
             id="district"
             name="district"
-            defaultValue={data?.district}
+            value={bairro}
+            onChange={(e) => setBairro(e.target.value)}
             required
             disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.district)}
@@ -286,41 +357,32 @@ export default function ShelterInfoSection({
         </FormField>
 
         <FormField id="state" label="Estado" required>
-          <Select
-            id="state"
+          <Combobox
             name="state"
-            defaultValue={data?.state}
+            options={estadosOptions}
+            value={estado}
+            onChange={setEstado}
+            placeholder="Selecione um estado"
+            loading={loadingEstados}
             disabled={lockNonPopulation}
-            required
-            aria-invalid={Boolean(fieldErrors?.state)}
-            aria-describedby={fieldErrors?.state ? "state-error" : undefined}
             className={clsx(
-              disabledStyles,
               fieldErrors?.state &&
                 "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
-          >
-            {STATE_OPTIONS.map((state) => (
-              <option key={state.code} value={state.code}>
-                {state.label}
-              </option>
-            ))}
-          </Select>
+          />
           <FormError id="state-error" message={fieldErrors?.state} />
         </FormField>
 
         <FormField id="city" label="Cidade" required>
-          <Input
-            id="city"
+          <Combobox
             name="city"
-            defaultValue={data?.city}
-            required
-            disabled={lockNonPopulation}
-            aria-invalid={Boolean(fieldErrors?.city)}
-            aria-describedby={fieldErrors?.city ? "city-error" : undefined}
+            options={cidadesOptions}
+            value={cidade}
+            onChange={setCidade}
+            placeholder={estado ? "Selecione uma cidade" : "Selecione um estado primeiro"}
+            loading={loadingCidades}
+            disabled={!estado || lockNonPopulation}
             className={clsx(
-              "bg-[#f2f2f2]",
-              disabledStyles,
               fieldErrors?.city &&
                 "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
@@ -349,11 +411,12 @@ export default function ShelterInfoSection({
         </FormField>
 
         <FormField id="foundationDate" label="Fundação do abrigo" required>
-          <Input
+          <DatePicker
             id="foundationDate"
             name="foundationDate"
-            type="date"
-            defaultValue={data?.foundationDate ?? ""}
+            value={fundacao}
+            onChange={setFundacao}
+            maxDate={new Date().toISOString().split('T')[0]}
             required
             disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.foundationDate)}
