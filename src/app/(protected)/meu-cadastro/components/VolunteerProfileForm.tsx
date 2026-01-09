@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,11 @@ import type { VolunteerProfileFormData } from "@/types/volunteer.types";
 import Input from "@/components/ui/Input";
 import FormError from "@/components/ui/FormError";
 import { FormField } from "./FormField";
+import { PhoneInput } from "@/components/ui/PhoneInput";
+import { TextOnlyInput } from "@/components/ui/TextOnlyInput";
+import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
+import { SelectDropdown } from "@/components/ui/SelectDropdown";
+import { useLocationData } from "@/hooks/useLocationData";
 
 const FAIXA_ETARIA_OPTIONS = [
   { value: "18 a 35", label: "18 a 35 anos" },
@@ -75,6 +80,62 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof VolunteerProfileInput, string>>
   >({});
+
+  // Estados e cidades
+  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } = useLocationData();
+  const [telefone, setTelefone] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+
+  // Outros selects
+  const [faixaEtaria, setFaixaEtaria] = useState("");
+  const [genero, setGenero] = useState("");
+  const [escolaridade, setEscolaridade] = useState("");
+  const [disponibilidade, setDisponibilidade] = useState("");
+  const [periodo, setPeriodo] = useState("");
+  const [experiencia, setExperiencia] = useState("");
+  const [atuacao, setAtuacao] = useState("");
+
+  // Converte estados para formato do Combobox
+  const estadosOptions: ComboboxOption[] = estados.map((e) => ({
+    value: e.sigla,
+    label: e.nome,
+  }));
+
+  // Converte cidades para formato do Combobox
+  const cidadesOptions: ComboboxOption[] = cidades.map((c) => ({
+    value: c.nome,
+    label: c.nome,
+  }));
+
+  // Carrega cidades quando estado muda
+  useEffect(() => {
+    if (estado) {
+      fetchCidades(estado);
+      setCidade(""); // Limpa cidade ao mudar estado
+    }
+  }, [estado, fetchCidades]);
+
+  // Inicializa valores quando voluntário carrega
+  useEffect(() => {
+    if (volunteer) {
+      setTelefone(volunteer.telefone || "");
+      setEstado(volunteer.estado || "");
+      setCidade(volunteer.cidade || "");
+      setFaixaEtaria(volunteer.faixa_etaria || "");
+      setGenero(volunteer.genero || "");
+      setEscolaridade(volunteer.escolaridade || "");
+      setDisponibilidade(volunteer.disponibilidade || "");
+      setPeriodo(volunteer.periodo || "");
+      setExperiencia(volunteer.experiencia || "");
+      setAtuacao(volunteer.atuacao || "");
+
+      // Carrega cidades do estado inicial
+      if (volunteer.estado) {
+        fetchCidades(volunteer.estado);
+      }
+    }
+  }, [volunteer, fetchCidades]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -189,13 +250,13 @@ export default function VolunteerProfileForm(): JSX.Element {
           </FormField>
 
           <FormField id="telefone" label="Telefone" required>
-            <Input
+            <PhoneInput
               id="telefone"
               name="telefone"
-              type="tel"
+              value={telefone}
+              onChange={setTelefone}
               autoComplete="tel"
-              defaultValue={data?.telefone ?? ""}
-              placeholder="(00) 0 0000-0000"
+              placeholder="(00) 00000-0000"
               aria-invalid={Boolean(fieldErrors.telefone)}
               aria-describedby={fieldErrors.telefone ? "telefone-error" : undefined}
               className={clsx(
@@ -207,11 +268,11 @@ export default function VolunteerProfileForm(): JSX.Element {
           </FormField>
 
           <FormField id="profissao" label="Profissão" required>
-            <Input
+            <TextOnlyInput
               id="profissao"
               name="profissao"
-              type="text"
               defaultValue={data?.profissao ?? ""}
+              placeholder="Ex: Veterinário"
               aria-invalid={Boolean(fieldErrors.profissao)}
               aria-describedby={fieldErrors.profissao ? "profissao-error" : undefined}
               className={clsx(
@@ -223,84 +284,58 @@ export default function VolunteerProfileForm(): JSX.Element {
           </FormField>
 
           <FormField id="faixa_etaria" label="Faixa Etária" required>
-            <select
-              id="faixa_etaria"
+            <SelectDropdown
               name="faixa_etaria"
-              defaultValue={data?.faixa_etaria ?? ""}
-              aria-invalid={Boolean(fieldErrors.faixa_etaria)}
-              aria-describedby={fieldErrors.faixa_etaria ? "faixa_etaria-error" : undefined}
+              options={FAIXA_ETARIA_OPTIONS}
+              value={faixaEtaria}
+              onChange={setFaixaEtaria}
+              placeholder="Selecione a faixa etária"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.faixa_etaria &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {FAIXA_ETARIA_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="faixa_etaria-error" message={fieldErrors.faixa_etaria} />
           </FormField>
 
           <FormField id="genero" label="Gênero" required>
-            <select
-              id="genero"
+            <SelectDropdown
               name="genero"
-              defaultValue={data?.genero ?? ""}
-              aria-invalid={Boolean(fieldErrors.genero)}
-              aria-describedby={fieldErrors.genero ? "genero-error" : undefined}
+              options={GENERO_OPTIONS}
+              value={genero}
+              onChange={setGenero}
+              placeholder="Selecione o gênero"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.genero &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {GENERO_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="genero-error" message={fieldErrors.genero} />
           </FormField>
 
           <FormField id="escolaridade" label="Escolaridade" required>
-            <select
-              id="escolaridade"
+            <SelectDropdown
               name="escolaridade"
-              defaultValue={data?.escolaridade ?? ""}
-              aria-invalid={Boolean(fieldErrors.escolaridade)}
-              aria-describedby={fieldErrors.escolaridade ? "escolaridade-error" : undefined}
+              options={ESCOLARIDADE_OPTIONS}
+              value={escolaridade}
+              onChange={setEscolaridade}
+              placeholder="Selecione a escolaridade"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.escolaridade &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {ESCOLARIDADE_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="escolaridade-error" message={fieldErrors.escolaridade} />
           </FormField>
 
           <FormField id="estado" label="Estado" required>
-            <Input
-              id="estado"
+            <Combobox
               name="estado"
-              type="text"
-              defaultValue={data?.estado ?? ""}
-              placeholder="Ex: SP"
-              maxLength={2}
-              aria-invalid={Boolean(fieldErrors.estado)}
-              aria-describedby={fieldErrors.estado ? "estado-error" : undefined}
+              options={estadosOptions}
+              value={estado}
+              onChange={setEstado}
+              placeholder="Selecione um estado"
+              loading={loadingEstados}
               className={clsx(
                 fieldErrors.estado &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
@@ -310,13 +345,14 @@ export default function VolunteerProfileForm(): JSX.Element {
           </FormField>
 
           <FormField id="cidade" label="Cidade" required>
-            <Input
-              id="cidade"
+            <Combobox
               name="cidade"
-              type="text"
-              defaultValue={data?.cidade ?? ""}
-              aria-invalid={Boolean(fieldErrors.cidade)}
-              aria-describedby={fieldErrors.cidade ? "cidade-error" : undefined}
+              options={cidadesOptions}
+              value={cidade}
+              onChange={setCidade}
+              placeholder={estado ? "Selecione uma cidade" : "Selecione um estado primeiro"}
+              loading={loadingCidades}
+              disabled={!estado}
               className={clsx(
                 fieldErrors.cidade &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
@@ -336,27 +372,17 @@ export default function VolunteerProfileForm(): JSX.Element {
             label="Disponibilidade de tempo para trabalho voluntário"
             required
           >
-            <select
-              id="disponibilidade"
+            <SelectDropdown
               name="disponibilidade"
-              defaultValue={data?.disponibilidade ?? ""}
-              aria-invalid={Boolean(fieldErrors.disponibilidade)}
-              aria-describedby={
-                fieldErrors.disponibilidade ? "disponibilidade-error" : undefined
-              }
+              options={DISPONIBILIDADE_OPTIONS}
+              value={disponibilidade}
+              onChange={setDisponibilidade}
+              placeholder="Selecione a disponibilidade"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.disponibilidade &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {DISPONIBILIDADE_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="disponibilidade-error" message={fieldErrors.disponibilidade} />
           </FormField>
 
@@ -365,25 +391,17 @@ export default function VolunteerProfileForm(): JSX.Element {
             label="Disponibilidade de período para trabalho voluntário"
             required
           >
-            <select
-              id="periodo"
+            <SelectDropdown
               name="periodo"
-              defaultValue={data?.periodo ?? ""}
-              aria-invalid={Boolean(fieldErrors.periodo)}
-              aria-describedby={fieldErrors.periodo ? "periodo-error" : undefined}
+              options={PERIODO_OPTIONS}
+              value={periodo}
+              onChange={setPeriodo}
+              placeholder="Selecione o período"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.periodo &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {PERIODO_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="periodo-error" message={fieldErrors.periodo} />
           </FormField>
 
@@ -392,48 +410,32 @@ export default function VolunteerProfileForm(): JSX.Element {
             label="Tem/teve experiência com trabalho voluntário na causa animal?"
             required
           >
-            <select
-              id="experiencia"
+            <SelectDropdown
               name="experiencia"
-              defaultValue={data?.experiencia ?? ""}
-              aria-invalid={Boolean(fieldErrors.experiencia)}
-              aria-describedby={fieldErrors.experiencia ? "experiencia-error" : undefined}
+              options={EXPERIENCIA_OPTIONS}
+              value={experiencia}
+              onChange={setExperiencia}
+              placeholder="Selecione"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.experiencia &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {EXPERIENCIA_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="experiencia-error" message={fieldErrors.experiencia} />
           </FormField>
 
           <FormField id="atuacao" label="Forma de Atuação" required>
-            <select
-              id="atuacao"
+            <SelectDropdown
               name="atuacao"
-              defaultValue={data?.atuacao ?? ""}
-              aria-invalid={Boolean(fieldErrors.atuacao)}
-              aria-describedby={fieldErrors.atuacao ? "atuacao-error" : undefined}
+              options={ATUACAO_OPTIONS}
+              value={atuacao}
+              onChange={setAtuacao}
+              placeholder="Selecione a forma de atuação"
               className={clsx(
-                "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
                 fieldErrors.atuacao &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
               )}
-            >
-              <option value="">Selecione</option>
-              {ATUACAO_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
             <FormError id="atuacao-error" message={fieldErrors.atuacao} />
           </FormField>
         </div>
