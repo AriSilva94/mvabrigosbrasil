@@ -39,7 +39,159 @@ Estatísticas e informações sobre abrigos cadastrados com dinâmica populacion
 
 ## 🔍 Usuários de Teste
 
-### Email: `4patasfortaleza@gmail.com`
+---
+
+### 🏠 USUÁRIOS TIPO ABRIGO (3)
+
+#### 1. Email: `milenamw@yahoo.com.br`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `abrigo` (registerType) |
+| **Nome** | Departamento de proteção e bem estar animal |
+| **Email** | milenamw@yahoo.com.br |
+| **Telefone** | (11) 97525-5884 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Abrigo (shelters):**
+
+- **Tipo**: Público
+- **Estado/Cidade**: SP / Hortolândia
+- **Endereço**: Rua athanasio gigo, 60
+- **Espécies**: Cães e Gatos
+- **População Inicial**: 180 cães, 0 gatos
+- **Data Fundação**: 2017-01-01
+- **Responsável**: Milena Martinelli watanuki lima
+
+---
+
+#### 2. Email: `alfrisya1230@gmail.com`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `abrigo` (registerType) |
+| **Nome** | Associação protetora dos animais de cana verde |
+| **Email** | alfrisya1230@gmail.com |
+| **Telefone** | (35) 99969-9482 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Abrigo (shelters):**
+
+- **Tipo**: Privado
+- **Estado/Cidade**: MG / Cana Verde
+- **Endereço**: Felício DE Morais
+- **Espécies**: Apenas Cães
+- **População Inicial**: 3000 cães, 0 gatos
+- **Data Fundação**: 2016-05-30
+- **Responsável**: Alfrisa Aparecida Dias
+
+---
+
+#### 3. Email: `apattailandiapa@gmail.com`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `abrigo` (registerType) |
+| **Nome** | Apat-associação protetora de animais de tailândia |
+| **Email** | apattailandiapa@gmail.com |
+| **Telefone** | (91) 99256-8796 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Abrigo (shelters):**
+
+- **Tipo**: Privado
+- **Estado/Cidade**: PA / Tailândia
+- **Endereço**: Jadim liberdade av mutum
+- **Espécies**: Cães e Gatos
+- **População Inicial**: 32 cães, 0 gatos
+- **Data Fundação**: 2016-06-01
+- **Responsável**: Ivana ferreira de almeida
+
+---
+
+### 👥 USUÁRIOS TIPO VOLUNTÁRIO (3)
+
+#### 1. Email: `rosanezim@gmail.com`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `voluntario` (registerType) |
+| **Nome** | Rosane Zimemrmann |
+| **Email** | rosanezim@gmail.com |
+| **Telefone** | (51) 99566-1002 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Voluntário (volunteers):**
+
+- **Cidade/Estado**: Florianópolis / SC
+- **Profissão**: Estudante
+- **Escolaridade**: Superior
+- **Faixa Etária**: 36 a 59 anos
+- **Gênero**: Feminino
+- **Experiência**: Sim
+- **Atuação**: Remoto
+- **Disponibilidade**: 1h
+- **Período**: Diário
+
+---
+
+#### 2. Email: `Thaysgomes113@gmail.com`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `voluntario` (registerType) |
+| **Nome** | Thays Karollyni Amaral Gomes |
+| **Email** | Thaysgomes113@gmail.com |
+| **Telefone** | (41) 99980-7355 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Voluntário (volunteers):**
+
+- **Cidade/Estado**: Umuarama / PR
+- **Profissão**: Estudante
+- **Escolaridade**: Médio
+- **Faixa Etária**: 18 a 35 anos
+- **Gênero**: Feminino
+- **Experiência**: Sim
+- **Atuação**: Remoto
+- **Disponibilidade**: 4h
+- **Período**: Diário
+
+---
+
+#### 3. Email: `mdani.amelo@gmail.com`
+
+| Campo | Valor |
+|-------|-------|
+| **Tipo de Usuário** | `voluntario` (registerType) |
+| **Nome** | Mariza Danielle Alves de Melo |
+| **Email** | mdani.amelo@gmail.com |
+| **Telefone** | (27) 99991-6977 |
+| **Origem** | `wordpress_migrated` |
+| **Status** | Ativo |
+
+**Dados do Voluntário (volunteers):**
+
+- **Cidade/Estado**: Vila Velha / ES
+- **Profissão**: Advogada
+- **Escolaridade**: Mestrado
+- **Faixa Etária**: 36 a 59 anos
+- **Gênero**: Feminino
+- **Experiência**: Sim
+- **Atuação**: Remoto
+- **Disponibilidade**: 2h
+- **Período**: Diário
+
+---
+
+### 📋 USUÁRIO MIGRADO DO WORDPRESS (PRESERVADO)
+
+#### Email: `4patasfortaleza@gmail.com`
 
 | Campo | Valor |
 |-------|-------|
