@@ -38,11 +38,12 @@ export function computeOverview(
   year: YearFilter,
   state: string
 ): OverviewMetrics {
-  const shelters = dataset.shelters.filter(
+  // Count only shelters that were CREATED in the selected year (not shelters with movements in that year)
+  const sheltersCreatedInYear = dataset.shelters.filter(
     (shelter) => matchesYear(shelter.year, year) && matchesState(shelter.state, state)
   );
 
-  return shelters.reduce<OverviewMetrics>(
+  return sheltersCreatedInYear.reduce<OverviewMetrics>(
     (acc, shelter) => {
       acc.totalShelters += 1;
 
@@ -55,6 +56,24 @@ export function computeOverview(
     },
     { totalShelters: 0, publicCount: 0, privateCount: 0, mixedCount: 0, ltpiCount: 0 }
   );
+}
+
+export function hasAnyData(
+  dataset: DatabaseDataset,
+  year: YearFilter,
+  state: string
+): boolean {
+  // Check if there are any shelters for this filter
+  const hasShelters = dataset.shelters.some(
+    (shelter) => matchesYear(shelter.year, year) && matchesState(shelter.state, state)
+  );
+
+  // Check if there are any movements for this filter
+  const hasMovements = dataset.movements.some(
+    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+  );
+
+  return hasShelters || hasMovements;
 }
 
 export function computeMonthlyAnimalFlow(

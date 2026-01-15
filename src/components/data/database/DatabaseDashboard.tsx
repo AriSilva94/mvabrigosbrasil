@@ -46,10 +46,8 @@ export default function DatabaseDashboard({ dataset }: DatabaseDashboardProps) {
     outcomesDogs,
     outcomesCats,
     adoptionsByType,
+    hasData,
   } = useDashboardAggregations({ dataset, year, state });
-
-  // Detectar se não há dados para os filtros selecionados
-  const hasData = overview.totalShelters > 0;
 
   return (
     <section className="bg-white pb-16 pt-12">
