@@ -58,13 +58,12 @@ export function SelectDropdown({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Reset highlighted index quando abrir
-  useEffect(() => {
-    if (isOpen) {
-      const currentIndex = options.findIndex((opt) => opt.value === value);
-      setHighlightedIndex(currentIndex >= 0 ? currentIndex : 0);
-    }
-  }, [isOpen, value, options]);
+  // Função para abrir o dropdown e inicializar o índice destacado
+  const openDropdown = () => {
+    const currentIndex = options.findIndex((opt) => opt.value === value);
+    setHighlightedIndex(currentIndex >= 0 ? currentIndex : 0);
+    setIsOpen(true);
+  };
 
   // Manipula navegação por teclado
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -78,13 +77,13 @@ export function SelectDropdown({
           onChange(options[highlightedIndex].value);
           setIsOpen(false);
         } else {
-          setIsOpen(true);
+          openDropdown();
         }
         break;
       case 'ArrowDown':
         e.preventDefault();
         if (!isOpen) {
-          setIsOpen(true);
+          openDropdown();
         } else {
           setHighlightedIndex((prev) =>
             prev < options.length - 1 ? prev + 1 : prev
@@ -131,7 +130,11 @@ export function SelectDropdown({
         `}
         onClick={() => {
           if (!disabled) {
-            setIsOpen(!isOpen);
+            if (isOpen) {
+              setIsOpen(false);
+            } else {
+              openDropdown();
+            }
           }
         }}
         onKeyDown={handleKeyDown}
