@@ -10,6 +10,7 @@ import {
   computeMonthlyOutcomes,
   computeMonthlySpeciesEntries,
   computeOverview,
+  hasAnyData,
   type YearFilter,
 } from "@/lib/database/aggregations";
 import type { DatabaseDataset } from "@/types/database.types";
@@ -61,6 +62,10 @@ export function useDashboardAggregations({
     () => computeMonthlyAdoptionsByType(dataset, year, state),
     [dataset, state, year]
   );
+  const hasData = useMemo(
+    () => hasAnyData(dataset, year, state),
+    [dataset, state, year]
+  );
 
   return {
     overview,
@@ -72,5 +77,6 @@ export function useDashboardAggregations({
     outcomesDogs,
     outcomesCats,
     adoptionsByType,
+    hasData,
   };
 }

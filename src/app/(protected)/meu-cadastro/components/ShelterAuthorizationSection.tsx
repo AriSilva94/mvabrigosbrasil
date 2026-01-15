@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 import Input from "@/components/ui/Input";
@@ -25,13 +25,7 @@ export default function ShelterAuthorizationSection({
   fieldErrors,
   lockNonPopulation = false,
 }: ShelterAuthorizationSectionProps): JSX.Element {
-  const [authorizedPhone, setAuthorizedPhone] = useState("");
-
-  useEffect(() => {
-    if (data?.authorizedPhone) {
-      setAuthorizedPhone(data.authorizedPhone);
-    }
-  }, [data?.authorizedPhone]);
+  const [authorizedPhone, setAuthorizedPhone] = useState(data?.authorizedPhone ?? "");
 
   const lockClass = lockNonPopulation
     ? "pointer-events-none cursor-not-allowed [&_input]:bg-slate-100 [&_input]:text-slate-500 [&_select]:bg-slate-100 [&_select]:text-slate-500"

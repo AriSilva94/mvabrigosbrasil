@@ -43,6 +43,7 @@ export default function ShelterProfileForm({
     state: shelter?.state ?? "",
   });
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
+  const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
   usePopulationEditScroll(populationEditOnly && !isLoading);
 
   useEffect(() => {
@@ -242,6 +243,7 @@ export default function ShelterProfileForm({
           setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
         }}
         onCepAutocomplete={handleCepAutocomplete}
+        onDuplicateCepChange={setHasDuplicateCep}
         lockNonPopulation={populationEditOnly}
       />
 
@@ -254,8 +256,8 @@ export default function ShelterProfileForm({
       <div className="flex flex-col items-center gap-4 pt-2">
         <button
           type="submit"
-          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
-          disabled={isSubmitting || isLoading}
+          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer disabled:cursor-not-allowed disabled:bg-brand-primary/50"
+          disabled={isSubmitting || isLoading || hasDuplicateCep}
         >
           {submitLabel}
         </button>
