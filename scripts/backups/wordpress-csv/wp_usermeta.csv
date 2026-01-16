@@ -47,7 +47,7 @@
 "49","2","wp_capabilities","a:1:{s:6:""editor"";b:1;}"
 "50","2","wp_user_level","7"
 "51","2","dismissed_wp_pointers",
-"53","1","wfls-last-login","1768417453"
+"53","1","wfls-last-login","1768523699"
 "57","1","wp_user-settings","libraryContent=browse&hidetb=1&editor=tinymce&imgsize=full&posts_list_mode=list"
 "58","1","wp_user-settings-time","1732040868"
 "65","1","_yoast_alerts_dismissed","a:1:{s:26:""webinar-promo-notification"";b:1;}"
@@ -62,7 +62,7 @@
 "76","1","metaboxhidden_vaga","a:1:{i:0;s:7:""slugdiv"";}"
 "77","1","sbi_onboarding","s:40:""a:1:{s:10:""customizer"";s:9:""dismissed"";}"";"
 "78","1","edit_page_per_page","50"
-"96","1","wplalr_last_login","1768417453"
+"96","1","wplalr_last_login","1768523699"
 "261","1","_yoast_wpseo_profile_updated","1759966007"
 "262","2","_yoast_wpseo_profile_updated","1664960962"
 "266","2","wplalr_last_login","1741474302"
@@ -247,7 +247,7 @@
 "794","42","wp_user_level","0"
 "795","42","_yoast_wpseo_profile_updated","1668333363"
 "796","42","default_password_nag",
-"797","42","session_tokens","a:1:{s:64:""614587987bb2c09408febd8a562d4f4d48c70039917aa55540c2a813efcc595b"";a:4:{s:10:""expiration"";i:1765976212;s:2:""ip"";s:38:""2804:1b3:6680:e0ba:6978:81d5:8e33:eb8a"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1765803412;}}"
+"797","42","session_tokens","a:1:{s:64:""34afc9ac136e6119ced5202596c6e70782fcfbb7575d6ba05777776a98a2639c"";a:4:{s:10:""expiration"";i:1768656823;s:2:""ip"";s:38:""2804:1b3:6681:4d80:e06e:e528:8b3e:5541"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768484023;}}"
 "798","43","nickname","camilaalvess285@gmail.com"
 "799","43","first_name",
 "800","43","last_name",
@@ -3837,8 +3837,8 @@
 "4536","262","_yoast_wpseo_profile_updated","1693539627"
 "4537","262","default_password_nag",
 "4538","262","session_tokens","a:1:{s:64:""57838cebec89fad25d4c496d1019c64cdb63f308bc31f5fbb709dd48035a8aaa"";a:4:{s:10:""expiration"";i:1708023559;s:2:""ip"";s:37:""2804:3278:12b:8008:59fd:1b2:1131:9d40"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1707850759;}}"
-"4539","42","wplalr_last_login","1765803412"
-"4540","42","wfls-last-login","1765803412"
+"4539","42","wplalr_last_login","1768484023"
+"4540","42","wfls-last-login","1768484023"
 "4543","203","wplalr_last_login","1703702962"
 "4544","203","wfls-last-login","1703702962"
 "4546","263","nickname","mislene.medvet@gmail.com"
@@ -16979,7 +16979,7 @@
 "18072","988","_tipo_cadastro","field_67cca779c59ee"
 "18073","988","_yoast_wpseo_profile_updated","1765887060"
 "18074","988","default_password_nag",
-"18075","988","session_tokens","a:1:{s:64:""abdf262691972f0bcbc74fd107b171b8da1bf901935f7577033d5c2043973422"";a:4:{s:10:""expiration"";i:1766059861;s:2:""ip"";s:13:""201.62.39.128"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1765887061;}}"
+"18075","988","session_tokens","a:1:{s:64:""52a79a88cb5e19b8a10cb84e7d0c84d360eabe641a0189e3215117d3b6da5749"";a:4:{s:10:""expiration"";i:1768672488;s:2:""ip"";s:13:""201.62.39.128"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768499688;}}"
 "18076","989","nickname","joelmahttp@gmail.com"
 "18077","989","first_name",
 "18078","989","last_name",
@@ -17100,7 +17100,7 @@
 "18193","994","_yoast_wpseo_profile_updated","1765990191"
 "18194","994","default_password_nag",
 "18195","994","session_tokens","a:1:{s:64:""9a29dbb040cd09973d2cad31e98f72ba67dbd96a27ceec59ad9e61a82b163005"";a:4:{s:10:""expiration"";i:1766162991;s:2:""ip"";s:38:""2600:6c52:6f7f:6dad:b8dc:4ced:a47:dadb"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1765990191;}}"
-"18201","1","session_tokens","a:3:{s:64:""767493b79c737ff8e5ed6b504a384b0e23bb3b0744b96909bcb8e0ca2733cefb"";a:4:{s:10:""expiration"";i:1768500344;s:2:""ip"";s:39:""2804:5d80:8346:9a58:11b3:3b79:c81c:e121"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768327544;}s:64:""cae2ea0de210c581e77c0b0cd93915f4744ca3c2a64ebc113ce207f01f7f2677"";a:4:{s:10:""expiration"";i:1768513982;s:2:""ip"";s:37:""2804:1b3:8203:8d2a:689:9c27:4786:dd1a"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768341182;}s:64:""b016408371633f03214384bdc426f01ee0c7c09811c7dbdedc763713c43fb8cf"";a:4:{s:10:""expiration"";i:1768590253;s:2:""ip"";s:39:""2804:5d80:8346:9a58:ddee:d459:78cb:73ec"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768417453;}}"
+"18201","1","session_tokens","a:2:{s:64:""b016408371633f03214384bdc426f01ee0c7c09811c7dbdedc763713c43fb8cf"";a:4:{s:10:""expiration"";i:1768590253;s:2:""ip"";s:39:""2804:5d80:8346:9a58:ddee:d459:78cb:73ec"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768417453;}s:64:""412baaba8237c71cccffb62f8b44fcd6f08cca5b592fa313f8fb2e83e0495b81"";a:4:{s:10:""expiration"";i:1768696499;s:2:""ip"";s:39:""2804:5d80:8346:9a58:4c38:89ac:f2be:e185"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768523699;}}"
 "18208","995","nickname","josisantossiqueira2006@gmail.com"
 "18209","995","first_name",
 "18210","995","last_name",
@@ -17251,3 +17251,25 @@
 "18357","1001","session_tokens","a:2:{s:64:""97610cfb65965702d7731b7f91f4e3100f7fec6f3ffb5cfec624c9ee60942654"";a:4:{s:10:""expiration"";i:1768564726;s:2:""ip"";s:38:""2804:d4b:821c:5100:cc78:ad61:548a:2eb3"";s:2:""ua"";s:213:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22G100 Instagram 412.0.0.17.89 (iPhone11,8; iOS 18_6_2; pt_BR; pt; scale=2.00; 750x1624; IABMV/1; 859471633)"";s:5:""login"";i:1768391926;}s:64:""5a077384537ea12c61c4bebd5a8cf3729b69feb5f816fd664085493bb123995c"";a:4:{s:10:""expiration"";i:1768564875;s:2:""ip"";s:38:""2804:d4b:821c:5100:cc78:ad61:548a:2eb3"";s:2:""ua"";s:213:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22G100 Instagram 412.0.0.17.89 (iPhone11,8; iOS 18_6_2; pt_BR; pt; scale=2.00; 750x1624; IABMV/1; 859471633)"";s:5:""login"";i:1768392075;}}"
 "18358","1001","wplalr_last_login","1768392075"
 "18359","1001","wfls-last-login","1768392075"
+"18361","1002","nickname","projetomvabrigos@gmail.com"
+"18362","1002","first_name",
+"18363","1002","last_name",
+"18364","1002","description",
+"18365","1002","rich_editing","true"
+"18366","1002","syntax_highlighting","true"
+"18367","1002","comment_shortcuts","false"
+"18368","1002","admin_color","fresh"
+"18369","1002","use_ssl","0"
+"18370","1002","show_admin_bar_front","true"
+"18371","1002","locale",
+"18372","1002","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18373","1002","wp_user_level","0"
+"18374","1002","tipo_cadastro","gerente"
+"18375","1002","_tipo_cadastro","field_67cca779c59ee"
+"18376","1002","id_abrigo","1499, 2192, 1587, 982, 2304"
+"18377","1002","_id_abrigo","field_67998ea70bb61"
+"18378","1002","session_tokens","a:4:{s:64:""f47da59b09a7ade8f2fc88e19ed711f735514b273626048c450809d8c8816fea"";a:4:{s:10:""expiration"";i:1768663934;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1768491134;}s:64:""47a912cc8dc1fdcdc1246d22a43078c25214b4c11aff355f531d265d6b169a60"";a:4:{s:10:""expiration"";i:1768664544;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768491744;}s:64:""d2d7ed9d3b4502513e0afcef30c228ca91b27137ccd10450f87f920d057928cb"";a:4:{s:10:""expiration"";i:1768668039;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768495239;}s:64:""a1a86a0e2e68240443c7107c12779e933d457cbd2d6df1a6e7abb9856d0a3e29"";a:4:{s:10:""expiration"";i:1768688709;s:2:""ip"";s:14:""200.192.114.18"";s:2:""ua"";s:117:""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15"";s:5:""login"";i:1768515909;}}"
+"18379","1002","wplalr_last_login","1768515909"
+"18380","1002","wfls-last-login","1768515909"
+"18381","988","wplalr_last_login","1768499688"
+"18382","988","wfls-last-login","1768499688"
