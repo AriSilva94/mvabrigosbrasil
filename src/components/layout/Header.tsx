@@ -27,7 +27,7 @@ export default function Header() {
       return pathname === "/";
     }
 
-    if (href === "/biblioteca" && pathname.startsWith("/clipping")) {
+    if (href === "/materias" && pathname.startsWith("/clipping")) {
       return true;
     }
 
