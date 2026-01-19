@@ -7,7 +7,7 @@ import {
   vacancyFormSchema,
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
-import { fetchVacanciesByShelter, mapVacancyRow } from "@/services/vacanciesSupabase";
+import { fetchVacanciesByShelter, mapVacancyRow, buildVacancySlug } from "@/services/vacanciesSupabase";
 import { revalidateVacancies } from "@/lib/cache/revalidate";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data, error: insertError } = await supabaseAdmin
+  const { data: insertedData, error: insertError } = await supabaseAdmin
     .from("vacancies")
     .insert({
       shelter_id: shelter.id,
@@ -116,7 +116,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
 
-  const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
+  // Gerar e salvar o slug usando o ID da vaga criada
+  const inserted = insertedData as VacancyRow;
+  const slug = buildVacancySlug(parsed.data.post_title, inserted.id);
+  const { data, error: updateError } = await supabaseAdmin
+    .from("vacancies")
+    .update({ slug })
+    .eq("id", inserted.id)
+    .select("*")
+    .single();
+
+  if (updateError) {
+    console.error("api/vacancies POST slug update error", updateError);
+    // Retorna a vaga mesmo sem o slug salvo, mapVacancyRow gerará um em memória
+  }
+
+  const vacancy = { ...mapVacancyRow((data ?? inserted) as VacancyRow), source: "supabase" };
   await revalidateVacancies(vacancy.slug);
   return NextResponse.json({ vacancy });
 }
