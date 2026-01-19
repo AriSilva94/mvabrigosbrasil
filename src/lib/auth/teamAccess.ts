@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 
-import type { RegisterType } from "@/constants/registerTypes";
+import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { findProfileById } from "@/modules/auth/repositories/profileRepository";
 
 const TEAM_ALLOWED_PATHS = ["/painel", "/dinamica-populacional"];
+const ADMIN_ALLOWED_PATHS = ["/painel", "/admin/gerentes", "/admin/abrigos"];
 
 export type UserAccessInfo = {
   userId: string;
@@ -61,6 +62,14 @@ export async function enforceTeamAccess(pathname: string): Promise<UserAccessInf
 
   if (!access) {
     redirect("/login");
+  }
+
+  // Admin só pode acessar rotas específicas
+  if (
+    access.registerType === REGISTER_TYPES.admin &&
+    !isPathAllowed(pathname, ADMIN_ALLOWED_PATHS)
+  ) {
+    redirect("/painel");
   }
 
   if (
