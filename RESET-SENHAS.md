@@ -193,7 +193,7 @@ node scripts/migrations/abrigos/setup-test-login-by-email.js aconchegodaspatas23
 ## Script para resetar senha no wordPress
 
 UPDATE wp_users
-SET user_pass = MD5('SENHA_NOVA_FORTE')
+SET user_pass = MD5('TESTE_SENHA_2025')
 WHERE ID = 447
 LIMIT 1;
 
