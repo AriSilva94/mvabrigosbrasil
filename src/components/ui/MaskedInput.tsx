@@ -21,14 +21,14 @@ const maskFunctions: Record<MaskType, (value: string) => string> = {
 const maxLengths: Record<MaskType, number> = {
   cnpj: 18, // 00.000.000/0000-00
   cpf: 14, // 000.000.000-00
-  phone: 15, // (00) 00000-0000
+  phone: 16, // (00) 0 0000-0000
   cep: 9, // 00000-000
 };
 
 const placeholders: Record<MaskType, string> = {
   cnpj: "00.000.000/0000-00",
   cpf: "000.000.000-00",
-  phone: "(00) 00000-0000",
+  phone: "(00) 0 0000-0000",
   cep: "00000-000",
 };
 
