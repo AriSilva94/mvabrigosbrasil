@@ -24,9 +24,10 @@ export default async function Page({
   const access = await enforceTeamAccess("/meu-cadastro");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
   const isManager = access.registerType === REGISTER_TYPES.manager;
+  const isAdmin = access.registerType === REGISTER_TYPES.admin;
 
-  // Gerente não tem cadastro próprio, redirecionar para painel
-  if (isManager) {
+  // Gerente e Admin não têm cadastro próprio, redirecionar para painel
+  if (isManager || isAdmin) {
     redirect("/painel");
   }
 
