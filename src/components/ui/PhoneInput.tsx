@@ -10,20 +10,20 @@ interface PhoneInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElemen
 
 /**
  * Componente PhoneInput - Input com máscara de telefone (DDD)
- * Formatos aceitos: (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+ * Formatos aceitos: (XX) X XXXX-XXXX (celular) ou (XX) XXXX-XXXX (fixo)
  * Remove caracteres especiais automaticamente ao processar
  *
  * @example
  * <PhoneInput
  *   value={telefone}
  *   onChange={setTelefone}
- *   placeholder="(00) 00000-0000"
+ *   placeholder="(00) 0 0000-0000"
  * />
  */
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
   ({ value, onChange, className = '', ...props }, ref) => {
     /**
-     * Aplica máscara de telefone: (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+     * Aplica máscara de telefone: (XX) X XXXX-XXXX (celular) ou (XX) XXXX-XXXX (fixo)
      */
     const applyPhoneMask = (rawValue: string): string => {
       // Remove tudo que não é número
@@ -37,13 +37,18 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         return '';
       } else if (limitedNumbers.length <= 2) {
         return `(${limitedNumbers}`;
-      } else if (limitedNumbers.length <= 6) {
+      } else if (limitedNumbers.length <= 3) {
+        // DDD + primeiro dígito
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2)}`;
+      } else if (limitedNumbers.length <= 7) {
+        // DDD + primeiro bloco (até 4 dígitos após o 9)
+        return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 3)} ${limitedNumbers.slice(3)}`;
       } else if (limitedNumbers.length <= 10) {
+        // Telefone fixo: (XX) XXXX-XXXX
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 6)}-${limitedNumbers.slice(6)}`;
       } else {
-        // 11 dígitos (celular com 9 no início)
-        return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 7)}-${limitedNumbers.slice(7, 11)}`;
+        // 11 dígitos (celular): (XX) X XXXX-XXXX
+        return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 3)} ${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7, 11)}`;
       }
     };
 
