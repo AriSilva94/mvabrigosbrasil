@@ -21,6 +21,7 @@ import { TextOnlyInput } from "@/components/ui/TextOnlyInput";
 import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
 import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import { useLocationData } from "@/hooks/useLocationData";
+import { formatPhone } from "@/lib/formatters";
 
 const FAIXA_ETARIA_OPTIONS = [
   { value: "18 a 35", label: "18 a 35 anos" },
@@ -86,6 +87,7 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [telefone, setTelefone] = useState("");
   const [estado, setEstado] = useState("");
   const [cidade, setCidade] = useState("");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Outros selects
   const [faixaEtaria, setFaixaEtaria] = useState("");
@@ -108,18 +110,20 @@ export default function VolunteerProfileForm(): JSX.Element {
     label: c.nome,
   }));
 
-  // Carrega cidades quando estado muda
+  // Carrega cidades quando estado muda (apenas limpa cidade se não for carga inicial)
   useEffect(() => {
     if (estado) {
       fetchCidades(estado);
-      setCidade(""); // Limpa cidade ao mudar estado
+      if (!isInitialLoad) {
+        setCidade(""); // Limpa cidade ao mudar estado manualmente
+      }
     }
-  }, [estado, fetchCidades]);
+  }, [estado, fetchCidades, isInitialLoad]);
 
   // Inicializa valores quando voluntário carrega
   useEffect(() => {
     if (volunteer) {
-      setTelefone(volunteer.telefone || "");
+      setTelefone(formatPhone(volunteer.telefone || ""));
       setEstado(volunteer.estado || "");
       setCidade(volunteer.cidade || "");
       setFaixaEtaria(volunteer.faixa_etaria || "");
@@ -134,6 +138,9 @@ export default function VolunteerProfileForm(): JSX.Element {
       if (volunteer.estado) {
         fetchCidades(volunteer.estado);
       }
+
+      // Marca que a carga inicial foi concluída
+      setIsInitialLoad(false);
     }
   }, [volunteer, fetchCidades]);
 
@@ -256,7 +263,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               value={telefone}
               onChange={setTelefone}
               autoComplete="tel"
-              placeholder="(00) 00000-0000"
+              placeholder="(00) 0 0000-0000"
               aria-invalid={Boolean(fieldErrors.telefone)}
               aria-describedby={fieldErrors.telefone ? "telefone-error" : undefined}
               className={clsx(
