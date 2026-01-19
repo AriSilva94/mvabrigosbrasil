@@ -37,21 +37,22 @@ export function formatCep(value: string): string {
 }
 
 /**
- * Formata telefone: (00) 00000-0000 ou (00) 0000-0000
+ * Formata telefone: (00) 0 0000-0000 (celular) ou (00) 0000-0000 (fixo)
  */
 export function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, "");
 
   if (digits.length <= 2) return digits;
-  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 3) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(3)}`;
 
   if (digits.length <= 10) {
     // Telefone fixo: (00) 0000-0000
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6, 10)}`;
   }
 
-  // Celular: (00) 00000-0000
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+  // Celular: (00) 0 0000-0000
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
 }
 
 /**
