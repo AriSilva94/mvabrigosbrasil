@@ -45,7 +45,7 @@ export default function AdminPanel(): JSX.Element {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link
                 href="/admin/abrigos"
                 className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
@@ -64,7 +64,7 @@ export default function AdminPanel(): JSX.Element {
                   Visualizar todos os abrigos cadastrados
                 </Text>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </section>
       </div>
