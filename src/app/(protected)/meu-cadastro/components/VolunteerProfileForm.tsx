@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -87,7 +87,7 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [telefone, setTelefone] = useState("");
   const [estado, setEstado] = useState("");
   const [cidade, setCidade] = useState("");
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const initialEstadoRef = useRef<string | null>(null);
 
   // Outros selects
   const [faixaEtaria, setFaixaEtaria] = useState("");
@@ -110,19 +110,23 @@ export default function VolunteerProfileForm(): JSX.Element {
     label: c.nome,
   }));
 
-  // Carrega cidades quando estado muda (apenas limpa cidade se não for carga inicial)
+  // Carrega cidades quando estado muda (apenas limpa cidade se mudou manualmente)
   useEffect(() => {
     if (estado) {
       fetchCidades(estado);
-      if (!isInitialLoad) {
-        setCidade(""); // Limpa cidade ao mudar estado manualmente
+      // Só limpa cidade se o estado mudou E não é o estado inicial do voluntário
+      if (initialEstadoRef.current !== null && estado !== initialEstadoRef.current) {
+        setCidade("");
       }
     }
-  }, [estado, fetchCidades, isInitialLoad]);
+  }, [estado, fetchCidades]);
 
   // Inicializa valores quando voluntário carrega
   useEffect(() => {
     if (volunteer) {
+      // Guarda o estado inicial para comparação
+      initialEstadoRef.current = volunteer.estado || null;
+
       setTelefone(formatPhone(volunteer.telefone || ""));
       setEstado(volunteer.estado || "");
       setCidade(volunteer.cidade || "");
@@ -138,9 +142,6 @@ export default function VolunteerProfileForm(): JSX.Element {
       if (volunteer.estado) {
         fetchCidades(volunteer.estado);
       }
-
-      // Marca que a carga inicial foi concluída
-      setIsInitialLoad(false);
     }
   }, [volunteer, fetchCidades]);
 
