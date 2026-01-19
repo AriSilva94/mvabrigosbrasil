@@ -189,6 +189,14 @@ node scripts/migrations/abrigos/setup-test-login-by-email.js aconchegodaspatas23
 | "Variáveis não configuradas" | Checar `.env.local` na raiz |
 | Não consegue logar | Senha: `TESTE_SENHA_2025` |
 
+
+## Script para resetar senha no wordPress
+
+UPDATE wp_users
+SET user_pass = MD5('SENHA_NOVA_FORTE')
+WHERE ID = 447
+LIMIT 1;
+
 ---
 
 *Atualizado: Janeiro/2026*
