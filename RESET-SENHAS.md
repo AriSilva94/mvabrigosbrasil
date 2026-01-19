@@ -120,13 +120,56 @@ node scripts/migrations/equipe/verify-manager-migration.js
 
 ## 6. ADMIN
 
+**Credenciais:**
+
+- **Email:** `admin@mvabrigosbrasil.com.br`
+- **Senha:** `TESTE_SENHA_2025`
+
+**Acesso:** `/painel`, `/admin/gerentes` e `/admin/abrigos`
+
 ```bash
+# Reset de senha (se usuário já existe)
 node scripts/migrations/abrigos/setup-test-login-by-email.js admin@mvabrigosbrasil.com.br
 ```
 
-**Acesso:** `/admin/gerentes` e `/admin/abrigos`
+### Criar usuário Admin do zero (SQL - Supabase CLI)
 
-### Promover usuário a Admin (SQL)
+```sql
+INSERT INTO auth.users (
+  instance_id,
+  id,
+  aud,
+  role,
+  email,
+  encrypted_password,
+  email_confirmed_at,
+  raw_user_meta_data,
+  created_at,
+  updated_at,
+  confirmation_token,
+  email_change,
+  email_change_token_new,
+  recovery_token
+) VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  gen_random_uuid(),
+  'authenticated',
+  'authenticated',
+  'admin@mvabrigosbrasil.com.br',
+  crypt('TESTE_SENHA_2025', gen_salt('bf')),
+  NOW(),
+  '{"registerType": "admin"}'::jsonb,
+  NOW(),
+  NOW(),
+  '',
+  '',
+  '',
+  ''
+);
+```
+
+### Promover usuário existente a Admin (SQL)
+
 ```sql
 UPDATE auth.users
 SET raw_user_meta_data = jsonb_set(
