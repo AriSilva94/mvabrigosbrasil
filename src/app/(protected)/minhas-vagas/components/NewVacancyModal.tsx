@@ -80,10 +80,10 @@ export default function NewVacancyModal({
       post_is_published: isPublished,
       post_content: String(formData.get("post_content") ?? ""),
       post_habilidades_e_funcoes: String(
-        formData.get("post_habilidades_e_funcoes") ?? ""
+        formData.get("post_habilidades_e_funcoes") ?? "",
       ),
       post_perfil_dos_voluntarios: String(
-        formData.get("post_perfil_dos_voluntarios") ?? ""
+        formData.get("post_perfil_dos_voluntarios") ?? "",
       ),
     };
 
@@ -133,7 +133,7 @@ export default function NewVacancyModal({
       open={open}
       onOpenChange={(next) => (!next ? handleClose() : undefined)}
     >
-      <DialogContent className="w-full max-w-5xl px-4 py-5 sm:px-6 md:px-7 md:py-6 max-h-[85vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-3xl px-4 py-5 sm:px-6 md:px-7 md:py-6 max-h-[85vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-start justify-between gap-3 sm:gap-4">
           <DialogTitle className="text-xl text-brand-secondary">
             Cadastrar Nova Vaga
