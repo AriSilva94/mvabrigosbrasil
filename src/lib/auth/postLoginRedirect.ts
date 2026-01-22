@@ -24,7 +24,6 @@ export async function resolvePostLoginRedirect(): Promise<string> {
         "Content-Type": "application/json",
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       },
-      cache: "no-store",
     });
 
     if (!response.ok) {

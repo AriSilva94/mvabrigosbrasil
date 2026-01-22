@@ -15,7 +15,7 @@ export function useShelterProfile() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/shelter-profile", { cache: "no-store" });
+      const response = await fetch("/api/shelter-profile");
       const data = (await response.json()) as ShelterProfileResponse;
 
       if (!response.ok) {

@@ -15,7 +15,7 @@ import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
-import { getCachedPublicVacancyBySlug } from "@/lib/cache/publicData";
+import { getPublicVacancyBySlug } from "@/services/publicDataService";
 import ApplyButton from "./components/ApplyButton";
 
 type VacancyPageProps = {
@@ -75,7 +75,7 @@ async function loadVacancy(slug: string): Promise<{
     }
   }
 
-  const publicVacancy = await getCachedPublicVacancyBySlug(slug);
+  const publicVacancy = await getPublicVacancyBySlug(slug);
   if (!publicVacancy) {
     return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated };
   }

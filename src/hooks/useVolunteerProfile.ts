@@ -15,7 +15,7 @@ export function useVolunteerProfile() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/volunteer-profile", { cache: "no-store" });
+      const response = await fetch("/api/volunteer-profile");
       const data = (await response.json()) as VolunteerProfileResponse;
 
       if (!response.ok) {
