@@ -17,7 +17,7 @@ type FetchState =
   | { status: "error"; users: TeamUser[]; error: string };
 
 async function fetchTeamUsers(): Promise<TeamUser[]> {
-  const response = await fetch("/api/team-users", { cache: "no-store" });
+  const response = await fetch("/api/team-users");
   if (!response.ok) {
     const result = await response.json().catch(() => null);
     const errorMessage =

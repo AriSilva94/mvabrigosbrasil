@@ -66,15 +66,6 @@ const TEAM_MEMBERS: TeamMember[] = [
       "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/v03.jpg",
     alt: "Foto de Gabriel Santos sorrindo",
   },
-  {
-    name: "Cadu (Carlos Pinotti)",
-    role: "Voluntário",
-    description:
-      "Administrador e especialista em marketing com ampla experiência no setor público e no terceiro setor. Atuou por mais de uma década em uma OSC da causa animal, captando recursos e promovendo ações de impacto. Cofundador da Associação das Entidades Assistenciais do município e Coordenador de Relações Institucionais, segue atuando em prol da causa animal.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/v04.jpg",
-    alt: "Foto de Cadu Carlos Pinotti sorrindo",
-  },
 ];
 
 function TeamMemberCard({

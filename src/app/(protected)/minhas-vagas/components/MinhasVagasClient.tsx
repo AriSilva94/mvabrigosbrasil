@@ -32,7 +32,7 @@ export default function MinhasVagasClient({
   async function refreshVacancies() {
     try {
       setIsRefreshing(true);
-      const response = await fetch("/api/vacancies", { cache: "no-store" });
+      const response = await fetch("/api/vacancies");
       if (!response.ok) throw new Error("Erro ao carregar vagas");
       const json = (await response.json()) as { vacancies?: UiVacancy[] };
       if (json.vacancies) setItems(json.vacancies);

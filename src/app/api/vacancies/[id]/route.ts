@@ -8,7 +8,6 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
-import { revalidateVacancies } from "@/lib/cache/revalidate";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
@@ -73,7 +72,6 @@ export async function GET(
     }
 
     const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
-    await revalidateVacancies(vacancy.slug);
 
     return NextResponse.json({ vacancy });
   }
@@ -167,7 +165,6 @@ export async function PUT(
   }
 
   const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
-  await revalidateVacancies(vacancy.slug);
 
   return NextResponse.json({ vacancy });
 }
@@ -190,7 +187,7 @@ export async function DELETE(
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Primeiro, busca a vaga para verificar ownership e obter o slug para revalidação
+  // Primeiro, busca a vaga para verificar ownership
   const { data: vacancy, error: fetchError } = await supabaseAdmin
     .from("vacancies")
     .select("id, slug, shelter_id")
@@ -217,11 +214,6 @@ export async function DELETE(
   if (deleteError) {
     console.error("api/vacancies/[id] DELETE error", deleteError);
     return NextResponse.json({ error: "Erro ao deletar vaga" }, { status: 500 });
-  }
-
-  // Revalida o cache
-  if (vacancy.slug) {
-    await revalidateVacancies(vacancy.slug);
   }
 
   return NextResponse.json({ success: true, message: "Vaga deletada com sucesso" });
