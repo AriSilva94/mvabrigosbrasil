@@ -117,6 +117,11 @@ export const PARTNER_SUPPORTERS: PartnerLogo[] = [
     image:
       "https://mvabrigosbrasil.com.br/wp-content/uploads/2025/11/MECA2.jpg",
   },
+  {
+    name: "ONG Animal",
+    image:
+      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/IMG_5524-scaled-e1768678371453.png",
+  },
 ];
 
 export const PARTNER_SPONSORS: PartnerLogo[] = [

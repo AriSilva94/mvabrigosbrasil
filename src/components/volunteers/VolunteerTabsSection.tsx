@@ -58,7 +58,7 @@ export default function VolunteerTabsSection({
 
   return (
     <section className="flex items-center justify-center px-4 md:px-6">
-      <div className="mx-auto max-w-4xl rounded-3xl py-4 md:py-10 md:px-10">
+      <div className="mx-auto w-full max-w-4xl rounded-3xl py-4 md:py-10 md:px-10">
         <nav className="flex flex-col items-stretch gap-2 border-b border-slate-200 pb-3 md:flex-row md:items-center md:gap-4">
           {VOLUNTEER_TABS.map(({ id, label }) => {
             const isActive = id === activeTab;

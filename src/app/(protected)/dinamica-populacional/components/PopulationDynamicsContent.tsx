@@ -11,6 +11,7 @@ import HeaderSection from "./HeaderSection";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
+import { SHELTER_TYPE_OPTIONS } from "@/constants/shelterProfile";
 import type { PopulationUserSummary } from "../types";
 import DynamicsSection from "./DynamicsSection";
 import { useDynamicsData } from "../hooks/useDynamicsData";
@@ -52,6 +53,9 @@ export default function PopulationDynamicsContent({
     registerType === "dinamica_lar"
       ? "Registro de Dinâmica Populacional L.T"
       : "Registro de Dinâmica Populacional";
+
+  const ltOption = SHELTER_TYPE_OPTIONS.find((opt) => opt.value === "temporary");
+  const isLtShelter = userSummary?.shelterTypeLabel === ltOption?.label;
 
   return (
     <>
@@ -157,16 +161,23 @@ export default function PopulationDynamicsContent({
           <button
             type="button"
             onClick={() => openRegister("dinamica_lar")}
-            className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left text-slate-800 transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer"
+            disabled={isLtShelter}
+            className={`flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary ${
+              isLtShelter
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer text-slate-800 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)]"
+            }`}
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+              isLtShelter ? "bg-slate-100 text-slate-400" : "bg-amber-100 text-amber-700"
+            }`}>
               <Home className="h-5 w-5" aria-hidden />
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-slate-900">
+              <p className={`text-sm font-semibold ${isLtShelter ? "text-slate-400" : "text-slate-900"}`}>
                 Dinâmica Populacional L.T
               </p>
-              <p className="text-xs text-slate-600">
+              <p className={`text-xs ${isLtShelter ? "text-slate-400" : "text-slate-600"}`}>
                 Registros específicos para lares temporários e protetores.
               </p>
             </div>

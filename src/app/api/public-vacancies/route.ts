@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getCachedVacancyCards } from "@/lib/cache/publicData";
+import { getVacancyCards } from "@/services/publicDataService";
 
 export async function GET() {
   try {
-    const vacancies = await getCachedVacancyCards();
+    const vacancies = await getVacancyCards();
     return NextResponse.json({ vacancies });
   } catch (error) {
     console.error("API /api/public-vacancies - unexpected error:", error);

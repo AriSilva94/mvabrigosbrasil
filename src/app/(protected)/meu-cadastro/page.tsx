@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import ShelterProfileForm from "@/app/(protected)/meu-cadastro/components/ShelterProfileForm";
 import VolunteerProfileForm from "@/app/(protected)/meu-cadastro/components/VolunteerProfileForm";
+import ProfileUpdateAlert from "@/app/(protected)/meu-cadastro/components/ProfileUpdateAlert";
 import { ShelterHistoryTimeline } from "@/app/(protected)/meu-cadastro/components/ShelterHistoryTimeline";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
@@ -47,6 +48,7 @@ export default async function Page({
 
       <section className="bg-white px-4 py-14 md:px-6">
         <div className="mx-auto max-w-6xl space-y-10">
+          <ProfileUpdateAlert />
           {isVolunteer ? (
             <VolunteerProfileForm />
           ) : (

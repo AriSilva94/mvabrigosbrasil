@@ -1,7 +1,7 @@
 import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { buildMetadata } from "@/lib/seo";
-import { getCachedVolunteerCards } from "@/lib/cache/publicData";
+import { getVolunteerCards } from "@/services/publicDataService";
 
 export const metadata = buildMetadata({
   title: "Programa de Voluntários",
@@ -11,7 +11,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page() {
-  const volunteers = await getCachedVolunteerCards();
+  const volunteers = await getVolunteerCards();
 
   return (
     <main>
