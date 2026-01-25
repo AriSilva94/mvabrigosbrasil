@@ -87,7 +87,7 @@ export function useDynamicsData({
         ? `/api/dynamics?shelter_id=${shelterWpPostId}`
         : "/api/dynamics";
 
-      const response = await fetch(url, { cache: "no-store" });
+      const response = await fetch(url);
       if (!response.ok) {
         setSections(buildFallbackSections(userSummary, BASE_STATS));
         return;

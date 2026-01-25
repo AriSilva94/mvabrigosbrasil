@@ -9,7 +9,6 @@ import {
 } from "@/modules/volunteer/volunteerProfileSchema";
 import type { VolunteerProfileFormData } from "@/types/volunteer.types";
 import { generateVolunteerSlug } from "@/repositories/newVolunteersRepository";
-import { revalidateVolunteers } from "@/lib/cache/revalidate";
 
 type CurrentUser = { id: string; email: string | null };
 
@@ -246,13 +245,6 @@ export async function POST(request: Request) {
       console.error("volunteer-profile POST: erro ao salvar volunteers", error);
       return NextResponse.json({ error: "Erro ao salvar cadastro" }, { status: 500 });
     }
-
-    const finalSlug =
-      (data && typeof (data as { slug?: unknown }).slug === "string"
-        ? (data as { slug: string }).slug
-        : slug ?? undefined) || undefined;
-
-    await revalidateVolunteers(finalSlug);
 
     return NextResponse.json({
       ok: true,

@@ -41,20 +41,20 @@ function PartnerGridSection({
         </Text>
       </header>
 
-      <ul className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
         {items.map(({ name, image, alt }) => (
           <li
             key={`${id}-${name}-${image}`}
-            className="flex flex-col items-center rounded-2xl bg-white"
+            className="flex flex-col items-center"
           >
-            <div className="flex h-32 w-full items-center justify-center">
+            <div className="flex items-center justify-center w-42.5 h-42.5 rounded-[14px] p-3.5 bg-white">
               <AppImage
                 src={image}
                 alt={alt ?? name}
-                width={220}
+                width={140}
                 height={140}
-                className="h-full w-auto max-w-full object-contain"
-                sizes="(max-width: 640px) 50vw, 240px"
+                className="max-h-full max-w-full object-contain"
+                sizes="(max-width: 640px) 50vw, 170px"
               />
             </div>
             <p className="mt-3 text-center text-base font-normal leading-snug text-text-default">
