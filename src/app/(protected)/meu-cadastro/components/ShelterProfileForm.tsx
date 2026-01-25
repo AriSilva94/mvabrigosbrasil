@@ -12,6 +12,7 @@ import {
 } from "@/modules/shelter/shelterProfileSchema";
 import { useShelterProfile } from "@/hooks/useShelterProfile";
 import { usePopulationEditScroll } from "@/hooks/usePopulationEditScroll";
+import { useProfileValidationContext } from "@/components/providers/ProfileValidationProvider";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 import ShelterAuthorizationSection from "./ShelterAuthorizationSection";
 import ShelterInfoSection from "./ShelterInfoSection";
@@ -26,6 +27,7 @@ export default function ShelterProfileForm({
 }): JSX.Element {
   const router = useRouter();
   const { shelter, isLoading, refresh } = useShelterProfile();
+  const { refetch: refetchValidation } = useProfileValidationContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof ShelterProfileInput, string>>
@@ -163,7 +165,7 @@ export default function ShelterProfileForm({
       }
 
       toast.success("Cadastro do abrigo salvo com sucesso.");
-      await refresh();
+      await refetchValidation();
       if (populationEditOnly) {
         router.push("/dinamica-populacional");
       } else {

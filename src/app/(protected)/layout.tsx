@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
+import ProfileValidationProvider from "@/components/providers/ProfileValidationProvider";
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -17,5 +18,5 @@ export default async function ProtectedLayout({
     redirect("/login");
   }
 
-  return <>{children}</>;
+  return <ProfileValidationProvider>{children}</ProfileValidationProvider>;
 }

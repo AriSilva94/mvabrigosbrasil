@@ -12,8 +12,6 @@ export const metadata = buildMetadata({
   canonical: "/register",
 });
 
-export const dynamic = "force-dynamic";
-
 type PageSearchParams = {
   tipo?: string | string[];
 };
