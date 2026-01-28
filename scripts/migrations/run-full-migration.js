@@ -15,7 +15,7 @@
  * - ✅ Importar backup do WordPress nas tabelas *_raw
  * - ✅ Configurar .env.local com SUPABASE_SERVICE_ROLE_KEY e DATABASE_URL
  *
- * ESTE SCRIPT EXECUTA AUTOMATICAMENTE (21 PASSOS):
+ * ESTE SCRIPT EXECUTA AUTOMATICAMENTE (22 PASSOS):
  * 0. Desabilitar triggers de histórico
  * 1. Migrar abrigos
  * 2. Migrar dinâmicas populacionais
@@ -33,11 +33,12 @@
  * 14. Criar profiles para donos de abrigos
  * 15. Vincular abrigos aos profiles
  * 16. Migrar candidaturas de vagas
- * 17. Validações (abrigos, dinâmicas, gerentes)
- * 18. Reabilitar triggers (SQL 06)
- * 19. Validação final completa (SQL 07)
- * 20. Popular wp_users_legacy para autenticação
- * 21. Garantir RLS e policies em todas as tabelas
+ * 17. Preencher referral_source com "outro" (campo novo)
+ * 18. Validações (abrigos, dinâmicas, gerentes)
+ * 19. Reabilitar triggers (SQL 06)
+ * 20. Validação final completa (SQL 07)
+ * 21. Popular wp_users_legacy para autenticação
+ * 22. Garantir RLS e policies em todas as tabelas
  *
  * DEPOIS DESTE SCRIPT:
  * ✅ Tudo pronto! Apenas testar e fazer deploy
@@ -241,6 +242,23 @@ async function main() {
     logSuccess('Trigger de histórico desabilitado');
 
     // ========================================
+    // PASSO 0.5: Adicionar coluna referral_source (se não existir)
+    // ========================================
+    logStep('0.5', 'Adicionar coluna referral_source nas tabelas');
+
+    await runSql(
+      `ALTER TABLE public.shelters ADD COLUMN IF NOT EXISTS referral_source TEXT;`,
+      'Adicionar coluna referral_source em shelters'
+    );
+
+    await runSql(
+      `ALTER TABLE public.volunteers ADD COLUMN IF NOT EXISTS referral_source TEXT;`,
+      'Adicionar coluna referral_source em volunteers'
+    );
+
+    logSuccess('Coluna referral_source adicionada (ou já existia)');
+
+    // ========================================
     // PASSO 1: Migrar Abrigos
     // ========================================
     logStep(1, 'Migração de Abrigos');
@@ -415,10 +433,33 @@ async function main() {
     stats.steps.push({ name: 'Candidaturas', ...step16 });
 
     // ========================================
-    // PASSO 17: Validações de Componentes
+    // PASSO 17: Preencher referral_source para registros migrados
+    // ========================================
+    logStep(17, 'Preencher referral_source para registros migrados do WordPress');
+
+    // Preencher referral_source em shelters
+    await runSql(
+      `UPDATE public.shelters
+       SET referral_source = 'outro'
+       WHERE referral_source IS NULL;`,
+      'Preencher referral_source em shelters com valor "outro"'
+    );
+    logSuccess('referral_source preenchido em shelters');
+
+    // Preencher referral_source em volunteers
+    await runSql(
+      `UPDATE public.volunteers
+       SET referral_source = 'outro'
+       WHERE referral_source IS NULL;`,
+      'Preencher referral_source em volunteers com valor "outro"'
+    );
+    logSuccess('referral_source preenchido em volunteers');
+
+    // ========================================
+    // PASSO 18: Validações de Componentes
     // ========================================
     if (!skipValidation) {
-      logStep(17, 'Validações de Componentes');
+      logStep(18, 'Validações de Componentes');
 
       logInfo('Validando migração de abrigos...');
       const val1 = runScript(
@@ -443,25 +484,25 @@ async function main() {
     }
 
     // ========================================
-    // PASSO 18: Reabilitar Triggers
+    // PASSO 19: Reabilitar Triggers
     // ========================================
-    logStep(18, 'Reabilitar Triggers');
+    logStep(19, 'Reabilitar Triggers');
     const sql06Path = path.join(__dirname, 'sql', '06-pos-migracao-reabilitar-triggers.sql');
     await executeSqlFile(sql06Path, { verbose: true });
     logSuccess('Triggers reabilitados');
 
     // ========================================
-    // PASSO 19: Validação Final
+    // PASSO 20: Validação Final
     // ========================================
-    logStep(19, 'Validação Final da Migração');
+    logStep(20, 'Validação Final da Migração');
     const sql07Path = path.join(__dirname, 'sql', '07-validacao-final.sql');
     await executeSqlFile(sql07Path, { verbose: true });
     logSuccess('Validação final concluída');
 
     // ========================================
-    // PASSO 20: Popular wp_users_legacy
+    // PASSO 21: Popular wp_users_legacy
     // ========================================
-    logStep(20, 'Popular wp_users_legacy');
+    logStep(21, 'Popular wp_users_legacy');
     await runSql(
       `INSERT INTO wp_users_legacy (id, user_login, user_email, user_pass, display_name)
        SELECT id, user_login, user_email, user_pass, display_name
@@ -472,9 +513,9 @@ async function main() {
     logSuccess('wp_users_legacy populada com sucesso');
 
     // ========================================
-    // PASSO 21: Garantir RLS em todas as tabelas
+    // PASSO 22: Garantir RLS em todas as tabelas
     // ========================================
-    logStep(21, 'Garantir proteção RLS em todas as tabelas');
+    logStep(22, 'Garantir proteção RLS em todas as tabelas');
 
     // Habilitar RLS
     await runSql(

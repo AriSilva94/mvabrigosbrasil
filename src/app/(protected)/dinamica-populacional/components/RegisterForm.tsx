@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 
 import { Text } from "@/components/ui/typography";
 import FormError from "@/components/ui/FormError";
+import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import { MONTH_OPTIONS, YEAR_OPTIONS } from "../constants";
 import type {
   DynamicType,
@@ -63,13 +64,50 @@ function RegisterFormInner({
     Partial<Record<keyof RegisterFormValues, string>>
   >({});
 
-  const handleChange =
-    (field: keyof RegisterFormValues) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const { value } = event.target;
-      setValues((current) => ({ ...current, [field]: value }));
-      setFieldErrors((current) => ({ ...current, [field]: undefined }));
-    };
+  const currentYear = dayjs().format("YYYY");
+  const currentMonth = dayjs().format("MM");
+
+  const monthOptions = useMemo(() => {
+    return MONTH_OPTIONS.map((option) => ({
+      ...option,
+      disabled: values.year === currentYear && option.value > currentMonth,
+    }));
+  }, [values.year, currentYear, currentMonth]);
+
+  const yearOptions = useMemo(() => {
+    return YEAR_OPTIONS.map((option) => ({
+      ...option,
+      disabled: false,
+    }));
+  }, []);
+
+  const handleMonthChange = (value: string): void => {
+    setValues((current) => ({ ...current, month: value }));
+    setFieldErrors((current) => ({ ...current, month: undefined }));
+  };
+
+  const handleYearChange = (value: string): void => {
+    const isCurrentYear = value === currentYear;
+    const currentMonthValue = values.month;
+
+    if (isCurrentYear && currentMonthValue > currentMonth) {
+      setValues((current) => ({
+        ...current,
+        year: value,
+        month: currentMonth,
+      }));
+      setFieldErrors((current) => ({
+        ...current,
+        year: undefined,
+        month: undefined,
+      }));
+      return;
+    }
+
+    setValues((current) => ({ ...current, year: value }));
+    setFieldErrors((current) => ({ ...current, year: undefined }));
+  };
+
   const handleIntegerChange =
     (field: keyof RegisterFormValues) =>
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -236,43 +274,27 @@ function RegisterFormInner({
         )}
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           {renderLabel("Mês Referência")}
-          <select
+          <SelectDropdown
+            options={monthOptions}
             value={values.month}
-            onChange={handleChange("month")}
-            aria-invalid={Boolean(fieldErrors.month)}
-            aria-describedby={fieldErrors.month ? "month-error" : undefined}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30"
-            required
-          >
-            {MONTH_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            onChange={handleMonthChange}
+            name="month"
+          />
           <FormError id="month-error" message={fieldErrors.month} />
-        </label>
+        </div>
 
-        <label className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
           {renderLabel("Ano Referência")}
-          <select
+          <SelectDropdown
+            options={yearOptions}
             value={values.year}
-            onChange={handleChange("year")}
-            aria-invalid={Boolean(fieldErrors.year)}
-            aria-describedby={fieldErrors.year ? "year-error" : undefined}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30"
-            required
-          >
-            {YEAR_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            onChange={handleYearChange}
+            name="year"
+          />
           <FormError id="year-error" message={fieldErrors.year} />
-        </label>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
