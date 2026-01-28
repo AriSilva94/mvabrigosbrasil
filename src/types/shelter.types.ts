@@ -34,6 +34,7 @@ export interface ShelterProfileFormData {
   additionalSpecies: string[];
   hasTemporaryAgreement?: boolean | null;
   temporaryAgreement?: string | null;
+  referralSource?: string;
   initialDogs: number;
   initialCats: number;
   authorizedName: string;

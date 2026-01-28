@@ -22,6 +22,7 @@ import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
 import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import { useLocationData } from "@/hooks/useLocationData";
 import { formatPhone } from "@/lib/formatters";
+import { REFERRAL_SOURCE_OPTIONS } from "@/constants/referralSource";
 
 const FAIXA_ETARIA_OPTIONS = [
   { value: "18 a 35", label: "18 a 35 anos" },
@@ -97,6 +98,7 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [periodo, setPeriodo] = useState("");
   const [experiencia, setExperiencia] = useState("");
   const [atuacao, setAtuacao] = useState("");
+  const [referralSource, setReferralSource] = useState("");
 
   // Converte estados para formato do Combobox
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
@@ -137,6 +139,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       setPeriodo(volunteer.periodo || "");
       setExperiencia(volunteer.experiencia || "");
       setAtuacao(volunteer.atuacao || "");
+      setReferralSource(volunteer.referral_source || "");
 
       // Carrega cidades do estado inicial
       if (volunteer.estado) {
@@ -165,6 +168,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       atuacao: String(formData.get("atuacao") ?? ""),
       descricao: String(formData.get("descricao") ?? ""),
       comentarios: String(formData.get("comentarios") ?? ""),
+      referralSource: String(formData.get("referralSource") ?? ""),
       acceptTerms: formData.get("acceptTerms") === "on",
     };
 
@@ -481,6 +485,21 @@ export default function VolunteerProfileForm(): JSX.Element {
             defaultValue={data?.comentarios ?? ""}
             className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] placeholder:text-[#a0a6b1] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           />
+        </FormField>
+
+        <FormField id="referralSource" label="Como conheceu o projeto?" required>
+          <SelectDropdown
+            name="referralSource"
+            options={REFERRAL_SOURCE_OPTIONS}
+            value={referralSource}
+            onChange={setReferralSource}
+            placeholder="Selecione uma opcao"
+            className={clsx(
+              fieldErrors.referralSource &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+            )}
+          />
+          <FormError id="referralSource-error" message={fieldErrors.referralSource} />
         </FormField>
       </div>
 
