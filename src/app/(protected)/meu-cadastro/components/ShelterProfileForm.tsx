@@ -127,6 +127,7 @@ export default function ShelterProfileForm({
           temporaryAgreement: temporaryAgreementValue
             ? String(temporaryAgreementValue)
             : undefined,
+          referralSource: String(formData.get("referralSource") ?? ""),
           initialDogs: formData.get("initialDogs"),
           initialCats: formData.get("initialCats"),
           authorizedName: String(formData.get("authorizedName") ?? ""),
