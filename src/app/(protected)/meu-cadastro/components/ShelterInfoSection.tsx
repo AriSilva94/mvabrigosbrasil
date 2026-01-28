@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 import Input from "@/components/ui/Input";
 import MaskedInput from "@/components/ui/MaskedInput";
-import Select from "@/components/ui/Select";
+import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import Spinner from "@/components/ui/Spinner";
 import { Heading } from "@/components/ui/typography";
 import {
@@ -13,6 +13,7 @@ import {
   SHELTER_TYPE_OPTIONS,
   SPECIES_OPTIONS,
 } from "@/constants/shelterProfile";
+import { REFERRAL_SOURCE_OPTIONS } from "@/constants/referralSource";
 import FormError from "@/components/ui/FormError";
 import { useCepAutocomplete } from "@/hooks/useCepAutocomplete";
 import clsx from "clsx";
@@ -80,6 +81,8 @@ export default function ShelterInfoSection({
   const [fundacao, setFundacao] = useState(data?.foundationDate ?? "");
   const [rua, setRua] = useState(data?.street ?? "");
   const [bairro, setBairro] = useState(data?.district ?? "");
+  const [species, setSpecies] = useState(data?.species ?? "");
+  const [referralSource, setReferralSource] = useState(data?.referralSource ?? "");
 
   // Converte estados para formato do Combobox
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
@@ -101,8 +104,8 @@ export default function ShelterInfoSection({
     }
   }, [estado, fetchCidades]);
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    onShelterTypeChange?.(event.target.value);
+  const handleTypeChange = (value: string) => {
+    onShelterTypeChange?.(value);
     onDocumentValueChange?.("");
   };
 
@@ -162,28 +165,18 @@ export default function ShelterInfoSection({
 
       <div className="grid gap-5 md:grid-cols-2" id="populacao-inicial">
         <FormField id="shelterType" label="Tipo de Abrigo" required>
-          <Select
-            id="shelterType"
+          <SelectDropdown
             name="shelterType"
-            value={shelterType}
+            options={SHELTER_TYPE_OPTIONS}
+            value={shelterType ?? ""}
             onChange={handleTypeChange}
             disabled={lockNonPopulation}
-            aria-invalid={Boolean(fieldErrors?.shelterType)}
-            aria-describedby={
-              fieldErrors?.shelterType ? "shelterType-error" : undefined
-            }
+            placeholder="Selecione o tipo de abrigo"
             className={clsx(
-              disabledStyles,
               fieldErrors?.shelterType &&
                 "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
-          >
-            {SHELTER_TYPE_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
+          />
           <FormError
             id="shelterType-error"
             message={fieldErrors?.shelterType}
@@ -442,28 +435,18 @@ export default function ShelterInfoSection({
         </FormField>
 
         <FormField id="species" label="Espécies Abrigadas" required>
-          <Select
-            id="species"
+          <SelectDropdown
             name="species"
-            defaultValue={data?.species}
-            required
+            options={SPECIES_OPTIONS}
+            value={species}
+            onChange={setSpecies}
             disabled={lockNonPopulation}
-            aria-invalid={Boolean(fieldErrors?.species)}
-            aria-describedby={
-              fieldErrors?.species ? "species-error" : undefined
-            }
+            placeholder="Selecione a especie"
             className={clsx(
-              disabledStyles,
               fieldErrors?.species &&
                 "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
             )}
-          >
-            {SPECIES_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
+          />
           <FormError id="species-error" message={fieldErrors?.species} />
         </FormField>
 
@@ -526,6 +509,25 @@ export default function ShelterInfoSection({
             message={fieldErrors?.temporaryAgreement}
           />
         </div>
+
+        <FormField id="referralSource" label="Como conheceu o projeto?" required>
+          <SelectDropdown
+            name="referralSource"
+            options={REFERRAL_SOURCE_OPTIONS}
+            value={referralSource}
+            onChange={setReferralSource}
+            disabled={lockNonPopulation}
+            placeholder="Selecione uma opcao"
+            className={clsx(
+              fieldErrors?.referralSource &&
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+            )}
+          />
+          <FormError
+            id="referralSource-error"
+            message={fieldErrors?.referralSource}
+          />
+        </FormField>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">

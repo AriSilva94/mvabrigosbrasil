@@ -17,6 +17,7 @@ export const volunteerProfileSchema = z
     atuacao: z.string().min(1, "Selecione a forma de atuação."),
     descricao: z.string().min(1, "Descreva suas habilidades."),
     comentarios: z.string().optional(),
+    referralSource: z.string().min(1, "Selecione como conheceu o projeto."),
     acceptTerms: z
       .boolean()
       .refine((value) => value === true, { message: "Você deve aceitar os termos." }),
@@ -68,6 +69,7 @@ export function mapVolunteerProfileToDb(
     atuacao: payload.atuacao,
     descricao: payload.descricao,
     comentarios: payload.comentarios ?? null,
+    referral_source: payload.referralSource,
     accept_terms: payload.acceptTerms,
     // Novo fluxo: perfis cadastrados são públicos por padrão.
     is_public: true,
