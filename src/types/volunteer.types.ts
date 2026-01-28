@@ -64,6 +64,7 @@ export interface VolunteerProfileFormData {
   atuacao: string;
   descricao: string;
   comentarios?: string;
+  referral_source?: string;
   acceptTerms: boolean;
   is_public?: boolean;
 }
