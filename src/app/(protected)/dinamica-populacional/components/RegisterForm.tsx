@@ -125,7 +125,7 @@ function RegisterFormInner({
   const renderNumberField = (
     field: keyof RegisterFormValues,
     label: string,
-    isRequired = true
+    isRequired = true,
   ): JSX.Element => (
     <label className="flex flex-col gap-1">
       {renderLabel(label, isRequired)}
@@ -146,7 +146,7 @@ function RegisterFormInner({
         className={clsx(
           "rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 shadow-sm outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/30",
           fieldErrors[field] &&
-            "border-brand-red focus:border-brand-red focus:ring-brand-red/20"
+            "border-brand-red focus:border-brand-red focus:ring-brand-red/20",
         )}
       />
       <FormError id={`${String(field)}-error`} message={fieldErrors[field]} />
@@ -189,7 +189,7 @@ function RegisterFormInner({
               type="button"
               onClick={handleDeleteRequest}
               disabled={isDeleting || isSubmitting}
-              className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 disabled:opacity-60"
               aria-label="Excluir registro"
             >
               <Trash2 className="h-4 w-4" aria-hidden />
@@ -207,7 +207,7 @@ function RegisterFormInner({
                   <button
                     type="button"
                     onClick={handleDeleteCancel}
-                    className="inline-flex items-center justify-center rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
+                    className="inline-flex items-center justify-center rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-300"
                   >
                     Cancelar
                   </button>
@@ -215,7 +215,7 @@ function RegisterFormInner({
                     type="button"
                     onClick={handleDeleteConfirm}
                     disabled={isDeleting}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red px-3 py-1 text-xs font-semibold text-white transition hover:bg-brand-red/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red disabled:opacity-70"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red px-3 py-1 text-xs font-semibold text-white transition hover:bg-brand-red/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red disabled:opacity-70"
                   >
                     {isDeleting ? (
                       <>
@@ -285,7 +285,7 @@ function RegisterFormInner({
         <button
           type="submit"
           disabled={isSubmitting || isDeleting}
-          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer disabled:opacity-70"
+          className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white transition hover:bg-brand-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer disabled:opacity-70"
         >
           {isSubmitting ? "Salvando..." : "Salvar"}
         </button>
