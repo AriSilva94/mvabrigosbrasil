@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 export interface SelectDropdownOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 interface SelectDropdownProps {
@@ -73,10 +74,10 @@ export function SelectDropdown({
       case 'Enter':
       case ' ':
         e.preventDefault();
-        if (isOpen && options[highlightedIndex]) {
+        if (isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled) {
           onChange(options[highlightedIndex].value);
           setIsOpen(false);
-        } else {
+        } else if (!isOpen) {
           openDropdown();
         }
         break;
@@ -85,15 +86,25 @@ export function SelectDropdown({
         if (!isOpen) {
           openDropdown();
         } else {
-          setHighlightedIndex((prev) =>
-            prev < options.length - 1 ? prev + 1 : prev
-          );
+          setHighlightedIndex((prev) => {
+            let next = prev + 1;
+            while (next < options.length && options[next].disabled) {
+              next++;
+            }
+            return next < options.length ? next : prev;
+          });
         }
         break;
       case 'ArrowUp':
         e.preventDefault();
         if (isOpen) {
-          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          setHighlightedIndex((prev) => {
+            let next = prev - 1;
+            while (next >= 0 && options[next].disabled) {
+              next--;
+            }
+            return next >= 0 ? next : prev;
+          });
         }
         break;
       case 'Escape':
@@ -165,17 +176,24 @@ export function SelectDropdown({
               id={`select-option-${index}`}
               role="option"
               aria-selected={option.value === value}
+              aria-disabled={option.disabled}
               className={`
-                px-4 py-3 cursor-pointer transition-colors text-base text-[#4f5464]
-                ${index === highlightedIndex ? 'bg-brand-primary/10' : ''}
-                ${option.value === value ? 'bg-brand-primary/5 font-medium' : ''}
-                hover:bg-brand-primary/10
+                px-4 py-3 transition-colors text-base
+                ${option.disabled
+                  ? 'cursor-not-allowed text-slate-300 bg-slate-50'
+                  : `cursor-pointer text-[#4f5464] hover:bg-brand-primary/10
+                     ${index === highlightedIndex ? 'bg-brand-primary/10' : ''}
+                     ${option.value === value ? 'bg-brand-primary/5 font-medium' : ''}`
+                }
               `}
               onClick={() => {
+                if (option.disabled) return;
                 onChange(option.value);
                 setIsOpen(false);
               }}
-              onMouseEnter={() => setHighlightedIndex(index)}
+              onMouseEnter={() => {
+                if (!option.disabled) setHighlightedIndex(index);
+              }}
             >
               {option.label}
             </div>
