@@ -180,6 +180,7 @@ function mapRecordToRow(record: DynamicsRecord): DynamicsTableRow {
     referenceDate: record.reference_date ?? null,
     metrics,
     balance: computeBalance(metrics),
+    cumulativeBalance: null,
   };
 }
 
@@ -237,6 +238,21 @@ function buildDisplay(
       ? populationInitialValue + rows.reduce((acc, row) => acc + (row.balance ?? 0), 0)
       : null;
 
+  const sortedRows = rows.sort((a, b) => {
+    const dateA = a.referenceDate ?? "";
+    const dateB = b.referenceDate ?? "";
+    return dateA.localeCompare(dateB);
+  });
+
+  let runningTotal = populationInitialValue ?? 0;
+  const rowsWithCumulative = sortedRows.map((row) => {
+    runningTotal += row.balance ?? 0;
+    return {
+      ...row,
+      cumulativeBalance: populationInitialValue !== null ? runningTotal : null,
+    };
+  });
+
   return {
     dynamicType,
     title: dynamicType === "dinamica_lar" ? "Dinâmica Populacional L.T" : "Dinâmica Populacional",
@@ -247,11 +263,7 @@ function buildDisplay(
     populationCurrentDogs: speciesCurrent.dogs,
     populationCurrentCats: speciesCurrent.cats,
     stats: computeRates(rows, populationInitialValue),
-    rows: rows.sort((a, b) => {
-      const dateA = a.referenceDate ?? "";
-      const dateB = b.referenceDate ?? "";
-      return dateA.localeCompare(dateB);
-    }),
+    rows: rowsWithCumulative,
   };
 }
 
