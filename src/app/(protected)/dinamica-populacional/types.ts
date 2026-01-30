@@ -102,6 +102,7 @@ export type DynamicsTableRow = {
     originReturnCats: number | null;
   };
   balance: number | null;
+  cumulativeBalance: number | null;
 };
 
 export type DynamicsDisplay = {
