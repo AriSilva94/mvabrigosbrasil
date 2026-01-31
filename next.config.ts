@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "www.mvabrigosbrasil.com.br",
+      },
+      {
+        protocol: "https",
         hostname: "img.youtube.com",
       },
     ],
