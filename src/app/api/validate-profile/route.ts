@@ -17,6 +17,7 @@ const REQUIRED_SHELTER_FIELDS = [
   "city",
   "foundation_date",
   "species",
+  "referral_source",
   "authorized_name",
   "authorized_role",
   "authorized_email",
@@ -38,6 +39,7 @@ const REQUIRED_VOLUNTEER_FIELDS = [
   "experiencia",
   "atuacao",
   "descricao",
+  "referral_source",
 ] as const;
 
 type ShelterField = (typeof REQUIRED_SHELTER_FIELDS)[number] | "document";
