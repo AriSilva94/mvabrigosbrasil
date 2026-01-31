@@ -35,6 +35,7 @@ function mapDbToFormData(row: Record<string, unknown>): Partial<VolunteerProfile
     atuacao: (row.atuacao as string) ?? "",
     descricao: (row.descricao as string) ?? "",
     comentarios: (row.comentarios as string) ?? "",
+    referral_source: (row.referral_source as string) ?? "",
     acceptTerms: (row.accept_terms as boolean) ?? true,
     is_public: (row.is_public as boolean) ?? false,
   };
@@ -81,7 +82,7 @@ export async function GET() {
     const { data, error } = await supabaseAdmin
       .from("volunteers")
       .select(
-        "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, is_public, accept_terms, slug",
+        "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
       )
       .eq("owner_profile_id", user.id)
       .limit(1)
@@ -147,7 +148,7 @@ export async function POST(request: Request) {
     const { data: existingVolunteer, error: currentVolunteerError } = await supabaseAdmin
       .from("volunteers")
       .select(
-        "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, is_public, accept_terms, slug",
+        "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
       )
       .eq("owner_profile_id", user.id)
       .limit(1)
@@ -198,7 +199,7 @@ export async function POST(request: Request) {
         .update(payload)
         .eq("id", existingVolunteer.id)
         .select(
-          "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, is_public, accept_terms, slug",
+          "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
         )
         .maybeSingle();
 
@@ -210,7 +211,7 @@ export async function POST(request: Request) {
         .from("volunteers")
         .insert(payload)
         .select(
-          "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, is_public, accept_terms, slug",
+          "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
         )
         .maybeSingle();
 
@@ -226,7 +227,7 @@ export async function POST(request: Request) {
             .update({ slug: generatedSlug } as Record<string, unknown>)
             .eq("id", data.id as string)
             .select(
-              "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, is_public, accept_terms, slug",
+              "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
             )
             .maybeSingle();
 

@@ -41,6 +41,7 @@ function mapDbToFormData(row: Record<string, unknown>): Partial<ShelterProfileFo
     additionalSpecies,
     hasTemporaryAgreement,
     temporaryAgreement: temporaryAgreementRaw,
+    referralSource: (row.referral_source as string) ?? "",
     initialDogs: (row.initial_dogs as number) ?? 0,
     initialCats: (row.initial_cats as number) ?? 0,
     authorizedName: (row.authorized_name as string) ?? "",
@@ -87,7 +88,7 @@ export async function GET() {
     const { data, error } = await supabaseAdmin
       .from("shelters")
       .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
+        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
       )
       .eq("profile_id", user.id)
       .limit(1)
@@ -153,7 +154,7 @@ export async function POST(request: Request) {
     const { data: existingShelter, error: currentShelterError } = await supabaseAdmin
       .from("shelters")
       .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
+        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
       )
       .eq("profile_id", user.id)
       .limit(1)
@@ -196,7 +197,7 @@ export async function POST(request: Request) {
       .from("shelters")
       .upsert(payload, { onConflict: "profile_id" })
       .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
+        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
       )
       .maybeSingle();
 
