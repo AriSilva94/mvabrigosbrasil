@@ -53,14 +53,21 @@ export async function insertProfileFromLegacy(
 ): Promise<{ error: Error | null }> {
   const origin = profile.origin ?? "wordpress_migrated";
 
-  const { error } = await supabaseAdmin.from("profiles").insert({
-    id: profile.id,
-    email: profile.email,
-    full_name: profile.full_name,
-    wp_user_id: profile.wp_user_id,
-    origin,
-    is_team_only: profile.is_team_only ?? false,
-  });
+  // Usar upsert para lidar com profiles que já existem (criados durante migração)
+  const { error } = await supabaseAdmin.from("profiles").upsert(
+    {
+      id: profile.id,
+      email: profile.email,
+      full_name: profile.full_name,
+      wp_user_id: profile.wp_user_id,
+      origin,
+      is_team_only: profile.is_team_only ?? false,
+    },
+    {
+      onConflict: "id",
+      ignoreDuplicates: false, // Atualiza se já existir
+    }
+  );
 
   if (error) {
     console.error("profileRepository.insertProfileFromLegacy", error);
