@@ -35,7 +35,7 @@ export default function Header() {
   };
 
   const isInstitutionalActive = INSTITUTIONAL_LINKS.some((link) =>
-    isLinkActive(link.href)
+    isLinkActive(link.href),
   );
 
   useEffect(() => {
@@ -267,7 +267,7 @@ export default function Header() {
                         className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
                         onClick={(e) => {
                           const detailsEl = e.currentTarget.closest(
-                            "details"
+                            "details",
                           ) as HTMLDetailsElement | null;
                           if (detailsEl) detailsEl.open = false;
                         }}
@@ -275,10 +275,22 @@ export default function Header() {
                         Painel
                       </Link>
                       <Link
+                        href="/alterar-senha"
+                        className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
+                        onClick={(e) => {
+                          const detailsEl = e.currentTarget.closest(
+                            "details",
+                          ) as HTMLDetailsElement | null;
+                          if (detailsEl) detailsEl.open = false;
+                        }}
+                      >
+                        Alterar Senha
+                      </Link>
+                      <Link
                         href="/login"
                         onClick={async (e) => {
                           const detailsEl = e.currentTarget.closest(
-                            "details"
+                            "details",
                           ) as HTMLDetailsElement | null;
                           if (detailsEl) detailsEl.open = false;
                           await logout();
