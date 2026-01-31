@@ -437,6 +437,13 @@ async function main() {
     // ========================================
     logStep(17, 'Preencher referral_source para registros migrados do WordPress');
 
+    // IMPORTANTE: Garantir que o trigger de histórico está desabilitado
+    // antes de fazer updates em shelters (alguns registros migrados não têm profile_id)
+    await runSql(
+      `ALTER TABLE public.shelters DISABLE TRIGGER trigger_shelter_history;`,
+      'Garantir que trigger de histórico está desabilitado'
+    );
+
     // Preencher referral_source em shelters
     await runSql(
       `UPDATE public.shelters

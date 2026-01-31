@@ -85,18 +85,53 @@ async function attemptLegacyMigration(
     }
   }
 
+  let supabaseUserId: string;
+
   const { data: createdUser, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
   });
 
-  if (createUserError || !createdUser.user) {
-    console.error("loginService: erro ao criar usuário no Auth", createUserError);
-    return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
-  }
+  if (createUserError) {
+    // Se o usuário já existe no Auth, atualizar a senha dele
+    if (createUserError.message?.includes("already been registered") ||
+        createUserError.message?.includes("already exists")) {
+      console.log(`[Migration] Usuário já existe no Auth, atualizando senha: ${email}`);
 
-  const supabaseUserId = createdUser.user.id;
+      // Buscar o usuário existente
+      const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
+      const existingUser = usersData?.users?.find(
+        u => u.email?.toLowerCase() === email.toLowerCase()
+      );
+
+      if (!existingUser) {
+        console.error("loginService: usuário existe mas não foi encontrado");
+        return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
+      }
+
+      // Atualizar a senha do usuário existente
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id,
+        { password }
+      );
+
+      if (updateError) {
+        console.error("loginService: erro ao atualizar senha", updateError);
+        return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
+      }
+
+      supabaseUserId = existingUser.id;
+    } else {
+      console.error("loginService: erro ao criar usuário no Auth", createUserError);
+      return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
+    }
+  } else if (!createdUser.user) {
+    console.error("loginService: usuário criado sem ID");
+    return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
+  } else {
+    supabaseUserId = createdUser.user.id;
+  }
 
   await insertProfileFromLegacy(supabaseAdmin, {
     id: supabaseUserId,
