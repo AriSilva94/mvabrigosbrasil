@@ -24,7 +24,7 @@ export default function LibraryItemCard({
           width={600}
           height={840}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
-          className="h-64 w-full object-cover sm:h-72"
+          className="h-64 w-full object-contain sm:h-72"
         />
       </Link>
       <div className="flex flex-1 flex-col gap-2 px-4 py-4">
