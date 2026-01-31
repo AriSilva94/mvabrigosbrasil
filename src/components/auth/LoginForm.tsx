@@ -191,7 +191,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
 
       <div className="text-center">
         <Link
-          href="/alterar-senha"
+          href="/recuperar-senha"
           className="text-sm font-semibold text-brand-primary underline-offset-4 hover:underline"
         >
           Perdeu a senha?
