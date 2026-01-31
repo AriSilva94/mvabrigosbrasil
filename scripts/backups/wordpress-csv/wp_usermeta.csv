@@ -14,8 +14,8 @@
 "13","1","wp_user_level","10"
 "14","1","dismissed_wp_pointers","theme_editor_notice,mailtpl_welcome"
 "15","1","show_welcome_panel","0"
-"17","1","wp_dashboard_quick_press_last_post_id","3088"
-"18","1","community-events-location","a:1:{s:2:""ip"";s:21:""2804:5d80:8346:9a58::"";}"
+"17","1","wp_dashboard_quick_press_last_post_id","3195"
+"18","1","community-events-location","a:1:{s:2:""ip"";s:21:""2804:5d80:8547:52fc::"";}"
 "19","1","closedpostboxes_dashboard","a:13:{i:0;s:17:""dashboard_php_nag"";i:1;s:32:""wp_mail_smtp_reports_widget_lite"";i:2;s:21:""dashboard_site_health"";i:3;s:24:""wpseo-dashboard-overview"";i:4;s:26:""cookieyes_dashboard_widget"";i:5;s:19:""sb_dashboard_widget"";i:6;s:21:""dashboard_quick_press"";i:7;s:17:""dashboard_primary"";i:8;s:32:""wpseo-wincher-dashboard-overview"";i:9;s:23:""google_dashboard_widget"";i:10;s:18:""dashboard_activity"";i:11;s:19:""dashboard_right_now"";i:12;s:32:""wordfence_activity_report_widget"";}"
 "20","1","metaboxhidden_dashboard","a:0:{}"
 "21","1","wp_googlesitekit_tracking_optin","1"
@@ -33,7 +33,7 @@
 "34","1","wp_googlesitekit_user_input_state","missing"
 "36","1","wp_googlesitekit_survey_timeouts","a:1:{s:14:""view_dashboard"";i:1664882104;}"
 "37","1","meta-box-order_dashboard","a:4:{s:6:""normal"";s:99:""dashboard_php_nag,wp_mail_smtp_reports_widget_lite,dashboard_site_health,cookieyes_dashboard_widget"";s:4:""side"";s:72:""dashboard_quick_press,dashboard_primary,wpseo-wincher-dashboard-overview"";s:7:""column3"";s:62:""google_dashboard_widget,dashboard_activity,sb_dashboard_widget"";s:7:""column4"";s:77:""dashboard_right_now,wordfence_activity_report_widget,wpseo-dashboard-overview"";}"
-"38","2","nickname","contato@mvabrigosbrasil.com.br"
+"38","2","nickname","contato@maroon-dugong-565777.hostingersite.com"
 "39","2","first_name",
 "40","2","last_name",
 "41","2","description",
@@ -47,7 +47,7 @@
 "49","2","wp_capabilities","a:1:{s:6:""editor"";b:1;}"
 "50","2","wp_user_level","7"
 "51","2","dismissed_wp_pointers",
-"53","1","wfls-last-login","1768841045"
+"53","1","wfls-last-login","1769808620"
 "57","1","wp_user-settings","libraryContent=browse&hidetb=1&editor=tinymce&imgsize=full&posts_list_mode=list"
 "58","1","wp_user-settings-time","1732040868"
 "65","1","_yoast_alerts_dismissed","a:1:{s:26:""webinar-promo-notification"";b:1;}"
@@ -62,7 +62,7 @@
 "76","1","metaboxhidden_vaga","a:1:{i:0;s:7:""slugdiv"";}"
 "77","1","sbi_onboarding","s:40:""a:1:{s:10:""customizer"";s:9:""dismissed"";}"";"
 "78","1","edit_page_per_page","50"
-"96","1","wplalr_last_login","1768841045"
+"96","1","wplalr_last_login","1769808620"
 "261","1","_yoast_wpseo_profile_updated","1759966007"
 "262","2","_yoast_wpseo_profile_updated","1664960962"
 "266","2","wplalr_last_login","1741474302"
@@ -2237,8 +2237,8 @@
 "2844","166","wfls-last-login","1730126533"
 "2845","139","wplalr_last_login","1723653609"
 "2846","139","wfls-last-login","1723653609"
-"2847","163","wplalr_last_login","1760528406"
-"2848","163","wfls-last-login","1760528406"
+"2847","163","wplalr_last_login","1769718269"
+"2848","163","wfls-last-login","1769718269"
 "2849","167","nickname","caterinapasqua@yahoo.com.br"
 "2850","167","first_name",
 "2851","167","last_name",
@@ -7086,7 +7086,7 @@
 "7893","463","wp_user_level","0"
 "7894","463","_yoast_wpseo_profile_updated","1720673997"
 "7895","463","default_password_nag",
-"7896","463","session_tokens","a:2:{s:64:""4340da8673582492db2cdcb3cf3e583d7b4b1943e7cdf9902402a42544ec0180"";a:4:{s:10:""expiration"";i:1768076496;s:2:""ip"";s:38:""2804:868:d043:e499:d9f6:5ca9:9ed7:22a4"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1767903696;}s:64:""8bcd764a77ccd63b604b1129eb5db4da17ec3bb3dd1ef1c487a65d4c9f4a90d7"";a:4:{s:10:""expiration"";i:1768079541;s:2:""ip"";s:38:""2804:868:d043:e499:d9f6:5ca9:9ed7:22a4"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1767906741;}}"
+"7896","463","session_tokens","a:1:{s:64:""3108f69ac72980edcffc8d92f0cbf72bd4ff0568e78d41852ed87384d7dd594e"";a:4:{s:10:""expiration"";i:1769791021;s:2:""ip"";s:37:""2804:868:d043:2734:e4e1:dda1:c3a0:c87"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769618221;}}"
 "7897","464","nickname","yasmymluizy28@gmail.com"
 "7898","464","first_name",
 "7899","464","last_name",
@@ -8138,8 +8138,8 @@
 "8969","528","_yoast_wpseo_profile_updated","1729431865"
 "8970","528","default_password_nag",
 "8971","528","session_tokens","a:1:{s:64:""05549104183c64e21bd5cc19ac4300f5bc021e62fc58a504520ee278235dd9c4"";a:4:{s:10:""expiration"";i:1729604665;s:2:""ip"";s:13:""45.190.254.33"";s:2:""ua"";s:215:""Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21G93 Instagram 352.2.0.36.89 (iPhone12,1; iOS 17_6_1; pt_BR; pt-BR; scale=2.00; 828x1792; 650375967; IABMV/1)"";s:5:""login"";i:1729431865;}}"
-"8972","463","wplalr_last_login","1767906741"
-"8973","463","wfls-last-login","1767906741"
+"8972","463","wplalr_last_login","1769618221"
+"8973","463","wfls-last-login","1769618222"
 "8974","529","nickname","gustaosousajr@gmail.com"
 "8975","529","first_name",
 "8976","529","last_name",
@@ -10158,9 +10158,9 @@
 "11008","647","_id_abrigo","field_67998ea70bb61"
 "11009","647","_yoast_wpseo_profile_updated","1739966654"
 "11010","647","default_password_nag",
-"11011","647","session_tokens","a:5:{s:64:""c15d93811369cf105ddd9fccea029fb0af30107a2ec6c020821d91b7eeef21d7"";a:4:{s:10:""expiration"";i:1740139454;s:2:""ip"";s:15:""191.241.170.226"";s:2:""ua"";s:139:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1739966654;}s:64:""97cf6a2970283c270367b3e2b3d92944b0fee9db2bc678e2a7d452e2a86f796d"";a:4:{s:10:""expiration"";i:1740139475;s:2:""ip"";s:15:""191.241.170.226"";s:2:""ua"";s:139:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1739966675;}s:64:""a53d1bb041c61835ae741fc0d1b3a10bd4ac03d553c092e7eaf853ca1629aa15"";a:4:{s:10:""expiration"";i:1740139489;s:2:""ip"";s:15:""191.241.170.226"";s:2:""ua"";s:139:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1739966689;}s:64:""8a4e739e9a2b9bfd93ac150c871ecb3e88cd9bc6923c5a7df4256852d79203af"";a:4:{s:10:""expiration"";i:1740139491;s:2:""ip"";s:15:""191.241.170.226"";s:2:""ua"";s:139:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1739966691;}s:64:""9107a1e7e10730af4951c570f715df80c7c753f52be27f56575c741cc126c127"";a:4:{s:10:""expiration"";i:1740139493;s:2:""ip"";s:15:""191.241.170.226"";s:2:""ua"";s:139:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1739966693;}}"
-"11012","647","wplalr_last_login","1739966693"
-"11013","647","wfls-last-login","1739966693"
+"11011","647","session_tokens","a:1:{s:64:""31d00886a14e455888064892babcbbea8ae34dd249e0cf5c39ffa72762a9322a"";a:4:{s:10:""expiration"";i:1769087836;s:2:""ip"";s:14:""177.172.144.33"";s:2:""ua"";s:135:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1768915036;}}"
+"11012","647","wplalr_last_login","1768915036"
+"11013","647","wfls-last-login","1768915036"
 "11014","648","nickname","anap.barros1967@gmail.com"
 "11015","648","first_name",
 "11016","648","last_name",
@@ -10858,7 +10858,7 @@
 "11708","684","_id_abrigo","field_67998ea70bb61"
 "11709","684","_yoast_wpseo_profile_updated","1740455155"
 "11710","684","default_password_nag",
-"11711","684","session_tokens","a:3:{s:64:""235cc8104823aa2585f0ba9a6112c51b06030b620f8ff2bac8267d12099806d7"";a:4:{s:10:""expiration"";i:1764941647;s:2:""ip"";s:38:""2804:2988:fe0f:ca00:f203:5135:ccf:79ac"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"";s:5:""login"";i:1764768847;}s:64:""42b00daecbf1ad0656556e1dad28db14715d2a6af8f6df467e6d5ce7908296b9"";a:4:{s:10:""expiration"";i:1764956603;s:2:""ip"";s:37:""2804:1b0:f442:d77f:f0cc:665b:e5b:45a3"";s:2:""ua"";s:125:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"";s:5:""login"";i:1764783803;}s:64:""0e3e358bbd4a99785e55e8b347b87ef13a8d4b5d156a87e5bd9fa49a12ecda7b"";a:4:{s:10:""expiration"";i:1764964634;s:2:""ip"";s:37:""2804:1b0:f442:d77f:f0cc:665b:e5b:45a3"";s:2:""ua"";s:125:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"";s:5:""login"";i:1764791834;}}"
+"11711","684","session_tokens","a:2:{s:64:""e613355412a51feb8dab92002e8c23960d2f3be2c1490027ef35e3aaac5ac709"";a:4:{s:10:""expiration"";i:1769093250;s:2:""ip"";s:38:""2804:2988:fe0f:ca00:f203:5135:ccf:79ac"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768920450;}s:64:""4ba410d98f9d6436a06454e3d3c088869de70bc83db7f417b2f7843ad74ff555"";a:4:{s:10:""expiration"";i:1769093250;s:2:""ip"";s:38:""2804:2988:fe0f:ca00:f203:5135:ccf:79ac"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768920450;}}"
 "11712","685","nickname","danialexandrecabral@gmail.com"
 "11713","685","first_name",
 "11714","685","last_name",
@@ -10997,8 +10997,8 @@
 "11847","691","session_tokens","a:1:{s:64:""a34ff8c61ceb9db9159f5e3eb1bcc2745a117f2bc9fbe488eeefb713651e7217"";a:4:{s:10:""expiration"";i:1740761003;s:2:""ip"";s:13:""45.236.65.198"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"";s:5:""login"";i:1740588203;}}"
 "11848","395","wplalr_last_login","1740589785"
 "11849","395","wfls-last-login","1740589785"
-"11851","684","wplalr_last_login","1764791834"
-"11852","684","wfls-last-login","1764791834"
+"11851","684","wplalr_last_login","1768920450"
+"11852","684","wfls-last-login","1768920450"
 "11853","692","nickname","marciachavesvete@gmail.com"
 "11854","692","first_name",
 "11855","692","last_name",
@@ -11370,7 +11370,7 @@
 "12228","710","default_password_nag",
 "12231","710","wplalr_last_login","1747677983"
 "12232","710","wfls-last-login","1747677983"
-"12234","711","nickname","gerente@mvabrigosbrasil.com.br"
+"12234","711","nickname","gerente@maroon-dugong-565777.hostingersite.com"
 "12235","711","first_name","gerente"
 "12236","711","last_name",
 "12237","711","description",
@@ -11396,7 +11396,7 @@
 "12258","711","session_tokens","a:1:{s:64:""3ee717dc719b92b11bcac22af694e41ed01b488a95ff8e83080b0b6142b23003"";a:4:{s:10:""expiration"";i:1741638490;s:2:""ip"";s:38:""2804:1b3:8200:ed24:b0b8:9802:3d7d:d799"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"";s:5:""login"";i:1741465690;}}"
 "12259","711","tipo_cadastro","gerente"
 "12260","711","_tipo_cadastro","field_67cca779c59ee"
-"12264","712","nickname","admin@mvabrigosbrasil.com.br"
+"12264","712","nickname","admin@maroon-dugong-565777.hostingersite.com"
 "12265","712","first_name",
 "12266","712","last_name",
 "12267","712","description",
@@ -11415,7 +11415,7 @@
 "12280","712","_tipo_cadastro","field_67cca779c59ee"
 "12281","712","_yoast_wpseo_profile_updated","1741476825"
 "12282","712","dismissed_wp_pointers",
-"12283","713","nickname","premierpet@mvabrigosbrasil.com.br"
+"12283","713","nickname","premierpet@maroon-dugong-565777.hostingersite.com"
 "12284","713","first_name",
 "12285","713","last_name",
 "12286","713","description",
@@ -12544,7 +12544,7 @@
 "13445","769","session_tokens","a:1:{s:64:""404a82836a6093d6797f488be4db6f1ef0eb6c714c6aea5ccb02cb533bb14c1a"";a:4:{s:10:""expiration"";i:1747245544;s:2:""ip"";s:37:""2804:14d:5c58:8fdb:5476:5f3:da90:f38f"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"";s:5:""login"";i:1747072744;}}"
 "13446","1","tipo_cadastro",
 "13447","1","_tipo_cadastro","field_67cca779c59ee"
-"13448","770","nickname","phomenta@mvabrigosbrasil.com.br"
+"13448","770","nickname","phomenta@maroon-dugong-565777.hostingersite.com"
 "13449","770","first_name",
 "13450","770","last_name",
 "13451","770","description",
@@ -14838,7 +14838,7 @@
 "15851","883","_tipo_cadastro","field_67cca779c59ee"
 "15852","883","_yoast_wpseo_profile_updated","1758213811"
 "15853","883","default_password_nag",
-"15854","883","session_tokens","a:1:{s:64:""7c6d80c7b204e1245337efbd1c01daa60595b39e09fdb78e4f357069921a8be5"";a:4:{s:10:""expiration"";i:1758890717;s:2:""ip"";s:38:""2804:7f0:6452:bd7c:81c6:5308:590e:f6cd"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"";s:5:""login"";i:1758717917;}}"
+"15854","883","session_tokens","a:1:{s:64:""2d29bf22070a959f548c997a3736a3c565b46fc812043559a2523179d5d98c86"";a:4:{s:10:""expiration"";i:1769607719;s:2:""ip"";s:37:""2804:7f0:6452:9fe9:f58c:ea2:56b5:e741"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1769434919;}}"
 "15855","884","nickname","samella_santos18@hotmail.com"
 "15856","884","first_name",
 "15857","884","last_name",
@@ -15000,8 +15000,8 @@
 "16013","891","_yoast_wpseo_profile_updated","1758689234"
 "16014","891","default_password_nag",
 "16015","891","session_tokens","a:1:{s:64:""66aabbad7bc260628f42a6169b542e43df6a9068a0b34e68dbdeeead0f861952"";a:4:{s:10:""expiration"";i:1758862034;s:2:""ip"";s:37:""2804:d4b:8250:c500:cdc6:184e:640:dac1"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1758689234;}}"
-"16016","883","wplalr_last_login","1758717917"
-"16017","883","wfls-last-login","1758717917"
+"16016","883","wplalr_last_login","1769434919"
+"16017","883","wfls-last-login","1769434919"
 "16018","892","nickname","lauraxavierdorneles2014@gmail.com"
 "16019","892","first_name",
 "16020","892","last_name",
@@ -15675,13 +15675,13 @@
 "16701","924","default_password_nag",
 "16702","924","session_tokens","a:1:{s:64:""765b14484f21cef1d77ae02157d8d19edd12d9dca4f5cfc19496d11b534589b8"";a:4:{s:10:""expiration"";i:1761772169;s:2:""ip"";s:11:""189.6.16.39"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"";s:5:""login"";i:1761599369;}}"
 "16703","925","nickname","pedacinhodoceuong@gmail.com"
-"16704","925","first_name",
+"16704","925","first_name","Pedacinho do Céu"
 "16705","925","last_name",
 "16706","925","description",
 "16707","925","rich_editing","true"
 "16708","925","syntax_highlighting","true"
 "16709","925","comment_shortcuts","false"
-"16710","925","admin_color","fresh"
+"16710","925","admin_color","ocean"
 "16711","925","use_ssl","0"
 "16712","925","show_admin_bar_front","true"
 "16713","925","locale",
@@ -15693,7 +15693,6 @@
 "16719","925","_tipo_cadastro","field_67cca779c59ee"
 "16720","925","_yoast_wpseo_profile_updated","1761606827"
 "16721","925","default_password_nag",
-"16722","925","session_tokens","a:1:{s:64:""fef6896eda79054649f57d64d747edfb694d363e8bfc0bda2333e32ec6c8bddb"";a:4:{s:10:""expiration"";i:1761779627;s:2:""ip"";s:12:""187.65.18.93"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"";s:5:""login"";i:1761606827;}}"
 "16723","895","session_tokens","a:1:{s:64:""b1eabaaf59bc3e8ac0fc92ea78a2f03751195367a85318bd519f6a4b82008daa"";a:4:{s:10:""expiration"";i:1761819394;s:2:""ip"";s:15:""179.242.255.100"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"";s:5:""login"";i:1761646594;}}"
 "16724","926","nickname","yfigueiragalvao@gmail.com"
 "16725","926","first_name",
@@ -16915,9 +16914,8 @@
 "18007","985","_tipo_cadastro","field_67cca779c59ee"
 "18008","985","_yoast_wpseo_profile_updated","1765805432"
 "18009","985","default_password_nag",
-"18010","985","session_tokens","a:1:{s:64:""f313f488a6575fa7e66549fb0f8ddcacc9df2cff9959016f3835fa5798d5c17f"";a:4:{s:10:""expiration"";i:1767224159;s:2:""ip"";s:38:""2803:9810:4cba:3c10:1c5:554a:6e15:b41f"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1767051359;}}"
-"18012","985","wplalr_last_login","1767051359"
-"18013","985","wfls-last-login","1767051359"
+"18012","985","wplalr_last_login","1769785870"
+"18013","985","wfls-last-login","1769785870"
 "18014","986","nickname","projetogdegato@gmail.com"
 "18015","986","first_name",
 "18016","986","last_name",
@@ -17100,7 +17098,6 @@
 "18193","994","_yoast_wpseo_profile_updated","1765990191"
 "18194","994","default_password_nag",
 "18195","994","session_tokens","a:1:{s:64:""9a29dbb040cd09973d2cad31e98f72ba67dbd96a27ceec59ad9e61a82b163005"";a:4:{s:10:""expiration"";i:1766162991;s:2:""ip"";s:38:""2600:6c52:6f7f:6dad:b8dc:4ced:a47:dadb"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1765990191;}}"
-"18201","1","session_tokens","a:2:{s:64:""2c50ea3cc954eaac8f086cae2a341276dd6ce66a66c8a516c9a794bedac86b96"";a:4:{s:10:""expiration"";i:1768957077;s:2:""ip"";s:39:""2804:5d80:8346:9a58:80f1:7378:3de3:9988"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768784277;}s:64:""55478de4b01b1bab5c3c400f3c77e1dc782e4ec1569a55f84ae2576d6962a99c"";a:4:{s:10:""expiration"";i:1769013845;s:2:""ip"";s:39:""2804:5d80:8346:9a58:f1a5:25a4:f7ed:abe3"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768841045;}}"
 "18208","995","nickname","josisantossiqueira2006@gmail.com"
 "18209","995","first_name",
 "18210","995","last_name",
@@ -17268,9 +17265,9 @@
 "18375","1002","_tipo_cadastro","field_67cca779c59ee"
 "18376","1002","id_abrigo","1499, 2192, 1587, 982, 2304"
 "18377","1002","_id_abrigo","field_67998ea70bb61"
-"18378","1002","session_tokens","a:4:{s:64:""f47da59b09a7ade8f2fc88e19ed711f735514b273626048c450809d8c8816fea"";a:4:{s:10:""expiration"";i:1768663934;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1768491134;}s:64:""47a912cc8dc1fdcdc1246d22a43078c25214b4c11aff355f531d265d6b169a60"";a:4:{s:10:""expiration"";i:1768664544;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768491744;}s:64:""d2d7ed9d3b4502513e0afcef30c228ca91b27137ccd10450f87f920d057928cb"";a:4:{s:10:""expiration"";i:1768668039;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1768495239;}s:64:""a1a86a0e2e68240443c7107c12779e933d457cbd2d6df1a6e7abb9856d0a3e29"";a:4:{s:10:""expiration"";i:1768688709;s:2:""ip"";s:14:""200.192.114.18"";s:2:""ua"";s:117:""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15"";s:5:""login"";i:1768515909;}}"
-"18379","1002","wplalr_last_login","1768515909"
-"18380","1002","wfls-last-login","1768515909"
+"18378","1002","session_tokens","a:2:{s:64:""f7f3f0de514c25b9644cf2b61502cc3e9d845418055d7042cf4bd6e8769be6f0"";a:4:{s:10:""expiration"";i:1769259055;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769086255;}s:64:""5855f906986636c5ed2a83282bbfbd689ae790d994340d884d0a7ead76066427"";a:4:{s:10:""expiration"";i:1769259556;s:2:""ip"";s:15:""200.238.182.204"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769086756;}}"
+"18379","1002","wplalr_last_login","1769086756"
+"18380","1002","wfls-last-login","1769086756"
 "18381","988","wplalr_last_login","1768499688"
 "18382","988","wfls-last-login","1768499688"
 "18384","1003","nickname","publicidade@abra.ind.br"
@@ -17455,3 +17452,354 @@
 "18565","1011","_yoast_wpseo_profile_updated","1768834575"
 "18566","1011","default_password_nag",
 "18567","1011","session_tokens","a:1:{s:64:""793abacd4d6b1be8203199bb78817ddee28b6d1f705cbe91546b294750accf20"";a:4:{s:10:""expiration"";i:1769007375;s:2:""ip"";s:37:""2804:7f7:d4c1:fc02:3cda:4062:bf8:de53"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"";s:5:""login"";i:1768834575;}}"
+"18570","1012","nickname","Joaochavespedro@gmail.comJ"
+"18571","1012","first_name",
+"18572","1012","last_name",
+"18573","1012","description",
+"18574","1012","rich_editing","true"
+"18575","1012","syntax_highlighting","true"
+"18576","1012","comment_shortcuts","false"
+"18577","1012","admin_color","fresh"
+"18578","1012","use_ssl","0"
+"18579","1012","show_admin_bar_front","true"
+"18580","1012","locale",
+"18581","1012","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18582","1012","wp_user_level","0"
+"18583","1012","id_abrigo",
+"18584","1012","_id_abrigo","field_67998ea70bb61"
+"18585","1012","tipo_cadastro",
+"18586","1012","_tipo_cadastro","field_67cca779c59ee"
+"18587","1012","_yoast_wpseo_profile_updated","1768874472"
+"18588","1012","default_password_nag",
+"18589","1012","session_tokens","a:1:{s:64:""67ab10bc80b69f760c3f17a48b705cf4b9b711c838ebe38a2b0623b70a8ba4a6"";a:4:{s:10:""expiration"";i:1769047272;s:2:""ip"";s:38:""2804:1b2:d080:9a64:a6ad:67c4:c4b6:6687"";s:2:""ua"";s:131:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/29.0 Chrome/136.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1768874472;}}"
+"18590","1013","nickname","luisagabriellemamedio@gmail.com"
+"18591","1013","first_name",
+"18592","1013","last_name",
+"18593","1013","description",
+"18594","1013","rich_editing","true"
+"18595","1013","syntax_highlighting","true"
+"18596","1013","comment_shortcuts","false"
+"18597","1013","admin_color","fresh"
+"18598","1013","use_ssl","0"
+"18599","1013","show_admin_bar_front","true"
+"18600","1013","locale",
+"18601","1013","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18602","1013","wp_user_level","0"
+"18603","1013","id_abrigo",
+"18604","1013","_id_abrigo","field_67998ea70bb61"
+"18605","1013","tipo_cadastro",
+"18606","1013","_tipo_cadastro","field_67cca779c59ee"
+"18607","1013","_yoast_wpseo_profile_updated","1768949744"
+"18608","1013","default_password_nag",
+"18609","1013","session_tokens","a:2:{s:64:""c5fe4f0f6107820ca8c4fd370dde55bcb8bc06517fcbea24bf0a585feab66f9a"";a:4:{s:10:""expiration"";i:1769122544;s:2:""ip"";s:15:""177.121.242.105"";s:2:""ua"";s:135:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1768949744;}s:64:""2f5817783ac3de27f3d84b924e09446309fa5da8746c3630ab4c143f26222370"";a:4:{s:10:""expiration"";i:1769122553;s:2:""ip"";s:15:""177.121.242.105"";s:2:""ua"";s:135:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1768949753;}}"
+"18610","1013","wplalr_last_login","1768949753"
+"18611","1013","wfls-last-login","1768949753"
+"18612","1014","nickname","abrigoconectapet@gmail.com"
+"18613","1014","first_name",
+"18614","1014","last_name",
+"18615","1014","description",
+"18616","1014","rich_editing","true"
+"18617","1014","syntax_highlighting","true"
+"18618","1014","comment_shortcuts","false"
+"18619","1014","admin_color","fresh"
+"18620","1014","use_ssl","0"
+"18621","1014","show_admin_bar_front","true"
+"18622","1014","locale",
+"18623","1014","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18624","1014","wp_user_level","0"
+"18625","1014","id_abrigo",
+"18626","1014","_id_abrigo","field_67998ea70bb61"
+"18627","1014","tipo_cadastro",
+"18628","1014","_tipo_cadastro","field_67cca779c59ee"
+"18629","1014","_yoast_wpseo_profile_updated","1769091228"
+"18630","1014","default_password_nag",
+"18631","1014","session_tokens","a:2:{s:64:""11e6ee456acf0ed92dbb140fdcab83d0123b09211cc73d726b7e2ad268c835dc"";a:4:{s:10:""expiration"";i:1769264029;s:2:""ip"";s:38:""2804:3294:1605:ba00:ee5:3595:63ba:852c"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769091229;}s:64:""d9cf40e6367efd267cbe1f41432ddf7df4a4ba7cefe4858e6f556a3ce23ca443"";a:4:{s:10:""expiration"";i:1769264138;s:2:""ip"";s:38:""2804:3294:1605:ba00:ee5:3595:63ba:852c"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769091338;}}"
+"18632","1014","wplalr_last_login","1769091338"
+"18633","1014","wfls-last-login","1769091338"
+"18634","1015","nickname","monique_costasilva@ymail.com"
+"18635","1015","first_name",
+"18636","1015","last_name",
+"18637","1015","description",
+"18638","1015","rich_editing","true"
+"18639","1015","syntax_highlighting","true"
+"18640","1015","comment_shortcuts","false"
+"18641","1015","admin_color","fresh"
+"18642","1015","use_ssl","0"
+"18643","1015","show_admin_bar_front","true"
+"18644","1015","locale",
+"18645","1015","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18646","1015","wp_user_level","0"
+"18647","1015","id_abrigo",
+"18648","1015","_id_abrigo","field_67998ea70bb61"
+"18649","1015","tipo_cadastro",
+"18650","1015","_tipo_cadastro","field_67cca779c59ee"
+"18651","1015","_yoast_wpseo_profile_updated","1769091885"
+"18652","1015","default_password_nag",
+"18653","1015","session_tokens","a:1:{s:64:""73d35f0db51d9dea035f44c9795b24aec058abc2b79ecdfbdee0979d5da46572"";a:4:{s:10:""expiration"";i:1769264685;s:2:""ip"";s:38:""2804:3294:1605:ba00:ee5:3595:63ba:852c"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769091885;}}"
+"18654","925","wplalr_last_login","1769808434"
+"18655","925","wfls-last-login","1769808434"
+"18657","985","session_tokens","a:1:{s:64:""2105a0955c28c5dcce72a0a72c685e1c4e5c98d0ce7a910f285cff6f95f40165"";a:4:{s:10:""expiration"";i:1769958670;s:2:""ip"";s:39:""2803:9810:4cba:3c10:bc48:92f8:b168:82ef"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769785870;}}"
+"18658","1016","nickname","jennifermilly76@gmail.com"
+"18659","1016","first_name",
+"18660","1016","last_name",
+"18661","1016","description",
+"18662","1016","rich_editing","true"
+"18663","1016","syntax_highlighting","true"
+"18664","1016","comment_shortcuts","false"
+"18665","1016","admin_color","fresh"
+"18666","1016","use_ssl","0"
+"18667","1016","show_admin_bar_front","true"
+"18668","1016","locale",
+"18669","1016","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18670","1016","wp_user_level","0"
+"18671","1016","id_abrigo",
+"18672","1016","_id_abrigo","field_67998ea70bb61"
+"18673","1016","tipo_cadastro",
+"18674","1016","_tipo_cadastro","field_67cca779c59ee"
+"18675","1016","_yoast_wpseo_profile_updated","1769434833"
+"18676","1016","default_password_nag",
+"18677","1016","session_tokens","a:2:{s:64:""9fefd23a9cd742ca79174f976697ad06573c07ac23d65aef5ef5b9e1c61fcf6e"";a:4:{s:10:""expiration"";i:1769607633;s:2:""ip"";s:32:""2804:389:d105:346f:1:0:50eb:193d"";s:2:""ua"";s:296:""Mozilla/5.0 (Linux; Android 15; 24117RN76G Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/144.0.7559.87 Mobile Safari/537.36 Instagram 413.0.0.41.84 Android (35/15; 450dpi; 1080x2400; Xiaomi/Redmi; 24117RN76G; tanzanite; mt6789; pt_BR; 865356678; IABMV/1)"";s:5:""login"";i:1769434833;}s:64:""02005a78e90b4f0dabb8b6aea80c5a73e178dc6359a2e1d32b75a9278fe9062f"";a:4:{s:10:""expiration"";i:1769607734;s:2:""ip"";s:32:""2804:389:d105:346f:1:0:50eb:193d"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769434934;}}"
+"18678","1016","wplalr_last_login","1769434934"
+"18679","1016","wfls-last-login","1769434934"
+"18680","1017","nickname","vanessanfacundes4@gmail.com"
+"18681","1017","first_name",
+"18682","1017","last_name",
+"18683","1017","description",
+"18684","1017","rich_editing","true"
+"18685","1017","syntax_highlighting","true"
+"18686","1017","comment_shortcuts","false"
+"18687","1017","admin_color","fresh"
+"18688","1017","use_ssl","0"
+"18689","1017","show_admin_bar_front","true"
+"18690","1017","locale",
+"18691","1017","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18692","1017","wp_user_level","0"
+"18693","1017","id_abrigo",
+"18694","1017","_id_abrigo","field_67998ea70bb61"
+"18695","1017","tipo_cadastro",
+"18696","1017","_tipo_cadastro","field_67cca779c59ee"
+"18697","1017","_yoast_wpseo_profile_updated","1769440369"
+"18698","1017","default_password_nag",
+"18699","1017","session_tokens","a:2:{s:64:""bffd9bd92e51275b26c2bb7cceb017c62d9cb43821ccdda41d4ffbb56135676f"";a:4:{s:10:""expiration"";i:1769613169;s:2:""ip"";s:14:""149.78.122.252"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1769440369;}s:64:""d95973c762a483a828c0b29116cf68423a98ddd05666fa4e0b5cb4461f9d6111"";a:4:{s:10:""expiration"";i:1769613279;s:2:""ip"";s:14:""149.78.122.252"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"";s:5:""login"";i:1769440479;}}"
+"18700","1017","wplalr_last_login","1769440479"
+"18701","1017","wfls-last-login","1769440479"
+"18702","1018","nickname","thaistostes108@gmail.com"
+"18703","1018","first_name",
+"18704","1018","last_name",
+"18705","1018","description",
+"18706","1018","rich_editing","true"
+"18707","1018","syntax_highlighting","true"
+"18708","1018","comment_shortcuts","false"
+"18709","1018","admin_color","fresh"
+"18710","1018","use_ssl","0"
+"18711","1018","show_admin_bar_front","true"
+"18712","1018","locale",
+"18713","1018","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18714","1018","wp_user_level","0"
+"18715","1018","id_abrigo",
+"18716","1018","_id_abrigo","field_67998ea70bb61"
+"18717","1018","tipo_cadastro",
+"18718","1018","_tipo_cadastro","field_67cca779c59ee"
+"18719","1018","_yoast_wpseo_profile_updated","1769446229"
+"18720","1018","default_password_nag",
+"18721","1018","session_tokens","a:1:{s:64:""ca4c0c140625db4e4c176e43ec4f4f3aaee2293ee87105067af8bd88f88f6567"";a:4:{s:10:""expiration"";i:1769619029;s:2:""ip"";s:14:""186.192.56.127"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769446229;}}"
+"18726","1019","nickname","giuliaguastaldi_florosa@hotmail.com"
+"18727","1019","first_name",
+"18728","1019","last_name",
+"18729","1019","description",
+"18730","1019","rich_editing","true"
+"18731","1019","syntax_highlighting","true"
+"18732","1019","comment_shortcuts","false"
+"18733","1019","admin_color","fresh"
+"18734","1019","use_ssl","0"
+"18735","1019","show_admin_bar_front","true"
+"18736","1019","locale",
+"18737","1019","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18738","1019","wp_user_level","0"
+"18739","1019","id_abrigo",
+"18740","1019","_id_abrigo","field_67998ea70bb61"
+"18741","1019","tipo_cadastro",
+"18742","1019","_tipo_cadastro","field_67cca779c59ee"
+"18743","1019","_yoast_wpseo_profile_updated","1769522236"
+"18744","1019","default_password_nag",
+"18745","1019","session_tokens","a:2:{s:64:""25cf2d933ae2c4e4c6fb0b7754cb8a69c02ef4e1d0f7ae7d16ab0bbe0f0e53bf"";a:4:{s:10:""expiration"";i:1769695037;s:2:""ip"";s:29:""2a02:26f7:e530:5808:0:800:0:e"";s:2:""ua"";s:135:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769522237;}s:64:""916c64fb13e4faff0fc3b97c6f19f6dbc001a6b9bcb637612d12eb7902e25a57"";a:4:{s:10:""expiration"";i:1769695049;s:2:""ip"";s:29:""2a02:26f7:e530:5808:0:800:0:e"";s:2:""ua"";s:135:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769522249;}}"
+"18746","1019","wplalr_last_login","1769522249"
+"18747","1019","wfls-last-login","1769522249"
+"18748","1019","_yoast_wpseo_introductions","a:0:{}"
+"18749","1020","nickname","gl31704@gmail.com"
+"18750","1020","first_name",
+"18751","1020","last_name",
+"18752","1020","description",
+"18753","1020","rich_editing","true"
+"18754","1020","syntax_highlighting","true"
+"18755","1020","comment_shortcuts","false"
+"18756","1020","admin_color","fresh"
+"18757","1020","use_ssl","0"
+"18758","1020","show_admin_bar_front","true"
+"18759","1020","locale",
+"18760","1020","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18761","1020","wp_user_level","0"
+"18762","1020","id_abrigo",
+"18763","1020","_id_abrigo","field_67998ea70bb61"
+"18764","1020","tipo_cadastro",
+"18765","1020","_tipo_cadastro","field_67cca779c59ee"
+"18766","1020","_yoast_wpseo_profile_updated","1769522583"
+"18767","1020","default_password_nag",
+"18768","1020","session_tokens","a:2:{s:64:""b85988db1e96d91afa3575340cdc52dda22a964013798bddb26125d45cdea852"";a:4:{s:10:""expiration"";i:1769695383;s:2:""ip"";s:39:""2804:2968:6004:2900:f4ba:2ab4:896e:1448"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.7.3 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769522583;}s:64:""56a1fa97f668863e3dfb9b2b04c3a9f04cda3f751a9d6e128422ab0cbf9351fb"";a:4:{s:10:""expiration"";i:1769695411;s:2:""ip"";s:39:""2804:2968:6004:2900:f4ba:2ab4:896e:1448"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.7.3 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769522611;}}"
+"18769","1020","wplalr_last_login","1769522611"
+"18770","1020","wfls-last-login","1769522611"
+"18771","1021","nickname","neneloeneloo@gmail.com"
+"18772","1021","first_name",
+"18773","1021","last_name",
+"18774","1021","description",
+"18775","1021","rich_editing","true"
+"18776","1021","syntax_highlighting","true"
+"18777","1021","comment_shortcuts","false"
+"18778","1021","admin_color","fresh"
+"18779","1021","use_ssl","0"
+"18780","1021","show_admin_bar_front","true"
+"18781","1021","locale",
+"18782","1021","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18783","1021","wp_user_level","0"
+"18784","1021","id_abrigo",
+"18785","1021","_id_abrigo","field_67998ea70bb61"
+"18786","1021","tipo_cadastro",
+"18787","1021","_tipo_cadastro","field_67cca779c59ee"
+"18788","1021","_yoast_wpseo_profile_updated","1769523733"
+"18789","1021","default_password_nag",
+"18790","1021","session_tokens","a:2:{s:64:""dce5b78478af0ba3f5f63ec38419db27af957d4fcf2dcadade3060d8dad039c1"";a:4:{s:10:""expiration"";i:1769696533;s:2:""ip"";s:14:""177.54.147.116"";s:2:""ua"";s:125:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0"";s:5:""login"";i:1769523733;}s:64:""d8d5eb1fe900a6e4ee5243a4bb4dd50362ddf3e06071d37c2d6c0709fde26687"";a:4:{s:10:""expiration"";i:1769696903;s:2:""ip"";s:38:""2804:8aa4:333e:2000:49c1:bde:d1c7:155f"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"";s:5:""login"";i:1769524103;}}"
+"18791","1021","wplalr_last_login","1769524103"
+"18792","1021","wfls-last-login","1769524103"
+"18793","925","_yoast_wpseo_introductions","a:0:{}"
+"18794","925","instagram","ongpedacinhodoceu"
+"18795","925","session_tokens","a:1:{s:64:""f6100e0a6e1273da368c1376392de88c7a37b286b4867aaa0313682a7123c7b7"";a:4:{s:10:""expiration"";i:1769981234;s:2:""ip"";s:15:""179.235.179.142"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769808434;}}"
+"18796","1022","nickname","yasminsousa.ys07@gmail.com"
+"18797","1022","first_name",
+"18798","1022","last_name",
+"18799","1022","description",
+"18800","1022","rich_editing","true"
+"18801","1022","syntax_highlighting","true"
+"18802","1022","comment_shortcuts","false"
+"18803","1022","admin_color","fresh"
+"18804","1022","use_ssl","0"
+"18805","1022","show_admin_bar_front","true"
+"18806","1022","locale",
+"18807","1022","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18808","1022","wp_user_level","0"
+"18809","1022","id_abrigo",
+"18810","1022","_id_abrigo","field_67998ea70bb61"
+"18811","1022","tipo_cadastro",
+"18812","1022","_tipo_cadastro","field_67cca779c59ee"
+"18813","1022","_yoast_wpseo_profile_updated","1769616608"
+"18814","1022","default_password_nag",
+"18815","1022","session_tokens","a:1:{s:64:""f09fe59e9f32741d1818dead2e610db4b2829dc8573a4889f778ac3886a20fd5"";a:4:{s:10:""expiration"";i:1769789408;s:2:""ip"";s:12:""189.6.40.108"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769616608;}}"
+"18816","1023","nickname","Sousamiminha@gmail.com"
+"18817","1023","first_name",
+"18818","1023","last_name",
+"18819","1023","description",
+"18820","1023","rich_editing","true"
+"18821","1023","syntax_highlighting","true"
+"18822","1023","comment_shortcuts","false"
+"18823","1023","admin_color","fresh"
+"18824","1023","use_ssl","0"
+"18825","1023","show_admin_bar_front","true"
+"18826","1023","locale",
+"18827","1023","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18828","1023","wp_user_level","0"
+"18829","1023","id_abrigo",
+"18830","1023","_id_abrigo","field_67998ea70bb61"
+"18831","1023","tipo_cadastro",
+"18832","1023","_tipo_cadastro","field_67cca779c59ee"
+"18833","1023","_yoast_wpseo_profile_updated","1769616626"
+"18834","1023","default_password_nag",
+"18835","1023","session_tokens","a:3:{s:64:""b1e1588e3f31a3cbb9de87dec17ceb729395c31e17be663e77f1d2db841bc388"";a:4:{s:10:""expiration"";i:1769789426;s:2:""ip"";s:12:""189.6.40.108"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769616626;}s:64:""27be923cb73cd83fc3740d523e41d56a386d5e7e604123faeed9c81e9d074e86"";a:4:{s:10:""expiration"";i:1769789437;s:2:""ip"";s:12:""189.6.40.108"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769616637;}s:64:""bf9ccbceccb6dbde88ef59c0e2397955d6591cb159f4827fed610cd77e6cdd72"";a:4:{s:10:""expiration"";i:1769789437;s:2:""ip"";s:12:""189.6.40.108"";s:2:""ua"";s:137:""Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Mobile/15E148 Safari/604.1"";s:5:""login"";i:1769616637;}}"
+"18836","1023","wplalr_last_login","1769616637"
+"18837","1023","wfls-last-login","1769616637"
+"18838","1024","nickname","darianealves30@gmail.com"
+"18839","1024","first_name",
+"18840","1024","last_name",
+"18841","1024","description",
+"18842","1024","rich_editing","true"
+"18843","1024","syntax_highlighting","true"
+"18844","1024","comment_shortcuts","false"
+"18845","1024","admin_color","fresh"
+"18846","1024","use_ssl","0"
+"18847","1024","show_admin_bar_front","true"
+"18848","1024","locale",
+"18849","1024","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18850","1024","wp_user_level","0"
+"18851","1024","id_abrigo",
+"18852","1024","_id_abrigo","field_67998ea70bb61"
+"18853","1024","tipo_cadastro",
+"18854","1024","_tipo_cadastro","field_67cca779c59ee"
+"18855","1024","_yoast_wpseo_profile_updated","1769619657"
+"18856","1024","default_password_nag",
+"18857","1024","session_tokens","a:1:{s:64:""0ed0317568a9b88139df3d9231959a136b5ae51364afdf1b6e3ecc97e3bec6a3"";a:4:{s:10:""expiration"";i:1769792457;s:2:""ip"";s:13:""189.15.229.51"";s:2:""ua"";s:111:""Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36"";s:5:""login"";i:1769619657;}}"
+"18858","163","session_tokens","a:3:{s:64:""d7363ca1da79964297b4532f4768339e4b6fde1b3033dd7d498aeacb83bd31eb"";a:4:{s:10:""expiration"";i:1769890749;s:2:""ip"";s:39:""2001:1284:f502:9d66:24e8:87a0:8822:3a51"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"";s:5:""login"";i:1769717949;}s:64:""c28f0b1b24538cc0ff3d19bd767e292d839e630af3938130fa1da55225c23ec8"";a:4:{s:10:""expiration"";i:1769890837;s:2:""ip"";s:39:""2001:1284:f502:9d66:24e8:87a0:8822:3a51"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"";s:5:""login"";i:1769718037;}s:64:""3f77803788948e659ad8fb8bfb5f5afe27836d15ece0d7788891d940f8a0686f"";a:4:{s:10:""expiration"";i:1769891069;s:2:""ip"";s:39:""2001:1284:f502:9d66:24e8:87a0:8822:3a51"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"";s:5:""login"";i:1769718269;}}"
+"18859","163","_yoast_wpseo_introductions","a:0:{}"
+"18861","1025","nickname","agromilena.soares@gmail.com"
+"18862","1025","first_name",
+"18863","1025","last_name",
+"18864","1025","description",
+"18865","1025","rich_editing","true"
+"18866","1025","syntax_highlighting","true"
+"18867","1025","comment_shortcuts","false"
+"18868","1025","admin_color","fresh"
+"18869","1025","use_ssl","0"
+"18870","1025","show_admin_bar_front","true"
+"18871","1025","locale",
+"18872","1025","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18873","1025","wp_user_level","0"
+"18874","1025","id_abrigo",
+"18875","1025","_id_abrigo","field_67998ea70bb61"
+"18876","1025","tipo_cadastro",
+"18877","1025","_tipo_cadastro","field_67cca779c59ee"
+"18878","1025","_yoast_wpseo_profile_updated","1769777845"
+"18879","1025","default_password_nag",
+"18880","1025","session_tokens","a:1:{s:64:""dab1d55229612a9c34e7587ad22a037eb2c33afcc165f067028e66f8854d9e03"";a:4:{s:10:""expiration"";i:1769950645;s:2:""ip"";s:14:""200.202.143.39"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769777845;}}"
+"18881","985","_yoast_wpseo_introductions","a:0:{}"
+"18882","985","instagram","https://www.instagram.com/bicharadacasa7/"
+"18883","1","session_tokens","a:2:{s:64:""9c06c07f7ff313e57439c496464723ea279bc7149af2e60cfc96f5f84efad434"";a:4:{s:10:""expiration"";i:1769963708;s:2:""ip"";s:37:""2804:5d80:8547:52fc:4560:3e3:5e11:45d"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769790908;}s:64:""84197b9ceac65bb274caa98ac682c8f3bff0f1c4b97a5b86876999593e7a6cf7"";a:4:{s:10:""expiration"";i:1769981420;s:2:""ip"";s:37:""2804:5d80:8547:52fc:4560:3e3:5e11:45d"";s:2:""ua"";s:111:""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"";s:5:""login"";i:1769808620;}}"
+"18885","1026","nickname","ariovaldo.bsjunior@gmail.com"
+"18886","1026","first_name",
+"18887","1026","last_name",
+"18888","1026","description",
+"18889","1026","rich_editing","true"
+"18890","1026","syntax_highlighting","true"
+"18891","1026","comment_shortcuts","false"
+"18892","1026","admin_color","fresh"
+"18893","1026","use_ssl","0"
+"18894","1026","show_admin_bar_front","true"
+"18895","1026","locale",
+"18896","1026","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18897","1026","wp_user_level","0"
+"18898","1026","id_abrigo",
+"18899","1026","_id_abrigo","field_67998ea70bb61"
+"18900","1026","tipo_cadastro",
+"18901","1026","_tipo_cadastro","field_67cca779c59ee"
+"18902","1026","_yoast_wpseo_profile_updated","1769808341"
+"18903","1026","default_password_nag",
+"18905","1027","nickname","arizoka18@gmail.com"
+"18906","1027","first_name",
+"18907","1027","last_name",
+"18908","1027","description",
+"18909","1027","rich_editing","true"
+"18910","1027","syntax_highlighting","true"
+"18911","1027","comment_shortcuts","false"
+"18912","1027","admin_color","fresh"
+"18913","1027","use_ssl","0"
+"18914","1027","show_admin_bar_front","true"
+"18915","1027","locale",
+"18916","1027","wp_capabilities","a:1:{s:10:""subscriber"";b:1;}"
+"18917","1027","wp_user_level","0"
+"18918","1027","id_abrigo",
+"18919","1027","_id_abrigo","field_67998ea70bb61"
+"18920","1027","tipo_cadastro",
+"18921","1027","_tipo_cadastro","field_67cca779c59ee"
+"18922","1027","_yoast_wpseo_profile_updated","1769808431"
+"18923","1027","default_password_nag",
+"18926","1026","wplalr_last_login","1769808531"
+"18927","1026","wfls-last-login","1769808531"
+"18929","1027","wplalr_last_login","1769808551"
+"18930","1027","wfls-last-login","1769808551"
+"18931","1027","_yoast_wpseo_introductions","a:0:{}"

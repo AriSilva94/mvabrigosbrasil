@@ -50,6 +50,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
 const { executeSql, executeSqlFile } = require('./utils/execute-sql');
 
 // Cores para output
@@ -98,6 +99,105 @@ function logError(message) {
 
 function logInfo(message) {
   log(`  ℹ️  ${message}`, 'blue');
+}
+
+/**
+ * Cria auth user + profile placeholders para shelters que ainda estão sem profile_id.
+ * Usa authorized_email quando disponível; caso já exista profile com esse email,
+ * gera um email sintético único para manter a constraint única em shelters.profile_id.
+ */
+async function createPlaceholderProfilesForSheltersWithoutProfile() {
+  if (isDryRun) {
+    logWarning('Criação de profiles placeholder pulada (dry-run)');
+    return;
+  }
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
+  // Buscar shelters ainda sem profile
+  const { data: shelters, error: fetchError } = await supabase
+    .from('shelters')
+    .select('id, name, wp_post_id, wp_post_author, authorized_email')
+    .is('profile_id', null);
+
+  if (fetchError) {
+    throw new Error(`Erro ao buscar shelters sem profile: ${fetchError.message}`);
+  }
+
+  if (!shelters || shelters.length === 0) {
+    logInfo('Nenhum abrigo sem profile para corrigir');
+    return;
+  }
+
+  logInfo(`Criando ${shelters.length} profile(s) placeholder para abrigos sem owner`);
+
+  for (const shelter of shelters) {
+    // Definir email base
+    const baseLocal = shelter.authorized_email
+      ? shelter.authorized_email.split('@')[0]
+      : `wp${shelter.wp_post_author || 'unknown'}-shelter`;
+    const domain = shelter.authorized_email
+      ? shelter.authorized_email.split('@')[1]
+      : 'mvlegacy.local';
+
+    // Garante unicidade de email para não colidir com profiles existentes
+    let email = `${baseLocal}@${domain}`;
+    let suffix = 1;
+    // se email já existir, cria email sintético único
+    // (usa SELECT rápido para evitar conflito)
+    while (true) {
+      const { data: existing } = await supabase
+        .from('profiles')
+        .select('id')
+        .ilike('email', email)
+        .limit(1);
+
+      if (!existing || existing.length === 0) break;
+      email = `${baseLocal}+${suffix}@${domain}`;
+      suffix += 1;
+    }
+
+    const fullName = shelter.name || 'Abrigo (sem nome)';
+    const wpUserId = shelter.wp_post_author || null;
+
+    const { data: userCreated, error: userErr } = await supabase.auth.admin.createUser({
+      email,
+      email_confirm: true,
+      user_metadata: { wp_user_id: wpUserId }
+    });
+
+    if (userErr) {
+      throw new Error(`Erro ao criar auth user para abrigo ${shelter.id}: ${userErr.message}`);
+    }
+
+    const userId = userCreated.user.id;
+
+    const { error: profileErr } = await supabase.from('profiles').insert({
+      id: userId,
+      email,
+      full_name: fullName,
+      wp_user_id: wpUserId,
+      origin: 'wordpress_migrated'
+    });
+
+    if (profileErr) {
+      throw new Error(`Erro ao criar profile para abrigo ${shelter.id}: ${profileErr.message}`);
+    }
+
+    const { error: updateErr } = await supabase
+      .from('shelters')
+      .update({ profile_id: userId })
+      .eq('id', shelter.id);
+
+    if (updateErr) {
+      throw new Error(`Erro ao atualizar shelter ${shelter.id} com profile_id: ${updateErr.message}`);
+    }
+
+    logSuccess(`Profile placeholder criado e vinculado: ${shelter.name} (${shelter.id})`);
+  }
 }
 
 // Função para executar script e capturar output
@@ -421,6 +521,28 @@ async function main() {
       'Atualizar shelters.profile_id com os profiles dos donos'
     );
     stats.steps.push({ name: 'Link Shelters', ...step15 });
+
+    // ========================================
+    // PASSO 15.5: Corrigir shelters sem profile (fallback por e-mail)
+    // ========================================
+    logStep('15.5', 'Vincular shelters restantes usando authorized_email');
+    await runSql(
+      `UPDATE public.shelters s
+         SET profile_id = p.id
+        FROM public.profiles p
+       WHERE s.profile_id IS NULL
+         AND LOWER(s.authorized_email) = LOWER(p.email)
+         AND NOT EXISTS (
+           SELECT 1 FROM public.shelters s2
+            WHERE s2.profile_id = p.id
+         );`,
+      'Atualizar shelters.profile_id via authorized_email quando wp_user_id não casar (sem reutilizar profile em outro abrigo)'
+    );
+    logSuccess('Shelters sem profile corrigidos por authorized_email');
+
+    // PASSO 15.6: Criar profiles placeholder para abrigos restantes
+    logStep('15.6', 'Criar profiles placeholder para shelters ainda sem owner');
+    await createPlaceholderProfilesForSheltersWithoutProfile();
 
     // ========================================
     // PASSO 16: Migrar Candidaturas de Vagas
