@@ -7,7 +7,7 @@ import { FileText } from "lucide-react";
 import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
 import PageHeader from "@/components/layout/PageHeader";
 import AppImage from "@/components/ui/AppImage";
-import { Heading, Text } from "@/components/ui/typography";
+import { Heading } from "@/components/ui/typography";
 import { libraryItems } from "@/data/libraryItems";
 import { buildMetadata } from "@/lib/seo";
 
@@ -78,38 +78,70 @@ export default async function LibraryDetailPage({
                 Publicado em: {item.publishedAt ?? "Data não informada"}
               </p>
 
-              <Link
-                href={item.contentUrl ?? item.externalUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary">
-                  <FileText className="h-6 w-6" aria-hidden />
-                </span>
-                <div className="text-left leading-tight">
-                  <p className="text-base font-semibold text-brand-primary">
-                    CONTEÚDO COMPLETO
-                  </p>
-                  <span className="text-sm text-brand-secondary">
-                    Clique para ler!
+              {!item.externalLinkText && (
+                <Link
+                  href={item.contentUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary">
+                    <FileText className="h-6 w-6" aria-hidden />
                   </span>
-                </div>
-              </Link>
+                  <div className="text-left leading-tight">
+                    <p className="text-base font-semibold text-brand-primary">
+                      CONTEÚDO COMPLETO
+                    </p>
+                    <span className="text-sm text-brand-secondary">
+                      Clique para ler!
+                    </span>
+                  </div>
+                </Link>
+              )}
 
-              <Heading as="h1" className="font-26 text-brand-secondary">
-                {item.title}
-              </Heading>
-              <Text className="text-color-secondary leading-relaxed">
-                {item.summary ??
-                  "Material em preparação. Em breve você poderá acessar o conteúdo completo."}
-              </Text>
+              <div className="text-color-secondary leading-relaxed space-y-4">
+                {item.summary ? (
+                  item.summary.split("\n\n").map((paragraph, index) => (
+                    <p key={index}>
+                      {paragraph.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+                        part.match(/^https?:\/\//) ? (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brand-primary hover:underline break-all"
+                          >
+                            {part}
+                          </a>
+                        ) : (
+                          part
+                        ),
+                      )}
+                    </p>
+                  ))
+                ) : (
+                  <> </>
+                )}
+                {item.externalLinkText && item.contentUrl && (
+                  <p>
+                    <Link
+                      href={item.contentUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-brand-primary hover:underline"
+                    >
+                      {item.externalLinkText}
+                    </Link>
+                  </p>
+                )}
+              </div>
             </article>
           </div>
         </div>
       </section>
 
-      <section
+      {/* <section
         className="bg-white py-16 md:py-24"
         aria-labelledby="library-title"
       >
@@ -126,7 +158,7 @@ export default async function LibraryDetailPage({
 
           <LibraryItemsShowcase items={libraryItems} />
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
