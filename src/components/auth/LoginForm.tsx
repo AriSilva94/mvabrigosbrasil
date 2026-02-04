@@ -27,7 +27,9 @@ type LoginFormValues = {
 const emailSchema = z
   .string()
   .trim()
-  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Informe um e-mail valido." });
+  .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+    message: "Informe um e-mail valido.",
+  });
 
 const loginSchema = z.object({
   email: emailSchema,
@@ -110,7 +112,8 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       const redirectTo = await resolvePostLoginRedirect();
       router.push(redirectTo);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Nao foi possivel autenticar.";
+      const message =
+        error instanceof Error ? error.message : "Nao foi possivel autenticar.";
       console.error("Erro ao autenticar", error);
       toast.error(message);
     } finally {
@@ -141,7 +144,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
           className={clsx(
             "bg-[#f2f2f2]",
             fieldErrors.email &&
-              "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+              "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
           )}
         />
         <FormError id="login-email-error" message={fieldErrors.email} />
@@ -166,7 +169,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
           className={clsx(
             "bg-[#f2f2f2]",
             fieldErrors.password &&
-              "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+              "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
           )}
         />
         <FormError id="login-password-error" message={fieldErrors.password} />
@@ -175,7 +178,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       <div className="pt-2 text-center">
         <button
           type="submit"
-          className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex w-full justify-center rounded-full bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-70"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
