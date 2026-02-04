@@ -11,6 +11,17 @@ export type LibraryItem = {
 
 export const libraryItems: LibraryItem[] = [
   {
+    slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais",
+    title: "Diretrizes sobre os Padrões de Cuidados em Abrigos de Animais",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais.png",
+    publishedAt: "04/02/2026",
+    summary:
+      "2ª Edição | Versão em Português\n\nAs Diretrizes para Padrões de Cuidados em Abrigos de Animais da Associação de Veterinários de Abrigos (ASV) foram originalmente publicadas em 2010. Esta segunda edição, atualizada em 2022, compartilha os mesmos objetivos fundamentais: fornecer um conjunto de padrões comuns para o cuidado e bem-estar de animais de companhia em abrigos, com base em evidências científicas e consenso de especialistas; orientações que auxiliem as organizações de proteção animal a reduzir superlotação, estresse e doenças; e uma ferramenta para organizações e comunidades avaliarem e aprimorarem seus abrigos.",
+    contentUrl: "/assets/pdf/2a_Edição_Guideline_de_Shelter.pdf",
+  },
+  {
     slug: "the-association-of-shelter-veterinarians-guidelines-for-humane-rabbit-housing-in-animal-shelters",
     title:
       "The Association of Shelter Veterinarians' Guidelines for Humane Rabbit Housing in Animal Shelters",
