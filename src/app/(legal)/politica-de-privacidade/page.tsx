@@ -68,13 +68,19 @@ export default function Page(): JSX.Element {
           </Text>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>Nome social completo</li>
-            <li>Cidade / Estado</li>
+            <li>Telefone</li>
+            <li>Faixa etária</li>
+            <li>Gênero</li>
             <li>Profissão</li>
             <li>Escolaridade</li>
-            <li>Experiência em trabalho voluntário</li>
-            <li>Disponibilidade para trabalho voluntário</li>
+            <li>Estado / Cidade</li>
+            <li>Disponibilidade de tempo para trabalho voluntário</li>
+            <li>Período de disponibilidade (diário, semanal, quinzenal, semestral)</li>
+            <li>Experiência em trabalho voluntário na causa animal</li>
+            <li>Forma de atuação (remoto, presencial, híbrido)</li>
             <li>Habilidades para trabalho voluntário</li>
-            <li>Observações sobre trabalho voluntário</li>
+            <li>Comentários adicionais sobre trabalho voluntário</li>
+            <li>Como ficou sabendo da iniciativa MV Abrigos Brasil</li>
           </ul>
           <Text className="leading-relaxed font-semibold">Finalidade:</Text>
           <Text className="leading-relaxed">
@@ -86,21 +92,107 @@ export default function Page(): JSX.Element {
           </Text>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>Tipo do abrigo</li>
+            <li>CNPJ ou CPF do responsável</li>
             <li>Nome do abrigo</li>
-            <li>Endereço completo do abrigo</li>
+            <li>Endereço completo do abrigo (CEP, rua, número, bairro, cidade, estado)</li>
             <li>Website do abrigo</li>
             <li>Data de fundação do abrigo</li>
             <li>Espécies abrigadas pelo abrigo</li>
-            <li>População atual de animais do abrigo</li>
-            <li>Nome autorização do abrigo</li>
-            <li>Cargo autorização do abrigo</li>
-            <li>E-mail autorização do abrigo</li>
-            <li>Telefone autorização do abrigo</li>
+            <li>Convênio com lares temporários</li>
+            <li>População inicial de animais do abrigo (cães e gatos)</li>
+            <li>Como ficou sabendo da iniciativa MV Abrigos Brasil</li>
+            <li>Nome da pessoa autorizada pelo abrigo</li>
+            <li>Cargo da pessoa autorizada</li>
+            <li>E-mail da pessoa autorizada</li>
+            <li>Telefone da pessoa autorizada</li>
           </ul>
           <Text className="leading-relaxed font-semibold">Finalidade:</Text>
           <Text className="leading-relaxed">
             Utilizar os dados coletados como fonte de pesquisa de Doutorado e estudos futuros sobre
             Medicina Veterinária de Abrigos.
+          </Text>
+
+          <Text className="leading-relaxed font-semibold">
+            Dados coletados no CADASTRO e LOGIN:
+          </Text>
+          <ul className="list-disc space-y-2 pl-5 leading-relaxed">
+            <li>E-mail</li>
+            <li>Senha (armazenada de forma criptografada)</li>
+          </ul>
+          <Text className="leading-relaxed font-semibold">Finalidade:</Text>
+          <Text className="leading-relaxed">
+            Autenticação e controle de acesso à plataforma, garantindo que apenas usuários
+            autorizados acessem as áreas protegidas do sistema.
+          </Text>
+
+          <Text className="leading-relaxed font-semibold">
+            Dados coletados no FORMULÁRIO DE CONTATO:
+          </Text>
+          <ul className="list-disc space-y-2 pl-5 leading-relaxed">
+            <li>Nome</li>
+            <li>E-mail</li>
+            <li>Assunto</li>
+            <li>Mensagem</li>
+          </ul>
+          <Text className="leading-relaxed font-semibold">Finalidade:</Text>
+          <Text className="leading-relaxed">
+            Responder a dúvidas, solicitações e sugestões enviadas pelos usuários.
+          </Text>
+
+          <Text className="leading-relaxed font-semibold">
+            Dados coletados em CANDIDATURA A VAGAS de voluntariado:
+          </Text>
+          <Text className="leading-relaxed">
+            Ao se candidatar a uma vaga de voluntariado publicada por um abrigo, o sistema associa
+            o perfil do voluntário (dados já cadastrados) à vaga em questão, permitindo que o abrigo
+            visualize as informações do candidato.
+          </Text>
+        </section>
+
+        <section className="space-y-3">
+          <Heading as="h3" className="text-xl font-semibold text-brand-primary">
+            Serviços de terceiros
+          </Heading>
+          <Text className="leading-relaxed">
+            Para o funcionamento da plataforma, utilizamos os seguintes serviços de terceiros que
+            podem processar dados:
+          </Text>
+          <ul className="list-disc space-y-2 pl-5 leading-relaxed">
+            <li>
+              <strong>Supabase</strong> — autenticação de usuários e armazenamento de dados da
+              plataforma (banco de dados).
+            </li>
+            <li>
+              <strong>Vercel Analytics</strong> — coleta de dados analíticos de uso do site,
+              condicionada ao consentimento de cookies analíticos.
+            </li>
+            <li>
+              <strong>Vercel Speed Insights</strong> — monitoramento de desempenho do site,
+              condicionado ao consentimento de cookies analíticos.
+            </li>
+            <li>
+              <strong>ImageKit</strong> — hospedagem e otimização de imagens exibidas na plataforma.
+            </li>
+            <li>
+              <strong>ViaCEP</strong> — consulta de endereço a partir do CEP informado no cadastro
+              de abrigos.
+            </li>
+            <li>
+              <strong>IBGE</strong> — consulta de lista de estados e cidades para os formulários de
+              cadastro.
+            </li>
+          </ul>
+          <Text className="leading-relaxed">
+            Nenhum desses serviços recebe mais dados do que o estritamente necessário para sua
+            função. Os dados analíticos (Vercel Analytics e Speed Insights) só são coletados após o
+            consentimento do usuário, conforme nossa{" "}
+            <a
+              href="/politica-de-cookies"
+              className="font-semibold text-brand-primary underline underline-offset-4 transition hover:text-brand-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary"
+            >
+              Política de Cookies
+            </a>
+            .
           </Text>
         </section>
 
@@ -201,7 +293,7 @@ export default function Page(): JSX.Element {
           <Heading as="h3" className="text-xl font-semibold text-brand-primary">
             Atualização
           </Heading>
-          <Text className="leading-relaxed">Nossa última atualização foi 22/10/2022.</Text>
+          <Text className="leading-relaxed">Nossa última atualização foi 08/02/2026.</Text>
           <Text className="leading-relaxed">
             Dúvidas? Entre em contato:{" "}
             <a
