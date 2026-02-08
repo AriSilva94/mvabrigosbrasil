@@ -1,0 +1,95 @@
+{
+  "geradoEm": "2026-02-07T04:22:36.891Z",
+  "dataFormatada": "07/02/2026, 01:22",
+  "destaque": {
+    "usuariosLegadosLogados": 7,
+    "novosAbrigos": 10,
+    "novosVoluntarios": 3
+  },
+  "migracao": {
+    "totalUsuariosLegados": 973,
+    "jaFizeramLogin": 7,
+    "aindaNaoFizeramLogin": 966,
+    "taxaMigracao": 0.7,
+    "ultimosLogins": [
+      {
+        "email": "admcepread.semmas@blumenau.sc.gov.br",
+        "nome": "admcepread.semmas@blumenau.sc.gov.br",
+        "data": "2026-02-06T12:29:09.223+00:00"
+      },
+      {
+        "email": "esseaquimesmo@gmail.com",
+        "nome": "Alberto 2",
+        "data": "2026-02-06T03:40:25.282+00:00"
+      },
+      {
+        "email": "pauliceiabp@hotmail.com",
+        "nome": "pauliceiabp@hotmail.com",
+        "data": "2026-02-05T12:15:13.84+00:00"
+      },
+      {
+        "email": "pedacinhodoceuong@gmail.com",
+        "nome": "pedacinhodoceuong@gmail.com",
+        "data": "2026-02-04T00:25:02.75+00:00"
+      },
+      {
+        "email": "alemaciell@gmail.com",
+        "nome": "AleMaciell",
+        "data": "2026-02-02T13:52:06.016+00:00"
+      }
+    ]
+  },
+  "novosCadastros": {
+    "abrigos": 10,
+    "voluntarios": 3,
+    "total": 13,
+    "ultimosAbrigos": [
+      {
+        "nome": "Wanka Juttel",
+        "cidade": "Blumenau",
+        "data": "2026-02-06T13:52:17.079315+00:00"
+      },
+      {
+        "nome": "Grupo Vitório ",
+        "cidade": "União",
+        "data": "2026-02-06T01:55:35.185463+00:00"
+      },
+      {
+        "nome": "João Baptista Passos",
+        "cidade": "Jauru",
+        "data": "2026-02-05T10:04:28.227323+00:00"
+      },
+      {
+        "nome": "G.A.R.R.A - GRUPO DE AÇÃO, RESGATE E REABILITAÇÃO ANIMAL",
+        "cidade": "Rio de Janeiro",
+        "data": "2026-02-04T23:57:09.883308+00:00"
+      },
+      {
+        "nome": "APM Associação Projeto Meg",
+        "cidade": "Vespasiano",
+        "data": "2026-02-04T12:51:38.877145+00:00"
+      }
+    ],
+    "ultimosVoluntarios": [
+      {
+        "nome": "Julia Thomaz Brivio ",
+        "cidade": "Rio de Janeiro",
+        "data": "2026-02-06T18:00:08.317823+00:00"
+      },
+      {
+        "nome": "Marlete da silva",
+        "cidade": "Ituporanga",
+        "data": "2026-02-03T19:31:25.15441+00:00"
+      },
+      {
+        "nome": "Milena dos santos soares",
+        "cidade": "Brasília",
+        "data": "2026-02-02T18:53:18.41029+00:00"
+      }
+    ]
+  },
+  "totais": {
+    "abrigos": 314,
+    "voluntarios": 237
+  }
+}
