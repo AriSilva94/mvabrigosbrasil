@@ -227,28 +227,30 @@ export default function ShelterProfileForm({
         </div>
       )}
 
-      <ShelterInfoSection
-        data={data}
-        fieldErrors={fieldErrors}
-        shelterType={shelterType}
-        onShelterTypeChange={(value) => {
-          setShelterType(value);
-          setDocumentValue("");
-          setFieldErrors((prev) => ({
-            ...prev,
-            shelterType: undefined,
-            cnpj: undefined,
-          }));
-        }}
-        documentValue={documentValue}
-        onDocumentValueChange={(value) => {
-          setDocumentValue(value);
-          setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
-        }}
-        onCepAutocomplete={handleCepAutocomplete}
-        onDuplicateCepChange={setHasDuplicateCep}
-        lockNonPopulation={populationEditOnly}
-      />
+      <div id="tour-form-section">
+        <ShelterInfoSection
+          data={data}
+          fieldErrors={fieldErrors}
+          shelterType={shelterType}
+          onShelterTypeChange={(value) => {
+            setShelterType(value);
+            setDocumentValue("");
+            setFieldErrors((prev) => ({
+              ...prev,
+              shelterType: undefined,
+              cnpj: undefined,
+            }));
+          }}
+          documentValue={documentValue}
+          onDocumentValueChange={(value) => {
+            setDocumentValue(value);
+            setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
+          }}
+          onCepAutocomplete={handleCepAutocomplete}
+          onDuplicateCepChange={setHasDuplicateCep}
+          lockNonPopulation={populationEditOnly}
+        />
+      </div>
 
       <ShelterAuthorizationSection
         data={data}
@@ -258,6 +260,7 @@ export default function ShelterProfileForm({
 
       <div className="flex flex-col items-center gap-4 pt-2">
         <button
+          id="tour-save-button"
           type="submit"
           className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary cursor-pointer disabled:cursor-not-allowed disabled:bg-brand-primary/50"
           disabled={isSubmitting || isLoading || hasDuplicateCep}

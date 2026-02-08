@@ -55,10 +55,10 @@ export default function Header() {
   }, [isInstitutionalOpen]);
 
   return (
-    <header className="relative z-20 w-full border-b border-slate-200">
+    <header id="tour-header" className="relative z-20 w-full border-b border-slate-200">
       <div className="bg-white text-sm text-brand-primary">
         <div className="container flex items-center justify-between px-4 py-2">
-          <nav className="hidden items-center gap-2 lg:flex">
+          <nav id="tour-top-nav" className="hidden items-center gap-2 lg:flex">
             {TOP_NAV_LINKS.map((item, index) => (
               <div key={item.href} className="flex items-center gap-2">
                 {index > 0 && <span className="text-brand-accent">•</span>}
@@ -123,7 +123,7 @@ export default function Header() {
       <div className="bg-white">
         <div className="container flex flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:gap-6">
           <div className="flex items-center justify-between gap-3">
-            <Link href="/" className="flex items-center gap-3">
+            <Link id="tour-logo" href="/" className="flex items-center gap-3">
               <AppImage
                 src="/assets/img/logo-medicina-de-abrigos-brasil.svg"
                 alt="Medicina de Abrigos Brasil"
@@ -165,6 +165,7 @@ export default function Header() {
 
           <nav className="flex w-full flex-1 flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
             <ul
+              id="tour-main-nav"
               className={`flex flex-col gap-3 text-[15px] font-medium text-brand-primary lg:flex-row lg:items-center lg:gap-5 xl:gap-6 ${
                 isMobileOpen ? "block" : "hidden lg:flex"
               }`}
@@ -249,7 +250,7 @@ export default function Header() {
               })}
             </ul>
 
-            <div className="flex items-center gap-3">
+            <div id="tour-auth-button" className="flex items-center gap-3">
               {!isLoading && user ? (
                 <div className="relative">
                   <details className="group">
