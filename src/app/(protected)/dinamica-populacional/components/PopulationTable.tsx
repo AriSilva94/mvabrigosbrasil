@@ -18,6 +18,7 @@ const FLOW_ICONS: Record<FlowType, typeof ArrowUpRight> = {
 };
 
 type PopulationTableProps = {
+  id?: string;
   populationInitial: number | null;
   populationCurrent: number | null;
   populationInitialDogs?: number | null;
@@ -42,6 +43,7 @@ const VIEW_OPTIONS: Array<{
 ];
 
 export default function PopulationTable({
+  id,
   populationInitial,
   populationCurrent,
   populationInitialDogs,
@@ -56,7 +58,7 @@ export default function PopulationTable({
   const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div id={id} className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
         <div
           className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-800"

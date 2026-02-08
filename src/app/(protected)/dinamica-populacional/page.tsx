@@ -2,6 +2,7 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import PopulationDynamicsContent from "./components/PopulationDynamicsContent";
+import { TourTrigger } from "@/components/tour/TourTrigger";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 import { getDynamicsUserSummary } from "@/modules/dynamics/getDynamicsUserSummary";
@@ -38,6 +39,8 @@ export default async function Page(): Promise<JSX.Element> {
         userSummary={userSummary}
         isTeamOnly={access.isTeamOnly}
       />
+
+      <TourTrigger tourName="dinamica-populacional-tour" />
     </main>
   );
 }

@@ -108,6 +108,71 @@ export const tours: Tour[] = [
     ],
   },
   {
+    tour: "dinamica-populacional-tour",
+    steps: [
+      {
+        icon: "📊",
+        title: "Dinâmica Populacional",
+        content:
+          "Bem-vindo à Dinâmica Populacional! Aqui você registra e acompanha toda a movimentação de animais: entradas, saídas, adoções, óbitos e indicadores de saúde. Vamos entender cada seção?",
+        selector: "#tour-dp-header",
+        side: "bottom",
+        showControls: true,
+        showSkip: true,
+        pointerPadding: 10,
+        pointerRadius: 12,
+      },
+      {
+        icon: "📈",
+        title: "Taxas e Indicadores",
+        content:
+          "Estas são as 5 taxas principais do seu abrigo: Entrada, Saída, Adoção, Mortalidade e Morbidade. Elas são calculadas automaticamente a partir dos registros mensais. As setas indicam a tendência (aumento ou redução).",
+        selector: "#tour-dp-stats",
+        side: "bottom",
+        showControls: true,
+        showSkip: true,
+        pointerPadding: 8,
+        pointerRadius: 12,
+      },
+      {
+        icon: "📋",
+        title: "Tabela de Registros",
+        content:
+          "A tabela mostra os registros mês a mês. As cores indicam o tipo de movimentação: Verde = entradas (aumenta população), Vermelho = saídas (reduz população), Amarelo = indicadores (não altera população). Você pode alternar entre visualização em Tabela e Grid.",
+        selector: "#tour-dp-table",
+        side: "top",
+        showControls: true,
+        showSkip: true,
+        pointerPadding: 8,
+        pointerRadius: 12,
+      },
+      {
+        icon: "📖",
+        title: "Glossário",
+        content:
+          "Tem dúvidas sobre algum termo? O Glossário explica cada conceito usado na página: entradas, devoluções, adoções, eutanásias, mortes naturais, doenças e os tipos de abrigo.",
+        selector: "#tour-dp-glossary",
+        side: "top",
+        showControls: true,
+        showSkip: true,
+        pointerPadding: 8,
+        pointerRadius: 12,
+      },
+      {
+        icon: "🏠",
+        title: "Dinâmica L.T. (Lar Temporário)",
+        content:
+          "Esta seção é dedicada aos Lares Temporários e Protetores Independentes. Funciona da mesma forma que a dinâmica principal, mas registra separadamente os animais em lares temporários.",
+        selector: "#tour-dp-lt",
+        side: "top",
+        showControls: true,
+        showSkip: true,
+        pointerPadding: 10,
+        pointerRadius: 16,
+      },
+    ],
+  },
+  {
     tour: "meu-cadastro-tour",
     steps: [
       {
@@ -152,4 +217,8 @@ export const tours: Tour[] = [
 
 export const TOUR_STORAGE_KEY = "mvabrigosbrasil-tour-completed";
 
-export type TourName = "home-tour" | "painel-tour" | "meu-cadastro-tour";
+export function getTourStorageKey(userId?: string | null): string {
+  return userId ? `${TOUR_STORAGE_KEY}-${userId}` : TOUR_STORAGE_KEY;
+}
+
+export type TourName = "home-tour" | "painel-tour" | "dinamica-populacional-tour" | "meu-cadastro-tour";
