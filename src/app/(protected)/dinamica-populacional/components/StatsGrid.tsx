@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowUpRight, MinusCircle } from "lucide-react";
 import type { RateCardData } from "../types";
 
 type StatsGridProps = {
+  id?: string;
   stats: RateCardData[];
 };
 
@@ -31,9 +32,9 @@ const trendStyles: Record<
 const formatPercent = (value: number | null): string =>
   typeof value === "number" ? `${value.toFixed(2)}%` : "—";
 
-export default function StatsGrid({ stats }: StatsGridProps): JSX.Element {
+export default function StatsGrid({ id, stats }: StatsGridProps): JSX.Element {
   return (
-    <div className="grid gap-3 lg:grid-cols-3">
+    <div id={id} className="grid gap-3 lg:grid-cols-3">
       {stats.map((stat) => {
         const style = trendStyles[stat.trend];
         const Icon = style.icon;
