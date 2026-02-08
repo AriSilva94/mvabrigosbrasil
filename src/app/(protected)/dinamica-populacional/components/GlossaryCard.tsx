@@ -1,14 +1,16 @@
 import type { JSX } from "react";
 
 type GlossaryCardProps = {
+  id?: string;
   onOpenGlossary: () => void;
 };
 
 export default function GlossaryCard({
+  id,
   onOpenGlossary,
 }: GlossaryCardProps): JSX.Element {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white px-6 py-8 shadow-sm">
+    <div id={id} className="rounded-xl border border-slate-200 bg-white px-6 py-8 shadow-sm">
       <div className="flex flex-col gap-3 text-center">
         <p className="text-base text-slate-700">
           Algum termo não ficou claro? Acesse nosso glossário para entender melhor.

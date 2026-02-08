@@ -62,6 +62,7 @@ export default function PopulationDynamicsContent({
       <section className="bg-white pb-14 pt-4">
         <div className="container px-6">
           <HeaderSection
+            id="tour-dp-header"
             onOpenRegister={openRegisterChoice}
             userSummary={userSummary}
             isReadOnly={isTeamOnly}
@@ -69,6 +70,9 @@ export default function PopulationDynamicsContent({
 
           <div className="space-y-6">
             <DynamicsSection
+              id="tour-dp-section"
+              statsId="tour-dp-stats"
+              tableId="tour-dp-table"
               data={sections[0]}
               isLoading={isLoading}
               onCreate={openRegister}
@@ -82,9 +86,10 @@ export default function PopulationDynamicsContent({
               isReadOnly={isTeamOnly}
             />
 
-            <GlossaryCard onOpenGlossary={() => setGlossaryOpen(true)} />
+            <GlossaryCard id="tour-dp-glossary" onOpenGlossary={() => setGlossaryOpen(true)} />
 
             <DynamicsSection
+              id="tour-dp-lt"
               data={sections[1]}
               isLoading={isLoading}
               onCreate={openRegister}
