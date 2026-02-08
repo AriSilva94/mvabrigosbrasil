@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
+import OpenCookiePreferencesButton from "@/components/cookies/OpenCookiePreferencesButton";
 import {
   FOOTER_INSTAGRAM_POSTS,
   FOOTER_POLICY_LINKS,
@@ -123,6 +124,14 @@ export default function Footer() {
                   </li>
                 );
               })}
+              <li className="flex items-center gap-3">
+                <span className="text-white/50" aria-hidden>
+                  •
+                </span>
+                <OpenCookiePreferencesButton className="text-white hover:text-brand-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                  Configurar cookies
+                </OpenCookiePreferencesButton>
+              </li>
             </ul>
           </nav>
 
