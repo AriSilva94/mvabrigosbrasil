@@ -4,12 +4,14 @@ import { Heading, Text } from "@/components/ui/typography";
 import type { PopulationUserSummary } from "../types";
 
 type HeaderSectionProps = {
+  id?: string;
   onOpenRegister: () => void;
   userSummary?: PopulationUserSummary | null;
   isReadOnly?: boolean;
 };
 
 export default function HeaderSection({
+  id,
   onOpenRegister,
   userSummary,
   isReadOnly = false,
@@ -33,7 +35,7 @@ export default function HeaderSection({
       : null;
 
   return (
-    <header className="mb-8 w-full flex flex-col gap-4 rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-5 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+    <header id={id} className="mb-8 w-full flex flex-col gap-4 rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-5 shadow-sm lg:flex-row lg:items-center lg:justify-between">
       <div className="min-w-0 space-y-2">
         <Heading
           as="h2"
