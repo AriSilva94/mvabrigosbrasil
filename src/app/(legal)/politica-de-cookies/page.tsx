@@ -2,74 +2,9 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
+import OpenCookiePreferencesButton from "@/components/cookies/OpenCookiePreferencesButton";
 import { Heading, Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
-
-const thirdPartyRows = [
-  { name: "__Secure-3PSIDCC", purpose: "Identificar usuários e rastrear a atividade.", duration: "12 meses" },
-  {
-    name: "__Secure-3PAPISID",
-    purpose: "Construir perfil de interesses e exibir anúncios do Google e YouTube de forma relevante e personalizada.",
-    duration: "13 meses",
-  },
-  {
-    name: "__Secure-1PAPISID",
-    purpose: "Construir perfil de interesses e exibir anúncios do Google de forma relevante e personalizada.",
-    duration: "13 meses",
-  },
-  {
-    name: "__Secure-1PSID",
-    purpose: "Construir perfil de interesses e exibir anúncios do Google de forma relevante e personalizada.",
-    duration: "13 meses",
-  },
-  {
-    name: "SAPISID",
-    purpose: "Permitir que o Google colete informações do usuário para vídeos hospedados pelo YouTube.",
-    duration: "13 meses",
-  },
-  {
-    name: "__Secure-3PSID",
-    purpose: "Construir perfil de interesses e exibir anúncios do Google e YouTube de forma relevante e personalizada.",
-    duration: "13 meses",
-  },
-  { name: "APISID", purpose: "Usado pelo Google para armazenar as preferências do usuário.", duration: "13 meses" },
-  { name: "HSID", purpose: "Fornecer prevenção a fraudes.", duration: "13 meses" },
-  {
-    name: "SSID",
-    purpose: "Permitir que o Google colete informações do usuário para vídeos hospedados pelo YouTube.",
-    duration: "13 meses",
-  },
-  {
-    name: "SID",
-    purpose: "Entrega de anúncios ou retargeting e prevenção a fraudes.",
-    duration: "13 meses",
-  },
-  {
-    name: "YSC",
-    purpose: "Rastrear visualizações de vídeos incorporados nas páginas do YouTube.",
-    duration: "Durante a sessão",
-  },
-  { name: "LOGIN_INFO", purpose: "Conhecer de onde vem o usuário.", duration: "24 meses" },
-  {
-    name: "VISITOR_INFO1_LIVE",
-    purpose: "Permitir que o YouTube conte as visualizações de vídeos incorporados.",
-    duration: "6 meses",
-  },
-  {
-    name: "__Secure-1PSIDCC",
-    purpose: "Necessário para usar as opções e serviços do site.",
-    duration: "6 dias",
-  },
-  { name: "SIDCC", purpose: "Fornecer identificação de tráfego confiável da web.", duration: "6 meses" },
-  {
-    name: "NID",
-    purpose: "Lembrar preferências e outras informações (idioma, resultados de pesquisa, filtro SafeSearch).",
-    duration: "6 meses",
-  },
-  { name: "AEC", purpose: "Evitar que sites maliciosos ajam em nome do usuário.", duration: "24 meses" },
-  { name: "IP_JAR", purpose: "Armazenar informações de acesso e personalizar anúncios.", duration: "9 meses" },
-  { name: "SEARCH_SAMESITE", purpose: "Usado para o envio correto de dados para o Google.", duration: "12 meses" },
-];
 
 export const metadata = buildMetadata({
   title: "Política de Cookies",
@@ -125,21 +60,10 @@ export default function Page(): JSX.Element {
               indicando páginas acessadas e frequência.
             </li>
             <li>
-              <strong>Cookies de terceiros:</strong> criados por outros sites, com imagens e anúncios.
-            </li>
-            <li>
               <strong>Cookies de funcionalidade:</strong> guardam preferências para não precisar
               informar sempre que acessar.
             </li>
-            <li>
-              <strong>Cookies de propaganda/publicidade:</strong> coletam informações para exibir
-              anúncios personalizados.
-            </li>
           </ul>
-          <Text className="leading-relaxed">
-            Cookies maliciosos podem acompanhar atividade online para construir perfis e vender
-            informações para publicidade com anúncios personalizados.
-          </Text>
         </section>
 
         <section className="space-y-4">
@@ -147,87 +71,74 @@ export default function Page(): JSX.Element {
             Quais cookies utilizamos?
           </Heading>
 
+          {/* Cookies Necessários */}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
-              7.1 – Cookies Necessários
+              1 – Cookies Necessários
             </Heading>
+            <Text className="text-sm leading-relaxed">
+              Essenciais para autenticação e funcionamento básico do site. Não podem ser desativados.
+            </Text>
             <div className="overflow-x-auto">
               <table className="w-full border border-gray-200 text-sm text-brand-secondary">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Nome
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Finalidade
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Duração
-                    </th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Nome</th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Finalidade</th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Duração</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">intercom-session-cgfc6jcc</td>
+                    <td className="border-b border-gray-200 px-3 py-2">sb-*-auth-token</td>
                     <td className="border-b border-gray-200 px-3 py-2">
-                      Necessário para o uso das opções e serviços do site.
+                      Cookie de autenticação do Supabase. Mantém a sessão do usuário logado.
                     </td>
-                    <td className="border-b border-gray-200 px-3 py-2">6 dias</td>
+                    <td className="border-b border-gray-200 px-3 py-2">Durante a sessão</td>
                   </tr>
                   <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">intercom-id-cgfc6jcc</td>
+                    <td className="border-b border-gray-200 px-3 py-2">cookie_consent</td>
                     <td className="border-b border-gray-200 px-3 py-2">
-                      Necessário para o uso das opções e serviços do site.
+                      Armazena suas preferências de consentimento de cookies.
                     </td>
-                    <td className="border-b border-gray-200 px-3 py-2">9 meses</td>
+                    <td className="border-b border-gray-200 px-3 py-2">12 meses</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
+          {/* Cookies Analíticos */}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
-              7.2 – Cookies Analíticos
+              2 – Cookies Analíticos
             </Heading>
+            <Text className="text-sm leading-relaxed">
+              Nos ajudam a entender como você usa o site para melhorar a experiência. Só são carregados com seu consentimento.
+            </Text>
             <div className="overflow-x-auto">
               <table className="w-full border border-gray-200 text-sm text-brand-secondary">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Nome
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Finalidade
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Duração
-                    </th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Nome</th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Finalidade</th>
+                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Duração</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2" rowSpan={2}>
-                      _ga
-                    </td>
+                    <td className="border-b border-gray-200 px-3 py-2">va (Vercel Analytics)</td>
                     <td className="border-b border-gray-200 px-3 py-2">
-                      Registrar um número individual de ID para gerar dados estatísticos de visitas.
+                      Registra dados anônimos de visitas para análise de uso do site.
+                    </td>
+                    <td className="border-b border-gray-200 px-3 py-2">Durante a sessão</td>
+                  </tr>
+                  <tr className="even:bg-gray-50">
+                    <td className="border-b border-gray-200 px-3 py-2">_ga</td>
+                    <td className="border-b border-gray-200 px-3 py-2">
+                      Registrar um número individual de ID para gerar dados estatísticos de visitas (Google Analytics).
                     </td>
                     <td className="border-b border-gray-200 px-3 py-2">24 meses</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Identificação de usuário único, número de visitas e horários, origens de tráfego
-                      da primeira visita, início e fim de cada sessão.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2" />
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">mkjs_group_id</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Permite que o Segment acompanhe atividades do usuário.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">6 meses</td>
                   </tr>
                   <tr className="even:bg-gray-50">
                     <td className="border-b border-gray-200 px-3 py-2">_gcl_au</td>
@@ -235,90 +146,6 @@ export default function Page(): JSX.Element {
                       Usado pelo Google Analytics para entender a interação do usuário com o site.
                     </td>
                     <td className="border-b border-gray-200 px-3 py-2">3 meses</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">mkjs_user_id</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Permite que o Segment acompanhe atividades do usuário.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">12 meses</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">ajs_anonymous_id</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Utilizado para Analytics; ajuda a contar visitantes e identificar se já visitou o
-                      site antes.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">12 meses</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <Heading as="h4" className="text-lg font-semibold text-brand-primary">
-              7.3 – Cookies de Terceiros
-            </Heading>
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-200 text-sm text-brand-secondary">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Nome
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Finalidade
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Duração
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {thirdPartyRows.map((row) => (
-                    <tr key={row.name} className="even:bg-gray-50">
-                      <td className="border-b border-gray-200 px-3 py-2">{row.name}</td>
-                      <td className="border-b border-gray-200 px-3 py-2">{row.purpose}</td>
-                      <td className="border-b border-gray-200 px-3 py-2">{row.duration}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <Heading as="h4" className="text-lg font-semibold text-brand-primary">
-              7.4 – Cookies de Propaganda
-            </Heading>
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-200 text-sm text-brand-secondary">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Nome
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Finalidade
-                    </th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">
-                      Duração
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">hubspotutk</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Armazenar e rastrear a identidade de um visitante.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">6 meses</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">__hstc</td>
-                    <td className="border-b border-gray-200 px-3 py-2">Armazenar o tempo de visita.</td>
-                    <td className="border-b border-gray-200 px-3 py-2">13 meses</td>
                   </tr>
                 </tbody>
               </table>
@@ -336,9 +163,16 @@ export default function Page(): JSX.Element {
             Posso desativar estes cookies?
           </Heading>
           <Text className="leading-relaxed">
-            Exceto o cookie obrigatório, você pode desativar os demais na página de Gestão de Cookies
-            ou diretamente no seu navegador/aparelho.
+            Exceto os cookies necessários, você pode desativar os demais a qualquer momento
+            clicando no botão abaixo ou no link &quot;Configurar cookies&quot; no rodapé do site.
           </Text>
+
+          <div className="pt-2">
+            <OpenCookiePreferencesButton className="inline-flex items-center justify-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-primary/85 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:ring-offset-1">
+              Configurar cookies
+            </OpenCookiePreferencesButton>
+          </div>
+
           <Text className="leading-relaxed">
             A desativação pode afetar algumas ferramentas e funcionalidades e remover preferências
             salvas, impactando a experiência.
@@ -350,7 +184,7 @@ export default function Page(): JSX.Element {
             Como eliminar todos os cookies do meu navegador?
           </Heading>
           <Text className="leading-relaxed">
-            Na maioria dos navegadores, usando “ctrl+shift+del” você pode limpar dados do navegador,
+            Na maioria dos navegadores, usando &quot;ctrl+shift+del&quot; você pode limpar dados do navegador,
             incluindo cookies. Se a opção de cookies não estiver marcada, selecione e clique em
             apagar.
           </Text>
