@@ -1,0 +1,118 @@
+{
+  "geradoEm": "2026-02-07T04:25:49.287Z",
+  "dataFormatada": "07/02/2026, 01:25",
+  "resumo": {
+    "novosAbrigos": 10,
+    "totalAbrigos": 314
+  },
+  "porTipo": [
+    {
+      "tipo": "private",
+      "label": "Privado",
+      "quantidade": 9
+    },
+    {
+      "tipo": "temporary",
+      "label": "LT-PI",
+      "quantidade": 1
+    }
+  ],
+  "porEstado": [
+    {
+      "estado": "MG",
+      "quantidade": 2
+    },
+    {
+      "estado": "MT",
+      "quantidade": 2
+    },
+    {
+      "estado": "RJ",
+      "quantidade": 2
+    },
+    {
+      "estado": "SC",
+      "quantidade": 2
+    },
+    {
+      "estado": "RS",
+      "quantidade": 1
+    },
+    {
+      "estado": "PI",
+      "quantidade": 1
+    }
+  ],
+  "ultimosCadastros": [
+    {
+      "nome": "Wanka Juttel",
+      "cidade": "Blumenau",
+      "estado": "SC",
+      "tipo": "private",
+      "data": "2026-02-06T13:52:17.079315+00:00"
+    },
+    {
+      "nome": "Grupo Vitório ",
+      "cidade": "União",
+      "estado": "PI",
+      "tipo": "private",
+      "data": "2026-02-06T01:55:35.185463+00:00"
+    },
+    {
+      "nome": "João Baptista Passos",
+      "cidade": "Jauru",
+      "estado": "MT",
+      "tipo": "private",
+      "data": "2026-02-05T10:04:28.227323+00:00"
+    },
+    {
+      "nome": "G.A.R.R.A - GRUPO DE AÇÃO, RESGATE E REABILITAÇÃO ANIMAL",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "tipo": "private",
+      "data": "2026-02-04T23:57:09.883308+00:00"
+    },
+    {
+      "nome": "APM Associação Projeto Meg",
+      "cidade": "Vespasiano",
+      "estado": "MG",
+      "tipo": "private",
+      "data": "2026-02-04T12:51:38.877145+00:00"
+    },
+    {
+      "nome": "INGRIT CRISTINA DE MELO",
+      "cidade": "Blumenau",
+      "estado": "SC",
+      "tipo": "temporary",
+      "data": "2026-02-03T16:48:45.337833+00:00"
+    },
+    {
+      "nome": "Associação Raça Pra Quê ",
+      "cidade": "Viamão",
+      "estado": "RS",
+      "tipo": "private",
+      "data": "2026-02-03T02:01:51.689559+00:00"
+    },
+    {
+      "nome": "teste 22",
+      "cidade": "Bom Jesus do Itabapoana",
+      "estado": "RJ",
+      "tipo": "private",
+      "data": "2026-02-02T20:48:41.815209+00:00"
+    },
+    {
+      "nome": "Orfanato Gataria da LuEdu MT ",
+      "cidade": "Cuiabá",
+      "estado": "MT",
+      "tipo": "private",
+      "data": "2026-02-02T13:24:04.318259+00:00"
+    },
+    {
+      "nome": "Ligia Macedo",
+      "cidade": "Uberlândia",
+      "estado": "MG",
+      "tipo": "private",
+      "data": "2026-02-01T19:28:15.39447+00:00"
+    }
+  ]
+}

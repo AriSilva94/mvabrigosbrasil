@@ -1,0 +1,56 @@
+{
+  "geradoEm": "2026-02-07T04:25:51.250Z",
+  "dataFormatada": "07/02/2026, 01:25",
+  "resumo": {
+    "novosVoluntarios": 3,
+    "totalVoluntarios": 237
+  },
+  "porEstado": [
+    {
+      "estado": "DF",
+      "quantidade": 1
+    },
+    {
+      "estado": "SC",
+      "quantidade": 1
+    },
+    {
+      "estado": "RJ",
+      "quantidade": 1
+    }
+  ],
+  "porCidade": [
+    {
+      "cidade": "Brasília (DF)",
+      "quantidade": 1
+    },
+    {
+      "cidade": "Ituporanga (SC)",
+      "quantidade": 1
+    },
+    {
+      "cidade": "Rio de Janeiro (RJ)",
+      "quantidade": 1
+    }
+  ],
+  "ultimosCadastros": [
+    {
+      "nome": "Julia Thomaz Brivio ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "data": "2026-02-06T18:00:08.317823+00:00"
+    },
+    {
+      "nome": "Marlete da silva",
+      "cidade": "Ituporanga",
+      "estado": "SC",
+      "data": "2026-02-03T19:31:25.15441+00:00"
+    },
+    {
+      "nome": "Milena dos santos soares",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "data": "2026-02-02T18:53:18.41029+00:00"
+    }
+  ]
+}
