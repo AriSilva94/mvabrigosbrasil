@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import Link from "next/link";
-import { Users, Building2 } from "lucide-react";
+import { Users } from "lucide-react";
 
 import { Heading, Text } from "@/components/ui/typography";
 
