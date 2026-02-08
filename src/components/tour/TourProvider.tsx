@@ -2,21 +2,25 @@
 
 import type { ReactNode } from "react";
 import { NextStepProvider, NextStep } from "nextstepjs";
-import { tours, TOUR_STORAGE_KEY } from "@/lib/tour-steps";
+import { tours, getTourStorageKey } from "@/lib/tour-steps";
 import { HomeTourCard } from "./HomeTourCard";
+import { useAuth } from "@/hooks/useAuth";
 
 interface TourProviderProps {
   children: ReactNode;
 }
 
 export function TourProvider({ children }: TourProviderProps) {
+  const { user } = useAuth();
+
   function handleComplete(tourName: string | null) {
     if (typeof window !== "undefined" && tourName) {
+      const key = getTourStorageKey(user?.id);
       const completed = JSON.parse(
-        localStorage.getItem(TOUR_STORAGE_KEY) || "{}"
+        localStorage.getItem(key) || "{}"
       );
       completed[tourName] = true;
-      localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify(completed));
+      localStorage.setItem(key, JSON.stringify(completed));
     }
   }
 

@@ -7,6 +7,9 @@ import StatsGrid from "./StatsGrid";
 import type { DynamicType, DynamicsDisplay } from "../types";
 
 type DynamicsSectionProps = {
+  id?: string;
+  statsId?: string;
+  tableId?: string;
   data: DynamicsDisplay;
   onCreate: (type: DynamicType) => void;
   onEditRow?: (id: string, type: DynamicType) => void;
@@ -17,6 +20,9 @@ type DynamicsSectionProps = {
 };
 
 export default function DynamicsSection({
+  id,
+  statsId,
+  tableId,
   data,
   onCreate,
   onEditRow,
@@ -28,7 +34,7 @@ export default function DynamicsSection({
   const hasData = data.rows.length > 0;
 
   return (
-    <section className="space-y-4 rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-sm">
+    <section id={id} className="space-y-4 rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-sm">
       <div className="flex flex-col gap-2">
         <Heading as="h3" className="text-lg font-semibold text-slate-900">
           {data.title}
@@ -49,8 +55,9 @@ export default function DynamicsSection({
         </div>
       ) : hasData ? (
         <div className="space-y-5">
-          <StatsGrid stats={data.stats} />
+          <StatsGrid id={statsId} stats={data.stats} />
           <PopulationTable
+            id={tableId}
             populationInitial={data.populationInitial}
             populationCurrent={data.populationCurrent}
             populationInitialDogs={data.populationInitialDogs}

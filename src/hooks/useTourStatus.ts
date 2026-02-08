@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useSyncExternalStore } from "react";
 import { useNextStep } from "nextstepjs";
-import { TOUR_STORAGE_KEY, type TourName } from "@/lib/tour-steps";
+import { getTourStorageKey, type TourName } from "@/lib/tour-steps";
 
 interface TourStatus {
   [key: string]: boolean;
@@ -23,18 +23,20 @@ function subscribe(callback: () => void) {
   };
 }
 
-function getTourSnapshot(tourName: TourName): boolean {
-  const stored = localStorage.getItem(TOUR_STORAGE_KEY);
+function getTourSnapshot(tourName: TourName, userId: string | null): boolean {
+  if (!userId) return true; // Sem usuário = não inicia tour
+  const key = getTourStorageKey(userId);
+  const stored = localStorage.getItem(key);
   const status: TourStatus = stored ? JSON.parse(stored) : {};
   return status[tourName] === true;
 }
 
-export function useTourStatus(tourName: TourName) {
+export function useTourStatus(tourName: TourName, userId: string | null) {
   const { startNextStep } = useNextStep();
 
   const hasCompleted = useSyncExternalStore(
     subscribe,
-    () => getTourSnapshot(tourName),
+    () => getTourSnapshot(tourName, userId),
     () => true // Server snapshot: default true to avoid flash
   );
 
@@ -43,14 +45,15 @@ export function useTourStatus(tourName: TourName) {
   }, [startNextStep, tourName]);
 
   const resetTour = useCallback(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(TOUR_STORAGE_KEY);
+    if (typeof window !== "undefined" && userId) {
+      const key = getTourStorageKey(userId);
+      const stored = localStorage.getItem(key);
       const status: TourStatus = stored ? JSON.parse(stored) : {};
       delete status[tourName];
-      localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify(status));
+      localStorage.setItem(key, JSON.stringify(status));
       emitChange();
     }
-  }, [tourName]);
+  }, [tourName, userId]);
 
   // Auto-start tour if not completed (with small delay for DOM to be ready)
   useEffect(() => {
