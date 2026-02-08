@@ -75,14 +75,17 @@ export default function ShelterInfoSection({
     : "";
 
   // Estados e cidades
-  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } = useLocationData();
+  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
+    useLocationData();
   const [estado, setEstado] = useState(data?.state ?? "");
   const [cidade, setCidade] = useState(data?.city ?? "");
   const [fundacao, setFundacao] = useState(data?.foundationDate ?? "");
   const [rua, setRua] = useState(data?.street ?? "");
   const [bairro, setBairro] = useState(data?.district ?? "");
   const [species, setSpecies] = useState(data?.species ?? "");
-  const [referralSource, setReferralSource] = useState(data?.referralSource ?? "");
+  const [referralSource, setReferralSource] = useState(
+    data?.referralSource ?? "",
+  );
 
   // Converte estados para formato do Combobox
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
@@ -135,9 +138,11 @@ export default function ShelterInfoSection({
       // Verifica se já existe abrigo com mesmo CEP
       const addressCheck = await checkAddress(value);
       if (addressCheck?.exists && addressCheck.count > 0) {
-        const shelterNames = addressCheck.shelters.map((s) => s.name).join(', ');
+        const shelterNames = addressCheck.shelters
+          .map((s) => s.name)
+          .join(", ");
         setAddressWarning(
-          `Atenção: Já ${addressCheck.count === 1 ? 'existe 1 abrigo cadastrado' : `existem ${addressCheck.count} abrigos cadastrados`} neste CEP: ${shelterNames}. Verifique se não é duplicidade.`
+          `Atenção: Já ${addressCheck.count === 1 ? "existe 1 abrigo cadastrado" : `existem ${addressCheck.count} abrigos cadastrados`} neste CEP: ${shelterNames}. Verifique se não é duplicidade.`,
         );
         onDuplicateCepChange?.(true);
       } else {
@@ -174,7 +179,7 @@ export default function ShelterInfoSection({
             placeholder="Selecione o tipo de abrigo"
             className={clsx(
               fieldErrors?.shelterType &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
@@ -198,7 +203,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.cnpj &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="cnpj-error" message={fieldErrors?.cnpj} />
@@ -219,7 +224,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.shelterName &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
@@ -249,10 +254,10 @@ export default function ShelterInfoSection({
                 fieldErrors?.cep
                   ? "cep-error"
                   : cepError
-                  ? "cep-viacep-error"
-                  : addressWarning
-                  ? "cep-warning"
-                  : undefined
+                    ? "cep-viacep-error"
+                    : addressWarning
+                      ? "cep-warning"
+                      : undefined
               }
               className={clsx(
                 "bg-[#f2f2f2]",
@@ -260,7 +265,7 @@ export default function ShelterInfoSection({
                 (fieldErrors?.cep || cepError) &&
                   "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
                 addressWarning &&
-                  "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/15"
+                  "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/15",
               )}
             />
             {(isCepLoading || isCheckingAddress) && (
@@ -274,7 +279,10 @@ export default function ShelterInfoSection({
             <FormError id="cep-viacep-error" message={cepError} />
           )}
           {addressWarning && !fieldErrors?.cep && !cepError && (
-            <div id="cep-warning" className="mt-1 flex items-start gap-2 text-sm text-yellow-600">
+            <div
+              id="cep-warning"
+              className="mt-1 flex items-start gap-2 text-sm text-yellow-600"
+            >
               <AlertTriangle className="h-5 w-5 shrink-0" />
               <span>{addressWarning}</span>
             </div>
@@ -295,7 +303,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.street &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="street-error" message={fieldErrors?.street} />
@@ -321,7 +329,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.number &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="number-error" message={fieldErrors?.number} />
@@ -348,7 +356,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.district &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="district-error" message={fieldErrors?.district} />
@@ -365,7 +373,7 @@ export default function ShelterInfoSection({
             disabled={lockNonPopulation}
             className={clsx(
               fieldErrors?.state &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="state-error" message={fieldErrors?.state} />
@@ -377,12 +385,14 @@ export default function ShelterInfoSection({
             options={cidadesOptions}
             value={cidade}
             onChange={setCidade}
-            placeholder={estado ? "Selecione uma cidade" : "Selecione um estado primeiro"}
+            placeholder={
+              estado ? "Selecione uma cidade" : "Selecione um estado primeiro"
+            }
             loading={loadingCidades}
             disabled={!estado || lockNonPopulation}
             className={clsx(
               fieldErrors?.city &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="city-error" message={fieldErrors?.city} />
@@ -402,7 +412,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.website &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="website-error" message={fieldErrors?.website} />
@@ -414,7 +424,7 @@ export default function ShelterInfoSection({
             name="foundationDate"
             value={fundacao}
             onChange={setFundacao}
-            maxDate={new Date().toISOString().split('T')[0]}
+            maxDate={new Date().toISOString().split("T")[0]}
             required
             disabled={lockNonPopulation}
             aria-invalid={Boolean(fieldErrors?.foundationDate)}
@@ -425,7 +435,7 @@ export default function ShelterInfoSection({
               "bg-[#f2f2f2]",
               disabledStyles,
               fieldErrors?.foundationDate &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
@@ -444,7 +454,7 @@ export default function ShelterInfoSection({
             placeholder="Selecione a especie"
             className={clsx(
               fieldErrors?.species &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="species-error" message={fieldErrors?.species} />
@@ -454,26 +464,26 @@ export default function ShelterInfoSection({
           <span className="text-sm font-semibold text-[#4f5464]">
             Outras espécies
           </span>
-        <div className="grid grid-cols-2 gap-2 text-sm text-[#4f5464]">
-          {ADDITIONAL_SPECIES.map((option) => (
-            <label
-              key={option.value}
-              className="inline-flex items-center gap-2"
-            >
-              <input
-                type="checkbox"
-                name="additionalSpecies"
-                value={option.value}
-                defaultChecked={data?.additionalSpecies?.includes(
-                  option.value
-                )}
-                disabled={lockNonPopulation}
-                className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
-              />
-              {option.label}
-            </label>
-          ))}
-        </div>
+          <div className="grid grid-cols-2 gap-2 text-sm text-[#4f5464]">
+            {ADDITIONAL_SPECIES.map((option) => (
+              <label
+                key={option.value}
+                className="inline-flex items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  name="additionalSpecies"
+                  value={option.value}
+                  defaultChecked={data?.additionalSpecies?.includes(
+                    option.value,
+                  )}
+                  disabled={lockNonPopulation}
+                  className="h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -510,7 +520,11 @@ export default function ShelterInfoSection({
           />
         </div>
 
-        <FormField id="referralSource" label="Como conheceu o projeto?" required>
+        <FormField
+          id="referralSource"
+          label="Como você ficou sabendo da iniciativa MV Abrigos Brasil?"
+          required
+        >
           <SelectDropdown
             name="referralSource"
             options={REFERRAL_SOURCE_OPTIONS}
@@ -520,7 +534,7 @@ export default function ShelterInfoSection({
             placeholder="Selecione uma opcao"
             className={clsx(
               fieldErrors?.referralSource &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
@@ -546,7 +560,7 @@ export default function ShelterInfoSection({
             className={clsx(
               "bg-[#f2f2f2]",
               fieldErrors?.initialDogs &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
@@ -570,7 +584,7 @@ export default function ShelterInfoSection({
             className={clsx(
               "bg-[#f2f2f2]",
               fieldErrors?.initialCats &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError
