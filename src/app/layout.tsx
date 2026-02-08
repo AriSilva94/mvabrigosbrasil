@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "../components/layout/Header";
@@ -8,6 +6,8 @@ import Footer from "../components/layout/Footer";
 import AppImageProvider from "@/components/providers/AppImageProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
 import { TourProvider } from "@/components/tour/TourProvider";
+import CookieBanner from "@/components/cookies/CookieBanner";
+import ConditionalAnalytics from "@/components/cookies/ConditionalAnalytics";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -169,10 +169,10 @@ export default function RootLayout({
             <TourProvider>
               <Header />
               <main>{children}</main>
-              <Analytics />
               <Footer />
             </TourProvider>
-            <SpeedInsights />
+            <ConditionalAnalytics />
+            <CookieBanner />
           </ToastProvider>
         </AppImageProvider>
       </body>
