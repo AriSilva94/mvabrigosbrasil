@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getVolunteerCards } from "@/services/publicDataService";
 
+export const revalidate = 900;
+
 export async function GET() {
   try {
     const volunteers = await getVolunteerCards();
