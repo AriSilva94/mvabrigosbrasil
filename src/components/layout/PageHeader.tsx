@@ -15,6 +15,7 @@ type PageHeaderProps = {
   breadcrumbs?: Breadcrumb[];
   backgroundImage?: string;
   className?: string;
+  id?: string;
 };
 
 const DEFAULT_BG = "/assets/img/bg_intro.jpg";
@@ -24,9 +25,11 @@ export default function PageHeader({
   breadcrumbs = [],
   backgroundImage = DEFAULT_BG,
   className,
+  id,
 }: PageHeaderProps): JSX.Element {
   return (
     <section
+      id={id}
       className={clsx(
         "relative isolate overflow-hidden bg-brand-primary text-white h-40",
         className

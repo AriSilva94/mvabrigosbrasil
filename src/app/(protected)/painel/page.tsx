@@ -12,6 +12,7 @@ import type { PanelShortcut } from "@/types/panel.types";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
 import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
+import { TourTrigger } from "@/components/tour/TourTrigger";
 
 export const metadata = buildMetadata({
   title: "Painel",
@@ -46,6 +47,7 @@ function VolunteerPanel(): JSX.Element {
     <section className="bg-white">
       <div className="container px-6 py-14">
         <article
+          id="tour-training-banner"
           className="flex flex-col gap-3 rounded-xl border border-[#f2e5b9] bg-[#fff7d5] px-5 py-4 text-[#6f6133] shadow-sm md:flex-row md:items-center md:justify-between"
           role="alert"
         >
@@ -65,10 +67,10 @@ function VolunteerPanel(): JSX.Element {
           </Link>
         </article>
 
-        <section className="mt-10">
+        <section id="tour-shortcuts" className="mt-10">
           <ul className="grid gap-5 grid-cols-1 md:grid-cols-3">
             {VOLUNTEER_SHORTCUTS.map(({ id, title, href, icon: Icon }) => (
-              <li key={id}>
+              <li key={id} id={id === "profile" ? "tour-profile-shortcut" : undefined}>
                 <Link
                   href={href}
                   className="group flex h-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-[#f5f5f6] px-8 py-10 text-center transition hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(16,130,89,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
@@ -104,6 +106,7 @@ function ShelterPanel({
     <section className="bg-white">
       <div className="container px-6 py-14">
         <article
+          id="tour-training-banner"
           className="flex flex-col gap-3 rounded-xl border border-[#f2e5b9] bg-[#fff7d5] px-5 py-4 text-[#6f6133] shadow-sm md:flex-row md:items-center md:justify-between"
           role="alert"
         >
@@ -129,10 +132,10 @@ function ShelterPanel({
           )}
         </article>
 
-        <section className="mt-10">
+        <section id="tour-shortcuts" className="mt-10">
           <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {shortcuts.map(({ id, title, subtitle, href, icon: Icon }) => (
-              <li key={id}>
+              <li key={id} id={id === "profile" ? "tour-profile-shortcut" : undefined}>
                 {isTeamDisabled ? (
                   <div
                     aria-disabled="true"
@@ -258,6 +261,7 @@ export default async function Page(): Promise<JSX.Element> {
       <PageHeader
         title="Painel"
         breadcrumbs={[{ label: "Inicial", href: "/" }, { label: "Painel" }]}
+        id="tour-welcome"
       />
 
       {isTeamOnly && !isManager && (
@@ -281,6 +285,9 @@ export default async function Page(): Promise<JSX.Element> {
       ) : (
         <ShelterPanel shortcuts={shortcuts} isTeamDisabled={isTeamDisabled} />
       )}
+
+      {/* Tour guiado para voluntários e abrigos */}
+      {!isAdmin && !isManager && <TourTrigger tourName="painel-tour" />}
     </main>
   );
 }

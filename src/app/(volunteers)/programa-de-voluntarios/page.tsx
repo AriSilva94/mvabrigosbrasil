@@ -3,6 +3,8 @@ import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { buildMetadata } from "@/lib/seo";
 import { getVolunteerCards } from "@/services/publicDataService";
 
+export const revalidate = 900;
+
 export const metadata = buildMetadata({
   title: "Programa de Voluntários",
   description:
