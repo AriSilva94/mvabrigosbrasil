@@ -84,7 +84,8 @@ export default function VolunteerProfileForm(): JSX.Element {
   >({});
 
   // Estados e cidades
-  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } = useLocationData();
+  const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
+    useLocationData();
   const [telefone, setTelefone] = useState("");
   const [estado, setEstado] = useState("");
   const [cidade, setCidade] = useState("");
@@ -117,7 +118,10 @@ export default function VolunteerProfileForm(): JSX.Element {
     if (estado) {
       fetchCidades(estado);
       // Só limpa cidade se o estado mudou E não é o estado inicial do voluntário
-      if (initialEstadoRef.current !== null && estado !== initialEstadoRef.current) {
+      if (
+        initialEstadoRef.current !== null &&
+        estado !== initialEstadoRef.current
+      ) {
         setCidade("");
       }
     }
@@ -218,7 +222,7 @@ export default function VolunteerProfileForm(): JSX.Element {
 
   const formKey = useMemo(
     () => (volunteer ? JSON.stringify(volunteer) : "empty"),
-    [volunteer]
+    [volunteer],
   );
 
   const data: Partial<VolunteerProfileFormData> | null = volunteer ?? null;
@@ -226,8 +230,8 @@ export default function VolunteerProfileForm(): JSX.Element {
   const submitLabel = isLoading
     ? "Carregando..."
     : isSubmitting
-    ? "Salvando..."
-    : "Salvar Cadastro";
+      ? "Salvando..."
+      : "Salvar Cadastro";
 
   if (isLoading && !volunteer) {
     return <FormLoading />;
@@ -240,7 +244,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       key={formKey}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
-      <div className="space-y-6">
+      <div id="tour-form-section" className="space-y-6">
         <h2 className="text-xl font-bold text-[#4f5464]">Dados Pessoais</h2>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -255,7 +259,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               aria-describedby={fieldErrors.name ? "name-error" : undefined}
               className={clsx(
                 fieldErrors.name &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="name-error" message={fieldErrors.name} />
@@ -270,10 +274,12 @@ export default function VolunteerProfileForm(): JSX.Element {
               autoComplete="tel"
               placeholder="(00) 0 0000-0000"
               aria-invalid={Boolean(fieldErrors.telefone)}
-              aria-describedby={fieldErrors.telefone ? "telefone-error" : undefined}
+              aria-describedby={
+                fieldErrors.telefone ? "telefone-error" : undefined
+              }
               className={clsx(
                 fieldErrors.telefone &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="telefone-error" message={fieldErrors.telefone} />
@@ -286,10 +292,12 @@ export default function VolunteerProfileForm(): JSX.Element {
               defaultValue={data?.profissao ?? ""}
               placeholder="Ex: Veterinário"
               aria-invalid={Boolean(fieldErrors.profissao)}
-              aria-describedby={fieldErrors.profissao ? "profissao-error" : undefined}
+              aria-describedby={
+                fieldErrors.profissao ? "profissao-error" : undefined
+              }
               className={clsx(
                 fieldErrors.profissao &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="profissao-error" message={fieldErrors.profissao} />
@@ -304,10 +312,13 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione a faixa etária"
               className={clsx(
                 fieldErrors.faixa_etaria &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
-            <FormError id="faixa_etaria-error" message={fieldErrors.faixa_etaria} />
+            <FormError
+              id="faixa_etaria-error"
+              message={fieldErrors.faixa_etaria}
+            />
           </FormField>
 
           <FormField id="genero" label="Gênero" required>
@@ -319,7 +330,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione o gênero"
               className={clsx(
                 fieldErrors.genero &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="genero-error" message={fieldErrors.genero} />
@@ -334,10 +345,13 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione a escolaridade"
               className={clsx(
                 fieldErrors.escolaridade &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
-            <FormError id="escolaridade-error" message={fieldErrors.escolaridade} />
+            <FormError
+              id="escolaridade-error"
+              message={fieldErrors.escolaridade}
+            />
           </FormField>
 
           <FormField id="estado" label="Estado" required>
@@ -350,7 +364,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               loading={loadingEstados}
               className={clsx(
                 fieldErrors.estado &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="estado-error" message={fieldErrors.estado} />
@@ -362,12 +376,14 @@ export default function VolunteerProfileForm(): JSX.Element {
               options={cidadesOptions}
               value={cidade}
               onChange={setCidade}
-              placeholder={estado ? "Selecione uma cidade" : "Selecione um estado primeiro"}
+              placeholder={
+                estado ? "Selecione uma cidade" : "Selecione um estado primeiro"
+              }
               loading={loadingCidades}
               disabled={!estado}
               className={clsx(
                 fieldErrors.cidade &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="cidade-error" message={fieldErrors.cidade} />
@@ -392,10 +408,13 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione a disponibilidade"
               className={clsx(
                 fieldErrors.disponibilidade &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
-            <FormError id="disponibilidade-error" message={fieldErrors.disponibilidade} />
+            <FormError
+              id="disponibilidade-error"
+              message={fieldErrors.disponibilidade}
+            />
           </FormField>
 
           <FormField
@@ -411,7 +430,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione o período"
               className={clsx(
                 fieldErrors.periodo &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="periodo-error" message={fieldErrors.periodo} />
@@ -430,10 +449,13 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione"
               className={clsx(
                 fieldErrors.experiencia &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
-            <FormError id="experiencia-error" message={fieldErrors.experiencia} />
+            <FormError
+              id="experiencia-error"
+              message={fieldErrors.experiencia}
+            />
           </FormField>
 
           <FormField id="atuacao" label="Forma de Atuação" required>
@@ -445,7 +467,7 @@ export default function VolunteerProfileForm(): JSX.Element {
               placeholder="Selecione a forma de atuação"
               className={clsx(
                 fieldErrors.atuacao &&
-                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                  "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
               )}
             />
             <FormError id="atuacao-error" message={fieldErrors.atuacao} />
@@ -454,7 +476,9 @@ export default function VolunteerProfileForm(): JSX.Element {
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-[#4f5464]">Informações Adicionais</h2>
+        <h2 className="text-xl font-bold text-[#4f5464]">
+          Informações Adicionais
+        </h2>
 
         <FormField
           id="descricao"
@@ -467,17 +491,22 @@ export default function VolunteerProfileForm(): JSX.Element {
             rows={4}
             defaultValue={data?.descricao ?? ""}
             aria-invalid={Boolean(fieldErrors.descricao)}
-            aria-describedby={fieldErrors.descricao ? "descricao-error" : undefined}
+            aria-describedby={
+              fieldErrors.descricao ? "descricao-error" : undefined
+            }
             className={clsx(
               "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-base text-[#4f5464] placeholder:text-[#a0a6b1] outline-none transition focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20",
               fieldErrors.descricao &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
           <FormError id="descricao-error" message={fieldErrors.descricao} />
         </FormField>
 
-        <FormField id="comentarios" label="Deixe mais comentários que queira compartilhar">
+        <FormField
+          id="comentarios"
+          label="Deixe mais comentários que queira compartilhar"
+        >
           <textarea
             id="comentarios"
             name="comentarios"
@@ -487,7 +516,11 @@ export default function VolunteerProfileForm(): JSX.Element {
           />
         </FormField>
 
-        <FormField id="referralSource" label="Como conheceu o projeto?" required>
+        <FormField
+          id="referralSource"
+          label="Como você ficou sabendo da iniciativa MV Abrigos Brasil?"
+          required
+        >
           <SelectDropdown
             name="referralSource"
             options={REFERRAL_SOURCE_OPTIONS}
@@ -496,10 +529,13 @@ export default function VolunteerProfileForm(): JSX.Element {
             placeholder="Selecione uma opcao"
             className={clsx(
               fieldErrors.referralSource &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15"
+                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
             )}
           />
-          <FormError id="referralSource-error" message={fieldErrors.referralSource} />
+          <FormError
+            id="referralSource-error"
+            message={fieldErrors.referralSource}
+          />
         </FormField>
       </div>
 
@@ -511,7 +547,9 @@ export default function VolunteerProfileForm(): JSX.Element {
             name="acceptTerms"
             defaultChecked={data?.acceptTerms ?? false}
             aria-invalid={Boolean(fieldErrors.acceptTerms)}
-            aria-describedby={fieldErrors.acceptTerms ? "acceptTerms-error" : undefined}
+            aria-describedby={
+              fieldErrors.acceptTerms ? "acceptTerms-error" : undefined
+            }
             className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           />
           <label htmlFor="acceptTerms" className="text-sm text-[#4f5464]">
@@ -541,6 +579,7 @@ export default function VolunteerProfileForm(): JSX.Element {
 
       <div className="flex flex-col items-center gap-4 pt-2">
         <button
+          id="tour-save-button"
           type="submit"
           className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           disabled={isSubmitting || isLoading}

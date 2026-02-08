@@ -6,6 +6,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import AppImageProvider from "@/components/providers/AppImageProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
+import { TourProvider } from "@/components/tour/TourProvider";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -164,11 +165,11 @@ export default function RootLayout({
       >
         <AppImageProvider>
           <ToastProvider>
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
+            <TourProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </TourProvider>
             <SpeedInsights />
           </ToastProvider>
         </AppImageProvider>
