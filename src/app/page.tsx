@@ -7,6 +7,7 @@ import LibrarySection from "@/components/home/LibrarySection";
 import MovementSection from "@/components/home/MovementSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import WelcomeSection from "@/components/home/WelcomeSection";
+import { TourTrigger } from "@/components/tour/TourTrigger";
 
 export default function HomePage(): JSX.Element {
   return (
@@ -18,6 +19,8 @@ export default function HomePage(): JSX.Element {
       <TestimonialsSection />
       <MovementSection />
       <LibrarySection />
+
+      <TourTrigger tourName="home-tour" />
     </main>
   );
 }

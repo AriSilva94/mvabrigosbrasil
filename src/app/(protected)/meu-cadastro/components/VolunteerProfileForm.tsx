@@ -240,7 +240,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       key={formKey}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
-      <div className="space-y-6">
+      <div id="tour-form-section" className="space-y-6">
         <h2 className="text-xl font-bold text-[#4f5464]">Dados Pessoais</h2>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -541,6 +541,7 @@ export default function VolunteerProfileForm(): JSX.Element {
 
       <div className="flex flex-col items-center gap-4 pt-2">
         <button
+          id="tour-save-button"
           type="submit"
           className="inline-flex items-center justify-center rounded-full bg-brand-primary px-10 py-3 text-base font-semibold text-white shadow-[0_12px_30px_rgba(16,130,89,0.2)] transition hover:bg-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           disabled={isSubmitting || isLoading}

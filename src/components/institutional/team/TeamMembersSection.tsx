@@ -17,8 +17,7 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Fundador e Gerente",
     description:
       "Médico veterinário pela Universidade Federal do Paraná, com intercâmbio na Universidade de Buenos Aires. Possui residência em Medicina Veterinária do Coletivo, mestrado e doutorado em Ciências Veterinárias na UFPR, com pesquisa em Medicina de Abrigos. Vice-presidente do Instituto de Medicina Veterinária do Coletivo e gerente de projetos no Fórum Nacional de Proteção e Defesa Animal. Organizador e coautor do livro Medicina de Abrigos: princípios e diretrizes e cofundador da Iniciativa Medicina de Abrigos Brasil.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/lucas.jpg",
+    image: "/assets/img/equipe-mv/lucas.jpg",
     alt: "Foto de Lucas Galdioli sorrindo",
   },
   {
@@ -26,8 +25,7 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Fundadora e Gerente",
     description:
       "Doutora e Mestra em Ciências Veterinárias pela Universidade Federal do Paraná e bacharela em Medicina Veterinária pela Universidade Federal do Vale do São Francisco, com graduação-sanduíche na Murdoch University pelo programa Ciência sem Fronteiras. Consultora Técnica do Instituto de Medicina Veterinária do Coletivo, atua desenvolvendo temas como Teoria do Elo e Medicina de Abrigos.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/yasminequipe.png",
+    image: "/assets/img/equipe-mv/yasminequipe.png",
     alt: "Foto de Yasmin da Silva Gonçalves da Rocha sorrindo",
   },
   {
@@ -35,8 +33,7 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Cofundadora",
     description:
       "Docente do Departamento de Medicina Veterinária da UFPR, graduada em Medicina Veterinária pela USP, com mestrado e doutorado em Epidemiologia Experimental Aplicada ao Controle de Zoonoses (FMVZ/USP). Especialista em Saúde Pública, Bem-Estar Animal, Patologia Clínica, Homeopatia e Medicina de Abrigos pela University of Florida, com pós-doutorado na USP. Membro da diretoria do IMVC/ITEC e consultora para OIE, FAO e WSPA/WAP.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/rita.jpg",
+    image: "/assets/img/equipe-mv/rita.jpg",
     alt: "Foto de Rita de Cassia Maria Garcia sorrindo",
   },
   {
@@ -44,8 +41,7 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Social Media",
     description:
       "Graduanda em Medicina Veterinária na Universidade Anhembi Morumbi. Presidente do grupo de estudos em COLETIVET e monitora no projeto de extensão “Controle de superpopulação de cães e gatos baseada na shelter medicine”. Voluntária nos Médicos-Veterinários de Rua, com experiência em campanhas educacionais e divulgação científica.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/v02.jpg",
+    image: "/assets/img/equipe-mv/v02.jpg",
     alt: "Foto de Bruna Mão Cheia sorrindo",
   },
   {
@@ -53,18 +49,8 @@ const TEAM_MEMBERS: TeamMember[] = [
     role: "Coleta e Tratamento de Dados",
     description:
       "Graduado em Comunicação Social com habilitação em Produção em Mídias Digitais e graduando em Sistemas para Internet. Atua com coleta, modelagem e análise dos dados utilizados pela Medicina de Abrigos Brasil.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2025/06/adriel.jpg",
+    image: "/assets/img/equipe-mv/adriel.jpg",
     alt: "Foto de Adriel da Rocha sorrindo",
-  },
-  {
-    name: "Gabriel Santos",
-    role: "Coleta e Tratamento de Dados",
-    description:
-      "Bacharel em Medicina Veterinária pelo Centro Universitário de Patos de Minas (UNIPAM). Foi coordenador do Grupo de Estudos de Animais Selvagens (GEAS - UNIPAM) e integra a Associação de Veterinários Veganos e Vegetarianos. Bolsista do projeto Medicina de Abrigos Brasil e pós-graduando em Ciência de Dados e Analytics pela PUC-Rio.",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/v03.jpg",
-    alt: "Foto de Gabriel Santos sorrindo",
   },
 ];
 

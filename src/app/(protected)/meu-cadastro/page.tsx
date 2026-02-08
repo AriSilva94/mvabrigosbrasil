@@ -6,6 +6,7 @@ import ShelterProfileForm from "@/app/(protected)/meu-cadastro/components/Shelte
 import VolunteerProfileForm from "@/app/(protected)/meu-cadastro/components/VolunteerProfileForm";
 import ProfileUpdateAlert from "@/app/(protected)/meu-cadastro/components/ProfileUpdateAlert";
 import { ShelterHistoryTimeline } from "@/app/(protected)/meu-cadastro/components/ShelterHistoryTimeline";
+import { TourTrigger } from "@/components/tour/TourTrigger";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
@@ -46,7 +47,7 @@ export default async function Page({
         ]}
       />
 
-      <section className="bg-white px-4 py-14 md:px-6">
+      <section id="tour-profile-form" className="bg-white px-4 py-14 md:px-6">
         <div className="mx-auto max-w-6xl space-y-10">
           <ProfileUpdateAlert />
           {isVolunteer ? (
@@ -57,6 +58,8 @@ export default async function Page({
           {!isVolunteer && <ShelterHistoryTimeline />}
         </div>
       </section>
+
+      <TourTrigger tourName="meu-cadastro-tour" />
     </main>
   );
 }

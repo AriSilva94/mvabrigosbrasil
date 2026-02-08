@@ -4,10 +4,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 
-import LibraryItemsShowcase from "@/components/content/LibraryItemsShowcase";
 import PageHeader from "@/components/layout/PageHeader";
 import AppImage from "@/components/ui/AppImage";
-import { Heading } from "@/components/ui/typography";
 import { libraryItems } from "@/data/libraryItems";
 import { buildMetadata } from "@/lib/seo";
 
