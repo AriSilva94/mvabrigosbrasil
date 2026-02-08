@@ -18,121 +18,99 @@ export type PartnerLogo = {
 export const PARTNER_REALIZERS: PartnerLogo[] = [
   {
     name: "Universidade Federal do Paraná",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/logo-ufpr.png",
+    image: "/assets/img/parceiros/logo-ufpr.png",
   },
   {
     name: "Programa de Pós-graduação em Ciências Veterinárias",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/logo-ppgcv.png",
+    image: "/assets/img/parceiros/logo-ppgcv.png",
   },
   {
     name: "Medicina Veterinária do Coletivo",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/logo-mvc.png",
+    image: "/assets/img/parceiros/logo-mvc.png",
   },
 ];
 
 export const PARTNER_FINANCIERS: PartnerLogo[] = [
   {
     name: "Fundação Araucária",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/fundacao_araucaria.png",
+    image: "/assets/img/parceiros/fundacao_araucaria.png",
   },
   {
     name: "SETI",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/SETI.png",
+    image: "/assets/img/parceiros/SETI.png",
   },
   {
     name: "SEDEST",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/SEDEST.png",
+    image: "/assets/img/parceiros/SEDEST.png",
   },
 ];
 
 export const PARTNER_SUPPORTERS: PartnerLogo[] = [
   {
     name: "IMVC",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2025/11/IMVC2.jpg",
+    image: "/assets/img/parceiros/IMVC2.jpg",
   },
   {
     name: "Fórum Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/FORUM.png",
+    image: "/assets/img/parceiros/FORUM.png",
   },
   {
     name: "Projeto Medicina Veterinária de Abrigos do Instituto PremieRpet",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/MEDVET.png",
+    image: "/assets/img/parceiros/MEDVET.png",
   },
   {
     name: "Peritus Vet",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/logo_peritus_vet.png",
+    image: "/assets/img/parceiros/logo_peritus_vet.png",
   },
   {
     name: "Grupo de Pesquisa em Ética Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logo(1).png",
+    image: "/assets/img/parceiros/logo(1).png",
   },
   {
     name: "Grupo de Pesquisa em Ética Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logo(2).png",
+    image: "/assets/img/parceiros/logo(2).png",
   },
   {
     name: "Grupo de Pesquisa em Ética Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logo(3).png",
+    image: "/assets/img/parceiros/logo(3).png",
   },
   {
     name: "Grupo de Estudos em Ética e Direito dos Animais",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logo(4).png",
+    image: "/assets/img/parceiros/logo(4).png",
   },
   {
     name: "Organização de Proteção Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/logo(5).png",
+    image: "/assets/img/parceiros/logo(5).png",
   },
   {
     name: "Instituto Caramelo",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2023/07/caramelo.jpg",
+    image: "/assets/img/parceiros/caramelo.jpg",
   },
   {
     name: "Febraca",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/febraca2.jpg",
+    image: "/assets/img/parceiros/febraca2.jpg",
   },
   {
     name: "AAC&T",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/aacet22.jpg",
+    image: "/assets/img/parceiros/aacet22.jpg",
   },
   {
     name: "Shelter Dogs MECA",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2025/11/MECA2.jpg",
+    image: "/assets/img/parceiros/MECA2.jpg",
   },
   {
     name: "ONG Animal",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/themes/mvabrigosbrasil/images/logos/IMG_5524-scaled-e1768678371453.png",
+    image: "/assets/img/parceiros/IMG_5524-scaled-e1768678371453.png",
   },
 ];
 
 export const PARTNER_SPONSORS: PartnerLogo[] = [
   {
     name: "PremieRpet",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2024/09/PREMIERVET2.jpg",
+    image: "/assets/img/parceiros/PREMIERVET2.jpg",
   },
   {
     name: "Cobasi Essencial para a vida",
-    image:
-      "https://mvabrigosbrasil.com.br/wp-content/uploads/2023/07/cobasi.jpg",
+    image: "/assets/img/parceiros/cobasi.jpg",
   },
 ];
