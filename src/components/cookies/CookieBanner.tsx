@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import CookiePreferencesModal from "./CookiePreferencesModal";
 import {
@@ -31,27 +31,24 @@ function dispatchConsentChange(consent: CookieConsentValue) {
 }
 
 export default function CookieBanner() {
-  const checkedRef = useRef(false);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => {
+    if (typeof document === "undefined") return false;
+    return parseConsent(getCookieValue(COOKIE_CONSENT_NAME)) === null;
+  });
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentConsent, setCurrentConsent] = useState<ConsentCategories>(DEFAULT_CONSENT);
+  const [currentConsent, setCurrentConsent] = useState<ConsentCategories>(() => {
+    if (typeof document === "undefined") return DEFAULT_CONSENT;
+    return parseConsent(getCookieValue(COOKIE_CONSENT_NAME)) ?? DEFAULT_CONSENT;
+  });
 
-  // Ler cookie existente no mount — usa ref para evitar re-render síncrono no effect
+  // Despachar consentimento existente para ConditionalAnalytics no mount
   useEffect(() => {
-    if (checkedRef.current) return;
-    checkedRef.current = true;
-
     const raw = getCookieValue(COOKIE_CONSENT_NAME);
     const consent = parseConsent(raw);
-
     if (consent) {
-      // Despachar para que ConditionalAnalytics reaja ao estado já salvo
       dispatchConsentChange({ ...consent });
-      setCurrentConsent(consent);
-    } else {
-      setVisible(true);
     }
-  });
+  }, []);
 
   const handleAcceptAll = useCallback(async () => {
     await saveConsent(ACCEPT_ALL_CONSENT);
