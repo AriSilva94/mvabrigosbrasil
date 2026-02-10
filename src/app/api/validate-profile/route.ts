@@ -4,6 +4,7 @@ import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
+import { findProfileById } from "@/modules/auth/repositories/profileRepository";
 
 // Campos obrigatórios para abrigos
 const REQUIRED_SHELTER_FIELDS = [
@@ -107,11 +108,16 @@ export async function GET() {
       email: userEmail,
     });
 
+    // Verifica se o usuário é convidado (team-only)
+    const { profile } = await findProfileById(supabaseAdmin, userId);
+    const isTeamOnly = Boolean(profile?.is_team_only);
+
     // Admin, gerente e convidados não precisam de validação
     if (
       registerType === REGISTER_TYPES.admin ||
       registerType === REGISTER_TYPES.manager ||
-      !registerType // convidados (team-only) não têm registerType
+      isTeamOnly ||
+      !registerType
     ) {
       return NextResponse.json({
         isValid: true,
