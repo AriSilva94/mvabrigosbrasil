@@ -2,7 +2,7 @@
 
 import type { CardComponentProps } from "nextstepjs";
 import { motion } from "motion/react";
-import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 
 export function HomeTourCard({
   step,
@@ -21,11 +21,11 @@ export function HomeTourCard({
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", damping: 20, stiffness: 300 }}
-      className="relative w-[340px] overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_25px_70px_rgba(16,130,89,0.2)]"
+      className="relative w-85 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_25px_70px_rgba(16,130,89,0.2)]"
     >
       {/* Gradient header for welcome step */}
       {isWelcomeStep && (
-        <div className="relative bg-gradient-to-r from-[#108259] to-[#0d6b4a] px-5 py-4">
+        <div className="relative bg-linear-to-r from-[#108259] to-[#0d6b4a] px-5 py-4">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,19 +75,6 @@ export function HomeTourCard({
         </div>
       )}
 
-      {/* Close button */}
-      <button
-        onClick={skipTour}
-        className={`absolute top-3 right-3 rounded-full p-1 transition ${
-          isWelcomeStep
-            ? "text-white/70 hover:bg-white/10 hover:text-white"
-            : "text-slate-400 hover:bg-slate-100 hover:text-slate-600"
-        }`}
-        aria-label="Fechar tour"
-      >
-        <X className="h-4 w-4" />
-      </button>
-
       {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -121,6 +108,13 @@ export function HomeTourCard({
 
         {/* Navigation buttons */}
         <div className="flex items-center gap-2">
+          <button
+            onClick={skipTour}
+            className="flex h-8 items-center rounded-full border border-slate-200 px-4 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-700"
+          >
+            Ignorar
+          </button>
+
           {!isFirstStep && (
             <motion.button
               initial={{ opacity: 0, x: 10 }}
