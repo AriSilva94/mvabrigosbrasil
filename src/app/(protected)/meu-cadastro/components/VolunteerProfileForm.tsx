@@ -12,6 +12,7 @@ import {
   type VolunteerProfileInput,
 } from "@/modules/volunteer/volunteerProfileSchema";
 import { useVolunteerProfile } from "@/hooks/useVolunteerProfile";
+import { useProfileValidationContext } from "@/components/providers/ProfileValidationProvider";
 import type { VolunteerProfileFormData } from "@/types/volunteer.types";
 import Input from "@/components/ui/Input";
 import FormError from "@/components/ui/FormError";
@@ -77,7 +78,8 @@ const ATUACAO_OPTIONS = [
 
 export default function VolunteerProfileForm(): JSX.Element {
   const router = useRouter();
-  const { volunteer, isLoading, refresh } = useVolunteerProfile();
+  const { volunteer, isLoading } = useVolunteerProfile();
+  const { refetch: refetchValidation } = useProfileValidationContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof VolunteerProfileInput, string>>
@@ -205,9 +207,8 @@ export default function VolunteerProfileForm(): JSX.Element {
       }
 
       toast.success("Cadastro de voluntário salvo com sucesso.");
-      await refresh();
+      await refetchValidation();
       router.push("/painel");
-      router.refresh(); // força o Router Cache a descartar dados antigos antes da próxima navegação
     } catch (error) {
       console.error("Erro ao salvar cadastro de voluntário", error);
       const message =
