@@ -9,6 +9,7 @@ import type {
   RateCardData,
 } from "../types";
 import { BASE_STATS } from "../ui/constants";
+import { parseRowPeriod } from "../utils/parseRowPeriod";
 
 type UseDynamicsDataParams = {
   userSummary: PopulationUserSummary | null;
@@ -165,12 +166,7 @@ export function useDynamicsData({
     }
 
     setEditingRowId(row.id);
-    const dateSource = row.referenceDate || row.referenceLabel;
-    const [month, year] = dateSource.includes("/")
-      ? dateSource.split("/").reverse()
-      : dateSource.split("-").length >= 2
-        ? [dateSource.split("-")[1], dateSource.split("-")[0]]
-        : ["01", "2025"];
+    const { month, year } = parseRowPeriod(row);
 
     setFormInitialValues({
       month: month.padStart(2, "0"),
