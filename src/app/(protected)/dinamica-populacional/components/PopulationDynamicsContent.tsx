@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Home, PawPrint } from "lucide-react";
 
 import { Text } from "@/components/ui/typography";
@@ -15,6 +15,7 @@ import { SHELTER_TYPE_OPTIONS } from "@/constants/shelterProfile";
 import type { PopulationUserSummary } from "../types";
 import DynamicsSection from "./DynamicsSection";
 import { useDynamicsData } from "../hooks/useDynamicsData";
+import { parseRowPeriod } from "../utils/parseRowPeriod";
 import { useRouter } from "next/navigation";
 
 type PopulationDynamicsContentProps = {
@@ -53,6 +54,13 @@ export default function PopulationDynamicsContent({
     registerType === "dinamica_lar"
       ? "Registro de Dinâmica Populacional L.T"
       : "Registro de Dinâmica Populacional";
+
+  const existingPeriods = useMemo(() => {
+    if (!registerType) return [];
+    const section = sections.find((s) => s.dynamicType === registerType);
+    if (!section) return [];
+    return section.rows.map((row) => parseRowPeriod(row));
+  }, [registerType, sections]);
 
   const ltOption = SHELTER_TYPE_OPTIONS.find((opt) => opt.value === "temporary");
   const isLtShelter = userSummary?.shelterTypeLabel === ltOption?.label;
@@ -131,6 +139,7 @@ export default function PopulationDynamicsContent({
             onDelete={isEditing ? onDelete : undefined}
             initialValues={formInitialValues ?? undefined}
             onSubmit={onSubmit}
+            existingPeriods={existingPeriods}
           />
         ) : (
           <Text className="text-sm text-slate-700">
