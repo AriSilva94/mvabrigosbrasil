@@ -15,6 +15,8 @@ import type {
 } from "../types";
 import { registerSchema } from "../validations";
 
+type ExistingPeriod = { month: string; year: string };
+
 type RegisterFormProps = {
   dynamicType: DynamicType;
   onSubmit: (values: RegisterFormSubmit) => void;
@@ -24,6 +26,7 @@ type RegisterFormProps = {
   isDeleting?: boolean;
   onDelete?: () => void;
   editingRowId?: string | null;
+  existingPeriods?: ExistingPeriod[];
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
@@ -47,6 +50,27 @@ const INITIAL_VALUES: RegisterFormValues = {
   originReturnCats: "0",
 };
 
+function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormValues {
+  const currentYear = dayjs().format("YYYY");
+  const currentMonth = dayjs().format("MM");
+
+  const isDefaultTaken = existingPeriods.some(
+    (p) => p.month === currentMonth && p.year === currentYear,
+  );
+
+  if (!isDefaultTaken) return INITIAL_VALUES;
+
+  const firstAvailable = MONTH_OPTIONS.find((opt) => {
+    const isFuture = opt.value > currentMonth;
+    const isTaken = existingPeriods.some(
+      (p) => p.month === opt.value && p.year === currentYear,
+    );
+    return !isFuture && !isTaken;
+  });
+
+  return { ...INITIAL_VALUES, month: firstAvailable?.value ?? currentMonth };
+}
+
 function RegisterFormInner({
   dynamicType,
   onSubmit,
@@ -55,9 +79,10 @@ function RegisterFormInner({
   isDeleting,
   onDelete,
   initialValues,
+  existingPeriods = [],
 }: RegisterFormProps): JSX.Element {
   const [values, setValues] = useState<RegisterFormValues>(
-    initialValues ?? INITIAL_VALUES,
+    initialValues ?? getSmartInitialValues(existingPeriods),
   );
   const [isConfirmingDelete, setConfirmingDelete] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
@@ -67,19 +92,40 @@ function RegisterFormInner({
   const currentYear = dayjs().format("YYYY");
   const currentMonth = dayjs().format("MM");
 
+  const isEditMode = isEditing ?? Boolean(initialValues);
+
   const monthOptions = useMemo(() => {
-    return MONTH_OPTIONS.map((option) => ({
-      ...option,
-      disabled: values.year === currentYear && option.value > currentMonth,
-    }));
-  }, [values.year, currentYear, currentMonth]);
+    return MONTH_OPTIONS.map((option) => {
+      const isFutureMonth =
+        values.year === currentYear && option.value > currentMonth;
+      const isAlreadyRegistered =
+        !isEditMode &&
+        existingPeriods.some(
+          (p) => p.month === option.value && p.year === values.year,
+        );
+
+      return {
+        ...option,
+        disabled: isFutureMonth || isAlreadyRegistered,
+        disabledHint: isAlreadyRegistered ? "Use o modo edição" : undefined,
+      };
+    });
+  }, [values.year, currentYear, currentMonth, isEditMode, existingPeriods]);
 
   const yearOptions = useMemo(() => {
-    return YEAR_OPTIONS.map((option) => ({
+    const base = YEAR_OPTIONS.map((option) => ({
       ...option,
       disabled: false,
     }));
-  }, []);
+
+    // No modo edição, garantir que o ano do registro esteja nas opções
+    if (isEditMode && values.year && !base.some((o) => o.value === values.year)) {
+      base.push({ value: values.year, label: values.year, disabled: false });
+      base.sort((a, b) => b.value.localeCompare(a.value));
+    }
+
+    return base;
+  }, [isEditMode, values.year]);
 
   const handleMonthChange = (value: string): void => {
     setValues((current) => ({ ...current, month: value }));
@@ -90,11 +136,28 @@ function RegisterFormInner({
     const isCurrentYear = value === currentYear;
     const currentMonthValue = values.month;
 
-    if (isCurrentYear && currentMonthValue > currentMonth) {
+    const isFutureMonth = isCurrentYear && currentMonthValue > currentMonth;
+    const isAlreadyRegistered =
+      !isEditMode &&
+      existingPeriods.some(
+        (p) => p.month === currentMonthValue && p.year === value,
+      );
+
+    if (isFutureMonth || isAlreadyRegistered) {
+      const firstAvailable = MONTH_OPTIONS.find((opt) => {
+        const futureCheck = isCurrentYear ? opt.value <= currentMonth : true;
+        const registeredCheck = !isEditMode
+          ? !existingPeriods.some(
+              (p) => p.month === opt.value && p.year === value,
+            )
+          : true;
+        return futureCheck && registeredCheck;
+      });
+
       setValues((current) => ({
         ...current,
         year: value,
-        month: currentMonth,
+        month: firstAvailable?.value ?? currentMonthValue,
       }));
       setFieldErrors((current) => ({
         ...current,
@@ -150,8 +213,6 @@ function RegisterFormInner({
     setConfirmingDelete(true);
   };
   const handleDeleteCancel = (): void => setConfirmingDelete(false);
-
-  const isEditMode = isEditing ?? Boolean(initialValues);
 
   const renderLabel = (text: string, isRequired = true): JSX.Element => (
     <span className="flex items-center gap-1 text-sm font-semibold text-slate-800">
@@ -281,6 +342,7 @@ function RegisterFormInner({
             value={values.month}
             onChange={handleMonthChange}
             name="month"
+            disabled={isEditMode}
           />
           <FormError id="month-error" message={fieldErrors.month} />
         </div>
@@ -292,6 +354,7 @@ function RegisterFormInner({
             value={values.year}
             onChange={handleYearChange}
             name="year"
+            disabled={isEditMode}
           />
           <FormError id="year-error" message={fieldErrors.year} />
         </div>
@@ -322,8 +385,9 @@ export default function RegisterForm(props: RegisterFormProps): JSX.Element {
       JSON.stringify({
         values: props.initialValues ?? null,
         editId: props.editingRowId ?? null,
+        periods: props.existingPeriods ?? null,
       }),
-    [props.initialValues, props.editingRowId],
+    [props.initialValues, props.editingRowId, props.existingPeriods],
   );
 
   return (
