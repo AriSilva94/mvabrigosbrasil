@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { MONTH_OPTIONS, YEAR_OPTIONS } from "./constants";
+import { MONTH_OPTIONS } from "./constants";
 
 const monthEnum = z.enum(MONTH_OPTIONS.map((option) => option.value) as [string, ...string[]]);
-const yearEnum = z.enum(YEAR_OPTIONS.map((option) => option.value) as [string, ...string[]]);
+const yearEnum = z.string().regex(/^\d{4}$/, "Ano inválido");
 
 const numberField = z.preprocess((value) => {
   if (typeof value === "number") return value;

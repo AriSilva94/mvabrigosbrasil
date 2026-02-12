@@ -6,6 +6,7 @@ export interface SelectDropdownOption {
   value: string;
   label: string;
   disabled?: boolean;
+  disabledHint?: string;
 }
 
 interface SelectDropdownProps {
@@ -195,7 +196,14 @@ export function SelectDropdown({
                 if (!option.disabled) setHighlightedIndex(index);
               }}
             >
-              {option.label}
+              <span className="flex items-center justify-between gap-2">
+                <span>{option.label}</span>
+                {option.disabled && option.disabledHint && (
+                  <span className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[11px] font-semibold leading-tight text-amber-700">
+                    {option.disabledHint}
+                  </span>
+                )}
+              </span>
             </div>
           ))}
         </div>
