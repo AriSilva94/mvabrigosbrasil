@@ -102,10 +102,6 @@ export const PARTNER_SUPPORTERS: PartnerLogo[] = [
     name: "ONG Animal",
     image: "/assets/img/parceiros/IMG_5524-scaled-e1768678371453.png",
   },
-  {
-    name: "Associação Brasileira de Reciclagem Animal",
-    image: "/assets/img/parceiros/ABRA.jpg",
-  },
 ];
 
 export const PARTNER_SPONSORS: PartnerLogo[] = [
@@ -116,5 +112,9 @@ export const PARTNER_SPONSORS: PartnerLogo[] = [
   {
     name: "Cobasi Essencial para a vida",
     image: "/assets/img/parceiros/cobasi.jpg",
+  },
+  {
+    name: "Associação Brasileira de Reciclagem Animal",
+    image: "/assets/img/parceiros/ABRA.jpg",
   },
 ];
