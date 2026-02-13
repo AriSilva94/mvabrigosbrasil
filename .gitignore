@@ -47,6 +47,5 @@ SUPABASE.md
 # claude code
 .claude
 
-# migration outputs
-scripts/migrations/**/output/
-scripts/migrations/migration-output.log
+# scripts (migrations, backups, queries, reports, tests)
+scripts/
