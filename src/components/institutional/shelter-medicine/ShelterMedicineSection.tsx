@@ -41,7 +41,7 @@ export default function ShelterMedicineSection(): JSX.Element {
 
           <figure className="overflow-hidden rounded-3xl">
             <Image
-              src="https://mvabrigosbrasil.com.br/wp-content/uploads/2023/08/medicina-de-abrigos.jpg"
+              src="/assets/img/medicina-de-abrigos.jpg"
               alt="Profissionais apresentando estrutura para animais em abrigo"
               width={870}
               height={459}
