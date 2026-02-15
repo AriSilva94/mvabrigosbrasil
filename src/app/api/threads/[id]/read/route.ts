@@ -17,9 +17,6 @@ export async function POST(
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Buscar o created_at da última mensagem da thread para garantir
-  // que o last_read_at cobre todas as mensagens existentes.
-  // Isso elimina problemas de clock drift entre JS e PostgreSQL.
   const { data: lastMsg } = await supabaseAdmin
     .from("chat_messages")
     .select("created_at")
@@ -29,8 +26,6 @@ export async function POST(
     .limit(1)
     .maybeSingle();
 
-  // Usar o maior entre: timestamp da última mensagem e agora (JS).
-  // Se não há mensagens, usar agora.
   const now = new Date().toISOString();
   const readAt = lastMsg?.created_at && lastMsg.created_at > now
     ? lastMsg.created_at
@@ -47,5 +42,14 @@ export async function POST(
     return NextResponse.json({ error: "Erro ao marcar como lido" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  // Buscar novo total APÓS o update garantir commit
+  const { data: totalUnread } = await supabaseAdmin.rpc(
+    "get_chat_total_unread_count",
+    { p_profile_id: user.id }
+  );
+
+  return NextResponse.json({
+    success: true,
+    unread_count: totalUnread || 0,
+  });
 }

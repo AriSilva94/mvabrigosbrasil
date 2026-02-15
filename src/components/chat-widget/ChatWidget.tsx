@@ -15,7 +15,7 @@ type CurrentThread = {
 
 export default function ChatWidget() {
   const { user, isLoading: authLoading } = useAuth();
-  const { count, refetch } = useUnreadCount();
+  const { count, refetch, setCount } = useUnreadCount(user?.id);
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<"inbox" | "thread">("inbox");
   const [currentThread, setCurrentThread] = useState<CurrentThread | null>(null);
@@ -101,6 +101,7 @@ export default function ChatWidget() {
         currentThread={currentThread}
         onSelectThread={handleSelectThread}
         onBackToInbox={handleBackToInbox}
+        onUnreadCountUpdate={setCount}
       />
     </>
   );

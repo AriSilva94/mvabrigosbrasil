@@ -18,6 +18,7 @@ type ChatWidgetPanelProps = {
   currentThread: CurrentThread | null;
   onSelectThread: (threadId: string, otherName: string, vacancyTitle: string) => void;
   onBackToInbox: () => void;
+  onUnreadCountUpdate: (count: number) => void;
 };
 
 export default function ChatWidgetPanel({
@@ -27,6 +28,7 @@ export default function ChatWidgetPanel({
   currentThread,
   onSelectThread,
   onBackToInbox,
+  onUnreadCountUpdate,
 }: ChatWidgetPanelProps) {
   const title =
     view === "inbox"
@@ -92,7 +94,7 @@ export default function ChatWidgetPanel({
         {/* Body */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {view === "inbox" && (
-            <ChatWidgetInbox onSelectThread={onSelectThread} />
+            <ChatWidgetInbox onSelectThread={onSelectThread} isVisible={isOpen} />
           )}
           {view === "thread" && currentThread && (
             <ChatThread
@@ -100,6 +102,7 @@ export default function ChatWidgetPanel({
               otherParticipantName={currentThread.otherName}
               vacancyTitle={currentThread.vacancyTitle}
               hideHeader
+              onUnreadCountUpdate={onUnreadCountUpdate}
             />
           )}
         </div>

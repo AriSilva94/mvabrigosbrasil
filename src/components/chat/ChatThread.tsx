@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useChatMessages } from "@/hooks/useChatMessages";
@@ -13,7 +13,7 @@ type ChatThreadProps = {
   otherParticipantName: string;
   vacancyTitle: string;
   hideHeader?: boolean;
-  onMarkAsRead?: () => void;
+  onUnreadCountUpdate?: (count: number) => void;
 };
 
 export default function ChatThread({
@@ -21,11 +21,10 @@ export default function ChatThread({
   otherParticipantName,
   vacancyTitle,
   hideHeader = false,
-  onMarkAsRead,
+  onUnreadCountUpdate,
 }: ChatThreadProps) {
   const { user } = useAuth();
   const { messages, isLoading, hasMore, error, fetchMessages, addMessage, replaceOptimistic, sendMessage } = useChatMessages();
-  const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const initialLoadRef = useRef(false);
@@ -82,7 +81,12 @@ export default function ChatThread({
   useEffect(() => {
     const markAsRead = () =>
       fetch(`/api/threads/${threadId}/read`, { method: "POST" })
-        .then(() => onMarkAsRead?.())
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.unread_count !== undefined) {
+            onUnreadCountUpdate?.(data.unread_count);
+          }
+        })
         .catch(() => {});
 
     markAsRead();
@@ -90,7 +94,7 @@ export default function ChatThread({
     return () => {
       markAsRead();
     };
-  }, [threadId, onMarkAsRead]);
+  }, [threadId, onUnreadCountUpdate]);
 
   // Realtime: novas mensagens (apenas do outro participante)
   const handleNewMessage = useCallback(
@@ -103,10 +107,15 @@ export default function ChatThread({
       addMessage(message);
       // Marcar como lido se a thread está aberta
       fetch(`/api/threads/${threadId}/read`, { method: "POST" })
-        .then(() => onMarkAsRead?.())
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.unread_count !== undefined) {
+            onUnreadCountUpdate?.(data.unread_count);
+          }
+        })
         .catch(() => {});
     },
-    [addMessage, threadId, onMarkAsRead]
+    [addMessage, threadId, onUnreadCountUpdate]
   );
 
   useChatRealtime(threadId, handleNewMessage);
@@ -118,15 +127,13 @@ export default function ChatThread({
     fetchMessages(threadId, oldestMessage.created_at);
   }, [hasMore, isLoading, messages, threadId, fetchMessages]);
 
-  // Enviar mensagem
-  const handleSend = useCallback(async (content: string) => {
+  // Enviar mensagem (fire-and-forget: não bloqueia o input)
+  const handleSend = useCallback((content: string) => {
     if (!user) return;
 
-    setIsSending(true);
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
-    const tempId = `temp-${Date.now()}`;
-
-    // Optimistic update
+    // Optimistic update — mensagem aparece instantaneamente
     const optimisticMsg = {
       id: tempId,
       thread_id: threadId,
@@ -141,16 +148,13 @@ export default function ChatThread({
     justSentRef.current = true;
     addMessage(optimisticMsg);
 
-    const result = await sendMessage(threadId, content);
-
-    if (result) {
-      // Registrar o ID real para ignorar quando chegar pelo Realtime
-      sentMessageIdsRef.current.add(result.id);
-      // Substituir mensagem otimista pela real
-      replaceOptimistic(tempId, result);
-    }
-
-    setIsSending(false);
+    // Envio real em background — não aguarda para liberar o input
+    sendMessage(threadId, content).then((result) => {
+      if (result) {
+        sentMessageIdsRef.current.add(result.id);
+        replaceOptimistic(tempId, result);
+      }
+    });
   }, [user, threadId, addMessage, replaceOptimistic, sendMessage]);
 
   return (
@@ -223,7 +227,7 @@ export default function ChatThread({
       </div>
 
       {/* Input */}
-      <ChatInput onSend={handleSend} disabled={isSending} />
+      <ChatInput onSend={handleSend} />
     </div>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { MessageSquare } from "lucide-react";
 
+import { useAuth } from "@/hooks/useAuth";
+import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 import type { ChatThreadWithMeta } from "@/types/chat.types";
 
 function formatTime(dateStr: string) {
@@ -11,7 +13,7 @@ function formatTime(dateStr: string) {
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) {
+  if (diffDays <= 0) {
     return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   }
   if (diffDays === 1) return "ontem";
@@ -26,34 +28,75 @@ function truncate(text: string, maxLen: number) {
 
 type ChatWidgetInboxProps = {
   onSelectThread: (threadId: string, otherName: string, vacancyTitle: string) => void;
+  isVisible?: boolean;
 };
 
-export default function ChatWidgetInbox({ onSelectThread }: ChatWidgetInboxProps) {
+export default function ChatWidgetInbox({ onSelectThread, isVisible }: ChatWidgetInboxProps) {
+  const { user } = useAuth();
   const [threads, setThreads] = useState<ChatThreadWithMeta[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasFetchedOnce = useRef(false);
 
-  useEffect(() => {
-    async function fetchThreads() {
-      try {
-        const res = await fetch("/api/threads");
-        const data = await res.json();
+  const fetchThreads = useCallback(async () => {
+    try {
+      const res = await fetch("/api/threads");
+      const data = await res.json();
 
-        if (!res.ok) {
-          setError(data.error || "Erro ao carregar conversas");
-          return;
-        }
-
-        setThreads(data.threads || []);
-      } catch {
-        setError("Erro de conexão");
-      } finally {
-        setIsLoading(false);
+      if (!res.ok) {
+        setError(data.error || "Erro ao carregar conversas");
+        return;
       }
-    }
 
-    fetchThreads();
+      setError(null);
+      setThreads(data.threads || []);
+    } catch {
+      setError("Erro de conexão");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  // Fetch inicial + re-fetch toda vez que o painel fica visível
+  useEffect(() => {
+    if (isVisible) {
+      // Na primeira vez mostra skeleton, nas próximas atualiza silenciosamente
+      if (!hasFetchedOnce.current) {
+        setIsLoading(true);
+      }
+      fetchThreads();
+      hasFetchedOnce.current = true;
+    }
+  }, [isVisible, fetchThreads]);
+
+  // Realtime: atualizar inbox quando chega mensagem nova de outra pessoa
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const supabase = getBrowserSupabaseClient();
+
+    const channel = supabase
+      .channel("inbox-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "chat_messages",
+        },
+        (payload) => {
+          const newMsg = payload.new as { sender_id?: string };
+          if (newMsg.sender_id && newMsg.sender_id !== user.id) {
+            fetchThreads();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id, fetchThreads]);
 
   if (isLoading) {
     return (
