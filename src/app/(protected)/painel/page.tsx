@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import Link from "next/link";
-import { BadgeCheck, MessageCircle, UserCheck2, Video } from "lucide-react";
+import { BadgeCheck, UserCheck2, Video } from "lucide-react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
@@ -27,12 +27,6 @@ const VOLUNTEER_SHORTCUTS = [
     title: "Vagas Disponiveis",
     href: "/vagas",
     icon: BadgeCheck,
-  },
-  {
-    id: "messages",
-    title: "Mensagens",
-    href: "/mensagens",
-    icon: MessageCircle,
   },
   {
     id: "trainings",

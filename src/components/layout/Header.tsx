@@ -7,7 +7,6 @@ import { Menu, X, ChevronDown } from "lucide-react";
 
 import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
-import UnreadBadge from "@/components/chat/UnreadBadge";
 import {
   INSTITUTIONAL_LINKS,
   MAIN_NAV_LINKS,
@@ -275,19 +274,6 @@ export default function Header() {
                         }}
                       >
                         Painel
-                      </Link>
-                      <Link
-                        href="/mensagens"
-                        className="flex items-center justify-between px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
-                        onClick={(e) => {
-                          const detailsEl = e.currentTarget.closest(
-                            "details",
-                          ) as HTMLDetailsElement | null;
-                          if (detailsEl) detailsEl.open = false;
-                        }}
-                      >
-                        Mensagens
-                        <UnreadBadge />
                       </Link>
                       <Link
                         href="/alterar-senha"

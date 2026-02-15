@@ -12,12 +12,16 @@ type ChatThreadProps = {
   threadId: string;
   otherParticipantName: string;
   vacancyTitle: string;
+  hideHeader?: boolean;
+  onMarkAsRead?: () => void;
 };
 
 export default function ChatThread({
   threadId,
   otherParticipantName,
   vacancyTitle,
+  hideHeader = false,
+  onMarkAsRead,
 }: ChatThreadProps) {
   const { user } = useAuth();
   const { messages, isLoading, hasMore, error, fetchMessages, addMessage, replaceOptimistic, sendMessage } = useChatMessages();
@@ -27,6 +31,24 @@ export default function ChatThread({
   const initialLoadRef = useRef(false);
   // Rastrear IDs de mensagens enviadas por este usuário para ignorar no Realtime
   const sentMessageIdsRef = useRef<Set<string>>(new Set());
+  // Flag para saber se o usuário acabou de enviar uma mensagem
+  const justSentRef = useRef(false);
+  // Flag para scroll inicial
+  const isInitialLoadRef = useRef(true);
+
+  // Verifica se o scroll está no final (com margem de 100px)
+  const isNearBottom = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return true;
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 100;
+  }, []);
+
+  // Rola o container de mensagens para o final (sem afetar o scroll da página)
+  const scrollContainerToBottom = useCallback((smooth = false) => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "instant" });
+  }, []);
 
   // Carregar mensagens iniciais
   useEffect(() => {
@@ -36,15 +58,39 @@ export default function ChatThread({
     }
   }, [threadId, fetchMessages]);
 
-  // Scroll to bottom quando novas mensagens chegam
+  // Scroll to bottom: só no load inicial, quando o próprio usuário envia, ou quando já estava no final
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages.length]);
+    if (isInitialLoadRef.current && messages.length > 0) {
+      isInitialLoadRef.current = false;
+      scrollContainerToBottom(false);
+      return;
+    }
 
-  // Marcar como lido ao abrir
+    if (justSentRef.current) {
+      justSentRef.current = false;
+      scrollContainerToBottom(true);
+      return;
+    }
+
+    // Mensagem de outro participante: só rola se já estava no final
+    if (isNearBottom()) {
+      scrollContainerToBottom(true);
+    }
+  }, [messages.length, isNearBottom, scrollContainerToBottom]);
+
+  // Marcar como lido ao abrir e ao sair (unmount)
   useEffect(() => {
-    fetch(`/api/threads/${threadId}/read`, { method: "POST" });
-  }, [threadId]);
+    const markAsRead = () =>
+      fetch(`/api/threads/${threadId}/read`, { method: "POST" })
+        .then(() => onMarkAsRead?.())
+        .catch(() => {});
+
+    markAsRead();
+
+    return () => {
+      markAsRead();
+    };
+  }, [threadId, onMarkAsRead]);
 
   // Realtime: novas mensagens (apenas do outro participante)
   const handleNewMessage = useCallback(
@@ -56,9 +102,11 @@ export default function ChatThread({
       }
       addMessage(message);
       // Marcar como lido se a thread está aberta
-      fetch(`/api/threads/${threadId}/read`, { method: "POST" });
+      fetch(`/api/threads/${threadId}/read`, { method: "POST" })
+        .then(() => onMarkAsRead?.())
+        .catch(() => {});
     },
-    [addMessage, threadId]
+    [addMessage, threadId, onMarkAsRead]
   );
 
   useChatRealtime(threadId, handleNewMessage);
@@ -90,6 +138,7 @@ export default function ChatThread({
       updated_at: new Date().toISOString(),
     };
 
+    justSentRef.current = true;
     addMessage(optimisticMsg);
 
     const result = await sendMessage(threadId, content);
@@ -107,12 +156,14 @@ export default function ChatThread({
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h2 className="text-sm font-semibold text-slate-800">
-          {otherParticipantName}
-        </h2>
-        <p className="text-xs text-slate-500">Vaga: {vacancyTitle}</p>
-      </div>
+      {!hideHeader && (
+        <div className="border-b border-slate-200 px-4 py-3">
+          <h2 className="text-sm font-semibold text-slate-800">
+            {otherParticipantName}
+          </h2>
+          <p className="text-xs text-slate-500">Vaga: {vacancyTitle}</p>
+        </div>
+      )}
 
       {/* Messages area */}
       <div

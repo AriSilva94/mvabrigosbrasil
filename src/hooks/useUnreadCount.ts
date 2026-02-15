@@ -1,25 +1,23 @@
 import { useEffect, useState, useCallback } from "react";
 
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
-
 export function useUnreadCount() {
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchCount = useCallback(async () => {
     try {
-      const supabase = getBrowserSupabaseClient();
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
+      const res = await fetch("/api/threads");
+      if (!res.ok) {
         setCount(0);
         return;
       }
-
-      const { data } = await supabase
-        .rpc("get_chat_total_unread_count", { p_profile_id: user.id });
-
-      setCount(data || 0);
+      const data = await res.json();
+      const threads = data.threads || [];
+      const total = threads.reduce(
+        (sum: number, t: { unread_count?: number }) => sum + (t.unread_count || 0),
+        0
+      );
+      setCount(total);
     } catch {
       // Silently fail — badge is not critical
     } finally {
@@ -30,7 +28,6 @@ export function useUnreadCount() {
   useEffect(() => {
     fetchCount();
 
-    // Polling a cada 30 segundos para atualizar badge
     const interval = setInterval(fetchCount, 30_000);
     return () => clearInterval(interval);
   }, [fetchCount]);

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { Text, Heading } from "@/components/ui/typography";
+import { openChatWidget } from "@/components/chat-widget";
 
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -91,13 +92,16 @@ export default function ApplicationsList({
                 </Link>
               )}
               {threadMap[app.volunteers.id] && (
-                <Link
-                  href={`/mensagens/${threadMap[app.volunteers.id]}`}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openChatWidget({ threadId: threadMap[app.volunteers.id] })
+                  }
                   className="inline-flex items-center gap-1.5 rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
                 >
                   <MessageCircle className="h-4 w-4" />
                   Conversar
-                </Link>
+                </button>
               )}
             </div>
           </div>
