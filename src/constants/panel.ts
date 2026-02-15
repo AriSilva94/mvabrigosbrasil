@@ -2,6 +2,7 @@ import {
   BookOpen,
   Home,
   ListChecks,
+  MessageCircle,
   PawPrint,
   UserCheck2,
   Users,
@@ -23,6 +24,13 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     subtitle: "Voluntariado",
     href: "/minhas-vagas",
     icon: ListChecks,
+  },
+  {
+    id: "messages",
+    title: "Mensagens",
+    subtitle: "Chat com Voluntários",
+    href: "/mensagens",
+    icon: MessageCircle,
   },
   {
     id: "exclusive-content",

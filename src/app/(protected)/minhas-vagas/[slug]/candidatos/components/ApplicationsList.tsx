@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { MessageCircle } from "lucide-react";
 import { Text, Heading } from "@/components/ui/typography";
 
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -23,8 +24,10 @@ interface Application {
 
 export default function ApplicationsList({
   applications,
+  threadMap = {},
 }: {
   applications: Application[];
+  threadMap?: Record<string, string>;
 }) {
   if (applications.length === 0) {
     return (
@@ -78,13 +81,22 @@ export default function ApplicationsList({
               </Text>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {app.volunteers.slug && (
                 <Link
                   href={`/voluntario/${String(app.volunteers.slug)}`}
                   className="inline-flex items-center rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
                 >
                   Ver Perfil
+                </Link>
+              )}
+              {threadMap[app.volunteers.id] && (
+                <Link
+                  href={`/mensagens/${threadMap[app.volunteers.id]}`}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Conversar
                 </Link>
               )}
             </div>
