@@ -31,10 +31,10 @@ export async function POST(
     );
   }
 
-  // 3. Verificar se vaga existe e está ativa
+  // 3. Verificar se vaga existe, está ativa e buscar shelter_id
   const { data: vacancy, error: vacancyError } = await supabaseAdmin
     .from("vacancies")
-    .select("id, title, status, is_published")
+    .select("id, title, status, is_published, shelter_id")
     .eq("id", vacancyId)
     .maybeSingle();
 
@@ -42,14 +42,30 @@ export async function POST(
     return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
   }
 
-  if (vacancy.status !== "active" || !vacancy.is_published) {
+  if (vacancy.status !== "active" || !vacancy.is_published || !vacancy.shelter_id) {
     return NextResponse.json(
       { error: "Vaga não está disponível para candidaturas" },
       { status: 400 }
     );
   }
 
-  // 4. Criar candidatura (UNIQUE constraint evita duplicatas)
+  const shelterId = vacancy.shelter_id;
+
+  // 4. Buscar profile_id do dono do abrigo
+  const { data: shelter } = await supabaseAdmin
+    .from("shelters")
+    .select("profile_id")
+    .eq("id", shelterId)
+    .maybeSingle();
+
+  if (!shelter?.profile_id) {
+    return NextResponse.json(
+      { error: "Abrigo não encontrado" },
+      { status: 404 }
+    );
+  }
+
+  // 5. Criar candidatura (UNIQUE constraint evita duplicatas)
   const { data: application, error: insertError } = await supabaseAdmin
     .from("vacancy_applications")
     .insert({
@@ -63,8 +79,18 @@ export async function POST(
   if (insertError) {
     // Código 23505 = violação de UNIQUE constraint (já se candidatou)
     if (insertError.code === "23505") {
+      const { data: existingThread } = await supabaseAdmin
+        .from("chat_threads")
+        .select("id")
+        .eq("vacancy_id", vacancyId)
+        .eq("volunteer_profile_id", user.id)
+        .maybeSingle();
+
       return NextResponse.json(
-        { error: "Você já se candidatou a esta vaga" },
+        {
+          error: "Você já se candidatou a esta vaga",
+          thread_id: existingThread?.id || null,
+        },
         { status: 409 }
       );
     }
@@ -75,5 +101,92 @@ export async function POST(
     );
   }
 
-  return NextResponse.json({ application, success: true });
+  // 6. Criar ou reutilizar thread de chat (idempotente via UNIQUE constraint)
+  let threadId: string | null = null;
+
+  const { data: existingThread } = await supabaseAdmin
+    .from("chat_threads")
+    .select("id")
+    .eq("vacancy_id", vacancyId)
+    .eq("volunteer_profile_id", user.id)
+    .maybeSingle();
+
+  if (existingThread) {
+    threadId = existingThread.id;
+  } else {
+    try {
+      const { data: newThread, error: threadError } = await supabaseAdmin
+        .from("chat_threads")
+        .insert({
+          vacancy_id: vacancyId,
+          volunteer_profile_id: user.id,
+          shelter_profile_id: shelter.profile_id,
+          shelter_id: shelterId,
+          volunteer_id: volunteer.id,
+          application_id: application.id,
+        })
+        .select("id")
+        .single();
+
+      if (threadError) {
+        console.error("Error creating thread:", threadError);
+        // Rollback: remover candidatura criada para manter consistência
+        await supabaseAdmin
+          .from("vacancy_applications")
+          .delete()
+          .eq("id", application.id);
+        return NextResponse.json(
+          { error: "Erro ao criar conversa. Tente novamente." },
+          { status: 500 }
+        );
+      }
+
+      threadId = newThread.id;
+
+      // 7. Criar participantes
+      const { error: participantsError } = await supabaseAdmin
+        .from("chat_participants")
+        .insert([
+          { thread_id: threadId, profile_id: user.id, role: "volunteer" },
+          { thread_id: threadId, profile_id: shelter.profile_id, role: "shelter" },
+        ]);
+
+      if (participantsError) {
+        console.error("Error creating participants:", participantsError);
+        // Rollback: remover thread e candidatura
+        await Promise.all([
+          supabaseAdmin.from("chat_threads").delete().eq("id", threadId),
+          supabaseAdmin.from("vacancy_applications").delete().eq("id", application.id),
+        ]);
+        return NextResponse.json(
+          { error: "Erro ao criar participantes. Tente novamente." },
+          { status: 500 }
+        );
+      }
+
+      // 8. Mensagem de sistema automática (não-crítica: falha não causa rollback)
+      await supabaseAdmin.from("chat_messages").insert({
+        thread_id: threadId,
+        sender_id: user.id,
+        content: `Candidatura enviada para a vaga "${vacancy.title}". Vocês já podem trocar mensagens!`,
+        message_type: "system",
+      });
+    } catch (unexpectedError) {
+      console.error("Unexpected error in apply route:", unexpectedError);
+      // Rollback: limpar recursos criados
+      if (threadId) {
+        await supabaseAdmin.from("chat_threads").delete().eq("id", threadId);
+      }
+      await supabaseAdmin
+        .from("vacancy_applications")
+        .delete()
+        .eq("id", application.id);
+      return NextResponse.json(
+        { error: "Erro inesperado ao processar candidatura" },
+        { status: 500 }
+      );
+    }
+  }
+
+  return NextResponse.json({ application, thread_id: threadId, success: true });
 }

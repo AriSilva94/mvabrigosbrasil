@@ -10,6 +10,8 @@ import {
 } from "@/constants/footer";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-light text-brand-primary">
       <section className="border-b border-brand-primary/10 bg-white">
@@ -137,7 +139,7 @@ export default function Footer() {
 
           <div className="mt-8 border-t border-white/25 pt-4 text-xs text-white/80">
             <p>
-              2022 © Medicina de Abrigos Brasil - Infodados de Abrigos de
+              {currentYear} © Medicina de Abrigos Brasil - Infodados de Abrigos de
               Animais. Todos os direitos reservados
             </p>
           </div>

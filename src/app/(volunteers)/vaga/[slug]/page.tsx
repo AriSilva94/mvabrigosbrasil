@@ -49,10 +49,14 @@ async function loadVacancy(slug: string): Promise<{
   canEdit: boolean;
   hasApplied: boolean;
   isAuthenticated: boolean;
+  threadId: string | null;
+  shelterProfileId: string | null;
 }> {
   const { userId, postType, shelterId } = await loadUserContext();
   const isAuthenticated = !!userId;
   let hasApplied = false;
+  let threadId: string | null = null;
+  let shelterProfileId: string | null = null;
 
   if (postType === REGISTER_TYPES.shelter && shelterId) {
     const supabaseAdmin = getSupabaseAdminClient();
@@ -71,16 +75,16 @@ async function loadVacancy(slug: string): Promise<{
         source: "supabase",
       } as UiVacancy;
 
-      return { vacancy: mapped, canEdit: true, hasApplied: false, isAuthenticated };
+      return { vacancy: mapped, canEdit: true, hasApplied: false, isAuthenticated, threadId: null, shelterProfileId: null };
     }
   }
 
   const publicVacancy = await getPublicVacancyBySlug(slug);
   if (!publicVacancy) {
-    return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated };
+    return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated, threadId: null, shelterProfileId: null };
   }
 
-  // Verificar se usuário já se candidatou
+  // Verificar se usuário já se candidatou + buscar thread do chat
   if (isAuthenticated && publicVacancy.id) {
     const supabaseAdmin = getSupabaseAdminClient();
     const { data: volunteer } = await supabaseAdmin
@@ -98,10 +102,23 @@ async function loadVacancy(slug: string): Promise<{
         .maybeSingle();
 
       hasApplied = !!existingApplication;
+
+      // Buscar thread do chat para esta vaga + voluntário (inclui shelter_profile_id para online indicator)
+      if (hasApplied) {
+        const { data: thread } = await supabaseAdmin
+          .from("chat_threads")
+          .select("id, shelter_profile_id")
+          .eq("vacancy_id", publicVacancy.id)
+          .eq("volunteer_profile_id", userId)
+          .maybeSingle();
+
+        threadId = thread?.id ?? null;
+        shelterProfileId = thread?.shelter_profile_id ?? null;
+      }
     }
   }
 
-  return { vacancy: publicVacancy, canEdit: false, hasApplied, isAuthenticated };
+  return { vacancy: publicVacancy, canEdit: false, hasApplied, isAuthenticated, threadId, shelterProfileId };
 }
 
 export async function generateMetadata({
@@ -136,7 +153,7 @@ export default async function Page({
   params,
 }: VacancyPageProps): Promise<JSX.Element> {
   const { slug } = await params;
-  const { vacancy, canEdit, hasApplied, isAuthenticated } = await loadVacancy(slug);
+  const { vacancy, canEdit, hasApplied, isAuthenticated, threadId, shelterProfileId } = await loadVacancy(slug);
 
   if (!vacancy) redirect("/programa-de-voluntarios");
 
@@ -296,6 +313,8 @@ export default async function Page({
                 vacancyTitle={vacancy.title || "Vaga"}
                 hasApplied={hasApplied}
                 isAuthenticated={isAuthenticated}
+                threadId={threadId}
+                shelterProfileId={shelterProfileId}
               />
             </div>
           </article>

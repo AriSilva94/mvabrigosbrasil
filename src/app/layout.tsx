@@ -8,6 +8,7 @@ import ToastProvider from "@/components/providers/ToastProvider";
 import { TourProvider } from "@/components/tour/TourProvider";
 import CookieBanner from "@/components/cookies/CookieBanner";
 import ConditionalAnalytics from "@/components/cookies/ConditionalAnalytics";
+import { ChatWidget } from "@/components/chat-widget";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -171,6 +172,7 @@ export default function RootLayout({
               <main>{children}</main>
               <Footer />
             </TourProvider>
+            <ChatWidget />
             <ConditionalAnalytics />
             <CookieBanner />
           </ToastProvider>
