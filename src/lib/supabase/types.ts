@@ -625,9 +625,291 @@ export type Database = {
         };
         Relationships: [];
       };
+      chat_threads: {
+        Row: {
+          id: string;
+          vacancy_id: string;
+          volunteer_profile_id: string;
+          shelter_profile_id: string;
+          shelter_id: string;
+          volunteer_id: string;
+          application_id: string | null;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          vacancy_id: string;
+          volunteer_profile_id: string;
+          shelter_profile_id: string;
+          shelter_id: string;
+          volunteer_id: string;
+          application_id?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          vacancy_id?: string;
+          volunteer_profile_id?: string;
+          shelter_profile_id?: string;
+          shelter_id?: string;
+          volunteer_id?: string;
+          application_id?: string | null;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_threads_vacancy_id_fkey";
+            columns: ["vacancy_id"];
+            referencedRelation: "vacancies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "chat_threads_shelter_id_fkey";
+            columns: ["shelter_id"];
+            referencedRelation: "shelters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "chat_threads_volunteer_id_fkey";
+            columns: ["volunteer_id"];
+            referencedRelation: "volunteers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chat_participants: {
+        Row: {
+          id: string;
+          thread_id: string;
+          profile_id: string;
+          role: string;
+          last_read_at: string;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          thread_id: string;
+          profile_id: string;
+          role: string;
+          last_read_at?: string;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          thread_id?: string;
+          profile_id?: string;
+          role?: string;
+          last_read_at?: string;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_participants_thread_id_fkey";
+            columns: ["thread_id"];
+            referencedRelation: "chat_threads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chat_messages: {
+        Row: {
+          id: string;
+          thread_id: string;
+          sender_id: string;
+          content: string;
+          message_type: string;
+          deleted_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          thread_id: string;
+          sender_id: string;
+          content: string;
+          message_type?: string;
+          deleted_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          thread_id?: string;
+          sender_id?: string;
+          content?: string;
+          message_type?: string;
+          deleted_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_thread_id_fkey";
+            columns: ["thread_id"];
+            referencedRelation: "chat_threads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chat_attachments: {
+        Row: {
+          id: string;
+          message_id: string;
+          thread_id: string;
+          storage_path: string;
+          file_name: string;
+          file_size: number;
+          mime_type: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          message_id: string;
+          thread_id: string;
+          storage_path: string;
+          file_name: string;
+          file_size: number;
+          mime_type: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          message_id?: string;
+          thread_id?: string;
+          storage_path?: string;
+          file_name?: string;
+          file_size?: number;
+          mime_type?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_attachments_message_id_fkey";
+            columns: ["message_id"];
+            referencedRelation: "chat_messages";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chat_blocks: {
+        Row: {
+          id: string;
+          blocker_id: string;
+          blocked_id: string;
+          reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          blocker_id: string;
+          blocked_id: string;
+          reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          blocker_id?: string;
+          blocked_id?: string;
+          reason?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      chat_reports: {
+        Row: {
+          id: string;
+          reporter_id: string;
+          thread_id: string | null;
+          message_id: string | null;
+          reported_user_id: string;
+          reason: string;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          reporter_id: string;
+          thread_id?: string | null;
+          message_id?: string | null;
+          reported_user_id: string;
+          reason: string;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          reporter_id?: string;
+          thread_id?: string | null;
+          message_id?: string | null;
+          reported_user_id?: string;
+          reason?: string;
+          status?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      chat_events: {
+        Row: {
+          id: string;
+          event_type: string;
+          actor_id: string | null;
+          thread_id: string | null;
+          message_id: string | null;
+          metadata: Json | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_type: string;
+          actor_id?: string | null;
+          thread_id?: string | null;
+          message_id?: string | null;
+          metadata?: Json | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          event_type?: string;
+          actor_id?: string | null;
+          thread_id?: string | null;
+          message_id?: string | null;
+          metadata?: Json | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      is_chat_thread_participant: {
+        Args: { p_thread_id: string; p_profile_id: string };
+        Returns: boolean;
+      };
+      is_chat_blocked: {
+        Args: { p_user_a: string; p_user_b: string };
+        Returns: boolean;
+      };
+      get_chat_unread_count: {
+        Args: { p_thread_id: string; p_profile_id: string };
+        Returns: number;
+      };
+      get_chat_total_unread_count: {
+        Args: { p_profile_id: string };
+        Returns: number;
+      };
+    };
     Enums: {
       user_origin: "wordpress_migrated" | "supabase_native" | "admin_created";
     };

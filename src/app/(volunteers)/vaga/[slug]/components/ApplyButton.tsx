@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { MessageCircle } from "lucide-react";
+import { openChatWidget } from "@/components/chat-widget";
 
 interface ApplyButtonProps {
   vacancyId: string;
   vacancyTitle: string;
   hasApplied: boolean;
   isAuthenticated: boolean;
+  threadId?: string | null;
 }
 
 export default function ApplyButton({
@@ -16,6 +19,7 @@ export default function ApplyButton({
   vacancyTitle,
   hasApplied,
   isAuthenticated,
+  threadId,
 }: ApplyButtonProps) {
   const [isApplying, setIsApplying] = useState(false);
   const router = useRouter();
@@ -40,7 +44,7 @@ export default function ApplyButton({
       }
 
       toast.success(`Candidatura enviada para "${vacancyTitle}"!`);
-      router.refresh(); // Atualiza página para refletir candidatura
+      router.refresh();
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Erro ao se candidatar"
@@ -52,13 +56,21 @@ export default function ApplyButton({
 
   if (hasApplied) {
     return (
-      <button
-        type="button"
-        disabled
-        className="inline-flex items-center rounded-full bg-green-100 px-6 py-3 text-sm font-semibold text-green-800 cursor-not-allowed"
-      >
-        ✓ Já candidatado
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="inline-flex items-center rounded-full bg-green-100 px-6 py-3 text-sm font-semibold text-green-800">
+          ✓ Já candidatado
+        </span>
+        {threadId && (
+          <button
+            type="button"
+            onClick={() => openChatWidget({ threadId })}
+            className="inline-flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Conversar com Abrigo
+          </button>
+        )}
+      </div>
     );
   }
 
