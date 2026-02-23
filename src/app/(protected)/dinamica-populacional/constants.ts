@@ -106,7 +106,7 @@ export const MONTH_OPTIONS: SelectOption[] = [
 ];
 
 const currentYear = dayjs().year();
-const yearRange = Array.from({ length: 3 }, (_, index) => String(currentYear - index));
+const yearRange = Array.from({ length: 5 }, (_, index) => String(currentYear - index));
 
 export const YEAR_OPTIONS: SelectOption[] = yearRange.map((value) => ({
   value,
