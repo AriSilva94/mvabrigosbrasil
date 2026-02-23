@@ -25,12 +25,12 @@ export const METRIC_COLUMNS: MetricColumn[] = [
   { key: "euthanasiasCats", label: "Eutanásias", species: "cats" },
   { key: "naturalDeathsDogs", label: "Mortes Naturais", species: "dogs" },
   { key: "naturalDeathsCats", label: "Mortes Naturais", species: "cats" },
-  { key: "diseasesDogs", label: "Doenças", species: "dogs" },
-  { key: "diseasesCats", label: "Doenças", species: "cats" },
   { key: "tutorReturnDogs", label: "Retorno Tutor", species: "dogs" },
   { key: "tutorReturnCats", label: "Retorno Tutor", species: "cats" },
   { key: "originReturnDogs", label: "Retorno Origem", species: "dogs" },
   { key: "originReturnCats", label: "Retorno Origem", species: "cats" },
+  { key: "diseasesDogs", label: "Doenças", species: "dogs" },
+  { key: "diseasesCats", label: "Doenças", species: "cats" },
 ];
 
 export const GROUPED_HEADERS: GroupedHeader[] = [
@@ -60,11 +60,6 @@ export const GROUPED_HEADERS: GroupedHeader[] = [
     tooltip: "Animais que morreram por causas naturais",
   },
   {
-    label: "Doenças",
-    flowType: "indicador",
-    tooltip: "Animais diagnosticados com doenças (indicador de saúde)",
-  },
-  {
     label: "Retorno Tutor",
     flowType: "saida",
     tooltip: "Animais devolvidos ao tutor original",
@@ -73,6 +68,11 @@ export const GROUPED_HEADERS: GroupedHeader[] = [
     label: "Retorno Origem",
     flowType: "saida",
     tooltip: "Animais devolvidos ao local de origem",
+  },
+  {
+    label: "Doenças",
+    flowType: "indicador",
+    tooltip: "Animais diagnosticados com doenças (indicador de saúde)",
   },
 ];
 
