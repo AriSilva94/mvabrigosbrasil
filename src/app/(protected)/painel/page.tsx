@@ -68,7 +68,7 @@ function VolunteerPanel(): JSX.Element {
         </article>
 
         <section id="tour-shortcuts" className="mt-10">
-          <ul className="grid gap-5 grid-cols-1 md:grid-cols-3">
+          <ul className="grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             {VOLUNTEER_SHORTCUTS.map(({ id, title, href, icon: Icon }) => (
               <li key={id} id={id === "profile" ? "tour-profile-shortcut" : undefined}>
                 <Link

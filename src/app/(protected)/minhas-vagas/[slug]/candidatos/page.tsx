@@ -56,6 +56,44 @@ export default async function CandidatosPage({
     .eq("vacancy_id", vacancy.id)
     .order("applied_at", { ascending: false });
 
+  // Buscar threads de chat para esta vaga (para botão "Conversar")
+  const { data: threads } = await supabaseAdmin
+    .from("chat_threads")
+    .select("id, volunteer_profile_id")
+    .eq("vacancy_id", vacancy.id);
+
+  // Mapear volunteer_id (volunteers.owner_profile_id) → thread_id
+  // Precisamos buscar o profile_id dos voluntários que se candidataram
+  const volunteerIds = (applications || [])
+    .map((a) => (a.volunteers as { id: string } | null)?.id)
+    .filter((id): id is string => !!id);
+
+  let threadMap: Record<string, string> = {};
+  if (volunteerIds.length > 0 && threads && threads.length > 0) {
+    const { data: volunteerProfiles } = await supabaseAdmin
+      .from("volunteers")
+      .select("id, owner_profile_id")
+      .in("id", volunteerIds);
+
+    if (volunteerProfiles) {
+      // volunteer.id → profile_id
+      const volToProfile = new Map(
+        volunteerProfiles.map((v) => [v.id, v.owner_profile_id])
+      );
+      // profile_id → thread_id
+      const profileToThread = new Map(
+        threads.map((t) => [t.volunteer_profile_id, t.id])
+      );
+      // volunteer.id → thread_id
+      for (const [volId, profileId] of volToProfile) {
+        if (profileId) {
+          const tid = profileToThread.get(profileId);
+          if (tid) threadMap[volId] = tid;
+        }
+      }
+    }
+  }
+
   return (
     <main>
       <PageHeader
@@ -69,7 +107,10 @@ export default async function CandidatosPage({
 
       <section className="bg-white">
         <div className="container px-6 py-12">
-          <ApplicationsList applications={applications || []} />
+          <ApplicationsList
+            applications={applications || []}
+            threadMap={threadMap}
+          />
         </div>
       </section>
     </main>

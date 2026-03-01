@@ -32,10 +32,11 @@ Transformar dados em ação para o bem-estar animal através de:
 - 🤝 **Conexão entre abrigos e voluntários**
 - 🔍 **Transparência total** dos dados para pesquisadores e público
 
-### 🎉 Destaques (Janeiro 2026)
+### 🎉 Destaques (Fevereiro 2026)
 
 - ✅ **Sistema completo de gestão** de abrigos, voluntários e vagas
 - ✅ **CRUD de vagas** com sistema de candidaturas
+- ✅ **Chat em tempo real** entre voluntários e abrigos (Supabase Realtime)
 - ✅ **Dinâmica populacional** com métricas automáticas
 - ✅ **Cache otimizado** para alta performance
 - ✅ **Migração automatizada** de dados WordPress
@@ -82,6 +83,9 @@ Acesse: [http://localhost:3000](http://localhost:3000)
 #    - 02-criar-tabelas-dominio.sql
 #    - 03-criar-triggers-funcoes.sql
 #    - 04-configurar-rls.sql
+#    - 05-criar-tabelas-chat.sql
+#    - 06-criar-triggers-chat.sql
+#    - 07-configurar-rls-chat.sql
 
 # 2. (Opcional) Importe backup WordPress nas tabelas *_raw
 
@@ -103,6 +107,7 @@ node run-full-migration.js
 - ✅ Gestão de equipe e permissões
 - ✅ Criação e gerenciamento de vagas de voluntariado
 - ✅ Visualização de candidatos por vaga
+- ✅ Chat direto com voluntários candidatos
 
 **Métricas Calculadas Automaticamente**
 - Taxa de entrada e saída
@@ -110,12 +115,24 @@ node run-full-migration.js
 - Balanço populacional
 - Tendências (crescimento/decrescimento)
 
+### Chat em Tempo Real
+
+- ✅ Thread criada automaticamente ao candidatar-se a uma vaga
+- ✅ Mensagens em tempo real via Supabase Realtime
+- ✅ Inbox com lista de conversas e contagem de não-lidas
+- ✅ Paginação por cursor para histórico de mensagens
+- ✅ Bloqueio de usuários e sistema de denúncias
+- ✅ Rate limiting (30 msgs/min) e sanitização de conteúdo
+- ✅ Auditoria completa de eventos (chat_events)
+- ✅ RLS forte em todas as tabelas de chat
+
 ### Para Voluntários
 
 - ✅ Cadastro com perfil público detalhado
 - ✅ Busca de vagas com filtros dinâmicos
-- ✅ Candidatura para vagas
+- ✅ Candidatura para vagas (com chat automático)
 - ✅ Gestão de candidaturas
+- ✅ Mensagens com abrigos
 
 ### Para Pesquisadores e Público
 
@@ -227,13 +244,22 @@ src/
 ├── app/                 # Next.js App Router
 │   ├── (auth)/         # Login, cadastro
 │   ├── (protected)/    # Área restrita
+│   │   └── mensagens/  # Chat (inbox + thread)
 │   ├── (institutional)/# Páginas públicas
 │   ├── (data)/         # Banco de dados público
 │   └── api/            # API Routes
+│       ├── threads/    # Chat endpoints
+│       ├── chat/       # Block, report
+│       └── vacancies/  # Vagas + candidaturas
 ├── components/         # Componentes React
 │   ├── ui/            # Componentes base
+│   ├── chat/          # Chat (Inbox, Thread, Bubble, Input)
 │   ├── auth/          # Autenticação
 │   └── data/          # Visualizações
+├── hooks/             # Custom hooks
+│   ├── useChatRealtime.ts
+│   ├── useChatMessages.ts
+│   └── useUnreadCount.ts
 ├── lib/               # Bibliotecas
 │   ├── supabase/      # Clientes (browser, server, admin)
 │   └── auth/          # Autenticação WordPress
@@ -251,17 +277,28 @@ src/
    - `shelters` - Abrigos
    - `volunteers` - Voluntários
    - `vacancies` - Vagas
+   - `vacancy_applications` - Candidaturas
    - `shelter_dynamics` - Dinâmica populacional
    - `shelter_history` - Histórico de alterações
    - `team_memberships` - Vínculos de equipe
 
-3. **Legado WordPress:**
+3. **Chat (7 tabelas):**
+   - `chat_threads` - Conversas vinculadas a candidaturas
+   - `chat_participants` - Participantes com controle de leitura
+   - `chat_messages` - Mensagens com soft-delete
+   - `chat_attachments` - Anexos (MVP preparado)
+   - `chat_blocks` - Bloqueios entre usuários
+   - `chat_reports` - Denúncias para moderação
+   - `chat_events` - Auditoria de eventos
+
+4. **Legado WordPress:**
    - `wp_users_legacy` - Usuários WP (migração)
    - `wp_*_raw` - Dumps brutos
 
 **Segurança (RLS)**
 - Tabelas públicas: Leitura pública, escrita via service_role
 - Profiles: Usuário acessa apenas próprio perfil
+- Chat: Apenas participantes acessam suas threads/mensagens (14 policies)
 - Legado WP: Acesso bloqueado (apenas service_role)
 
 ### Migração WordPress → Supabase
@@ -357,6 +394,9 @@ Contribuições são bem-vindas!
 
 - **Estrutura do Projeto:** [docs/instrucoes-codex-estrutura.md](docs/instrucoes-codex-estrutura.md)
 - **Banco de Dados:** [docs/instrucoes-codex-estrutura-banco-de-dados.md](docs/instrucoes-codex-estrutura-banco-de-dados.md)
+- **Schema Supabase (completo):** [docs/supabase-schema.md](docs/supabase-schema.md)
+- **Chat - Plano de Implementacao:** [docs/plano-chat-implementacao.md](docs/plano-chat-implementacao.md)
+- **Chat - Guia de Deploy (Producao):** [docs/chat-guia-deploy-producao.md](docs/chat-guia-deploy-producao.md)
 - **Guia de Migração:** [scripts/migrations/EXECUTAR-MIGRACAO.md](scripts/migrations/EXECUTAR-MIGRACAO.md)
 
 ---
@@ -374,15 +414,23 @@ npm run lint     # ESLint
 cd scripts/migrations
 node run-full-migration.js           # Migração completa
 node run-full-migration.js --dry-run # Teste sem alterações
+
+# Chat (setup do banco)
+node chat/setup-chat-system.js           # Cria tabelas + triggers + RLS
+node chat/setup-chat-system.js --dry-run # Teste sem alterações
 ```
 
 ---
 
 ## 🛣️ Roadmap (Melhorias Futuras)
 
+- 📎 Anexos no chat (imagens/PDF via Supabase Storage)
+- 📧 Notificações por e-mail (novas mensagens)
+- 🔔 Notificações push (PWA)
+- 🔍 Busca de mensagens dentro de conversas
+- 🛡️ Painel de moderacao para admins
 - 📱 PWA para uso offline
-- 🔔 Notificações em tempo real
-- 📊 Dashboard avançado com mais métricas
+- 📊 Dashboard avancado com mais metricas
 - 🌐 Internacionalização (i18n)
 
 ---
