@@ -9,6 +9,7 @@ type TeamMember = {
   description: string;
   image: string;
   alt: string;
+  imageClassName?: string;
 };
 
 const TEAM_MEMBERS: TeamMember[] = [
@@ -51,6 +52,14 @@ const TEAM_MEMBERS: TeamMember[] = [
       "Graduado em Comunicação Social com habilitação em Produção em Mídias Digitais e graduando em Sistemas para Internet. Atua com coleta, modelagem e análise dos dados utilizados pela Medicina de Abrigos Brasil.",
     image: "/assets/img/equipe-mv/adriel.jpg",
     alt: "Foto de Adriel da Rocha sorrindo",
+  },
+  {
+    name: "Ariovaldo Barbosa da Silva",
+    role: "Responsável Técnico – MV Abrigos Brasil",
+    description:
+      "Graduado em Análise e Desenvolvimento de Sistemas, com sólida formação em desenvolvimento de software e arquitetura de sistemas. Atua como responsável técnico pelo projeto MV Abrigos Brasil, coordenando a estrutura tecnológica, modelagem de dados e evolução do sistema utilizado para registro e análise das informações dos abrigos. Possui experiência em desenvolvimento web, banco de dados e organização de fluxos de informação, contribuindo para a confiabilidade, segurança e eficiência da solução tecnológica do projeto.",
+    image: "/assets/img/equipe-mv/ariovaldo.png",
+    alt: "Foto de Ari Silva sorrindo",
   },
 ];
 
