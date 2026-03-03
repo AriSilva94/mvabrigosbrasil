@@ -64,12 +64,14 @@ function parseReferenceLabel(reference: string | null): string {
 }
 
 function computeBalance(metrics: DynamicsTableRow["metrics"]): number {
-  const entries = (metrics.entriesDogs ?? 0) + (metrics.entriesCats ?? 0);
+  const entries =
+    (metrics.entriesDogs ?? 0) +
+    (metrics.entriesCats ?? 0) +
+    (metrics.returnsDogs ?? 0) +
+    (metrics.returnsCats ?? 0);
   const exits =
     (metrics.adoptionsDogs ?? 0) +
     (metrics.adoptionsCats ?? 0) +
-    (metrics.returnsDogs ?? 0) +
-    (metrics.returnsCats ?? 0) +
     (metrics.tutorReturnDogs ?? 0) +
     (metrics.tutorReturnCats ?? 0) +
     (metrics.originReturnDogs ?? 0) +
@@ -107,12 +109,14 @@ function computeRates(
 
   const sum = rows.reduce(
     (acc, row) => {
-      acc.entries += (row.metrics.entriesDogs ?? 0) + (row.metrics.entriesCats ?? 0);
+      acc.entries +=
+        (row.metrics.entriesDogs ?? 0) +
+        (row.metrics.entriesCats ?? 0) +
+        (row.metrics.returnsDogs ?? 0) +
+        (row.metrics.returnsCats ?? 0);
       acc.exits +=
         (row.metrics.adoptionsDogs ?? 0) +
         (row.metrics.adoptionsCats ?? 0) +
-        (row.metrics.returnsDogs ?? 0) +
-        (row.metrics.returnsCats ?? 0) +
         (row.metrics.tutorReturnDogs ?? 0) +
         (row.metrics.tutorReturnCats ?? 0) +
         (row.metrics.originReturnDogs ?? 0) +
@@ -206,17 +210,17 @@ function buildDisplay(
     const totals = rows.reduce(
       (acc, row) => {
         acc.dogs +=
-          (row.metrics.entriesDogs ?? 0) -
+          (row.metrics.entriesDogs ?? 0) +
+          (row.metrics.returnsDogs ?? 0) -
           ((row.metrics.adoptionsDogs ?? 0) +
-            (row.metrics.returnsDogs ?? 0) +
             (row.metrics.tutorReturnDogs ?? 0) +
             (row.metrics.originReturnDogs ?? 0) +
             (row.metrics.euthanasiasDogs ?? 0) +
             (row.metrics.naturalDeathsDogs ?? 0));
         acc.cats +=
-          (row.metrics.entriesCats ?? 0) -
+          (row.metrics.entriesCats ?? 0) +
+          (row.metrics.returnsCats ?? 0) -
           ((row.metrics.adoptionsCats ?? 0) +
-            (row.metrics.returnsCats ?? 0) +
             (row.metrics.tutorReturnCats ?? 0) +
             (row.metrics.originReturnCats ?? 0) +
             (row.metrics.euthanasiasCats ?? 0) +
