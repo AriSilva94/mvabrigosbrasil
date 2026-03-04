@@ -65,8 +65,12 @@ export type PopulationUserSummary = {
   displayName: string | null;
   totalAnimals: number | null;
   shelterTypeLabel: string | null;
+  hasTemporaryAgreement: boolean;
   dogsCount: number | null;
   catsCount: number | null;
+  totalAnimalsLt: number | null;
+  dogsCountLt: number | null;
+  catsCountLt: number | null;
 };
 
 export type RateTrend = "up" | "down" | "neutral";

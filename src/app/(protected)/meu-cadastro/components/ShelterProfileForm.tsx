@@ -22,8 +22,10 @@ import { buildPopulationPayload } from "@/modules/shelter/populationEditHelpers"
 
 export default function ShelterProfileForm({
   populationEditOnly = false,
+  populationTarget = "shelter",
 }: {
   populationEditOnly?: boolean;
+  populationTarget?: "shelter" | "lt";
 }): JSX.Element {
   const router = useRouter();
   const { shelter, isLoading, refresh } = useShelterProfile();
@@ -46,7 +48,10 @@ export default function ShelterProfileForm({
   });
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
   const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
-  usePopulationEditScroll(populationEditOnly && !isLoading);
+  usePopulationEditScroll(populationEditOnly && !isLoading, {
+    anchorId:
+      populationTarget === "lt" ? "populacao-inicial-lt" : "populacao-inicial",
+  });
 
   useEffect(() => {
     setShelterType(shelter?.shelterType ?? "");
@@ -107,11 +112,16 @@ export default function ShelterProfileForm({
         ? foundationDateRaw.split("/").reverse().join("-")
         : foundationDateRaw;
 
-    const temporaryAgreementValue = formData.get("temporaryAgreement");
+    const nextShelterType =
+      shelterType || String(formData.get("shelterType") ?? "");
+    const temporaryAgreementValue =
+      nextShelterType === "temporary"
+        ? false
+        : formData.get("temporaryAgreement");
     const payload = populationEditOnly
       ? buildPopulationPayload(shelter, formData)
       : {
-          shelterType: shelterType || String(formData.get("shelterType") ?? ""),
+          shelterType: nextShelterType,
           cnpj: documentValue || String(formData.get("cnpj") ?? ""),
           shelterName: String(formData.get("shelterName") ?? ""),
           cep: String(formData.get("cep") ?? ""),
@@ -124,12 +134,15 @@ export default function ShelterProfileForm({
           foundationDate: foundationDateIso,
           species: String(formData.get("species") ?? ""),
           additionalSpecies: formData.getAll("additionalSpecies").map(String),
-          temporaryAgreement: temporaryAgreementValue
-            ? String(temporaryAgreementValue)
-            : undefined,
+          temporaryAgreement:
+            typeof temporaryAgreementValue === "boolean"
+              ? temporaryAgreementValue
+              : temporaryAgreementValue === "true",
           referralSource: String(formData.get("referralSource") ?? ""),
           initialDogs: formData.get("initialDogs"),
           initialCats: formData.get("initialCats"),
+          initialDogsLt: formData.get("initialDogsLt"),
+          initialCatsLt: formData.get("initialCatsLt"),
           authorizedName: String(formData.get("authorizedName") ?? ""),
           authorizedRole: String(formData.get("authorizedRole") ?? ""),
           authorizedEmail: String(formData.get("authorizedEmail") ?? ""),
