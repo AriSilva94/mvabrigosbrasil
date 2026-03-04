@@ -83,9 +83,11 @@ export type Database = {
           foundation_date: string | null;
           species: string | null;
           additional_species: Json;
-          temporary_agreement: string | null;
+          temporary_agreement: boolean | null;
           initial_dogs: number | null;
           initial_cats: number | null;
+          initial_dogs_lt: number | null;
+          initial_cats_lt: number | null;
           authorized_name: string | null;
           authorized_role: string | null;
           authorized_email: string | null;
@@ -111,9 +113,11 @@ export type Database = {
           foundation_date?: string | null;
           species?: string | null;
           additional_species?: Json;
-          temporary_agreement?: string | null;
+          temporary_agreement?: boolean | null;
           initial_dogs?: number | null;
           initial_cats?: number | null;
+          initial_dogs_lt?: number | null;
+          initial_cats_lt?: number | null;
           authorized_name?: string | null;
           authorized_role?: string | null;
           authorized_email?: string | null;
@@ -138,9 +142,11 @@ export type Database = {
           foundation_date?: string | null;
           species?: string | null;
           additional_species?: Json;
-          temporary_agreement?: string | null;
+          temporary_agreement?: boolean | null;
           initial_dogs?: number | null;
           initial_cats?: number | null;
+          initial_dogs_lt?: number | null;
+          initial_cats_lt?: number | null;
           authorized_name?: string | null;
           authorized_role?: string | null;
           authorized_email?: string | null;

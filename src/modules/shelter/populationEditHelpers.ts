@@ -14,9 +14,12 @@ type PopulationPayload = {
   foundationDate: string;
   species: string;
   additionalSpecies: string[];
-  temporaryAgreement?: string;
+  temporaryAgreement?: boolean;
+  referralSource: string;
   initialDogs: FormDataEntryValue | null;
   initialCats: FormDataEntryValue | null;
+  initialDogsLt: FormDataEntryValue | null;
+  initialCatsLt: FormDataEntryValue | null;
   authorizedName: string;
   authorizedRole: string;
   authorizedEmail: string;
@@ -28,6 +31,11 @@ export function buildPopulationPayload(
   shelter: Partial<ShelterProfileFormData> | null,
   formData: FormData,
 ): PopulationPayload {
+  const isTemporaryShelter = shelter?.shelterType === "temporary";
+  const temporaryAgreement = isTemporaryShelter
+    ? false
+    : shelter?.hasTemporaryAgreement === true;
+
   return {
     shelterType: shelter?.shelterType ?? "",
     cnpj: shelter?.cnpj ?? "",
@@ -42,9 +50,12 @@ export function buildPopulationPayload(
     foundationDate: shelter?.foundationDate ?? "",
     species: shelter?.species ?? "",
     additionalSpecies: shelter?.additionalSpecies ?? [],
-    temporaryAgreement: shelter?.hasTemporaryAgreement ? "sim" : "nao",
+    temporaryAgreement,
+    referralSource: shelter?.referralSource ?? "",
     initialDogs: formData.get("initialDogs"),
     initialCats: formData.get("initialCats"),
+    initialDogsLt: formData.get("initialDogsLt"),
+    initialCatsLt: formData.get("initialCatsLt"),
     authorizedName: shelter?.authorizedName ?? "",
     authorizedRole: shelter?.authorizedRole ?? "",
     authorizedEmail: shelter?.authorizedEmail ?? "",

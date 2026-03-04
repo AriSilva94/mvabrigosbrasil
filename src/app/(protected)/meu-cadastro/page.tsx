@@ -21,7 +21,7 @@ export const metadata = buildMetadata({
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: Promise<{ edit?: string }>;
+  searchParams?: Promise<{ edit?: string; target?: string }>;
 }): Promise<JSX.Element> {
   const access = await enforceTeamAccess("/meu-cadastro");
   const isVolunteer = access.registerType === REGISTER_TYPES.volunteer;
@@ -35,6 +35,8 @@ export default async function Page({
 
   const resolvedSearch = searchParams ? await searchParams : {};
   const populationEditOnly = resolvedSearch?.edit === "population";
+  const populationTarget =
+    resolvedSearch?.target === "lt" ? "lt" : "shelter";
 
   return (
     <main>
@@ -53,7 +55,10 @@ export default async function Page({
           {isVolunteer ? (
             <VolunteerProfileForm />
           ) : (
-            <ShelterProfileForm populationEditOnly={populationEditOnly} />
+            <ShelterProfileForm
+              populationEditOnly={populationEditOnly}
+              populationTarget={populationTarget}
+            />
           )}
           {!isVolunteer && <ShelterHistoryTimeline />}
         </div>

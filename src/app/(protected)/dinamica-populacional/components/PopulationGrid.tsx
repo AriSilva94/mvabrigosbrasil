@@ -15,6 +15,9 @@ type PopulationGridProps = {
   populationCurrent: number | null;
   populationCurrentDogs?: number | null;
   populationCurrentCats?: number | null;
+  overallPopulationCurrent?: number | null;
+  overallPopulationCurrentDogs?: number | null;
+  overallPopulationCurrentCats?: number | null;
   onEditRow?: (id: string) => void;
 };
 
@@ -28,6 +31,9 @@ export default function PopulationGrid({
   populationCurrent,
   populationCurrentDogs,
   populationCurrentCats,
+  overallPopulationCurrent,
+  overallPopulationCurrentDogs,
+  overallPopulationCurrentCats,
   onEditRow,
 }: PopulationGridProps): JSX.Element {
   return (
@@ -113,17 +119,45 @@ export default function PopulationGrid({
         className="rounded-xl border border-dashed border-brand-primary/40 bg-brand-primary/5 px-4 py-3 text-sm font-semibold text-brand-primary"
         title="População Inicial + soma de todas as entradas - soma de todas as saídas"
       >
-        <span className="inline-flex items-center gap-1">
-          População Atual:
-          <HelpCircle className="h-3.5 w-3.5 opacity-50" aria-hidden />
-        </span>{" "}
-        <span className="text-slate-900">{populationCurrent ?? "—"}</span>{" "}
-        {(populationCurrentDogs ?? populationCurrentCats ?? null) !== null && (
-          <span className="text-xs font-semibold text-slate-600">
-            (Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
-            {populationCurrentCats ?? 0})
+        <div>
+          <span className="flex items-center gap-1">
+            População Atual:
+            <HelpCircle
+              className="h-3.5 w-3.5 opacity-50"
+              aria-hidden
+              title="Total atual desta seção, calculado pela população inicial desta dinâmica somada às entradas e subtraída das saídas."
+            />
           </span>
-        )}
+          <span className="text-slate-900">{populationCurrent ?? "—"}</span>{" "}
+          {(populationCurrentDogs ?? populationCurrentCats ?? null) !== null && (
+            <span className="text-xs font-semibold text-slate-600">
+              (Cães: {populationCurrentDogs ?? 0} | Gatos:{" "}
+              {populationCurrentCats ?? 0})
+            </span>
+          )}
+        </div>
+        {(overallPopulationCurrent ??
+          overallPopulationCurrentDogs ??
+          overallPopulationCurrentCats ??
+          null) !== null ? (
+          <div className="mt-3 border-t border-brand-primary/40 pt-3 text-sky-700">
+            <span className="flex items-center gap-1">
+              População Atual Geral:
+              <HelpCircle
+                className="h-3.5 w-3.5 opacity-50"
+                aria-hidden
+                title="Soma da população atual da Dinâmica Populacional com a população atual da Dinâmica Populacional L.T."
+              />
+            </span>
+            <span className="text-slate-900">
+              {overallPopulationCurrent ?? "—"}
+            </span>{" "}
+            <span className="text-xs font-semibold text-slate-600">
+              (Cães: {overallPopulationCurrentDogs ?? 0} | Gatos:{" "}
+              {overallPopulationCurrentCats ?? 0})
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   );
