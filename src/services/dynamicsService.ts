@@ -274,16 +274,22 @@ function buildDisplay(
 export async function fetchDynamicsDisplays(params: {
   supabaseAdmin: AdminClient;
   shelterId: string;
-  populationInitial: number | null;
-  populationInitialDogs?: number | null;
-  populationInitialCats?: number | null;
+  shelterPopulationInitial: number | null;
+  shelterPopulationInitialDogs?: number | null;
+  shelterPopulationInitialCats?: number | null;
+  ltPopulationInitial: number | null;
+  ltPopulationInitialDogs?: number | null;
+  ltPopulationInitialCats?: number | null;
 }): Promise<DynamicsDisplay[]> {
   const {
     supabaseAdmin,
     shelterId,
-    populationInitial,
-    populationInitialDogs,
-    populationInitialCats,
+    shelterPopulationInitial,
+    shelterPopulationInitialDogs,
+    shelterPopulationInitialCats,
+    ltPopulationInitial,
+    ltPopulationInitialDogs,
+    ltPopulationInitialCats,
   } = params;
   const { data, error } = await supabaseAdmin
     .from("shelter_dynamics")
@@ -299,18 +305,18 @@ export async function fetchDynamicsDisplays(params: {
       buildDisplay(
         [],
         "dinamica",
-        populationInitial,
-        populationInitial,
-        populationInitialDogs,
-        populationInitialCats,
+        shelterPopulationInitial,
+        shelterPopulationInitial,
+        shelterPopulationInitialDogs,
+        shelterPopulationInitialCats,
       ),
       buildDisplay(
         [],
         "dinamica_lar",
-        populationInitial,
-        populationInitial,
-        populationInitialDogs,
-        populationInitialCats,
+        ltPopulationInitial,
+        ltPopulationInitial,
+        ltPopulationInitialDogs,
+        ltPopulationInitialCats,
       ),
     ];
   }
@@ -320,18 +326,18 @@ export async function fetchDynamicsDisplays(params: {
     buildDisplay(
       records,
       "dinamica",
-      populationInitial,
-      populationInitial,
-      populationInitialDogs,
-      populationInitialCats,
+      shelterPopulationInitial,
+      shelterPopulationInitial,
+      shelterPopulationInitialDogs,
+      shelterPopulationInitialCats,
     ),
     buildDisplay(
       records,
       "dinamica_lar",
-      populationInitial,
-      populationInitial,
-      populationInitialDogs,
-      populationInitialCats,
+      ltPopulationInitial,
+      ltPopulationInitial,
+      ltPopulationInitialDogs,
+      ltPopulationInitialCats,
     ),
   ];
 }
