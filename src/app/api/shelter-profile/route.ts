@@ -7,9 +7,14 @@ import {
   shelterProfileSchema,
   type ShelterProfileInput,
 } from "@/modules/shelter/shelterProfileSchema";
+import { parseTemporaryAgreementValue } from "@/modules/shelter/temporaryAgreement";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 
 type CurrentUser = { id: string; email: string | null };
+const SHELTER_SELECT_BASE =
+  "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms";
+const SHELTER_SELECT_WITH_LT =
+  "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, initial_dogs_lt, initial_cats_lt, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms";
 
 async function getCurrentUser(): Promise<CurrentUser | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
@@ -20,10 +25,7 @@ async function getCurrentUser(): Promise<CurrentUser | null> {
 
 function mapDbToFormData(row: Record<string, unknown>): Partial<ShelterProfileFormData> {
   const additionalSpecies = Array.isArray(row.additional_species) ? row.additional_species : [];
-  const temporaryAgreementRaw =
-    typeof row.temporary_agreement === "string" ? row.temporary_agreement : null;
-  const hasTemporaryAgreement =
-    temporaryAgreementRaw === "sim" ? true : temporaryAgreementRaw === "nao" ? false : null;
+  const temporaryAgreement = parseTemporaryAgreementValue(row.temporary_agreement);
 
   return {
     shelterType: (row.shelter_type as ShelterProfileFormData["shelterType"]) ?? undefined,
@@ -39,11 +41,13 @@ function mapDbToFormData(row: Record<string, unknown>): Partial<ShelterProfileFo
     foundationDate: (row.foundation_date as string) ?? "",
     species: (row.species as string) ?? "",
     additionalSpecies,
-    hasTemporaryAgreement,
-    temporaryAgreement: temporaryAgreementRaw,
+    hasTemporaryAgreement: temporaryAgreement,
+    temporaryAgreement,
     referralSource: (row.referral_source as string) ?? "",
     initialDogs: (row.initial_dogs as number) ?? 0,
     initialCats: (row.initial_cats as number) ?? 0,
+    initialDogsLt: (row.initial_dogs_lt as number | null) ?? null,
+    initialCatsLt: (row.initial_cats_lt as number | null) ?? null,
     authorizedName: (row.authorized_name as string) ?? "",
     authorizedRole: (row.authorized_role as string) ?? "",
     authorizedEmail: (row.authorized_email as string) ?? "",
@@ -77,6 +81,48 @@ function hasChanges(
   });
 }
 
+async function fetchShelterByProfileId(
+  profileId: string,
+): Promise<{
+  data: Record<string, unknown> | null;
+  supportsLtFields: boolean;
+  error: { code?: string } | null;
+}> {
+  const supabaseAdmin = getSupabaseAdminClient();
+
+  const withLt = await supabaseAdmin
+    .from("shelters")
+    .select(SHELTER_SELECT_WITH_LT)
+    .eq("profile_id", profileId)
+    .limit(1)
+    .maybeSingle();
+
+  if (!withLt.error) {
+    return {
+      data: (withLt.data as Record<string, unknown> | null) ?? null,
+      supportsLtFields: true,
+      error: null,
+    };
+  }
+
+  if (withLt.error.code !== "42703") {
+    return { data: null, supportsLtFields: false, error: withLt.error };
+  }
+
+  const withoutLt = await supabaseAdmin
+    .from("shelters")
+    .select(SHELTER_SELECT_BASE)
+    .eq("profile_id", profileId)
+    .limit(1)
+    .maybeSingle();
+
+  return {
+    data: (withoutLt.data as Record<string, unknown> | null) ?? null,
+    supportsLtFields: false,
+    error: withoutLt.error,
+  };
+}
+
 export async function GET() {
   try {
     const user = await getCurrentUser();
@@ -84,25 +130,11 @@ export async function GET() {
       return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    const supabaseAdmin = getSupabaseAdminClient();
-    const { data, error } = await supabaseAdmin
-      .from("shelters")
-      .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
-      )
-      .eq("profile_id", user.id)
-      .limit(1)
-      .maybeSingle();
+    const { data, error } = await fetchShelterByProfileId(user.id);
 
     if (error) {
-      const isUnknownColumn = error.code === "42703";
-      if (!isUnknownColumn) {
-        console.error("shelter-profile GET: erro ao consultar shelters", error);
-        return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
-      }
-
-      // Se a coluna ainda não existir, devolve cadastro vazio para não bloquear uso.
-      return NextResponse.json({ shelter: null, warning: "Campo profile_id ausente em shelters." });
+      console.error("shelter-profile GET: erro ao consultar shelters", error);
+      return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
     }
 
     if (!data) {
@@ -151,27 +183,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: existingShelter, error: currentShelterError } = await supabaseAdmin
-      .from("shelters")
-      .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
-      )
-      .eq("profile_id", user.id)
-      .limit(1)
-      .maybeSingle();
+    const {
+      data: existingShelter,
+      error: currentShelterError,
+      supportsLtFields,
+    } = await fetchShelterByProfileId(user.id);
 
     if (currentShelterError) {
-      const isUnknownColumn = currentShelterError.code === "42703";
-      if (!isUnknownColumn) {
-        console.error(
-          "shelter-profile POST: erro ao consultar cadastro existente",
-          currentShelterError,
-        );
-        return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
-      }
+      console.error(
+        "shelter-profile POST: erro ao consultar cadastro existente",
+        currentShelterError,
+      );
+      return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
     }
 
-    const payload = mapShelterProfileToDb(user.id, parsed.data);
+    const fullPayload = mapShelterProfileToDb(user.id, parsed.data);
+    const shouldKeepExistingLtPopulation =
+      parsed.data.shelterType === "temporary" ||
+      parsed.data.temporaryAgreement !== true;
+    const fullPayloadWithLtPreserved =
+      shouldKeepExistingLtPopulation && existingShelter
+        ? {
+            ...fullPayload,
+            initial_dogs_lt:
+              (existingShelter.initial_dogs_lt as number | null | undefined) ??
+              null,
+            initial_cats_lt:
+              (existingShelter.initial_cats_lt as number | null | undefined) ??
+              null,
+          }
+        : fullPayload;
+    const payload = supportsLtFields
+      ? fullPayloadWithLtPreserved
+      : Object.fromEntries(
+          Object.entries(fullPayloadWithLtPreserved).filter(
+            ([key]) => key !== "initial_dogs_lt" && key !== "initial_cats_lt",
+          ),
+        );
 
     const normalizedCurrentShelter = existingShelter
       ? {
@@ -180,7 +228,8 @@ export async function POST(request: Request) {
             ? existingShelter.additional_species
             : [],
           website: existingShelter.website ?? null,
-          temporary_agreement: existingShelter.temporary_agreement ?? null,
+          temporary_agreement:
+            parseTemporaryAgreementValue(existingShelter.temporary_agreement) ?? null,
           cnpj: existingShelter.cnpj ?? null,
           cpf: existingShelter.cpf ?? null,
         }
@@ -196,9 +245,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabaseAdmin
       .from("shelters")
       .upsert(payload, { onConflict: "profile_id" })
-      .select(
-        "id, profile_id, active, shelter_type, cnpj, cpf, name, cep, street, number, district, state, city, website, foundation_date, species, additional_species, temporary_agreement, referral_source, initial_dogs, initial_cats, authorized_name, authorized_role, authorized_email, authorized_phone, accept_terms",
-      )
+      .select(supportsLtFields ? SHELTER_SELECT_WITH_LT : SHELTER_SELECT_BASE)
       .maybeSingle();
 
     if (error) {

@@ -16,6 +16,9 @@ type DynamicsSectionProps = {
   isLoading?: boolean;
   onEditPopulation?: () => void;
   canEditPopulation?: boolean;
+  overallPopulationCurrent?: number | null;
+  overallPopulationCurrentDogs?: number | null;
+  overallPopulationCurrentCats?: number | null;
   isReadOnly?: boolean;
 };
 
@@ -29,6 +32,9 @@ export default function DynamicsSection({
   isLoading = false,
   onEditPopulation,
   canEditPopulation = true,
+  overallPopulationCurrent,
+  overallPopulationCurrentDogs,
+  overallPopulationCurrentCats,
   isReadOnly = false,
 }: DynamicsSectionProps): JSX.Element {
   const hasData = data.rows.length > 0;
@@ -64,6 +70,9 @@ export default function DynamicsSection({
             populationInitialCats={data.populationInitialCats}
             populationCurrentDogs={data.populationCurrentDogs}
             populationCurrentCats={data.populationCurrentCats}
+            overallPopulationCurrent={overallPopulationCurrent}
+            overallPopulationCurrentDogs={overallPopulationCurrentDogs}
+            overallPopulationCurrentCats={overallPopulationCurrentCats}
             rows={data.rows}
             onEditRow={onEditRow ? (id) => onEditRow(id, data.dynamicType) : undefined}
             onEditPopulation={onEditPopulation}

@@ -11,7 +11,6 @@ import HeaderSection from "./HeaderSection";
 import Modal from "./Modal";
 import RegisterForm from "./RegisterForm";
 import { GLOSSARY_SECTIONS } from "../constants";
-import { SHELTER_TYPE_OPTIONS } from "@/constants/shelterProfile";
 import type { PopulationUserSummary } from "../types";
 import DynamicsSection from "./DynamicsSection";
 import { useDynamicsData } from "../hooks/useDynamicsData";
@@ -62,8 +61,26 @@ export default function PopulationDynamicsContent({
     return section.rows.map((row) => parseRowPeriod(row));
   }, [registerType, sections]);
 
-  const ltOption = SHELTER_TYPE_OPTIONS.find((opt) => opt.value === "temporary");
-  const isLtShelter = userSummary?.shelterTypeLabel === ltOption?.label;
+  const overallPopulationCurrent = useMemo(
+    () =>
+      sections.reduce(
+        (acc, section) => {
+          acc.total += section.populationCurrent ?? 0;
+          acc.dogs += section.populationCurrentDogs ?? 0;
+          acc.cats += section.populationCurrentCats ?? 0;
+          acc.hasValue =
+            acc.hasValue ||
+            section.populationCurrent !== null ||
+            section.populationCurrentDogs !== null ||
+            section.populationCurrentCats !== null;
+          return acc;
+        },
+        { total: 0, dogs: 0, cats: 0, hasValue: false },
+      ),
+    [sections],
+  );
+
+  const canUseLtDynamics = userSummary?.hasTemporaryAgreement === true;
 
   return (
     <>
@@ -89,29 +106,65 @@ export default function PopulationDynamicsContent({
               }
               canEditPopulation={!isTeamOnly}
               onEditPopulation={() =>
-                router.push("/meu-cadastro?edit=population#populacao-inicial")
+                router.push(
+                  "/meu-cadastro?edit=population&target=shelter#populacao-inicial",
+                )
+              }
+              overallPopulationCurrent={
+                canUseLtDynamics && overallPopulationCurrent.hasValue
+                  ? overallPopulationCurrent.total
+                  : null
+              }
+              overallPopulationCurrentDogs={
+                canUseLtDynamics && overallPopulationCurrent.hasValue
+                  ? overallPopulationCurrent.dogs
+                  : null
+              }
+              overallPopulationCurrentCats={
+                canUseLtDynamics && overallPopulationCurrent.hasValue
+                  ? overallPopulationCurrent.cats
+                  : null
               }
               isReadOnly={isTeamOnly}
             />
 
             <GlossaryCard id="tour-dp-glossary" onOpenGlossary={() => setGlossaryOpen(true)} />
 
-            <DynamicsSection
-              id="tour-dp-lt"
-              data={sections[1]}
-              isLoading={isLoading}
-              onCreate={openRegister}
-              onEditRow={
-                isTeamOnly
-                  ? undefined
-                  : (id) => startEditRow("dinamica_lar", id)
-              }
-              canEditPopulation={!isTeamOnly}
-              onEditPopulation={() =>
-                router.push("/meu-cadastro?edit=population#populacao-inicial")
-              }
-              isReadOnly={isTeamOnly}
-            />
+            {canUseLtDynamics ? (
+              <DynamicsSection
+                id="tour-dp-lt"
+                data={sections[1]}
+                isLoading={isLoading}
+                onCreate={openRegister}
+                onEditRow={
+                  isTeamOnly
+                    ? undefined
+                    : (id) => startEditRow("dinamica_lar", id)
+                }
+                canEditPopulation={!isTeamOnly}
+                onEditPopulation={() =>
+                  router.push(
+                    "/meu-cadastro?edit=population&target=lt#populacao-inicial-lt",
+                  )
+                }
+                overallPopulationCurrent={
+                  overallPopulationCurrent.hasValue
+                    ? overallPopulationCurrent.total
+                    : null
+                }
+                overallPopulationCurrentDogs={
+                  overallPopulationCurrent.hasValue
+                    ? overallPopulationCurrent.dogs
+                    : null
+                }
+                overallPopulationCurrentCats={
+                  overallPopulationCurrent.hasValue
+                    ? overallPopulationCurrent.cats
+                    : null
+                }
+                isReadOnly={isTeamOnly}
+              />
+            ) : null}
           </div>
         </div>
       </section>
@@ -175,24 +228,26 @@ export default function PopulationDynamicsContent({
           <button
             type="button"
             onClick={() => openRegister("dinamica_lar")}
-            disabled={isLtShelter}
+            disabled={!canUseLtDynamics}
             className={`flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary ${
-              isLtShelter
+              !canUseLtDynamics
                 ? "cursor-not-allowed opacity-50"
                 : "cursor-pointer text-slate-800 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(16,130,89,0.08)]"
             }`}
           >
             <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-              isLtShelter ? "bg-slate-100 text-slate-400" : "bg-amber-100 text-amber-700"
+              !canUseLtDynamics ? "bg-slate-100 text-slate-400" : "bg-amber-100 text-amber-700"
             }`}>
               <Home className="h-5 w-5" aria-hidden />
             </div>
             <div className="space-y-1">
-              <p className={`text-sm font-semibold ${isLtShelter ? "text-slate-400" : "text-slate-900"}`}>
+              <p className={`text-sm font-semibold ${!canUseLtDynamics ? "text-slate-400" : "text-slate-900"}`}>
                 Dinâmica Populacional L.T
               </p>
-              <p className={`text-xs ${isLtShelter ? "text-slate-400" : "text-slate-600"}`}>
-                Registros específicos para lares temporários e protetores.
+              <p className={`text-xs ${!canUseLtDynamics ? "text-slate-400" : "text-slate-600"}`}>
+                {!canUseLtDynamics
+                  ? "Disponível somente para abrigos com convênio com lares temporários."
+                  : "Registros específicos para lares temporários e protetores."}
               </p>
             </div>
           </button>

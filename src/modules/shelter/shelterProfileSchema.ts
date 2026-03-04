@@ -1,5 +1,11 @@
 import { z } from "zod";
 import { unformatDigits } from "@/lib/formatters";
+import { parseTemporaryAgreementValue } from "@/modules/shelter/temporaryAgreement";
+
+const temporaryAgreementSchema = z
+  .union([z.boolean(), z.enum(["true", "false", "sim", "nao"])])
+  .optional()
+  .transform((value) => parseTemporaryAgreementValue(value) ?? false);
 
 export const shelterProfileSchema = z.object({
   shelterType: z.string().min(1, "Selecione o tipo de abrigo."),
@@ -15,10 +21,18 @@ export const shelterProfileSchema = z.object({
   foundationDate: z.string().min(1, "Informe a fundação do abrigo."),
   species: z.string().min(1, "Informe a espécie principal."),
   additionalSpecies: z.array(z.string()).optional(),
-  temporaryAgreement: z.string().optional(),
+  temporaryAgreement: temporaryAgreementSchema,
   referralSource: z.string().min(1, "Selecione como conheceu o projeto."),
   initialDogs: z.coerce.number().min(0, "Informe a população inicial de cães."),
   initialCats: z.coerce.number().min(0, "Informe a população inicial de gatos."),
+  initialDogsLt: z.coerce
+    .number()
+    .min(0, "Informe a população inicial de cães L.T.")
+    .optional(),
+  initialCatsLt: z.coerce
+    .number()
+    .min(0, "Informe a população inicial de gatos L.T.")
+    .optional(),
   authorizedName: z.string().min(1, "Informe o nome do responsável."),
   authorizedRole: z.string().min(1, "Selecione o cargo."),
   authorizedEmail: z.string().email("Informe um e-mail válido."),
@@ -71,6 +85,8 @@ export function mapShelterProfileToDb(
   const cepDigits = unformatDigits(payload.cep);
   const phoneDigits = unformatDigits(payload.authorizedPhone);
   const isTemporary = payload.shelterType === "temporary";
+  const hasTemporaryAgreement = payload.temporaryAgreement === true;
+  const shouldPersistLtPopulation = !isTemporary && hasTemporaryAgreement;
 
   return {
     profile_id: profileId,
@@ -88,10 +104,12 @@ export function mapShelterProfileToDb(
     foundation_date: payload.foundationDate,
     species: payload.species,
     additional_species: payload.additionalSpecies ?? [],
-    temporary_agreement: payload.temporaryAgreement ?? null,
+    temporary_agreement: isTemporary ? false : payload.temporaryAgreement,
     referral_source: payload.referralSource,
     initial_dogs: payload.initialDogs,
     initial_cats: payload.initialCats,
+    initial_dogs_lt: shouldPersistLtPopulation ? payload.initialDogsLt ?? null : null,
+    initial_cats_lt: shouldPersistLtPopulation ? payload.initialCatsLt ?? null : null,
     authorized_name: payload.authorizedName,
     authorized_role: payload.authorizedRole,
     authorized_email: payload.authorizedEmail,
