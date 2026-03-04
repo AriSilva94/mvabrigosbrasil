@@ -84,6 +84,7 @@ export type Database = {
           species: string | null;
           additional_species: Json;
           temporary_agreement: boolean | null;
+          referral_source: string | null;
           initial_dogs: number | null;
           initial_cats: number | null;
           initial_dogs_lt: number | null;
@@ -114,6 +115,7 @@ export type Database = {
           species?: string | null;
           additional_species?: Json;
           temporary_agreement?: boolean | null;
+          referral_source?: string | null;
           initial_dogs?: number | null;
           initial_cats?: number | null;
           initial_dogs_lt?: number | null;
@@ -143,6 +145,7 @@ export type Database = {
           species?: string | null;
           additional_species?: Json;
           temporary_agreement?: boolean | null;
+          referral_source?: string | null;
           initial_dogs?: number | null;
           initial_cats?: number | null;
           initial_dogs_lt?: number | null;

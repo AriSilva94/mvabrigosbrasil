@@ -36,6 +36,11 @@ export default function PopulationGrid({
   overallPopulationCurrentCats,
   onEditRow,
 }: PopulationGridProps): JSX.Element {
+  const currentPopulationTooltip =
+    "Total atual desta seção, calculado pela população inicial desta dinâmica somada às entradas e subtraída das saídas.";
+  const overallCurrentPopulationTooltip =
+    "Somatória da população atual da Dinâmica Populacional com a população atual da Dinâmica Populacional L.T.";
+
   return (
     <div className="space-y-4">
       <div className="max-h-150 overflow-auto">
@@ -120,13 +125,12 @@ export default function PopulationGrid({
         title="População Inicial + soma de todas as entradas - soma de todas as saídas"
       >
         <div>
-          <span className="flex items-center gap-1">
+          <span
+            className="flex items-center gap-1"
+            title={currentPopulationTooltip}
+          >
             População Atual:
-            <HelpCircle
-              className="h-3.5 w-3.5 opacity-50"
-              aria-hidden
-              title="Total atual desta seção, calculado pela população inicial desta dinâmica somada às entradas e subtraída das saídas."
-            />
+            <HelpCircle className="h-3.5 w-3.5 opacity-50" aria-hidden />
           </span>
           <span className="text-slate-900">{populationCurrent ?? "—"}</span>{" "}
           {(populationCurrentDogs ?? populationCurrentCats ?? null) !== null && (
@@ -141,13 +145,12 @@ export default function PopulationGrid({
           overallPopulationCurrentCats ??
           null) !== null ? (
           <div className="mt-3 border-t border-brand-primary/40 pt-3 text-sky-700">
-            <span className="flex items-center gap-1">
+            <span
+              className="flex items-center gap-1"
+              title={overallCurrentPopulationTooltip}
+            >
               População Atual Geral:
-              <HelpCircle
-                className="h-3.5 w-3.5 opacity-50"
-                aria-hidden
-                title="Soma da população atual da Dinâmica Populacional com a população atual da Dinâmica Populacional L.T."
-              />
+              <HelpCircle className="h-3.5 w-3.5 opacity-50" aria-hidden />
             </span>
             <span className="text-slate-900">
               {overallPopulationCurrent ?? "—"}
