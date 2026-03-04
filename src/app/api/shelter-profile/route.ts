@@ -242,11 +242,14 @@ export async function POST(request: Request) {
       });
     }
 
-    const { data, error } = await supabaseAdmin
+    const upsertResult = await supabaseAdmin
       .from("shelters")
       .upsert(payload, { onConflict: "profile_id" })
       .select(supportsLtFields ? SHELTER_SELECT_WITH_LT : SHELTER_SELECT_BASE)
       .maybeSingle();
+
+    const data = (upsertResult.data as Record<string, unknown> | null) ?? null;
+    const error = upsertResult.error;
 
     if (error) {
       console.error("shelter-profile POST: erro ao salvar shelters", error);
