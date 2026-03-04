@@ -1,16 +1,20 @@
 import { useEffect } from "react";
 
-export function usePopulationEditScroll(enabled: boolean, options?: { offset?: number }) {
+export function usePopulationEditScroll(
+  enabled: boolean,
+  options?: { offset?: number; anchorId?: string },
+) {
   useEffect(() => {
     if (!enabled) return;
 
     const yOffset = options?.offset ?? -120;
+    const anchorId = options?.anchorId ?? "populacao-inicial";
     let attempts = 0;
     let rafId: number | undefined;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const scrollToAnchor = () => {
-      const anchor = document.getElementById("populacao-inicial");
+      const anchor = document.getElementById(anchorId);
       if (anchor) {
         const { top } = anchor.getBoundingClientRect();
         const offset = top + window.scrollY + yOffset;
@@ -32,5 +36,5 @@ export function usePopulationEditScroll(enabled: boolean, options?: { offset?: n
       if (rafId) cancelAnimationFrame(rafId);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [enabled, options?.offset]);
+  }, [enabled, options?.anchorId, options?.offset]);
 }

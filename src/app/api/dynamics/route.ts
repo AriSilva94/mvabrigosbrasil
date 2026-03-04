@@ -13,51 +13,89 @@ const deleteSchema = z.object({
   id: z.string().min(1),
 });
 
+const DYNAMICS_SHELTER_SELECT_BASE = "id, initial_dogs, initial_cats";
+const DYNAMICS_SHELTER_SELECT_WITH_LT =
+  "id, initial_dogs, initial_cats, initial_dogs_lt, initial_cats_lt";
+
 async function resolveShelter(
   supabaseAdmin: ReturnType<typeof getSupabaseAdminClient>,
   access: Awaited<ReturnType<typeof loadUserAccess>>,
   shelterWpPostId?: number | null,
 ) {
-  // Se shelterWpPostId foi fornecido (gerente visualizando abrigo específico)
-  if (shelterWpPostId) {
-    const { data, error } = await supabaseAdmin
+  const queryWithFallback = async (column: "wp_post_id" | "profile_id", value: number | string) => {
+    const withLt = await supabaseAdmin
       .from("shelters")
-      .select("id, initial_dogs, initial_cats")
-      .eq("wp_post_id", shelterWpPostId)
+      .select(DYNAMICS_SHELTER_SELECT_WITH_LT)
+      .eq(column, value)
       .limit(1)
       .maybeSingle();
 
-    if (error) {
-      console.error("api/dynamics: erro ao buscar shelter por wp_post_id", error);
-      throw error;
+    if (!withLt.error) return withLt.data;
+    if (withLt.error.code !== "42703") {
+      console.error("api/dynamics: erro ao buscar shelter", withLt.error);
+      throw withLt.error;
     }
-    return data;
+
+    const withoutLt = await supabaseAdmin
+      .from("shelters")
+      .select(DYNAMICS_SHELTER_SELECT_BASE)
+      .eq(column, value)
+      .limit(1)
+      .maybeSingle();
+
+    if (withoutLt.error) {
+      console.error("api/dynamics: erro ao buscar shelter", withoutLt.error);
+      throw withoutLt.error;
+    }
+
+    return withoutLt.data;
+  };
+
+  // Se shelterWpPostId foi fornecido (gerente visualizando abrigo específico)
+  if (shelterWpPostId) {
+    return queryWithFallback("wp_post_id", shelterWpPostId);
   }
 
   // Lógica original: buscar por profile_id
-  const queryShelter = async (profileId: string) =>
-    supabaseAdmin
-      .from("shelters")
-      .select("id, initial_dogs, initial_cats")
-      .eq("profile_id", profileId)
-      .limit(1)
-      .maybeSingle();
-
   const attemptOrder = [
     access?.userId ?? null,
     access?.isTeamOnly ? access?.creatorProfileId ?? null : null,
   ].filter(Boolean) as string[];
 
   for (const profileId of attemptOrder) {
-    const { data, error } = await queryShelter(profileId);
-    if (error) {
-      console.error("api/dynamics: erro ao buscar shelter", error);
-      throw error;
-    }
+    const data = await queryWithFallback("profile_id", profileId);
     if (data) return data;
   }
 
   return null;
+}
+
+function buildPopulationSummary(shelter: {
+  initial_dogs: number | null;
+  initial_cats: number | null;
+  initial_dogs_lt?: number | null;
+  initial_cats_lt?: number | null;
+}) {
+  const shelterPopulationInitial =
+    typeof shelter.initial_dogs === "number" &&
+    typeof shelter.initial_cats === "number"
+      ? (shelter.initial_dogs ?? 0) + (shelter.initial_cats ?? 0)
+      : null;
+
+  const ltPopulationInitial =
+    typeof shelter.initial_dogs_lt === "number" &&
+    typeof shelter.initial_cats_lt === "number"
+      ? (shelter.initial_dogs_lt ?? 0) + (shelter.initial_cats_lt ?? 0)
+      : null;
+
+  return {
+    shelterPopulationInitial,
+    shelterPopulationInitialDogs: shelter.initial_dogs ?? null,
+    shelterPopulationInitialCats: shelter.initial_cats ?? null,
+    ltPopulationInitial,
+    ltPopulationInitialDogs: shelter.initial_dogs_lt ?? null,
+    ltPopulationInitialCats: shelter.initial_cats_lt ?? null,
+  };
 }
 
 export async function GET(request: Request): Promise<NextResponse> {
@@ -78,17 +116,10 @@ export async function GET(request: Request): Promise<NextResponse> {
     return NextResponse.json({ sections: [] });
   }
 
-  const populationInitial =
-    typeof shelter.initial_dogs === "number" && typeof shelter.initial_cats === "number"
-      ? (shelter.initial_dogs ?? 0) + (shelter.initial_cats ?? 0)
-      : null;
-
   const sections = await fetchDynamicsDisplays({
     supabaseAdmin,
     shelterId: shelter.id,
-    populationInitial,
-    populationInitialDogs: shelter.initial_dogs ?? null,
-    populationInitialCats: shelter.initial_cats ?? null,
+    ...buildPopulationSummary(shelter),
   });
 
   return NextResponse.json({ sections });
@@ -127,17 +158,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "save_failed" }, { status: 500 });
   }
 
-  const populationInitial =
-    typeof shelter.initial_dogs === "number" && typeof shelter.initial_cats === "number"
-      ? (shelter.initial_dogs ?? 0) + (shelter.initial_cats ?? 0)
-      : null;
-
   const sections = await fetchDynamicsDisplays({
     supabaseAdmin,
     shelterId: shelter.id,
-    populationInitial,
-    populationInitialDogs: shelter.initial_dogs ?? null,
-    populationInitialCats: shelter.initial_cats ?? null,
+    ...buildPopulationSummary(shelter),
   });
 
   return NextResponse.json({ sections });
@@ -176,17 +200,10 @@ export async function DELETE(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "delete_failed" }, { status: 500 });
   }
 
-  const populationInitial =
-    typeof shelter.initial_dogs === "number" && typeof shelter.initial_cats === "number"
-      ? (shelter.initial_dogs ?? 0) + (shelter.initial_cats ?? 0)
-      : null;
-
   const sections = await fetchDynamicsDisplays({
     supabaseAdmin,
     shelterId: shelter.id,
-    populationInitial,
-    populationInitialDogs: shelter.initial_dogs ?? null,
-    populationInitialCats: shelter.initial_cats ?? null,
+    ...buildPopulationSummary(shelter),
   });
 
   return NextResponse.json({ sections });

@@ -1,6 +1,9 @@
 import type { ShelterTypeOption, SpeciesOption } from "@/types/shelter.types";
 import { STATE_METADATA } from "@/lib/database/stateMetadata";
 
+export const TEMPORARY_SHELTER_TYPE = "temporary";
+export const TEMPORARY_SHELTER_LABEL = "LT/PI";
+
 export const SHELTER_TYPE_OPTIONS: ShelterTypeOption[] = [
   {
     value: "public",
@@ -21,8 +24,8 @@ export const SHELTER_TYPE_OPTIONS: ShelterTypeOption[] = [
       "Parcerias contratuais entre abrigos públicos e privados, igualmente sem finalidade comercial ou lucrativa.",
   },
   {
-    value: "temporary",
-    label: "LT/PI",
+    value: TEMPORARY_SHELTER_TYPE,
+    label: TEMPORARY_SHELTER_LABEL,
     description:
       "Protetores independentes ou lares temporários, pessoas físicas que resgatam, recuperam e reintroduzem animais.",
   },

@@ -12,6 +12,7 @@ import {
   ADDITIONAL_SPECIES,
   SHELTER_TYPE_OPTIONS,
   SPECIES_OPTIONS,
+  TEMPORARY_SHELTER_TYPE,
 } from "@/constants/shelterProfile";
 import { REFERRAL_SOURCE_OPTIONS } from "@/constants/referralSource";
 import FormError from "@/components/ui/FormError";
@@ -54,8 +55,8 @@ export default function ShelterInfoSection({
   onDuplicateCepChange,
   lockNonPopulation = false,
 }: ShelterInfoSectionProps): JSX.Element {
-  const documentLabel = shelterType === "temporary" ? "CPF" : "CNPJ";
-  const documentMask = shelterType === "temporary" ? "cpf" : "cnpj";
+  const documentLabel = shelterType === TEMPORARY_SHELTER_TYPE ? "CPF" : "CNPJ";
+  const documentMask = shelterType === TEMPORARY_SHELTER_TYPE ? "cpf" : "cnpj";
 
   const [cepValue, setCepValue] = useState(data?.cep ?? "");
   const {
@@ -86,6 +87,14 @@ export default function ShelterInfoSection({
   const [referralSource, setReferralSource] = useState(
     data?.referralSource ?? "",
   );
+  const [temporaryAgreement, setTemporaryAgreement] = useState<boolean>(
+    data?.hasTemporaryAgreement === true,
+  );
+  const isTemporaryShelter = shelterType === TEMPORARY_SHELTER_TYPE;
+  const showLtPopulationFields =
+    Boolean(shelterType) &&
+    !isTemporaryShelter &&
+    temporaryAgreement;
 
   // Converte estados para formato do Combobox
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
@@ -110,6 +119,9 @@ export default function ShelterInfoSection({
   const handleTypeChange = (value: string) => {
     onShelterTypeChange?.(value);
     onDocumentValueChange?.("");
+    if (value === TEMPORARY_SHELTER_TYPE) {
+      setTemporaryAgreement(false);
+    }
   };
 
   async function handleCepBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -495,9 +507,10 @@ export default function ShelterInfoSection({
               <input
                 type="radio"
                 name="temporaryAgreement"
-                value="sim"
-                defaultChecked={data?.hasTemporaryAgreement === true}
-                disabled={lockNonPopulation}
+                value="true"
+                checked={temporaryAgreement === true}
+                onChange={() => setTemporaryAgreement(true)}
+                disabled={lockNonPopulation || isTemporaryShelter}
                 className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
               />
               Sim
@@ -506,9 +519,10 @@ export default function ShelterInfoSection({
               <input
                 type="radio"
                 name="temporaryAgreement"
-                value="nao"
-                defaultChecked={data?.hasTemporaryAgreement !== true}
-                disabled={lockNonPopulation}
+                value="false"
+                checked={temporaryAgreement === false}
+                onChange={() => setTemporaryAgreement(false)}
+                disabled={lockNonPopulation || isTemporaryShelter}
                 className="h-4 w-4 border-slate-300 text-brand-primary focus:ring-brand-primary disabled:cursor-not-allowed"
               />
               Não
@@ -592,6 +606,90 @@ export default function ShelterInfoSection({
             message={fieldErrors?.initialCats}
           />
         </FormField>
+
+        <div
+          id="populacao-inicial-lt"
+          aria-hidden={!showLtPopulationFields}
+          className={clsx(
+            "grid transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:col-span-2",
+            showLtPopulationFields
+              ? "grid-rows-[1fr] opacity-100"
+              : "pointer-events-none grid-rows-[0fr] opacity-0",
+          )}
+        >
+          <div
+            className={clsx(
+              "overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              showLtPopulationFields
+                ? "translate-y-0 pt-1"
+                : "-translate-y-2 pt-0",
+            )}
+          >
+            <div className="grid gap-5 md:grid-cols-2">
+            <FormField
+              id="initialDogsLt"
+              label="População inicial de cães L.T"
+              required={showLtPopulationFields}
+            >
+              <Input
+                id="initialDogsLt"
+                name="initialDogsLt"
+                type="number"
+                min={0}
+                defaultValue={data?.initialDogsLt ?? 0}
+                required={showLtPopulationFields}
+                disabled={!showLtPopulationFields}
+                aria-invalid={Boolean(fieldErrors?.initialDogsLt)}
+                aria-describedby={
+                  fieldErrors?.initialDogsLt
+                    ? "initialDogsLt-error"
+                    : undefined
+                }
+                className={clsx(
+                  "bg-[#f2f2f2]",
+                  fieldErrors?.initialDogsLt &&
+                    "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                )}
+              />
+              <FormError
+                id="initialDogsLt-error"
+                message={fieldErrors?.initialDogsLt}
+              />
+            </FormField>
+
+            <FormField
+              id="initialCatsLt"
+              label="População inicial de gatos L.T"
+              required={showLtPopulationFields}
+            >
+              <Input
+                id="initialCatsLt"
+                name="initialCatsLt"
+                type="number"
+                min={0}
+                defaultValue={data?.initialCatsLt ?? 0}
+                required={showLtPopulationFields}
+                disabled={!showLtPopulationFields}
+                aria-invalid={Boolean(fieldErrors?.initialCatsLt)}
+                aria-describedby={
+                  fieldErrors?.initialCatsLt
+                    ? "initialCatsLt-error"
+                    : undefined
+                }
+                className={clsx(
+                  "bg-[#f2f2f2]",
+                  fieldErrors?.initialCatsLt &&
+                    "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+                )}
+              />
+              <FormError
+                id="initialCatsLt-error"
+                message={fieldErrors?.initialCatsLt}
+              />
+            </FormField>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

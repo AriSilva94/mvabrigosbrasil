@@ -32,6 +32,8 @@ const FIELD_LABELS: Record<string, string> = {
   temporary_agreement: "Termo de Guarda Temporária",
   initial_dogs: "População Inicial de Cães",
   initial_cats: "População Inicial de Gatos",
+  initial_dogs_lt: "População Inicial de Cães L.T",
+  initial_cats_lt: "População Inicial de Gatos L.T",
   authorized_name: "Nome do Responsável",
   authorized_role: "Cargo",
   authorized_email: "E-mail",
