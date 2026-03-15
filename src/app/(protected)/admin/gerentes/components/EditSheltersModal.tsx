@@ -64,7 +64,7 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
     const search = searchTerm.toLowerCase();
     return shelters.filter(shelter =>
       shelter.name.toLowerCase().includes(search) ||
-      shelter.wp_post_id.toString().includes(search)
+      (shelter.wp_post_id != null && shelter.wp_post_id.toString().includes(search))
     );
   }, [shelters, searchTerm]);
 
