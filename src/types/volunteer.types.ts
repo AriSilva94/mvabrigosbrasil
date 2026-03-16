@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type Volunteer = {
   id: string;
   name: string;
@@ -49,7 +51,7 @@ export type VolunteerProfile = {
 export type VolunteerFaq = {
   id: string;
   question: string;
-  answer: React.ReactNode;
+  answer: ReactNode;
 };
 
 export interface VolunteerProfileFormData {

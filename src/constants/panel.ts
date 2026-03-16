@@ -1,10 +1,12 @@
 import {
   BookOpen,
+  BadgeCheck,
   Home,
   ListChecks,
   PawPrint,
   UserCheck2,
   Users,
+  Video,
 } from "lucide-react";
 
 import type { PanelShortcut } from "@/types/panel.types";
@@ -53,6 +55,27 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
     icon: Home,
   },
 ];
+
+export const VOLUNTEER_SHORTCUTS = [
+  {
+    id: "vacancies",
+    title: "Vagas Disponíveis",
+    href: "/vagas",
+    icon: BadgeCheck,
+  },
+  {
+    id: "trainings",
+    title: "Treinamentos",
+    href: "/treinamentos",
+    icon: Video,
+  },
+  {
+    id: "profile",
+    title: "Meu Cadastro",
+    href: "/meu-cadastro",
+    icon: UserCheck2,
+  },
+] as const;
 
 export const TRAINING_URL = "/treinamentos";
 export const TRAINING_VIDEO_URL = "https://www.youtube.com/watch?v=epVvIj6Z-gI";

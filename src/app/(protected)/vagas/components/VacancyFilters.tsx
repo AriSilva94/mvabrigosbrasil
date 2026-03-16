@@ -27,21 +27,21 @@ export default function VacancyFilters({
   return (
     <div className="grid gap-3 md:grid-cols-3">
       <Combobox
-        options={[...VACANCY_STATE_FILTERS]}
+        options={VACANCY_STATE_FILTERS}
         value={stateFilter}
         onChange={setStateFilter}
         placeholder="Todos os Estados"
       />
 
       <Combobox
-        options={[...VACANCY_PERIOD_FILTERS]}
+        options={VACANCY_PERIOD_FILTERS}
         value={periodFilter}
         onChange={setPeriodFilter}
         placeholder="Todos os Períodos"
       />
 
       <Combobox
-        options={[...VACANCY_WORKLOAD_FILTERS]}
+        options={VACANCY_WORKLOAD_FILTERS}
         value={workloadFilter}
         onChange={setWorkloadFilter}
         placeholder="Todas as Cargas Horárias"

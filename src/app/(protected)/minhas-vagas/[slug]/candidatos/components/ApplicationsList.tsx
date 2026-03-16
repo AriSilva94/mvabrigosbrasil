@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { Text, Heading } from "@/components/ui/typography";
 
-type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
-
 interface Application {
   id: string;
   status: string;
@@ -17,7 +15,7 @@ interface Application {
     telefone?: string | null;
     profissao?: string | null;
     experiencia?: string | null;
-    slug: string | Json | undefined;
+    slug?: string | null;
   };
 }
 
@@ -81,7 +79,7 @@ export default function ApplicationsList({
             <div className="flex gap-2">
               {app.volunteers.slug && (
                 <Link
-                  href={`/voluntario/${String(app.volunteers.slug)}?from=painel`}
+                  href={`/voluntario/${app.volunteers.slug}?from=painel`}
                   className="inline-flex items-center rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
                 >
                   Ver Perfil

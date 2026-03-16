@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import PageHeader from "@/components/layout/PageHeader";
-import { Heading } from "@/components/ui/typography";
 import Alert from "@/components/ui/Alert";
+import ProfileField from "@/components/ui/ProfileField";
 import { getVolunteerProfileBySlug } from "@/services/volunteersService";
 import { buildMetadata } from "@/lib/seo";
 import { formatPhone } from "@/lib/formatters";
@@ -49,8 +49,8 @@ export default async function Page({
   const fromVoluntarios = from === "voluntarios";
   const fromPainel = from === "painel";
 
-  const backHref = fromPainel ? "/vagas" : "/programa-de-voluntarios";
-  const backLabel = fromPainel ? "Vagas" : "Programa de Voluntários";
+  const backHref = fromPainel ? "/painel" : "/programa-de-voluntarios";
+  const backLabel = fromPainel ? "Painel" : "Programa de Voluntários";
 
   const profile = await getVolunteerProfileBySlug(slug);
 
@@ -86,151 +86,45 @@ export default async function Page({
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
               <div className="grid gap-4 md:grid-cols-2 md:items-center">
                 <div>
-                  <Heading
-                    as="h2"
-                    className="text-lg font-semibold text-brand-primary"
-                  >
-                    Nome Social
-                  </Heading>
-                  <p className="mt-1 text-base text-[#68707b]">
-                    {profile.name ?? "Voluntário"}
-                  </p>
+                  <ProfileField label="Nome Social" value={profile.name ?? "Voluntário"} />
                 </div>
                 <div className="md:text-right">
-                  <Heading
-                    as="h2"
-                    className="text-lg font-semibold text-brand-primary"
-                  >
-                    Cidade/Estado
-                  </Heading>
-                  <p className="mt-1 text-base text-[#68707b]">{location}</p>
+                  <ProfileField label="Cidade/Estado" value={location} />
                 </div>
               </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Profissão
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.profession || "Não informado"}
-                </p>
-              </div>
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Escolaridade
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.schooling || "Não informado"}
-                </p>
-              </div>
+              <ProfileField label="Profissão" value={profile.profession} />
+              <ProfileField label="Escolaridade" value={profile.schooling} />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Telefone
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.phone ? formatPhone(profile.phone) : "Não informado"}
-                </p>
-              </div>
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  E-mail
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.email || "Não informado"}
-                </p>
-              </div>
+              <ProfileField
+                label="Telefone"
+                value={profile.phone ? formatPhone(profile.phone) : undefined}
+              />
+              <ProfileField label="E-mail" value={profile.email} />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Faixa Etária
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.ageRange || "Não informado"}
-                </p>
-              </div>
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Experiente em trabalho voluntário
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.experience || "Não informado"}
-                </p>
-              </div>
+              <ProfileField label="Faixa Etária" value={profile.ageRange} />
+              <ProfileField
+                label="Experiente em trabalho voluntário"
+                value={profile.experience}
+              />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Disponibilidade trabalho voluntário
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.availability || "Não informado"}
-                </p>
-              </div>
-              <div>
-                <Heading
-                  as="h3"
-                  className="text-base font-semibold text-brand-primary"
-                >
-                  Período
-                </Heading>
-                <p className="mt-1 text-base text-[#68707b]">
-                  {profile.period || "Não informado"}
-                </p>
-              </div>
+              <ProfileField
+                label="Disponibilidade trabalho voluntário"
+                value={profile.availability}
+              />
+              <ProfileField label="Período" value={profile.period} />
             </div>
 
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Habilidades
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {profile.skills || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Observações
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {profile.notes || "Não informado"}
-              </p>
-            </div>
+            <ProfileField label="Habilidades" value={profile.skills} />
+            <ProfileField label="Observações" value={profile.notes} />
 
             {fromVoluntarios ? (
               <div className="flex flex-wrap gap-4 pt-2">
@@ -249,7 +143,7 @@ export default async function Page({
               </div>
             ) : (
               <Alert variant="info">
-                Em caso de interesse entre em contato com o voluntário através dos contatos de{" "}
+                Em caso de interesse, entre em contato com o voluntário através dos contatos de{" "}
                 <strong>e-mail</strong> ou <strong>telefone</strong>.
               </Alert>
             )}

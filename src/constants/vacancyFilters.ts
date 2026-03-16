@@ -77,14 +77,12 @@ export const VACANCY_PERIOD_FILTERS = [
 
 export const VACANCY_WORKLOAD_FILTERS = [
   { value: "", label: "Todas as Cargas Horárias" },
-  { value: "1h", label: "1h" },
-  { value: "2h", label: "2h" },
-  { value: "3h", label: "3h" },
-  { value: "4h", label: "4h" },
-  { value: "5h", label: "5h" },
-  { value: "8h", label: "8h" },
-  { value: "12h", label: "12h" },
-  { value: "20h", label: "20h" },
-  { value: "40h", label: "40h" },
-  { value: "flexível", label: "Flexível" },
+  { value: "1h por semana", label: "1h por semana" },
+  { value: "2h por semana", label: "2h por semana" },
+  { value: "3h por semana", label: "3h por semana" },
+  { value: "4h por semana", label: "4h por semana" },
+  { value: "5h por semana", label: "5h por semana" },
+  { value: "6h por semana", label: "6h por semana" },
+  { value: "7h por semana", label: "7h por semana" },
+  { value: "8h por semana", label: "8h por semana" },
 ] as const;

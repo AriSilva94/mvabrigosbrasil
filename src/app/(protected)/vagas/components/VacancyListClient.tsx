@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Text } from "@/components/ui/typography";
 import type { VacancyCard as VacancyCardType } from "@/types/vacancy.types";
+import { filterVacancies } from "@/lib/filterVacancies";
 import VacancyCard from "./VacancyCard";
 import VacancyFilters from "./VacancyFilters";
 
@@ -36,23 +37,15 @@ export default function VacancyListClient({ vacancies }: VacancyListClientProps)
     updateURL(stateFilter, periodFilter, workloadFilter);
   }, [stateFilter, periodFilter, workloadFilter, updateURL]);
 
-  const filteredVacancies = useMemo(() => {
-    return vacancies.filter((vacancy) => {
-      const matchesState =
-        !stateFilter ||
-        vacancy.location?.toLowerCase().includes(stateFilter.toLowerCase());
-
-      const matchesPeriod =
-        !periodFilter ||
-        vacancy.period?.toLowerCase() === periodFilter.toLowerCase();
-
-      const matchesWorkload =
-        !workloadFilter ||
-        vacancy.workload?.toLowerCase() === workloadFilter.toLowerCase();
-
-      return matchesState && matchesPeriod && matchesWorkload;
-    });
-  }, [vacancies, stateFilter, periodFilter, workloadFilter]);
+  const filteredVacancies = useMemo(
+    () =>
+      filterVacancies(vacancies, {
+        stateFilter,
+        periodFilter,
+        workloadFilter,
+      }),
+    [vacancies, stateFilter, periodFilter, workloadFilter]
+  );
 
   return (
     <section className="bg-white">

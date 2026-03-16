@@ -1,10 +1,14 @@
 import type { JSX } from "react";
 import Link from "next/link";
-import { BadgeCheck, UserCheck2, Video } from "lucide-react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
-import { PANEL_SHORTCUTS, TRAINING_URL, TRAINING_VIDEO_URL, TRAINING_VIDEO_URL_SHELTER } from "@/constants/panel";
+import {
+  PANEL_SHORTCUTS,
+  VOLUNTEER_SHORTCUTS,
+  TRAINING_VIDEO_URL,
+  TRAINING_VIDEO_URL_SHELTER,
+} from "@/constants/panel";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
@@ -12,6 +16,7 @@ import type { PanelShortcut } from "@/types/panel.types";
 import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
 import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
+import TrainingBanner from "@/app/(protected)/painel/components/TrainingBanner";
 import { TourTrigger } from "@/components/tour/TourTrigger";
 
 export const metadata = buildMetadata({
@@ -21,53 +26,11 @@ export const metadata = buildMetadata({
   canonical: "/painel",
 });
 
-const VOLUNTEER_SHORTCUTS = [
-  {
-    id: "vacancies",
-    title: "Vagas Disponiveis",
-    href: "/vagas",
-    icon: BadgeCheck,
-  },
-  {
-    id: "trainings",
-    title: "Treinamentos",
-    href: TRAINING_URL,
-    icon: Video,
-  },
-  {
-    id: "profile",
-    title: "Meu Cadastro",
-    href: "/meu-cadastro",
-    icon: UserCheck2,
-  },
-] as const;
-
 function VolunteerPanel(): JSX.Element {
   return (
     <section className="bg-white">
       <div className="container px-6 py-14">
-        <article
-          id="tour-training-banner"
-          className="flex flex-col gap-3 rounded-xl border border-[#f2e5b9] bg-[#fff7d5] px-5 py-4 text-[#6f6133] shadow-sm md:flex-row md:items-center md:justify-between"
-          role="alert"
-        >
-          <div className="space-y-1">
-            <p className="text-sm font-semibold">
-              Novo por aqui?{" "}
-              <span className="font-normal">
-                Veja como funciona a plataforma.
-              </span>
-            </p>
-          </div>
-          <Link
-            href={TRAINING_VIDEO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-sample inline-flex w-full justify-center bg-brand-primary px-4 py-2 text-sm font-semibold md:w-auto"
-          >
-            Assistir Treinamento
-          </Link>
-        </article>
+        <TrainingBanner href={TRAINING_VIDEO_URL} />
 
         <section id="tour-shortcuts" className="mt-10">
           <ul className="grid gap-5 grid-cols-1 md:grid-cols-3">
@@ -107,34 +70,7 @@ function ShelterPanel({
   return (
     <section className="bg-white">
       <div className="container px-6 py-14">
-        <article
-          id="tour-training-banner"
-          className="flex flex-col gap-3 rounded-xl border border-[#f2e5b9] bg-[#fff7d5] px-5 py-4 text-[#6f6133] shadow-sm md:flex-row md:items-center md:justify-between"
-          role="alert"
-        >
-          <div className="space-y-1">
-            <p className="text-sm font-semibold">
-              Novo por aqui?{" "}
-              <span className="font-normal">
-                Veja como funciona a plataforma.
-              </span>
-            </p>
-          </div>
-          {isTeamDisabled ? (
-            <span className="inline-flex w-full justify-center rounded-full bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-500 md:w-auto cursor-not-allowed">
-              Treinamento indisponível
-            </span>
-          ) : (
-            <Link
-              href={TRAINING_VIDEO_URL_SHELTER}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-sample inline-flex w-full justify-center bg-brand-primary px-4 py-2 text-sm font-semibold md:w-auto"
-            >
-              Assistir Treinamento
-            </Link>
-          )}
-        </article>
+        <TrainingBanner href={TRAINING_VIDEO_URL_SHELTER} disabled={isTeamDisabled} />
 
         <section id="tour-shortcuts" className="mt-10">
           <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -201,33 +137,23 @@ export default async function Page(): Promise<JSX.Element> {
   const isTeamOnly = access.isTeamOnly;
   const isTeamDisabled = access.isTeamDisabled;
 
-  // Buscar abrigos vinculados ao gerente
   let managerShelters: { id: string; name: string; wp_post_id: number }[] = [];
   if (isManager) {
-    console.log("📋 Buscando abrigos do gerente...");
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Buscar profile do gerente para pegar wp_user_id
     const { data: profile } = await supabaseAdmin
       .from("profiles")
       .select("wp_user_id")
       .eq("id", access.userId)
       .maybeSingle();
 
-    console.log("👤 Profile do gerente:", profile);
-
     if (profile?.wp_user_id) {
-      // Buscar abrigos vinculados em team_memberships
-      const { data: memberships, error: membershipsError } = await supabaseAdmin
+      const { data: memberships } = await supabaseAdmin
         .from("team_memberships")
         .select("abrigo_post_id")
         .eq("member_wp_user_id", profile.wp_user_id)
         .eq("role", "manager")
         .eq("status", "active");
-
-      console.log("🔗 Memberships encontrados:", memberships);
-      if (membershipsError)
-        console.error("❌ Erro ao buscar memberships:", membershipsError);
 
       if (memberships && memberships.length > 0) {
         const abrigoIds = (
@@ -236,25 +162,16 @@ export default async function Page(): Promise<JSX.Element> {
           .map((m) => m.abrigo_post_id)
           .filter((id): id is number => id !== null);
 
-        console.log("🏠 IDs dos abrigos:", abrigoIds);
-
         if (abrigoIds.length > 0) {
-          // Buscar dados dos abrigos
-          const { data: shelters, error: sheltersError } = await supabaseAdmin
+          const { data: shelters } = await supabaseAdmin
             .from("shelters")
             .select("id, name, wp_post_id")
             .in("wp_post_id", abrigoIds);
-
-          console.log("🏢 Abrigos encontrados:", shelters);
-          if (sheltersError)
-            console.error("❌ Erro ao buscar shelters:", sheltersError);
 
           managerShelters = (shelters || []).filter(
             (s): s is { id: string; name: string; wp_post_id: number } =>
               s.id !== null && s.name !== null && s.wp_post_id !== null
           );
-
-          console.log("✅ Abrigos finais do gerente:", managerShelters);
         }
       }
     }
