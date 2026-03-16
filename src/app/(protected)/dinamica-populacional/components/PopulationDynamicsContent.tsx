@@ -91,6 +91,9 @@ export default function PopulationDynamicsContent({
             onOpenRegister={openRegisterChoice}
             userSummary={userSummary}
             isReadOnly={isTeamOnly}
+            currentAnimals={isLoading ? null : (sections[0]?.populationCurrent ?? null)}
+            currentDogsCount={isLoading ? null : (sections[0]?.populationCurrentDogs ?? null)}
+            currentCatsCount={isLoading ? null : (sections[0]?.populationCurrentCats ?? null)}
           />
 
           <div className="space-y-6">

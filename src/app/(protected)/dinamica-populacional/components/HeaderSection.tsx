@@ -8,6 +8,9 @@ type HeaderSectionProps = {
   onOpenRegister: () => void;
   userSummary?: PopulationUserSummary | null;
   isReadOnly?: boolean;
+  currentAnimals?: number | null;
+  currentDogsCount?: number | null;
+  currentCatsCount?: number | null;
 };
 
 export default function HeaderSection({
@@ -15,20 +18,24 @@ export default function HeaderSection({
   onOpenRegister,
   userSummary,
   isReadOnly = false,
+  currentAnimals,
+  currentDogsCount,
+  currentCatsCount,
 }: HeaderSectionProps): JSX.Element {
   const displayName = userSummary?.displayName ?? "—";
+  const resolvedAnimals = currentAnimals !== undefined ? currentAnimals : (userSummary?.totalAnimals ?? null);
+  const resolvedDogs = currentDogsCount !== undefined ? currentDogsCount : (userSummary?.dogsCount ?? null);
+  const resolvedCats = currentCatsCount !== undefined ? currentCatsCount : (userSummary?.catsCount ?? null);
   const totalAnimalsLabel =
-    typeof userSummary?.totalAnimals === "number"
-      ? `${userSummary.totalAnimals} animais`
-      : "—";
+    typeof resolvedAnimals === "number" ? `${resolvedAnimals} animais` : "—";
   const shelterTypeLabel = userSummary?.shelterTypeLabel ?? "—";
-  const hasDogs = typeof userSummary?.dogsCount === "number";
-  const hasCats = typeof userSummary?.catsCount === "number";
+  const hasDogs = typeof resolvedDogs === "number";
+  const hasCats = typeof resolvedCats === "number";
   const breakdown =
     hasDogs || hasCats
       ? [
-          hasDogs ? `Cães: ${userSummary?.dogsCount ?? 0}` : null,
-          hasCats ? `Gatos: ${userSummary?.catsCount ?? 0}` : null,
+          hasDogs ? `Cães: ${resolvedDogs ?? 0}` : null,
+          hasCats ? `Gatos: ${resolvedCats ?? 0}` : null,
         ]
           .filter(Boolean)
           .join(" | ")
@@ -39,14 +46,14 @@ export default function HeaderSection({
       <div className="min-w-0 space-y-2">
         <Heading
           as="h2"
-          className="text-xl font-semibold leading-tight text-slate-800 wrap-break-words break-all sm:wrap-break-words"
+          className="text-xl font-semibold leading-tight text-slate-800 wrap-break-word break-all sm:wrap-break-word"
         >
           <span className="block sm:inline">Dinâmica Populacional:</span>{" "}
           <span className="block break-all sm:ml-1 sm:inline">
             {displayName}
           </span>
         </Heading>
-        <Text className="text-sm leading-relaxed text-slate-600 wrap-break-words break-all sm:wrap-break-words">
+        <Text className="text-sm leading-relaxed text-slate-600 wrap-break-word break-all sm:wrap-break-word">
           <strong className="font-semibold text-slate-800">Abrigando:</strong>{" "}
           {totalAnimalsLabel}{" "}
           {breakdown && <span className="text-slate-500">({breakdown})</span>}{" "}
