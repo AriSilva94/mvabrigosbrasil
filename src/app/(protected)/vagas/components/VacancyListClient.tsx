@@ -85,7 +85,7 @@ export default function VacancyListClient({ vacancies }: VacancyListClientProps)
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
               {filteredVacancies.map((vacancy) => (
-                <VacancyCard key={vacancy.id} vacancy={vacancy} />
+                <VacancyCard key={vacancy.id} vacancy={vacancy} from="vagas" />
               ))}
             </div>
           )}

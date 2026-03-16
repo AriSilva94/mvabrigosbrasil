@@ -23,7 +23,7 @@ export type VolunteerCard = {
   source?: "wp" | "new";
 };
 
-export type VolunteerTabId = "volunteers" | "faq";
+export type VolunteerTabId = "volunteers" | "vagas" | "faq";
 
 export type VolunteerProfile = {
   id: string;
@@ -33,6 +33,9 @@ export type VolunteerProfile = {
   state?: string;
   profession?: string;
   schooling?: string;
+  phone?: string;
+  email?: string;
+  ageRange?: string;
   experience?: string;
   availability?: string;
   skills?: string;

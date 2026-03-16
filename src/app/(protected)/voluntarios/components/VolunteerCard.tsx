@@ -19,7 +19,7 @@ export default function VolunteerCard({
         <p className="mt-1 text-sm text-[#6b7280]">{volunteer.location}</p>
       )}
       <Link
-        href={`/voluntario/${volunteer.slug}`}
+        href={`/voluntario/${volunteer.slug}?from=painel`}
         className="mt-3 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
       >
         Ver Perfil

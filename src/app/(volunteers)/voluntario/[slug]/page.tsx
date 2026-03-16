@@ -2,13 +2,20 @@ import type { JSX } from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { redirect } from "next/navigation";
+
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
+import Alert from "@/components/ui/Alert";
 import { getVolunteerProfileBySlug } from "@/services/volunteersService";
 import { buildMetadata } from "@/lib/seo";
+import { formatPhone } from "@/lib/formatters";
+
+type FromParam = "voluntarios" | "painel";
 
 interface VolunteerPageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: FromParam }>;
 }
 
 export async function generateMetadata({
@@ -35,15 +42,25 @@ export async function generateMetadata({
 
 export default async function Page({
   params,
+  searchParams,
 }: VolunteerPageProps): Promise<JSX.Element> {
   const { slug } = await params;
+  const { from } = await searchParams;
+  const fromVoluntarios = from === "voluntarios";
+  const fromPainel = from === "painel";
+
+  const backHref = fromPainel ? "/vagas" : "/programa-de-voluntarios";
+  const backLabel = fromPainel ? "Vagas" : "Programa de Voluntários";
+
   const profile = await getVolunteerProfileBySlug(slug);
 
-  const displayName = profile?.name || "Perfil de voluntário";
+  if (!profile) redirect("/programa-de-voluntarios");
+
+  const displayName = profile.name || "Perfil de voluntário";
   const location =
-    profile?.city && profile?.state
+    profile.city && profile.state
       ? `${profile.city} - ${profile.state}`
-      : profile?.city || profile?.state || "Não informado";
+      : profile.city || profile.state || "Não informado";
 
   return (
     <main>
@@ -51,10 +68,7 @@ export default async function Page({
         title="Perfil de Voluntário"
         breadcrumbs={[
           { label: "Inicial", href: "/" },
-          {
-            label: "Programa de Voluntários",
-            href: "/programa-de-voluntarios",
-          },
+          { label: backLabel, href: backHref },
           { label: displayName },
         ]}
       />
@@ -62,7 +76,7 @@ export default async function Page({
       <section className="container px-6 py-10">
         <div className="mx-auto max-w-4xl space-y-6">
           <Link
-            href="/programa-de-voluntarios"
+            href={backHref}
             className="inline-flex items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline"
           >
             ← Voltar
@@ -79,7 +93,7 @@ export default async function Page({
                     Nome Social
                   </Heading>
                   <p className="mt-1 text-base text-[#68707b]">
-                    {profile?.name ?? "Voluntário"}
+                    {profile.name ?? "Voluntário"}
                   </p>
                 </div>
                 <div className="md:text-right">
@@ -103,7 +117,7 @@ export default async function Page({
                   Profissão
                 </Heading>
                 <p className="mt-1 text-base text-[#68707b]">
-                  {profile?.profession || "Não informado"}
+                  {profile.profession || "Não informado"}
                 </p>
               </div>
               <div>
@@ -114,7 +128,7 @@ export default async function Page({
                   Escolaridade
                 </Heading>
                 <p className="mt-1 text-base text-[#68707b]">
-                  {profile?.schooling || "Não informado"}
+                  {profile.schooling || "Não informado"}
                 </p>
               </div>
             </div>
@@ -125,12 +139,51 @@ export default async function Page({
                   as="h3"
                   className="text-base font-semibold text-brand-primary"
                 >
+                  Telefone
+                </Heading>
+                <p className="mt-1 text-base text-[#68707b]">
+                  {profile.phone ? formatPhone(profile.phone) : "Não informado"}
+                </p>
+              </div>
+              <div>
+                <Heading
+                  as="h3"
+                  className="text-base font-semibold text-brand-primary"
+                >
+                  E-mail
+                </Heading>
+                <p className="mt-1 text-base text-[#68707b]">
+                  {profile.email || "Não informado"}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <Heading
+                  as="h3"
+                  className="text-base font-semibold text-brand-primary"
+                >
+                  Faixa Etária
+                </Heading>
+                <p className="mt-1 text-base text-[#68707b]">
+                  {profile.ageRange || "Não informado"}
+                </p>
+              </div>
+              <div>
+                <Heading
+                  as="h3"
+                  className="text-base font-semibold text-brand-primary"
+                >
                   Experiente em trabalho voluntário
                 </Heading>
                 <p className="mt-1 text-base text-[#68707b]">
-                  {profile?.experience || "Não informado"}
+                  {profile.experience || "Não informado"}
                 </p>
               </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <Heading
                   as="h3"
@@ -139,7 +192,18 @@ export default async function Page({
                   Disponibilidade trabalho voluntário
                 </Heading>
                 <p className="mt-1 text-base text-[#68707b]">
-                  {profile?.availability || "Não informado"}
+                  {profile.availability || "Não informado"}
+                </p>
+              </div>
+              <div>
+                <Heading
+                  as="h3"
+                  className="text-base font-semibold text-brand-primary"
+                >
+                  Período
+                </Heading>
+                <p className="mt-1 text-base text-[#68707b]">
+                  {profile.period || "Não informado"}
                 </p>
               </div>
             </div>
@@ -152,19 +216,7 @@ export default async function Page({
                 Habilidades
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {profile?.skills || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Período
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {profile?.period || "Não informado"}
+                {profile.skills || "Não informado"}
               </p>
             </div>
 
@@ -176,24 +228,31 @@ export default async function Page({
                 Observações
               </Heading>
               <p className="mt-1 text-base text-[#68707b]">
-                {profile?.notes || "Não informado"}
+                {profile.notes || "Não informado"}
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-4 pt-2">
-              <Link
-                href="https://mvabrigosbrasil.com.br/register/?tipo=abrigo"
-                className="inline-flex items-center rounded-full bg-[#a3a74b] px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3a74b]"
-              >
-                Preciso de um voluntário
-              </Link>
-              <Link
-                href="https://mvabrigosbrasil.com.br/register/?tipo=voluntario"
-                className="inline-flex items-center rounded-full bg-brand-primary px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-              >
-                Quero ser um voluntário
-              </Link>
-            </div>
+            {fromVoluntarios ? (
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link
+                  href="/painel"
+                  className="inline-flex items-center rounded-full bg-[#a3a74b] px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3a74b]"
+                >
+                  Preciso de um voluntário
+                </Link>
+                <Link
+                  href="/painel"
+                  className="inline-flex items-center rounded-full bg-brand-primary px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+                >
+                  Quero ser um voluntário
+                </Link>
+              </div>
+            ) : (
+              <Alert variant="info">
+                Em caso de interesse entre em contato com o voluntário através dos contatos de{" "}
+                <strong>e-mail</strong> ou <strong>telefone</strong>.
+              </Alert>
+            )}
           </article>
         </div>
       </section>

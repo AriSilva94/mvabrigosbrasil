@@ -20,6 +20,7 @@ import ApplyButton from "./components/ApplyButton";
 
 type VacancyPageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 };
 
 async function loadUserContext() {
@@ -134,9 +135,15 @@ export async function generateMetadata({
 
 export default async function Page({
   params,
+  searchParams,
 }: VacancyPageProps): Promise<JSX.Element> {
   const { slug } = await params;
+  const { from } = await searchParams;
   const { vacancy, canEdit, hasApplied, isAuthenticated } = await loadVacancy(slug);
+
+  const fromVagas = from === "vagas";
+  const backHref = fromVagas ? "/vagas" : "/programa-de-voluntarios";
+  const backLabel = fromVagas ? "Vagas" : "Programa de Voluntários";
 
   if (!vacancy) redirect("/programa-de-voluntarios");
 
@@ -176,10 +183,7 @@ export default async function Page({
         title="Vaga de Voluntariado"
         breadcrumbs={[
           { label: "Inicial", href: "/" },
-          {
-            label: "Programa de Voluntários",
-            href: "/programa-de-voluntarios",
-          },
+          { label: backLabel, href: backHref },
           { label: displayTitle },
         ]}
       />
@@ -187,7 +191,7 @@ export default async function Page({
       <section className="container px-6 py-10">
         <div className="mx-auto max-w-4xl space-y-6">
           <Link
-            href="/programa-de-voluntarios"
+            href={backHref}
             className="inline-flex items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline"
           >
             ← Voltar

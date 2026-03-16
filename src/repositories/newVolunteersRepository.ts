@@ -62,6 +62,8 @@ type VolunteerRow = {
   disponibilidade: string | null;
   wp_post_id: number | null;
   created_at: string | null;
+  telefone?: string | null;
+  faixa_etaria?: string | null;
   profissao?: string | null;
   escolaridade?: string | null;
   experiencia?: string | null;
@@ -69,6 +71,7 @@ type VolunteerRow = {
   periodo?: string | null;
   descricao?: string | null;
   comentarios?: string | null;
+  profiles?: { email: string | null } | null;
 };
 
 export async function fetchVolunteerCardsFromNew(
@@ -126,7 +129,7 @@ export async function fetchVolunteerProfileBySlugFromNew(
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
   try {
     const selectColumns =
-      "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at";
+      "id, name, slug, cidade, estado, telefone, faixa_etaria, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at, profiles!owner_profile_id(email)";
 
     const lookupSlug = slug?.trim();
     const baseSlug = lookupSlug ? stripIdSuffix(lookupSlug) : "";
@@ -178,6 +181,9 @@ export async function fetchVolunteerProfileBySlugFromNew(
       state: row.estado ?? undefined,
       profession: row.profissao ?? undefined,
       schooling: row.escolaridade ?? undefined,
+      phone: row.telefone ?? undefined,
+      email: row.profiles?.email ?? undefined,
+      ageRange: row.faixa_etaria ?? undefined,
       experience: row.experiencia ?? undefined,
       availability: row.disponibilidade ?? undefined,
       skills: row.descricao ?? row.atuacao ?? undefined,

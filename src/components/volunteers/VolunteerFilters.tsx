@@ -1,6 +1,6 @@
 "use client";
 
-import Select from "@/components/ui/Select";
+import { Combobox } from "@/components/ui/Combobox";
 import {
   VOLUNTEER_STATE_FILTERS,
   VOLUNTEER_AVAILABILITY_FILTERS,
@@ -21,44 +21,22 @@ export default function VolunteerFilters({
 }: VolunteerFiltersProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-      <div className="flex-1 min-w-[200px]">
-        <label
-          htmlFor="state-filter"
-          className="mb-2 block text-sm font-medium text-[#68707b]"
-        >
-          Estado
-        </label>
-        <Select
-          id="state-filter"
+      <div className="flex-1 min-w-50">
+        <Combobox
+          options={[...VOLUNTEER_STATE_FILTERS]}
           value={selectedState}
-          onChange={(e) => onStateChange(e.target.value)}
-        >
-          {VOLUNTEER_STATE_FILTERS.map((filter) => (
-            <option key={filter.value} value={filter.value}>
-              {filter.label}
-            </option>
-          ))}
-        </Select>
+          onChange={onStateChange}
+          placeholder="Todos os Estados"
+        />
       </div>
 
-      <div className="flex-1 min-w-[200px]">
-        <label
-          htmlFor="availability-filter"
-          className="mb-2 block text-sm font-medium text-[#68707b]"
-        >
-          Disponibilidade de Tempo
-        </label>
-        <Select
-          id="availability-filter"
+      <div className="flex-1 min-w-50">
+        <Combobox
+          options={[...VOLUNTEER_AVAILABILITY_FILTERS]}
           value={selectedAvailability}
-          onChange={(e) => onAvailabilityChange(e.target.value)}
-        >
-          {VOLUNTEER_AVAILABILITY_FILTERS.map((filter) => (
-            <option key={filter.value} value={filter.value}>
-              {filter.label}
-            </option>
-          ))}
-        </Select>
+          onChange={onAvailabilityChange}
+          placeholder="Todas as Disponibilidades"
+        />
       </div>
     </div>
   );
