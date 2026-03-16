@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 export interface ComboboxOption {
   value: string;
@@ -8,7 +8,7 @@ export interface ComboboxOption {
 }
 
 interface ComboboxProps {
-  options: ComboboxOption[];
+  options: readonly ComboboxOption[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -66,11 +66,15 @@ export function Combobox({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Filtra opções baseado na busca (sem acentos)
-  const filteredOptions = options.filter((option) => {
-    const searchNormalized = removeAccents(searchTerm.toLowerCase());
-    const labelNormalized = removeAccents(option.label.toLowerCase());
-    return labelNormalized.includes(searchNormalized);
-  });
+  const filteredOptions = useMemo(
+    () =>
+      options.filter((option) => {
+        const searchNormalized = removeAccents(searchTerm.toLowerCase());
+        const labelNormalized = removeAccents(option.label.toLowerCase());
+        return labelNormalized.includes(searchNormalized);
+      }),
+    [options, searchTerm]
+  );
 
   // Encontra a label da opção selecionada
   const selectedOption = options.find((option) => option.value === value);

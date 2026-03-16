@@ -1,6 +1,6 @@
 import type { Dispatch, JSX, SetStateAction } from "react";
 
-import Select from "@/components/ui/Select";
+import { Combobox } from "@/components/ui/Combobox";
 import {
   VACANCY_PERIOD_FILTERS,
   VACANCY_STATE_FILTERS,
@@ -26,41 +26,26 @@ export default function VacancyFilters({
 }: VacancyFiltersProps): JSX.Element {
   return (
     <div className="grid gap-3 md:grid-cols-3">
-      <Select
-        aria-label="Filtrar por estado"
+      <Combobox
+        options={VACANCY_STATE_FILTERS}
         value={stateFilter}
-        onChange={(event) => setStateFilter(event.target.value)}
-      >
-        {VACANCY_STATE_FILTERS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </Select>
+        onChange={setStateFilter}
+        placeholder="Todos os Estados"
+      />
 
-      <Select
-        aria-label="Filtrar por período"
+      <Combobox
+        options={VACANCY_PERIOD_FILTERS}
         value={periodFilter}
-        onChange={(event) => setPeriodFilter(event.target.value)}
-      >
-        {VACANCY_PERIOD_FILTERS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </Select>
+        onChange={setPeriodFilter}
+        placeholder="Todos os Períodos"
+      />
 
-      <Select
-        aria-label="Filtrar por carga horária"
+      <Combobox
+        options={VACANCY_WORKLOAD_FILTERS}
         value={workloadFilter}
-        onChange={(event) => setWorkloadFilter(event.target.value)}
-      >
-        {VACANCY_WORKLOAD_FILTERS.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </Select>
+        onChange={setWorkloadFilter}
+        placeholder="Todas as Cargas Horárias"
+      />
     </div>
   );
 }
