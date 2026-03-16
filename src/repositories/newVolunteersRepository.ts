@@ -100,7 +100,7 @@ export async function fetchVolunteerCardsFromNew(
     const volunteers: VolunteerCard[] = (data ?? []).map((volunteer) => {
       const city = volunteer.cidade?.trim();
       const state = volunteer.estado?.trim();
-      const slug = resolveSlug(volunteer.slug, volunteer.name, volunteer.id);
+      const slug = resolveSlug(volunteer.slug as string | null | undefined, volunteer.name, volunteer.id);
 
       return {
         id: volunteer.id,

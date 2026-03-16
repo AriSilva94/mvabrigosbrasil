@@ -8,7 +8,7 @@ export interface ComboboxOption {
 }
 
 interface ComboboxProps {
-  options: ComboboxOption[];
+  options: readonly ComboboxOption[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
