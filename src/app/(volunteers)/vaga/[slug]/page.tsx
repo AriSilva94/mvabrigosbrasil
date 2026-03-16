@@ -1,10 +1,12 @@
 import type { JSX } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading } from "@/components/ui/typography";
+import ProfileField from "@/components/ui/ProfileField";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import { mapVacancyRow } from "@/services/vacanciesSupabase";
@@ -45,12 +47,12 @@ async function loadUserContext() {
   return { userId: data.user.id, postType, shelterId: shelterRow?.id ?? null };
 }
 
-async function loadVacancy(slug: string): Promise<{
+const getVacancyBySlug = cache(async (slug: string): Promise<{
   vacancy: UiVacancy | null;
   canEdit: boolean;
   hasApplied: boolean;
   isAuthenticated: boolean;
-}> {
+}> => {
   const { userId, postType, shelterId } = await loadUserContext();
   const isAuthenticated = !!userId;
   let hasApplied = false;
@@ -81,7 +83,6 @@ async function loadVacancy(slug: string): Promise<{
     return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated };
   }
 
-  // Verificar se usuário já se candidatou
   if (isAuthenticated && publicVacancy.id) {
     const supabaseAdmin = getSupabaseAdminClient();
     const { data: volunteer } = await supabaseAdmin
@@ -103,13 +104,18 @@ async function loadVacancy(slug: string): Promise<{
   }
 
   return { vacancy: publicVacancy, canEdit: false, hasApplied, isAuthenticated };
+});
+
+function getLocation(vacancy: UiVacancy): string {
+  if (vacancy.city && vacancy.state) return `${vacancy.city} - ${vacancy.state}`;
+  return vacancy.city || vacancy.state || "Não informado";
 }
 
 export async function generateMetadata({
   params,
 }: VacancyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { vacancy } = await loadVacancy(slug);
+  const { vacancy } = await getVacancyBySlug(slug);
 
   const displayTitle = vacancy?.title ?? "Vaga de voluntariado";
   const location =
@@ -133,46 +139,21 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page({
-  params,
-  searchParams,
-}: VacancyPageProps): Promise<JSX.Element> {
-  const { slug } = await params;
-  const { from } = await searchParams;
-  const { vacancy, canEdit, hasApplied, isAuthenticated } = await loadVacancy(slug);
-
-  const fromVagas = from === "vagas";
-  const backHref = fromVagas ? "/vagas" : "/programa-de-voluntarios";
-  const backLabel = fromVagas ? "Vagas" : "Programa de Voluntários";
-
-  if (!vacancy) redirect("/programa-de-voluntarios");
-
-  if (canEdit) {
-    return (
-      <main>
-        <PageHeader
-          title="Editar Vaga"
-          breadcrumbs={[
-            { label: "Inicial", href: "/" },
-            { label: "Painel", href: "/painel" },
-            { label: "Minhas Vagas", href: "/minhas-vagas" },
-            { label: vacancy.title },
-          ]}
-        />
-        <section className="bg-white">
-          <div className="container px-6 py-10">
-            <EditVacancyClient vacancy={vacancy} />
-          </div>
-        </section>
-      </main>
-    );
-  }
-
+function VacancyDetailView({
+  vacancy,
+  backHref,
+  backLabel,
+  hasApplied,
+  isAuthenticated,
+}: {
+  vacancy: UiVacancy;
+  backHref: string;
+  backLabel: string;
+  hasApplied: boolean;
+  isAuthenticated: boolean;
+}): JSX.Element {
   const displayTitle = vacancy.title || "Vaga";
-  const location =
-    vacancy.city && vacancy.state
-      ? `${vacancy.city} - ${vacancy.state}`
-      : vacancy.city || vacancy.state || "Não informado";
+  const location = getLocation(vacancy);
   const periodInfo = [vacancy.period, normalizeWorkload(vacancy.workload)]
     .filter(Boolean)
     .join(" / ");
@@ -201,10 +182,7 @@ export default async function Page({
             <div className="rounded-2xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
               <div className="grid gap-4 md:grid-cols-3 md:items-center">
                 <div>
-                  <Heading
-                    as="h2"
-                    className="text-lg font-semibold text-brand-primary"
-                  >
+                  <Heading as="h2" className="text-lg font-semibold text-brand-primary">
                     Vaga
                   </Heading>
                   <p className="mt-1 text-base text-[#68707b]">
@@ -212,10 +190,7 @@ export default async function Page({
                   </p>
                 </div>
                 <div className="md:text-center">
-                  <Heading
-                    as="h2"
-                    className="text-lg font-semibold text-brand-primary"
-                  >
+                  <Heading as="h2" className="text-lg font-semibold text-brand-primary">
                     Período
                   </Heading>
                   <p className="mt-1 text-base text-[#68707b]">
@@ -223,10 +198,7 @@ export default async function Page({
                   </p>
                 </div>
                 <div className="md:text-right">
-                  <Heading
-                    as="h2"
-                    className="text-lg font-semibold text-brand-primary"
-                  >
+                  <Heading as="h2" className="text-lg font-semibold text-brand-primary">
                     Cidade/Estado
                   </Heading>
                   <p className="mt-1 text-base text-[#68707b]">{location}</p>
@@ -234,65 +206,11 @@ export default async function Page({
               </div>
             </div>
 
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Abrigo
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {vacancy.shelter || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Descrição
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {vacancy.description || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Habilidade e Funções
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {vacancy.skills || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Perfil dos Voluntários
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {vacancy.volunteerProfile || "Não informado"}
-              </p>
-            </div>
-
-            <div>
-              <Heading
-                as="h3"
-                className="text-base font-semibold text-brand-primary"
-              >
-                Quantidade de Voluntários
-              </Heading>
-              <p className="mt-1 text-base text-[#68707b]">
-                {vacancy.quantity ?? "Não informado"}
-              </p>
-            </div>
+            <ProfileField label="Abrigo" value={vacancy.shelter} />
+            <ProfileField label="Descrição" value={vacancy.description} />
+            <ProfileField label="Habilidade e Funções" value={vacancy.skills} />
+            <ProfileField label="Perfil dos Voluntários" value={vacancy.volunteerProfile} />
+            <ProfileField label="Quantidade de Voluntários" value={vacancy.quantity} />
 
             <div className="pt-2">
               <ApplyButton
@@ -306,5 +224,51 @@ export default async function Page({
         </div>
       </section>
     </main>
+  );
+}
+
+export default async function Page({
+  params,
+  searchParams,
+}: VacancyPageProps): Promise<JSX.Element> {
+  const { slug } = await params;
+  const { from } = await searchParams;
+  const { vacancy, canEdit, hasApplied, isAuthenticated } = await getVacancyBySlug(slug);
+
+  if (!vacancy) redirect("/programa-de-voluntarios");
+
+  const fromVagas = from === "vagas";
+  const backHref = fromVagas ? "/vagas" : "/programa-de-voluntarios";
+  const backLabel = fromVagas ? "Vagas" : "Programa de Voluntários";
+
+  if (canEdit) {
+    return (
+      <main>
+        <PageHeader
+          title="Editar Vaga"
+          breadcrumbs={[
+            { label: "Inicial", href: "/" },
+            { label: "Painel", href: "/painel" },
+            { label: "Minhas Vagas", href: "/minhas-vagas" },
+            { label: vacancy.title },
+          ]}
+        />
+        <section className="bg-white">
+          <div className="container px-6 py-10">
+            <EditVacancyClient vacancy={vacancy} />
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <VacancyDetailView
+      vacancy={vacancy}
+      backHref={backHref}
+      backLabel={backLabel}
+      hasApplied={hasApplied}
+      isAuthenticated={isAuthenticated}
+    />
   );
 }

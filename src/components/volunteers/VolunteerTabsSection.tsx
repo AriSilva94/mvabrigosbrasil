@@ -2,14 +2,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import clsx from "clsx";
 
 import { Heading, Text } from "@/components/ui/typography";
 import { VOLUNTEER_TABS, VOLUNTEER_TAB_IDS } from "@/constants/volunteers";
 import { VOLUNTEER_FAQ } from "@/constants/volunteerFaq";
-import type { VolunteerTabId } from "@/types/volunteer.types";
-import type { VolunteerCard } from "@/types/volunteer.types";
+import type { VolunteerTabId, VolunteerCard as VolunteerCardType } from "@/types/volunteer.types";
 import type { VacancyCard as VacancyCardData } from "@/types/vacancy.types";
 import { useVolunteerCards } from "@/components/volunteers/hooks/useVolunteerCards";
 import { FormLoading } from "@/components/loading/FormLoading";
@@ -17,9 +15,11 @@ import { ChevronDown } from "lucide-react";
 import VolunteerFilters from "@/components/volunteers/VolunteerFilters";
 import VacancyFilters from "@/app/(protected)/vagas/components/VacancyFilters";
 import VacancyCard from "@/app/(protected)/vagas/components/VacancyCard";
+import VolunteerCard from "@/app/(protected)/voluntarios/components/VolunteerCard";
+import { filterVacancies } from "@/lib/filterVacancies";
 
 type VolunteerTabsSectionProps = {
-  initialVolunteers?: VolunteerCard[];
+  initialVolunteers?: VolunteerCardType[];
   initialVacancies?: VacancyCardData[];
 };
 
@@ -40,40 +40,23 @@ export default function VolunteerTabsSection({
   const { volunteers: allVolunteers, loading: loadingVolunteers } =
     useVolunteerCards(initialVolunteers);
 
-  // Filtrar voluntários com base nos filtros selecionados
   const volunteers = useMemo(() => {
     return allVolunteers.filter((volunteer) => {
-      // Filtro por estado
-      if (selectedState && volunteer.state !== selectedState) {
-        return false;
-      }
-
-      // Filtro por disponibilidade
-      if (
-        selectedAvailability &&
-        volunteer.availability !== selectedAvailability
-      ) {
-        return false;
-      }
-
+      if (selectedState && volunteer.state !== selectedState) return false;
+      if (selectedAvailability && volunteer.availability !== selectedAvailability) return false;
       return true;
     });
   }, [allVolunteers, selectedState, selectedAvailability]);
 
-  const filteredVacancies = useMemo(() => {
-    return initialVacancies.filter((vacancy) => {
-      const matchesState =
-        !vacancyStateFilter ||
-        vacancy.location?.toLowerCase().includes(vacancyStateFilter.toLowerCase());
-      const matchesPeriod =
-        !vacancyPeriodFilter ||
-        vacancy.period?.toLowerCase() === vacancyPeriodFilter.toLowerCase();
-      const matchesWorkload =
-        !vacancyWorkloadFilter ||
-        vacancy.workload?.toLowerCase() === vacancyWorkloadFilter.toLowerCase();
-      return matchesState && matchesPeriod && matchesWorkload;
-    });
-  }, [initialVacancies, vacancyStateFilter, vacancyPeriodFilter, vacancyWorkloadFilter]);
+  const filteredVacancies = useMemo(
+    () =>
+      filterVacancies(initialVacancies, {
+        stateFilter: vacancyStateFilter,
+        periodFilter: vacancyPeriodFilter,
+        workloadFilter: vacancyWorkloadFilter,
+      }),
+    [initialVacancies, vacancyStateFilter, vacancyPeriodFilter, vacancyWorkloadFilter]
+  );
 
   function toggleFaq(id: string) {
     setOpenFaqId((current) => (current === id ? null : id));
@@ -151,26 +134,12 @@ export default function VolunteerTabsSection({
                     {volunteers.length === 1 ? "voluntário" : "voluntários"}
                   </p>
                   <div className="grid gap-4 md:grid-cols-2">
-                    {volunteers.map(({ id, name, location, slug }) => (
-                      <div
-                        key={id}
-                        className="rounded-xl border border-slate-200 px-4 py-4 shadow-[0_10px_25px_rgba(16,130,89,0.04)]"
-                      >
-                        <p className="text-lg font-semibold text-brand-primary">
-                          {name}
-                        </p>
-                        {location && (
-                          <p className="mt-1 text-sm text-[#68707b]">
-                            {location}
-                          </p>
-                        )}
-                        <Link
-                          href={`/voluntario/${slug}?from=voluntarios`}
-                          className="mt-2 inline-block text-sm font-semibold text-brand-primary underline-offset-2 hover:underline"
-                        >
-                          Ver Perfil
-                        </Link>
-                      </div>
+                    {volunteers.map((volunteer) => (
+                      <VolunteerCard
+                        key={volunteer.id}
+                        volunteer={volunteer}
+                        from="voluntarios"
+                      />
                     ))}
                   </div>
                 </div>
@@ -244,10 +213,10 @@ export default function VolunteerTabsSection({
                 Perguntas Frequentes
               </Heading>
               <div className="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white shadow-[0_10px_25px_rgba(16,130,89,0.04)]">
-                {VOLUNTEER_FAQ.map(({ id, question, answer }, index) => {
+                {VOLUNTEER_FAQ.map(({ id, question, answer }) => {
                   const isOpen = openFaqId === id;
                   return (
-                    <div key={index}>
+                    <div key={id}>
                       <button
                         type="button"
                         onClick={() => toggleFaq(id)}
@@ -262,9 +231,7 @@ export default function VolunteerTabsSection({
                       >
                         <span>{`${id} - ${question}`}</span>
                         <span
-                          className={clsx(
-                            "inline-flex h-5 w-5 items-center justify-center text-brand-primary"
-                          )}
+                          className="inline-flex h-5 w-5 items-center justify-center text-brand-primary"
                           aria-hidden
                         >
                           <ChevronDown

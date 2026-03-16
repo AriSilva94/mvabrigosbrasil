@@ -46,14 +46,14 @@ export default function HeaderSection({
       <div className="min-w-0 space-y-2">
         <Heading
           as="h2"
-          className="text-xl font-semibold leading-tight text-slate-800 wrap-break-words break-all sm:wrap-break-words"
+          className="text-xl font-semibold leading-tight text-slate-800 wrap-break-word break-all sm:wrap-break-word"
         >
           <span className="block sm:inline">Dinâmica Populacional:</span>{" "}
           <span className="block break-all sm:ml-1 sm:inline">
             {displayName}
           </span>
         </Heading>
-        <Text className="text-sm leading-relaxed text-slate-600 wrap-break-words break-all sm:wrap-break-words">
+        <Text className="text-sm leading-relaxed text-slate-600 wrap-break-word break-all sm:wrap-break-word">
           <strong className="font-semibold text-slate-800">Abrigando:</strong>{" "}
           {totalAnimalsLabel}{" "}
           {breakdown && <span className="text-slate-500">({breakdown})</span>}{" "}

@@ -1,5 +1,7 @@
 "use client";
 
+import type { JSX } from "react";
+
 import { Combobox } from "@/components/ui/Combobox";
 import {
   VOLUNTEER_STATE_FILTERS,
@@ -18,12 +20,12 @@ export default function VolunteerFilters({
   selectedAvailability,
   onStateChange,
   onAvailabilityChange,
-}: VolunteerFiltersProps) {
+}: VolunteerFiltersProps): JSX.Element {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
       <div className="flex-1 min-w-50">
         <Combobox
-          options={[...VOLUNTEER_STATE_FILTERS]}
+          options={VOLUNTEER_STATE_FILTERS}
           value={selectedState}
           onChange={onStateChange}
           placeholder="Todos os Estados"
@@ -32,7 +34,7 @@ export default function VolunteerFilters({
 
       <div className="flex-1 min-w-50">
         <Combobox
-          options={[...VOLUNTEER_AVAILABILITY_FILTERS]}
+          options={VOLUNTEER_AVAILABILITY_FILTERS}
           value={selectedAvailability}
           onChange={onAvailabilityChange}
           placeholder="Todas as Disponibilidades"
