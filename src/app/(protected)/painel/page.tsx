@@ -4,7 +4,7 @@ import { BadgeCheck, UserCheck2, Video } from "lucide-react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Heading, Text } from "@/components/ui/typography";
-import { PANEL_SHORTCUTS, TRAINING_URL } from "@/constants/panel";
+import { PANEL_SHORTCUTS, TRAINING_URL, TRAINING_VIDEO_URL, TRAINING_VIDEO_URL_SHELTER } from "@/constants/panel";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
@@ -60,7 +60,9 @@ function VolunteerPanel(): JSX.Element {
             </p>
           </div>
           <Link
-            href={TRAINING_URL}
+            href={TRAINING_VIDEO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-sample inline-flex w-full justify-center bg-brand-primary px-4 py-2 text-sm font-semibold md:w-auto"
           >
             Assistir Treinamento
@@ -124,7 +126,9 @@ function ShelterPanel({
             </span>
           ) : (
             <Link
-              href={TRAINING_URL}
+              href={TRAINING_VIDEO_URL_SHELTER}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-sample inline-flex w-full justify-center bg-brand-primary px-4 py-2 text-sm font-semibold md:w-auto"
             >
               Assistir Treinamento

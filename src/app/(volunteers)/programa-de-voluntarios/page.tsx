@@ -1,7 +1,7 @@
 import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { buildMetadata } from "@/lib/seo";
-import { getVolunteerCards } from "@/services/publicDataService";
+import { getVolunteerCards, getVacancyCards } from "@/services/publicDataService";
 
 export const revalidate = 900;
 
@@ -13,7 +13,10 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page() {
-  const volunteers = await getVolunteerCards();
+  const [volunteers, vacancies] = await Promise.all([
+    getVolunteerCards(),
+    getVacancyCards(),
+  ]);
 
   return (
     <main>
@@ -25,7 +28,10 @@ export default async function Page() {
         ]}
       />
 
-      <VolunteerTabsSection initialVolunteers={volunteers} />
+      <VolunteerTabsSection
+        initialVolunteers={volunteers}
+        initialVacancies={vacancies}
+      />
     </main>
   );
 }

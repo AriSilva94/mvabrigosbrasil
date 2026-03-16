@@ -55,3 +55,5 @@ export const PANEL_SHORTCUTS: PanelShortcut[] = [
 ];
 
 export const TRAINING_URL = "/treinamentos";
+export const TRAINING_VIDEO_URL = "https://www.youtube.com/watch?v=epVvIj6Z-gI";
+export const TRAINING_VIDEO_URL_SHELTER = "https://www.youtube.com/watch?v=EGRzX15pIvw";
