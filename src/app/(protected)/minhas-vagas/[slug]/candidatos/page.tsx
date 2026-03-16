@@ -69,7 +69,15 @@ export default async function CandidatosPage({
 
       <section className="bg-white">
         <div className="container px-6 py-12">
-          <ApplicationsList applications={applications || []} />
+          <ApplicationsList
+            applications={(applications || []).map((a) => ({
+              ...a,
+              volunteers: {
+                ...a.volunteers,
+                slug: a.volunteers.slug as string | null | undefined,
+              },
+            }))}
+          />
         </div>
       </section>
     </main>

@@ -52,6 +52,11 @@ export function generateVolunteerSlug(name: string, id: string): string {
   return ensureSlugHasIdSuffix(base, id);
 }
 
+function resolveSlug(slugFromDb: string | null | undefined, name: string, id: string): string {
+  const base = typeof slugFromDb === "string" ? slugFromDb : slugifyName(name || "voluntario");
+  return ensureSlugHasIdSuffix(base, id);
+}
+
 type VolunteerRow = {
   id: string;
   name: string;
@@ -62,6 +67,8 @@ type VolunteerRow = {
   disponibilidade: string | null;
   wp_post_id: number | null;
   created_at: string | null;
+  telefone?: string | null;
+  faixa_etaria?: string | null;
   profissao?: string | null;
   escolaridade?: string | null;
   experiencia?: string | null;
@@ -69,6 +76,7 @@ type VolunteerRow = {
   periodo?: string | null;
   descricao?: string | null;
   comentarios?: string | null;
+  profiles?: { email: string | null } | null;
 };
 
 export async function fetchVolunteerCardsFromNew(
@@ -90,18 +98,14 @@ export async function fetchVolunteerCardsFromNew(
     }
 
     const volunteers: VolunteerCard[] = (data ?? []).map((volunteer) => {
-      const idSuffix = getIdSuffix(volunteer.id);
       const city = volunteer.cidade?.trim();
       const state = volunteer.estado?.trim();
-      // Usar slug do banco ou gerar fallback se não existir (migração em andamento)
-      const slugFromDb = typeof volunteer.slug === 'string' ? volunteer.slug : null;
-      const baseSlug = slugFromDb || slugifyName(volunteer.name || "voluntario");
-      const slug = ensureSlugHasIdSuffix(baseSlug, volunteer.id);
+      const slug = resolveSlug(volunteer.slug as string | null | undefined, volunteer.name, volunteer.id);
 
       return {
         id: volunteer.id,
         name: volunteer.name ?? "Voluntário",
-        slug: slug || `${baseSlug}-${idSuffix}`,
+        slug,
         createdAt: volunteer.created_at ?? undefined,
         city,
         state,
@@ -126,10 +130,10 @@ export async function fetchVolunteerProfileBySlugFromNew(
 ): Promise<{ profile: VolunteerProfile | null; error: Error | null }> {
   try {
     const selectColumns =
-      "id, name, slug, cidade, estado, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at";
+      "id, name, slug, cidade, estado, telefone, faixa_etaria, profissao, escolaridade, experiencia, disponibilidade, atuacao, periodo, descricao, comentarios, genero, wp_post_id, created_at, profiles!owner_profile_id(email)";
 
-    const lookupSlug = slug?.trim();
-    const baseSlug = lookupSlug ? stripIdSuffix(lookupSlug) : "";
+    const lookupSlug = slug.trim();
+    const baseSlug = stripIdSuffix(lookupSlug);
 
     const firstAttempt = await supabase
       .from("volunteers")
@@ -164,20 +168,18 @@ export async function fetchVolunteerProfileBySlugFromNew(
       return { profile: null, error: null };
     }
 
-    const slugFromDb = typeof row.slug === "string" ? row.slug : null;
-    const slugWithId = ensureSlugHasIdSuffix(
-      slugFromDb || slugifyName(row.name || "voluntario"),
-      row.id
-    );
     const profile: VolunteerProfile = {
       id: row.id,
       name: row.name ?? "Voluntário",
-      slug: slugWithId,
+      slug: resolveSlug(row.slug, row.name, row.id),
       createdAt: row.created_at ?? undefined,
       city: row.cidade ?? undefined,
       state: row.estado ?? undefined,
       profession: row.profissao ?? undefined,
       schooling: row.escolaridade ?? undefined,
+      phone: row.telefone ?? undefined,
+      email: row.profiles?.email ?? undefined,
+      ageRange: row.faixa_etaria ?? undefined,
       experience: row.experiencia ?? undefined,
       availability: row.disponibilidade ?? undefined,
       skills: row.descricao ?? row.atuacao ?? undefined,
