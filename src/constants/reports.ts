@@ -9,12 +9,12 @@ export type Report = {
 
 export const REPORTS: Report[] = [
   {
-    slug: "resultados-parciais-2025",
-    title: "Resultados Parciais 2025",
+    slug: "relatorio-anual-2025",
+    title: "Relatório Anual 2025",
     description:
       "Apresentamos um panorama inédito da dinâmica populacional dos abrigos e lares temporários em todo o país. Mais do que números, este documento revela tendências, desafios e avanços que ajudam a compreender o cenário da proteção animal no Brasil. Confira!",
-    image: "/assets/img/capa_relatorio.jpg",
-    publishedAt: "11/2025",
-    contentUrl: "/assets/pdf/MVABRIGOS-Rel-vf.pdf",
+    image: "/assets/img/MVABRIGOS-Rel-Anual-2025_page-0001.jpg",
+    publishedAt: "04/2026",
+    contentUrl: "/assets/pdf/MVABRIGOS-Rel-Anual-2025.pdf",
   },
 ];
