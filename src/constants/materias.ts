@@ -81,4 +81,13 @@ export const MATERIAS_ITEMS: Materia[] = [
     externalUrl:
       "https://tribunapr.uol.com.br/noticias/curitiba-regiao/1o-mapeamento-de-abrigos-de-animais-do-brasil-e-feito-por-pesquisadores-da-ufpr/",
   },
+  {
+    title:
+      "Abandono animal pressiona abrigos no Brasil e expõe falta de políticas públicas baseadas em dados",
+    href: "/clipping/abandono-animal-abrigos-politicas-publicas",
+    category: "Matéria",
+    publishedAt: "27/04/2026",
+    externalUrl:
+      "https://caesegatos.com.br/abandono-animal-abrigos-politicas-publicas/",
+  },
 ];
