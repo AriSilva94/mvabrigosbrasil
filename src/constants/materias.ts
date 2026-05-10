@@ -90,4 +90,31 @@ export const MATERIAS_ITEMS: Materia[] = [
     externalUrl:
       "https://caesegatos.com.br/abandono-animal-abrigos-politicas-publicas/",
   },
+  {
+    title:
+      "Relatório inédito revela pressão crescente sobre abrigos de animais no Brasil e aponta urgência de políticas públicas baseadas em dados",
+    href: "/clipping/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados",
+    category: "Matéria",
+    publishedAt: "10/05/2026",
+    externalUrl:
+      "https://amazoniapress.com.br/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados/",
+  },
+  {
+    title:
+      "Abrigos cheios e políticas frágeis mantém abandono de pets, diz estudo",
+    href: "/clipping/abrigos-cheios-e-politicas-frageis-mantem-abandono-de-pets-diz-estudo",
+    category: "Matéria",
+    publishedAt: "10/05/2026",
+    externalUrl:
+      "https://www.itatiaia.com.br/pets-e-animais/abrigos-cheios-e-politicas-frageis-mantem-abandono-de-pets-diz-estudo/",
+  },
+  {
+    title:
+      "Relatório inédito revela pressão crescente sobre abrigos de animais no Brasil e aponta urgência de políticas públicas baseadas em dados",
+    href: "/clipping/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados",
+    category: "Matéria",
+    publishedAt: "10/05/2026",
+    externalUrl:
+      "https://observatorio3setor.org.br/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados-2/",
+  },
 ];
