@@ -16,9 +16,11 @@ type PageHeaderProps = {
   backgroundImage?: string;
   className?: string;
   id?: string;
+  maxTitleLength?: number;
 };
 
 const DEFAULT_BG = "/assets/img/bg_intro.jpg";
+const DEFAULT_MAX_TITLE_LENGTH = 80;
 
 export default function PageHeader({
   title,
@@ -26,7 +28,13 @@ export default function PageHeader({
   backgroundImage = DEFAULT_BG,
   className,
   id,
+  maxTitleLength = DEFAULT_MAX_TITLE_LENGTH,
 }: PageHeaderProps): JSX.Element {
+  const isTruncated = title.length > maxTitleLength;
+  const displayTitle = isTruncated
+    ? `${title.slice(0, maxTitleLength).trimEnd()}…`
+    : title;
+
   return (
     <section
       id={id}
@@ -51,8 +59,9 @@ export default function PageHeader({
             as="h1"
             id="page-header-title"
             className="font-30 uppercase tracking-[0.06em] text-white"
+            title={isTruncated ? title : undefined}
           >
-            {title}
+            {displayTitle}
           </Heading>
 
           {breadcrumbs.length > 0 && (
