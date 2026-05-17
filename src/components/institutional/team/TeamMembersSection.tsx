@@ -55,7 +55,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     name: "Ariovaldo Barbosa da Silva Júnior",
-    role: "Responsável Técnico – MVAbrigos Brasil",
+    role: "Responsável Técnico e Desenvolvimento de Software",
     description:
       "Graduado em Análise e Desenvolvimento de Sistemas, com sólida formação em desenvolvimento de software e arquitetura de sistemas. Atua como responsável técnico pelo projeto MVAbrigos Brasil, coordenando a estrutura tecnológica, modelagem de dados e evolução do sistema utilizado para registro e análise das informações dos abrigos. Possui experiência em desenvolvimento web, banco de dados e organização de fluxos de informação, contribuindo para a confiabilidade, segurança e eficiência da solução tecnológica do projeto.",
     image: "/assets/img/equipe-mv/ariovaldo.png",
