@@ -76,7 +76,9 @@ function mapHistoryRecord(record: ShelterHistoryRecord): ShelterHistoryItem {
   return {
     id: record.id,
     operation: record.operation,
-    changedFields: (record.changed_fields || []).map((field) => FIELD_LABELS[field] || field),
+    changedFields: (record.changed_fields || []).map(
+      (field) => FIELD_LABELS[field] || field,
+    ),
     changedAt: record.changed_at,
     oldValues: record.old_data || undefined,
     newValues: record.new_data || undefined,
@@ -121,7 +123,8 @@ export function useShelterHistory(): UseShelterHistoryReturn {
 
         setTotal(data.total || 0);
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Erro ao carregar histórico";
+        const message =
+          err instanceof Error ? err.message : "Erro ao carregar histórico";
         setError(message);
       } finally {
         setIsLoading(false);
