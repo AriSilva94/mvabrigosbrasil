@@ -17,14 +17,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    // Parse query params (limit, offset)
+
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "50", 10);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Busca o ID do shelter do usuário
+
     const { data: shelter, error: shelterError } = await supabaseAdmin
       .from("shelters")
       .select("id")
@@ -40,7 +40,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ history: [] });
     }
 
-    // Busca o histórico
+
     const { data, error, count } = await supabaseAdmin
       .from("shelter_history")
       .select(

@@ -23,7 +23,7 @@ export function HomeTourCard({
       transition={{ type: "spring", damping: 20, stiffness: 300 }}
       className="relative w-85 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-[0_25px_70px_rgba(16,130,89,0.2)]"
     >
-      {/* Gradient header for welcome step */}
+      {}
       {isWelcomeStep && (
         <div className="relative bg-linear-to-r from-[#108259] to-[#0d6b4a] px-5 py-4">
           <motion.div
@@ -44,7 +44,7 @@ export function HomeTourCard({
             </div>
           </motion.div>
 
-          {/* Animated paw prints decoration */}
+          {}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
@@ -56,7 +56,7 @@ export function HomeTourCard({
         </div>
       )}
 
-      {/* Regular header for other steps */}
+      {}
       {!isWelcomeStep && (
         <div className="px-5 pt-5">
           <div className="flex items-center gap-3">
@@ -75,7 +75,7 @@ export function HomeTourCard({
         </div>
       )}
 
-      {/* Content */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -85,9 +85,9 @@ export function HomeTourCard({
         <p className="text-sm leading-relaxed text-[#7b8191]">{step.content}</p>
       </motion.div>
 
-      {/* Footer with progress and navigation */}
+      {}
       <div className="flex items-center justify-between border-t border-slate-100 px-5 py-4">
-        {/* Progress indicator */}
+        {}
         <div className="flex items-center gap-1.5">
           {Array.from({ length: totalSteps }).map((_, index) => (
             <motion.div
@@ -106,7 +106,7 @@ export function HomeTourCard({
           ))}
         </div>
 
-        {/* Navigation buttons */}
+        {}
         <div className="flex items-center gap-2">
           <button
             onClick={skipTour}

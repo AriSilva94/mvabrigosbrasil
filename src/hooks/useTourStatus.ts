@@ -25,7 +25,7 @@ function subscribe(callback: () => void) {
 }
 
 function getTourSnapshot(tourName: TourName, userId: string | null): boolean {
-  if (!userId) return true; // Sem usuário = não inicia tour
+  if (!userId) return true;
   const key = getTourStorageKey(userId);
   const stored = localStorage.getItem(key);
   const status: TourStatus = stored ? JSON.parse(stored) : {};
@@ -49,10 +49,9 @@ export function useTourStatus(tourName: TourName, userId: string | null) {
   const hasCompleted = useSyncExternalStore(
     subscribe,
     () => getTourSnapshot(tourName, userId),
-    () => true // Server snapshot: default true to avoid flash
+    () => true,
   );
 
-  // Ouvir mudanças de consentimento (disparado pelo CookieBanner)
   useEffect(() => {
     const handler = () => setConsentGiven(true);
     window.addEventListener("cookie-consent-change", handler);
@@ -74,7 +73,6 @@ export function useTourStatus(tourName: TourName, userId: string | null) {
     }
   }, [tourName, userId]);
 
-  // Auto-start tour somente se cookies foram aceitos E tour não foi completado
   useEffect(() => {
     if (!hasCompleted && consentGiven) {
       const timer = setTimeout(() => {

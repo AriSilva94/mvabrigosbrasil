@@ -1,6 +1,5 @@
 import type { RegisterType as RegisterTypeValue } from "@/constants/registerTypes";
 
-// TODO: tipos para autenticação
 export interface AuthUser {
   id: string;
   email?: string;

@@ -6,7 +6,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 import { findProfileById } from "@/modules/auth/repositories/profileRepository";
 
-// Campos obrigatórios para abrigos
+
 const REQUIRED_SHELTER_FIELDS = [
   "shelter_type",
   "name",
@@ -25,7 +25,7 @@ const REQUIRED_SHELTER_FIELDS = [
   "authorized_phone",
 ] as const;
 
-// Campos obrigatórios para voluntários
+
 const REQUIRED_VOLUNTEER_FIELDS = [
   "name",
   "telefone",
@@ -62,12 +62,12 @@ function validateShelterFields(data: Record<string, unknown>): ShelterField[] {
     }
   }
 
-  // Validação especial para documento (CNPJ ou CPF)
+
   const hasCnpj = !isFieldEmpty(data.cnpj);
   const hasCpf = !isFieldEmpty(data.cpf);
   const isTemporary = data.shelter_type === "temporary";
 
-  // Se for temporário precisa de CPF, senão precisa de CNPJ
+
   if (isTemporary && !hasCpf) {
     missingFields.push("document");
   } else if (!isTemporary && !hasCnpj) {
@@ -102,17 +102,17 @@ export async function GET() {
     const userEmail = authData.user.email ?? null;
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Resolve o tipo de registro do usuário
+
     const registerType = await resolvePostTypeForUser(supabaseAdmin, {
       supabaseUserId: userId,
       email: userEmail,
     });
 
-    // Verifica se o usuário é convidado (team-only)
+
     const { profile } = await findProfileById(supabaseAdmin, userId);
     const isTeamOnly = Boolean(profile?.is_team_only);
 
-    // Admin, gerente e convidados não precisam de validação
+
     if (
       registerType === REGISTER_TYPES.admin ||
       registerType === REGISTER_TYPES.manager ||
@@ -128,7 +128,7 @@ export async function GET() {
       });
     }
 
-    // Verifica perfil de abrigo
+
     if (registerType === REGISTER_TYPES.shelter) {
       const { data: shelterData, error: shelterError } = await supabaseAdmin
         .from("shelters")
@@ -142,7 +142,7 @@ export async function GET() {
         return NextResponse.json({ error: "Erro ao validar perfil" }, { status: 500 });
       }
 
-      // Se não tem cadastro de abrigo
+
       if (!shelterData) {
         return NextResponse.json({
           isValid: false,
@@ -165,7 +165,7 @@ export async function GET() {
       });
     }
 
-    // Verifica perfil de voluntário
+
     if (registerType === REGISTER_TYPES.volunteer) {
       const { data: volunteerData, error: volunteerError } = await supabaseAdmin
         .from("volunteers")
@@ -179,7 +179,7 @@ export async function GET() {
         return NextResponse.json({ error: "Erro ao validar perfil" }, { status: 500 });
       }
 
-      // Se não tem cadastro de voluntário
+
       if (!volunteerData) {
         return NextResponse.json({
           isValid: false,
@@ -202,7 +202,7 @@ export async function GET() {
       });
     }
 
-    // Fallback para tipos desconhecidos
+
     return NextResponse.json({
       isValid: true,
       requiresProfileUpdate: false,

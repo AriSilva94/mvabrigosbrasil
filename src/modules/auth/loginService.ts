@@ -76,9 +76,7 @@ async function attemptLegacyMigration(
     return { success: false, status: 401, errorMessage: "Credenciais inválidas" };
   }
 
-  // Se o hash é MD5 temporário, atualizar para PHPass
   if (legacyUser.user_pass && isMd5Hash(legacyUser.user_pass)) {
-    console.log(`[Migration] Atualizando hash MD5 para PHPass (user_id: ${legacyUser.id})`);
     const newHash = generateWordpressHash(password);
     if (newHash) {
       await updateLegacyUserPassword(supabaseAdmin, legacyUser.id, newHash);
@@ -94,40 +92,31 @@ async function attemptLegacyMigration(
   });
 
   if (createUserError) {
-    // Se o usuário já existe no Auth, atualizar a senha dele
     if (createUserError.message?.includes("already been registered") ||
         createUserError.message?.includes("already exists")) {
-      console.log(`[Migration] Usuário já existe no Auth, atualizando senha: ${email}`);
-
-      // Buscar o usuário existente
       const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
       const existingUser = usersData?.users?.find(
         u => u.email?.toLowerCase() === email.toLowerCase()
       );
 
       if (!existingUser) {
-        console.error("loginService: usuário existe mas não foi encontrado");
         return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
       }
 
-      // Atualizar a senha do usuário existente
       const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
         existingUser.id,
         { password }
       );
 
       if (updateError) {
-        console.error("loginService: erro ao atualizar senha", updateError);
         return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
       }
 
       supabaseUserId = existingUser.id;
     } else {
-      console.error("loginService: erro ao criar usuário no Auth", createUserError);
       return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
     }
   } else if (!createdUser.user) {
-    console.error("loginService: usuário criado sem ID");
     return { success: false, status: 500, errorMessage: "Erro ao migrar conta" };
   } else {
     supabaseUserId = createdUser.user.id;
@@ -141,10 +130,8 @@ async function attemptLegacyMigration(
     origin: "wordpress_migrated",
   });
 
-  // Link any migrated volunteer data to this profile
   await linkVolunteerToProfileByWpUserId(supabaseAdmin, legacyUser.id, supabaseUserId);
 
-  // Link any migrated shelter data to this profile
   await linkShelterToProfileByWpUserId(supabaseAdmin, legacyUser.id, supabaseUserId);
 
   await markLegacyUserAsMigrated(supabaseAdmin, legacyUser.id);

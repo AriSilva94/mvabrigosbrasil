@@ -75,7 +75,6 @@ export default function ShelterInfoSection({
     ? "disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
     : "";
 
-  // Estados e cidades
   const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
     useLocationData();
   const [estado, setEstado] = useState(data?.state ?? "");
@@ -96,23 +95,23 @@ export default function ShelterInfoSection({
     !isTemporaryShelter &&
     temporaryAgreement;
 
-  // Converte estados para formato do Combobox
+
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
     value: e.sigla,
     label: e.nome,
   }));
 
-  // Converte cidades para formato do Combobox
+
   const cidadesOptions: ComboboxOption[] = cidades.map((c) => ({
     value: c.nome,
     label: c.nome,
   }));
 
-  // Carrega cidades quando estado muda
+
   useEffect(() => {
     if (estado) {
       fetchCidades(estado);
-      // Não limpa cidade aqui porque pode ser autocomplete do CEP
+
     }
   }, [estado, fetchCidades]);
 
@@ -128,11 +127,11 @@ export default function ShelterInfoSection({
     const value = e.target.value;
     if (!value || value.replace(/\D/g, "").length !== 8) return;
 
-    // Limpa avisos anteriores
+
     setAddressWarning(null);
     clearAddressError();
 
-    // Busca endereço pelo CEP
+
     const result = await searchCep(value);
     if (result && onCepAutocomplete) {
       onCepAutocomplete({
@@ -141,13 +140,13 @@ export default function ShelterInfoSection({
         city: result.localidade,
         state: result.uf,
       });
-      // Atualiza todos os campos localmente
+
       setRua(result.logradouro);
       setBairro(result.bairro);
       setEstado(result.uf);
       setCidade(result.localidade);
 
-      // Verifica se já existe abrigo com mesmo CEP
+
       const addressCheck = await checkAddress(value);
       if (addressCheck?.exists && addressCheck.count > 0) {
         const shelterNames = addressCheck.shelters

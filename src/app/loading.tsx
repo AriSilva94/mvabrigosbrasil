@@ -1,4 +1,4 @@
-﻿import type { JSX } from "react";
+import type { JSX } from "react";
 import { PawPrint, Bone, Cat } from "lucide-react";
 
 const cards = [

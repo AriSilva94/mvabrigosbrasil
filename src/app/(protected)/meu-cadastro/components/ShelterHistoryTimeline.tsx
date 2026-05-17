@@ -92,7 +92,7 @@ export function ShelterHistoryTimeline() {
       </Heading>
 
       <div className="relative space-y-6">
-        {/* Linha vertical da timeline */}
+        {}
         <div className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-gray-200" />
 
         {history.map((item) => {
@@ -101,14 +101,14 @@ export function ShelterHistoryTimeline() {
 
           return (
             <div key={item.id} className="relative flex gap-4">
-              {/* Ícone */}
+              {}
               <div
                 className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${config.bgColor}`}
               >
                 <Icon className={`h-5 w-5 ${config.color}`} />
               </div>
 
-              {/* Conteúdo */}
+              {}
               <div className="flex-1 pb-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -122,7 +122,7 @@ export function ShelterHistoryTimeline() {
                   </div>
                 </div>
 
-                {/* Campos alterados */}
+                {}
                 {(item.changes?.length ?? item.changedFields.length) > 0 && (
                   <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-3">
                     <p className="mb-2 text-xs font-medium text-gray-700">Campos alterados:</p>
@@ -158,7 +158,7 @@ export function ShelterHistoryTimeline() {
         })}
       </div>
 
-      {/* Botão "Carregar mais" */}
+      {}
       {hasMore && (
         <div className="mt-6 flex justify-center">
           <button

@@ -9,10 +9,7 @@ const cards = [
   { id: "volunteers", title: "Voluntários prontos", icon: PawPrint },
 ];
 
-/**
- * Reutilizável para cenários de carregamento client-side que precisam
- * substituir o conteúdo principal por um placeholder no estilo do loading global.
- */
+
 export function FormLoading(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10">

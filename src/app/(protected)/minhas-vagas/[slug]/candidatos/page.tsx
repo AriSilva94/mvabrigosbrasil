@@ -16,7 +16,6 @@ export default async function CandidatosPage({
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Buscar abrigo do usuário
   const { data: shelter } = await supabaseAdmin
     .from("shelters")
     .select("id, name")
@@ -25,7 +24,6 @@ export default async function CandidatosPage({
 
   if (!shelter) redirect("/painel");
 
-  // Buscar vaga do abrigo
   const { data: vacancy } = await supabaseAdmin
     .from("vacancies")
     .select("id, title, slug, shelter_id")
@@ -35,7 +33,6 @@ export default async function CandidatosPage({
 
   if (!vacancy) notFound();
 
-  // Buscar candidaturas com dados do voluntário
   const { data: applications } = await supabaseAdmin
     .from("vacancy_applications")
     .select(`

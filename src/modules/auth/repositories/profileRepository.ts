@@ -9,7 +9,10 @@ export interface ProfileRecord {
   origin?: Database["public"]["Enums"]["user_origin"] | null;
 }
 
-type ProfileQueryResult = { profile: ProfileRecord | null; error: Error | null };
+type ProfileQueryResult = {
+  profile: ProfileRecord | null;
+  error: Error | null;
+};
 
 export async function findProfileById(
   supabaseAdmin: SupabaseClientType,
@@ -53,7 +56,6 @@ export async function insertProfileFromLegacy(
 ): Promise<{ error: Error | null }> {
   const origin = profile.origin ?? "wordpress_migrated";
 
-  // Usar upsert para lidar com profiles que já existem (criados durante migração)
   const { error } = await supabaseAdmin.from("profiles").upsert(
     {
       id: profile.id,
@@ -65,8 +67,8 @@ export async function insertProfileFromLegacy(
     },
     {
       onConflict: "id",
-      ignoreDuplicates: false, // Atualiza se já existir
-    }
+      ignoreDuplicates: false,
+    },
   );
 
   if (error) {

@@ -28,7 +28,6 @@ export default async function Page({
   const isManager = access.registerType === REGISTER_TYPES.manager;
   const isAdmin = access.registerType === REGISTER_TYPES.admin;
 
-  // Gerente e Admin não têm cadastro próprio, redirecionar para painel
   if (isManager || isAdmin) {
     redirect("/painel");
   }

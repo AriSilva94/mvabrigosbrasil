@@ -46,7 +46,7 @@ export default async function Page(): Promise<JSX.Element> {
       shelterId,
     );
 
-    // Buscar contagem de candidaturas para cada vaga
+
     const vacanciesWithCounts = await Promise.all(
       dbVacancies.map(async (vacancy) => {
         const { count } = await supabaseAdmin

@@ -62,7 +62,6 @@ export default function ChangePasswordForm({
     try {
       const supabase = getBrowserSupabaseClient();
 
-      // Verificar senha atual fazendo login
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: userEmail,
         password: values.currentPassword,
@@ -74,7 +73,6 @@ export default function ChangePasswordForm({
         return;
       }
 
-      // Atualizar para nova senha
       const { error: updateError } = await supabase.auth.updateUser({
         password: values.newPassword,
       });

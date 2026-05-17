@@ -23,9 +23,18 @@ export default function HeaderSection({
   currentCatsCount,
 }: HeaderSectionProps): JSX.Element {
   const displayName = userSummary?.displayName ?? "—";
-  const resolvedAnimals = currentAnimals !== undefined ? currentAnimals : (userSummary?.totalAnimals ?? null);
-  const resolvedDogs = currentDogsCount !== undefined ? currentDogsCount : (userSummary?.dogsCount ?? null);
-  const resolvedCats = currentCatsCount !== undefined ? currentCatsCount : (userSummary?.catsCount ?? null);
+  const resolvedAnimals =
+    currentAnimals !== undefined
+      ? currentAnimals
+      : (userSummary?.totalAnimals ?? null);
+  const resolvedDogs =
+    currentDogsCount !== undefined
+      ? currentDogsCount
+      : (userSummary?.dogsCount ?? null);
+  const resolvedCats =
+    currentCatsCount !== undefined
+      ? currentCatsCount
+      : (userSummary?.catsCount ?? null);
   const totalAnimalsLabel =
     typeof resolvedAnimals === "number" ? `${resolvedAnimals} animais` : "—";
   const shelterTypeLabel = userSummary?.shelterTypeLabel ?? "—";
@@ -42,7 +51,10 @@ export default function HeaderSection({
       : null;
 
   return (
-    <header id={id} className="mb-8 w-full flex flex-col gap-4 rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-5 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+    <header
+      id={id}
+      className="mb-8 w-full flex flex-col gap-4 rounded-xl border border-slate-200 bg-[#f5f5f6] px-6 py-5 shadow-sm lg:flex-row lg:items-center lg:justify-between"
+    >
       <div className="min-w-0 space-y-2">
         <Heading
           as="h2"
@@ -64,13 +76,7 @@ export default function HeaderSection({
 
       {!isReadOnly && (
         <div className="flex flex-wrap gap-3">
-          {/* TODO: Definir se teremos realmente esta feature */}
-          {/* <button
-            type="button"
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900 cursor-pointer"
-          >
-            Baixar em Excel
-          </button> */}
+          {}
           <button
             type="button"
             onClick={onOpenRegister}

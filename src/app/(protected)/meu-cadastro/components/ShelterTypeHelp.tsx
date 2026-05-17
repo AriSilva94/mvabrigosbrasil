@@ -4,7 +4,7 @@ import { Info } from "lucide-react";
 import { SHELTER_TYPE_OPTIONS } from "@/constants/shelterProfile";
 import { Heading, Text } from "@/components/ui/typography";
 
-// Compact helper to keep the layout clean but still accessible
+
 export default function ShelterTypeHelp(): JSX.Element {
   return (
     <details className="group rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition hover:shadow-md">

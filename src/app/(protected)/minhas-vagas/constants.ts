@@ -11,7 +11,7 @@ export const WORKLOAD_OPTIONS = [
   "8h por semana",
 ];
 
-// Mapeamento de valores legados do WordPress para o formato novo
+
 export const WORKLOAD_LEGACY_MAP: Record<string, string> = {
   "1h": "1h por semana",
   "2h": "2h por semana",
@@ -23,9 +23,7 @@ export const WORKLOAD_LEGACY_MAP: Record<string, string> = {
   "8h": "8h por semana",
 };
 
-/**
- * Normaliza valor de carga horária do WordPress para o formato do formulário
- */
+
 export function normalizeWorkload(value?: string | null): string {
   if (!value) return "";
   return WORKLOAD_LEGACY_MAP[value] || value;

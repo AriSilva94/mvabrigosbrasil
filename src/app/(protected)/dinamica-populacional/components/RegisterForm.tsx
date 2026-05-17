@@ -30,8 +30,8 @@ type RegisterFormProps = {
 };
 
 const INITIAL_VALUES: RegisterFormValues = {
-  month: dayjs().format("MM"),
-  year: dayjs().format("YYYY"),
+  month: dayjs().subtract(1, "month").format("MM"),
+  year: dayjs().subtract(1, "month").format("YYYY"),
   entries: "0",
   entriesCats: "0",
   adoptions: "0",
@@ -51,11 +51,14 @@ const INITIAL_VALUES: RegisterFormValues = {
 };
 
 function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormValues {
+  const previousMonthDate = dayjs().subtract(1, "month");
+  const defaultMonth = previousMonthDate.format("MM");
+  const defaultYear = previousMonthDate.format("YYYY");
   const currentYear = dayjs().format("YYYY");
   const currentMonth = dayjs().format("MM");
 
   const isDefaultTaken = existingPeriods.some(
-    (p) => p.month === currentMonth && p.year === currentYear,
+    (p) => p.month === defaultMonth && p.year === defaultYear,
   );
 
   if (!isDefaultTaken) return INITIAL_VALUES;
@@ -68,7 +71,7 @@ function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormV
     return !isFuture && !isTaken;
   });
 
-  return { ...INITIAL_VALUES, month: firstAvailable?.value ?? currentMonth };
+  return { ...INITIAL_VALUES, month: firstAvailable?.value ?? defaultMonth };
 }
 
 function RegisterFormInner({
@@ -118,7 +121,6 @@ function RegisterFormInner({
       disabled: false,
     }));
 
-    // No modo edição, garantir que o ano do registro esteja nas opções
     if (isEditMode && values.year && !base.some((o) => o.value === values.year)) {
       base.push({ value: values.year, label: values.year, disabled: false });
       base.sort((a, b) => b.value.localeCompare(a.value));

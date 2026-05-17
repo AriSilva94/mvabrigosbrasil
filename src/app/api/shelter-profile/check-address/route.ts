@@ -12,17 +12,7 @@ async function getCurrentUser(): Promise<CurrentUser | null> {
   return { id: data.user.id, email: data.user.email ?? null };
 }
 
-/**
- * API para verificar se já existe um abrigo com o mesmo endereço
- * Query params:
- * - cep: CEP do abrigo (obrigatório)
- * - street: Rua do abrigo (opcional)
- * - number: Número do abrigo (opcional)
- *
- * Retorna:
- * - exists: boolean - se existe abrigo com mesmo endereço
- * - shelter: objeto com dados do abrigo existente (se encontrado)
- */
+
 export async function GET(request: Request) {
   try {
     const user = await getCurrentUser();
@@ -41,17 +31,17 @@ export async function GET(request: Request) {
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Remove formatação do CEP
+
     const cepDigits = unformatDigits(cep);
 
-    // Busca abrigos com o mesmo CEP
+
     let query = supabaseAdmin
       .from("shelters")
       .select("id, profile_id, name, cep, street, number, city, state, active")
       .eq("cep", cepDigits)
-      .eq("active", true); // Apenas abrigos ativos
+      .eq("active", true);
 
-    // Se forneceu rua e número, filtra por eles também
+
     if (street && number) {
       query = query
         .ilike("street", street.trim())
@@ -65,7 +55,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Erro ao verificar endereço" }, { status: 500 });
     }
 
-    // Filtra abrigos que não sejam do usuário atual
+
     const otherShelters = data?.filter((shelter) => shelter.profile_id !== user.id) || [];
 
     if (otherShelters.length > 0) {

@@ -71,7 +71,6 @@ export async function getDynamicsUserSummary({
     return { data: withoutLt.data, error: withoutLt.error };
   };
 
-  // Se shelter_id foi passado na URL (gerente visualizando abrigo específico)
   if (shelterWpPostId) {
     const { data, error } = await resolveShelterQuery("wp_post_id", shelterWpPostId);
 
@@ -82,7 +81,6 @@ export async function getDynamicsUserSummary({
       shelterRow = data;
     }
   } else {
-    // Lógica original: buscar por profile_id
     const attemptOrder = [
       userId,
       isTeamOnly && creatorProfileId ? creatorProfileId : null,
@@ -127,8 +125,6 @@ export async function getDynamicsUserSummary({
       (option) => option.value === shelterRow?.shelter_type,
     )?.label ?? null;
 
-  // Se foi passado shelterWpPostId, usar o nome do abrigo
-  // Caso contrário, usar o nome do perfil do usuário
   const displayName = shelterWpPostId
     ? (shelterRow?.name ?? null)
     : (profile?.full_name || profile?.email || fallbackEmail || null);

@@ -15,6 +15,10 @@ export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacanc
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (initialVacancies.length > 0) {
+      return;
+    }
+
     async function loadVacancies() {
       try {
         setLoading(true);
@@ -37,11 +41,7 @@ export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacanc
       }
     }
 
-    if (initialVacancies.length === 0) {
-      loadVacancies();
-    } else {
-      setLoading(false);
-    }
+    loadVacancies();
   }, [initialVacancies]);
 
   return { vacancies, loading, error };

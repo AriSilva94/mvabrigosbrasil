@@ -8,10 +8,8 @@ import { useProfileValidationContext } from "@/components/providers/ProfileValid
 export default function ProfileUpdateAlert(): JSX.Element | null {
   const { validation, isLoading } = useProfileValidationContext();
 
-  // Não mostra nada enquanto carrega ou se não há dados
   if (isLoading || !validation) return null;
 
-  // Só mostra o alerta se o perfil precisa de atualização
   if (!validation.requiresProfileUpdate) return null;
 
   return (

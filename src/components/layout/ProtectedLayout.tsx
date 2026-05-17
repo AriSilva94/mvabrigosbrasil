@@ -7,7 +7,7 @@ interface ProtectedLayoutProps {
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
     <div>
-      {/* TODO: validar autenticação e fornecer layout protegido */}
+      {}
       {children}
     </div>
   );

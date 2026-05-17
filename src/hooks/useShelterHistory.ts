@@ -76,7 +76,9 @@ function mapHistoryRecord(record: ShelterHistoryRecord): ShelterHistoryItem {
   return {
     id: record.id,
     operation: record.operation,
-    changedFields: (record.changed_fields || []).map((field) => FIELD_LABELS[field] || field),
+    changedFields: (record.changed_fields || []).map(
+      (field) => FIELD_LABELS[field] || field,
+    ),
     changedAt: record.changed_at,
     oldValues: record.old_data || undefined,
     newValues: record.new_data || undefined,
@@ -121,7 +123,8 @@ export function useShelterHistory(): UseShelterHistoryReturn {
 
         setTotal(data.total || 0);
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Erro ao carregar histórico";
+        const message =
+          err instanceof Error ? err.message : "Erro ao carregar histórico";
         setError(message);
       } finally {
         setIsLoading(false);
@@ -140,8 +143,32 @@ export function useShelterHistory(): UseShelterHistoryReturn {
   }, [fetchHistory]);
 
   useEffect(() => {
-    fetchHistory(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    void (async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          `/api/shelter-profile/history?limit=${limit}&offset=0`,
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao carregar histórico");
+        }
+
+        const data = await response.json();
+        const mappedHistory = (data.history || []).map(mapHistoryRecord);
+        setHistory(mappedHistory);
+        setOffset(limit);
+        setTotal(data.total || 0);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Erro ao carregar histórico";
+        setError(message);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   return {

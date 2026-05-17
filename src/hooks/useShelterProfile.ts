@@ -32,8 +32,26 @@ export function useShelterProfile() {
   }, []);
 
   useEffect(() => {
-    void fetchShelter();
-  }, [fetchShelter]);
+    void (async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("/api/shelter-profile");
+        const data = (await response.json()) as ShelterProfileResponse;
+
+        if (!response.ok) {
+          throw new Error((data as { error?: string })?.error || "Erro ao carregar cadastro.");
+        }
+
+        setShelter(data.shelter ?? null);
+      } catch (err) {
+        console.error("useShelterProfile: erro ao buscar cadastro", err);
+        setError(err instanceof Error ? err.message : "Erro ao carregar cadastro.");
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
 
   return {
     shelter,

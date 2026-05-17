@@ -18,9 +18,9 @@ type ProfileValidationContextValue = {
 
 const ProfileValidationContext = createContext<ProfileValidationContextValue | null>(null);
 
-// Rotas que não devem ter redirecionamento forçado
+
 const EXCLUDED_PATHS = [
-  ROUTES.profile, // /meu-cadastro - destino do redirect
+  ROUTES.profile,
   "/login",
   "/cadastrar",
   "/recuperar-senha",
@@ -39,20 +39,20 @@ export default function ProfileValidationProvider({
   const pathname = usePathname();
 
   useEffect(() => {
-    // Não faz nada se ainda está carregando ou se houve erro
+
     if (isLoading || error || !validation) return;
 
-    // Se o perfil é válido, não precisa redirecionar
+
     if (validation.isValid) return;
 
-    // Verifica se está em uma rota excluída
+
     const isExcludedPath = EXCLUDED_PATHS.some(
       (path) => pathname === path || pathname.startsWith(`${path}/`)
     );
 
     if (isExcludedPath) return;
 
-    // Redireciona para meu-cadastro se precisa atualizar o perfil
+
     if (validation.requiresProfileUpdate) {
       router.push(ROUTES.profile);
     }

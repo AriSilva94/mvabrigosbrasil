@@ -26,13 +26,13 @@ export default function SkeletonChart({
       aria-label="Carregando gráfico..."
       role="status"
     >
-      {/* Title skeleton */}
+      {}
       <div className="mb-4 h-6 w-1/3 rounded bg-slate-200" />
 
-      {/* Chart area skeleton */}
+      {}
       <div className={clsx("rounded-lg bg-slate-100", heightClass)}>
         <div className="flex h-full items-end justify-around gap-2 p-4">
-          {/* Simulated bars */}
+          {}
           {[60, 80, 45, 90, 70, 55, 85, 40, 75, 65].map((height, index) => (
             <div
               key={index}
@@ -43,7 +43,7 @@ export default function SkeletonChart({
         </div>
       </div>
 
-      {/* Legend skeleton */}
+      {}
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         <div className="h-4 w-20 rounded bg-slate-200" />
         <div className="h-4 w-24 rounded bg-slate-200" />
