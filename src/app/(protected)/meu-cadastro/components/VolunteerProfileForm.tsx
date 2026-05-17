@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,6 @@ import { TextOnlyInput } from "@/components/ui/TextOnlyInput";
 import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
 import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import { useLocationData } from "@/hooks/useLocationData";
-import { formatPhone } from "@/lib/formatters";
 import { REFERRAL_SOURCE_OPTIONS } from "@/constants/referralSource";
 
 const FAIXA_ETARIA_OPTIONS = [
@@ -85,14 +84,12 @@ export default function VolunteerProfileForm(): JSX.Element {
     Partial<Record<keyof VolunteerProfileInput, string>>
   >({});
 
-
   const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
     useLocationData();
   const [telefone, setTelefone] = useState("");
   const [estado, setEstado] = useState("");
   const [cidade, setCidade] = useState("");
   const initialEstadoRef = useRef<string | null>(null);
-
 
   const [faixaEtaria, setFaixaEtaria] = useState("");
   const [genero, setGenero] = useState("");
@@ -103,18 +100,15 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [atuacao, setAtuacao] = useState("");
   const [referralSource, setReferralSource] = useState("");
 
-
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
     value: e.sigla,
     label: e.nome,
   }));
 
-
   const cidadesOptions: ComboboxOption[] = cidades.map((c) => ({
     value: c.nome,
     label: c.nome,
   }));
-
 
   useEffect(() => {
     if (estado) {
@@ -128,31 +122,6 @@ export default function VolunteerProfileForm(): JSX.Element {
       }
     }
   }, [estado, fetchCidades]);
-
-
-  useEffect(() => {
-    if (volunteer) {
-
-      initialEstadoRef.current = volunteer.estado || null;
-
-      setTelefone(formatPhone(volunteer.telefone || ""));
-      setEstado(volunteer.estado || "");
-      setCidade(volunteer.cidade || "");
-      setFaixaEtaria(volunteer.faixa_etaria || "");
-      setGenero(volunteer.genero || "");
-      setEscolaridade(volunteer.escolaridade || "");
-      setDisponibilidade(volunteer.disponibilidade || "");
-      setPeriodo(volunteer.periodo || "");
-      setExperiencia(volunteer.experiencia || "");
-      setAtuacao(volunteer.atuacao || "");
-      setReferralSource(volunteer.referral_source || "");
-
-
-      if (volunteer.estado) {
-        fetchCidades(volunteer.estado);
-      }
-    }
-  }, [volunteer, fetchCidades]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

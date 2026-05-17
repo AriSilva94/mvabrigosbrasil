@@ -28,15 +28,13 @@ type EditSheltersModalProps = {
 
 export default function EditSheltersModal({ manager, onClose, onSave }: EditSheltersModalProps): JSX.Element {
   const [shelters, setShelters] = useState<Shelter[]>([]);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>(manager.shelters.map(s => s.id));
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedIds(manager.shelters.map(s => s.id));
-
     async function fetchShelters() {
       try {
         const response = await fetch("/api/shelters");
@@ -53,7 +51,7 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
     }
 
     fetchShelters();
-  }, [manager]);
+  }, []);
 
   const filteredShelters = useMemo(() => {
     if (!searchTerm.trim()) return shelters;

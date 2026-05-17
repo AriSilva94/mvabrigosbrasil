@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
 import { Heading, Text } from "@/components/ui/typography";
@@ -25,9 +25,6 @@ export default function MinhasVagasClient({
     [shelterName]
   );
 
-  useEffect(() => {
-    setItems(vacancies);
-  }, [vacancies]);
 
   async function refreshVacancies() {
     try {

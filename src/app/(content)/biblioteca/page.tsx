@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import LibraryItemCard from "@/components/content/LibraryItemCard";
@@ -38,11 +38,7 @@ export default function Page(): JSX.Element {
   const activeCategory = searchParams.get("categoria");
   const searchParamValue = searchParams.get("s") || "";
 
-  const [searchInputValue, setSearchInputValue] = useState(searchParamValue);
-
-  useEffect(() => {
-    setSearchInputValue(searchParamValue);
-  }, [searchParamValue]);
+  const [searchInputValue, setSearchInputValue] = useState(searchParamValue ?? "");
 
   const normalizeString = (str: string): string => {
     return str
@@ -104,7 +100,7 @@ export default function Page(): JSX.Element {
   };
 
   return (
-    <main>
+    <main key={`biblioteca-${activeCategory}-${searchParamValue}`}>
       <PageHeader
         title="Biblioteca"
         breadcrumbs={[{ label: "Inicial", href: "/" }, { label: "Biblioteca" }]}

@@ -80,35 +80,34 @@ export function useDynamicsData({
     buildFallbackSections(userSummary, BASE_STATS),
   );
 
-  const fetchSections = useCallback(async () => {
-    setLoading(true);
-    try {
-      const url = shelterWpPostId
-        ? `/api/dynamics?shelter_id=${shelterWpPostId}`
-        : "/api/dynamics";
-
-      const response = await fetch(url);
-      if (!response.ok) {
-        setSections(buildFallbackSections(userSummary, BASE_STATS));
-        return;
-      }
-      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-      const nextSections =
-        json.sections && json.sections.length > 0
-          ? json.sections
-          : buildFallbackSections(userSummary, BASE_STATS);
-      setSections(nextSections);
-    } catch (error) {
-      console.error("dinamica-populacional: falha ao carregar dados", error);
-      setSections(buildFallbackSections(userSummary, BASE_STATS));
-    } finally {
-      setLoading(false);
-    }
-  }, [userSummary, shelterWpPostId]);
 
   useEffect(() => {
-    void fetchSections();
-  }, [fetchSections]);
+    void (async () => {
+      setLoading(true);
+      try {
+        const url = shelterWpPostId
+          ? `/api/dynamics?shelter_id=${shelterWpPostId}`
+          : "/api/dynamics";
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          setSections(buildFallbackSections(userSummary, BASE_STATS));
+          return;
+        }
+        const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+        const nextSections =
+          json.sections && json.sections.length > 0
+            ? json.sections
+            : buildFallbackSections(userSummary, BASE_STATS);
+        setSections(nextSections);
+      } catch (error) {
+        console.error("dinamica-populacional: falha ao carregar dados", error);
+        setSections(buildFallbackSections(userSummary, BASE_STATS));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [userSummary, shelterWpPostId]);
 
   const handleSubmit = useCallback(
     async (values: RegisterFormSubmit) => {

@@ -15,6 +15,10 @@ export function useVolunteerCards(initialVolunteers: VolunteerCard[] = []): UseV
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (initialVolunteers.length > 0) {
+      return;
+    }
+
     async function loadVolunteers() {
       try {
         setLoading(true);
@@ -37,11 +41,7 @@ export function useVolunteerCards(initialVolunteers: VolunteerCard[] = []): UseV
       }
     }
 
-    if (initialVolunteers.length === 0) {
-      loadVolunteers();
-    } else {
-      setLoading(false);
-    }
+    loadVolunteers();
   }, [initialVolunteers]);
 
   return { volunteers, loading, error };

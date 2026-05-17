@@ -143,7 +143,32 @@ export function useShelterHistory(): UseShelterHistoryReturn {
   }, [fetchHistory]);
 
   useEffect(() => {
-    fetchHistory(true);
+    void (async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          `/api/shelter-profile/history?limit=${limit}&offset=0`,
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao carregar histórico");
+        }
+
+        const data = await response.json();
+        const mappedHistory = (data.history || []).map(mapHistoryRecord);
+        setHistory(mappedHistory);
+        setOffset(limit);
+        setTotal(data.total || 0);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Erro ao carregar histórico";
+        setError(message);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   return {
