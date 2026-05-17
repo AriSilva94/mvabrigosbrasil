@@ -83,7 +83,6 @@ export function useDynamicsData({
   const fetchSections = useCallback(async () => {
     setLoading(true);
     try {
-      // Construir URL com query parameter se shelterWpPostId foi fornecido
       const url = shelterWpPostId
         ? `/api/dynamics?shelter_id=${shelterWpPostId}`
         : "/api/dynamics";

@@ -31,7 +31,6 @@ export default function ManagersPageContent(): JSX.Element {
   };
 
   const handleSave = () => {
-    // Forçar atualização da lista
     setRefreshKey(prev => prev + 1);
   };
 

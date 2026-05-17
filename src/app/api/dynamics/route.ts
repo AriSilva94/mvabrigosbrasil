@@ -51,12 +51,10 @@ async function resolveShelter(
     return withoutLt.data;
   };
 
-  // Se shelterWpPostId foi fornecido (gerente visualizando abrigo específico)
   if (shelterWpPostId) {
     return queryWithFallback("wp_post_id", shelterWpPostId);
   }
 
-  // Lógica original: buscar por profile_id
   const attemptOrder = [
     access?.userId ?? null,
     access?.isTeamOnly ? access?.creatorProfileId ?? null : null,

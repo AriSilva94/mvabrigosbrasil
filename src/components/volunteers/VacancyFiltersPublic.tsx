@@ -2,7 +2,6 @@
 
 import Select from "@/components/ui/Select";
 
-// Estados brasileiros
 const VACANCY_STATE_FILTERS = [
   { value: "", label: "Todos os Estados" },
   { value: "AC", label: "Acre" },

@@ -57,7 +57,6 @@ export type ShelterFieldProps = {
 
 export type NumericInputProps = InputHTMLAttributes<HTMLInputElement>;
 
-// Tipos para Histórico de Alterações
 export type ShelterHistoryOperation = "INSERT" | "UPDATE" | "DELETE" | "STATUS_CHANGE";
 
 export interface ShelterHistoryRecord {

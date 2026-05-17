@@ -1,4 +1,3 @@
-// Client-side navigation placeholder until authentication is wired
 "use client";
 
 import type { FormEvent, JSX } from "react";

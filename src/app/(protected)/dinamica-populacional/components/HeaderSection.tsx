@@ -64,13 +64,12 @@ export default function HeaderSection({
 
       {!isReadOnly && (
         <div className="flex flex-wrap gap-3">
-          {/* TODO: Definir se teremos realmente esta feature */}
-          {/* <button
+          <button
             type="button"
             className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900 cursor-pointer"
           >
             Baixar em Excel
-          </button> */}
+          </button>
           <button
             type="button"
             onClick={onOpenRegister}

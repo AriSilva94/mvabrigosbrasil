@@ -35,10 +35,8 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Inicializar IDs selecionados
     setSelectedIds(manager.shelters.map(s => s.id));
 
-    // Buscar todos os abrigos
     async function fetchShelters() {
       try {
         const response = await fetch("/api/shelters");
@@ -57,7 +55,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
     fetchShelters();
   }, [manager]);
 
-  // Filtrar abrigos pela busca
   const filteredShelters = useMemo(() => {
     if (!searchTerm.trim()) return shelters;
 
@@ -81,12 +78,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
     setError(null);
 
     try {
-      console.log("Salvando vínculos:", {
-        managerId: manager.id,
-        selectedIds,
-        count: selectedIds.length
-      });
-
       const response = await fetch(`/api/admin/managers/${manager.id}/shelters`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -98,15 +89,10 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
         throw new Error(errorData.error || "Erro ao atualizar vínculos");
       }
 
-      console.log("Vínculos salvos com sucesso");
-
-      // Chamar callback de sucesso
       onSave();
 
-      // Fechar modal
       onClose();
     } catch (err) {
-      console.error("Erro ao salvar vínculos:", err);
       setError(err instanceof Error ? err.message : "Erro ao salvar");
     } finally {
       setSaving(false);
@@ -116,7 +102,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
-        {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">
@@ -134,7 +119,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
           </button>
         </div>
 
-        {/* Body */}
         <div className="max-h-96 overflow-y-auto p-6">
           {loading ? (
             <div className="space-y-3">
@@ -171,7 +155,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
                 </p>
               </div>
 
-              {/* Campo de busca */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
@@ -230,7 +213,6 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-end gap-3 border-t border-slate-200 px-6 py-4">
           <button
             type="button"

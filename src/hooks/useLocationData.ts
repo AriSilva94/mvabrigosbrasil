@@ -11,19 +11,12 @@ export interface Cidade {
   nome: string;
 }
 
-/**
- * Hook para buscar estados e cidades da API do IBGE
- *
- * @example
- * const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } = useLocationData();
- */
 export function useLocationData() {
   const [estados, setEstados] = useState<Estado[]>([]);
   const [cidades, setCidades] = useState<Cidade[]>([]);
   const [loadingEstados, setLoadingEstados] = useState(false);
   const [loadingCidades, setLoadingCidades] = useState(false);
 
-  // Busca todos os estados do Brasil na inicialização
   useEffect(() => {
     const fetchEstados = async () => {
       setLoadingEstados(true);
@@ -44,7 +37,6 @@ export function useLocationData() {
     fetchEstados();
   }, []);
 
-  // Busca cidades de um estado específico
   const fetchCidades = useCallback(async (estadoSigla: string) => {
     if (!estadoSigla) {
       setCidades([]);

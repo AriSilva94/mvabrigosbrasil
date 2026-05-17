@@ -41,7 +41,6 @@ export const shelterProfileSchema = z.object({
     .boolean()
     .refine((value) => value === true, { message: "Você deve aceitar os termos." }),
 }).superRefine((data, ctx) => {
-  // Validação CNPJ/CPF - remove formatação
   const cnpjDigits = unformatDigits(data.cnpj);
   const isTemporary = data.shelterType === "temporary";
 
@@ -63,7 +62,6 @@ export const shelterProfileSchema = z.object({
     }
   }
 
-  // Validação telefone - remove formatação
   const phoneDigits = unformatDigits(data.authorizedPhone);
   if (phoneDigits.length < 10 || phoneDigits.length > 11) {
     ctx.addIssue({

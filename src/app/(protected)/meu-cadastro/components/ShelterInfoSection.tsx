@@ -75,7 +75,6 @@ export default function ShelterInfoSection({
     ? "disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
     : "";
 
-  // Estados e cidades
   const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
     useLocationData();
   const [estado, setEstado] = useState(data?.state ?? "");

@@ -24,20 +24,6 @@ interface ComboboxProps {
   maxHeight?: string; // Altura máxima do dropdown (ex: 'max-h-40', 'max-h-60')
 }
 
-/**
- * Componente Combobox - Select com busca
- *
- * @example
- * <Combobox
- *   options={[{ value: 'SP', label: 'São Paulo' }]}
- *   value={estado}
- *   onChange={setEstado}
- *   placeholder="Selecione um estado"
- * />
- */
-/**
- * Remove acentos de uma string para facilitar busca
- */
 function removeAccents(str: string): string {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
@@ -65,7 +51,6 @@ export function Combobox({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filtra opções baseado na busca (sem acentos)
   const filteredOptions = useMemo(
     () =>
       options.filter((option) => {
