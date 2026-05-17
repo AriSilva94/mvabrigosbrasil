@@ -1,4 +1,4 @@
-// Global toast provider for client components
+
 "use client";
 
 import type { JSX, ReactNode } from "react";

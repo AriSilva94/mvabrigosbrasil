@@ -1,6 +1,8 @@
-// Types for vacancy applications (volunteer candidatures)
-
-export type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn';
+export type ApplicationStatus =
+  | "pending"
+  | "accepted"
+  | "rejected"
+  | "withdrawn";
 
 export type VacancyApplication = {
   id: string;

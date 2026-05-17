@@ -207,7 +207,7 @@ export default async function Page(): Promise<JSX.Element> {
         <ShelterPanel shortcuts={shortcuts} isTeamDisabled={isTeamDisabled} />
       )}
 
-      {/* Tour guiado para voluntários e abrigos */}
+      {}
       {!isAdmin && !isManager && <TourTrigger tourName="painel-tour" />}
     </main>
   );

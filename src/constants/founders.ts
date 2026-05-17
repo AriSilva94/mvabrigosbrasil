@@ -11,12 +11,12 @@ export const FOUNDERS: Founder[] = [
     socials: [
       {
         type: "instagram",
-        href: "https://www.instagram.com/lgalds/",
+        href: "https:
         label: "Instagram de Lucas Galdioli",
       },
       {
         type: "lattes",
-        href: "http://lattes.cnpq.br/9520454588045328",
+        href: "http:
         label: "Currículo Lattes de Lucas Galdioli",
       },
     ],
@@ -31,12 +31,12 @@ export const FOUNDERS: Founder[] = [
     socials: [
       {
         type: "instagram",
-        href: "https://www.instagram.com/yasmin_sgrocha",
+        href: "https:
         label: "Instagram de Yasmin Rocha",
       },
       {
         type: "lattes",
-        href: "http://lattes.cnpq.br/7150842062713404",
+        href: "http:
         label: "Currículo Lattes de Yasmin Rocha",
       },
     ],
@@ -51,12 +51,12 @@ export const FOUNDERS: Founder[] = [
     socials: [
       {
         type: "instagram",
-        href: "https://www.instagram.com/garciaritadecassiamaria",
+        href: "https:
         label: "Instagram de Rita de Cassia Maria Garcia",
       },
       {
         type: "lattes",
-        href: "http://lattes.cnpq.br/5410130617608486",
+        href: "http:
         label: "Currículo Lattes de Rita de Cassia Maria Garcia",
       },
     ],

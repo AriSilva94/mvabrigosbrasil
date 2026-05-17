@@ -163,7 +163,7 @@ export default function Page(): JSX.Element {
             </form>
           </div>
 
-          {/* Indicador de filtros ativos */}
+          {}
           {(activeCategory || searchParamValue) && (
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <span className="text-sm text-gray-600">

@@ -16,7 +16,7 @@ interface MapChartProps {
 }
 
 export default function MapChart({ data, isLoading }: MapChartProps) {
-  // Se não houver dados, mostra mapa vazio
+
   const mapData = data ?? [];
   const options: Highcharts.Options = {
     chart: {

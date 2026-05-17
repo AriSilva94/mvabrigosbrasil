@@ -1,7 +1,4 @@
-/**
- * Mapeamento de siglas de estados brasileiros para chaves do Highcharts
- * Usadas no mapa do Brasil
- */
+
 export const STATE_TO_HIGHCHARTS_KEY: Record<string, string> = {
   AC: "br-ac",
   AL: "br-al",
@@ -32,9 +29,7 @@ export const STATE_TO_HIGHCHARTS_KEY: Record<string, string> = {
   TO: "br-to",
 };
 
-/**
- * Mapeamento de siglas de estados para nomes completos
- */
+
 export const STATE_NAMES: Record<string, string> = {
   AC: "Acre",
   AL: "Alagoas",
@@ -65,24 +60,20 @@ export const STATE_NAMES: Record<string, string> = {
   TO: "Tocantins",
 };
 
-/**
- * Converte dados de estatísticas por estado para o formato esperado pelo Highcharts
- */
+
 export function convertStateDataToMapPoints(
-  stateData: { state: string; count: number }[]
+  stateData: { state: string; count: number }[],
 ): Array<{ "hc-key": string; value: number; name: string }> {
-  // Criar mapa de todos os estados com valor 0
   const allStates = Object.keys(STATE_TO_HIGHCHARTS_KEY).map((stateCode) => ({
     "hc-key": STATE_TO_HIGHCHARTS_KEY[stateCode],
     value: 0,
     name: STATE_NAMES[stateCode],
   }));
 
-  // Atualizar com os valores reais
   stateData.forEach(({ state, count }) => {
     const stateCode = state.toUpperCase();
     const mapPoint = allStates.find(
-      (point) => point["hc-key"] === STATE_TO_HIGHCHARTS_KEY[stateCode]
+      (point) => point["hc-key"] === STATE_TO_HIGHCHARTS_KEY[stateCode],
     );
     if (mapPoint) {
       mapPoint.value = count;

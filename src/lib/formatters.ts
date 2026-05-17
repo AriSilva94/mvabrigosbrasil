@@ -44,9 +44,7 @@ export function unformatDigits(value: string): string {
   return value.replace(/\D/g, "");
 }
 
-/**
- * Formata data para ISO string
- */
+
 export function formatDate(value: string | number | Date) {
   const date = new Date(value);
   return date.toISOString();

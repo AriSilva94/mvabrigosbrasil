@@ -3,12 +3,7 @@ interface SpinnerProps {
   className?: string;
 }
 
-/**
- * Componente Spinner - Loading spinner animado
- *
- * @example
- * <Spinner size="sm" />
- */
+
 export default function Spinner({ size = 'md', className = '' }: SpinnerProps) {
   const sizeClasses = {
     sm: 'h-4 w-4 border-2',

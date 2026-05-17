@@ -88,7 +88,7 @@ export default function Header() {
 
           <div className="hidden items-center gap-3 text-brand-primary lg:flex">
             <a
-              href="https://facebook.com"
+              href="https:
               aria-label="Facebook"
               className="hover:text-brand-accent"
               target="_blank"
@@ -97,7 +97,7 @@ export default function Header() {
               <SocialIcon name="facebook" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https:
               aria-label="Instagram"
               className="hover:text-brand-accent"
               target="_blank"
@@ -106,7 +106,7 @@ export default function Header() {
               <SocialIcon name="instagram" />
             </a>
             <a
-              href="https://wa.me/"
+              href="https:
               aria-label="WhatsApp"
               className="hover:text-brand-accent"
               target="_blank"
@@ -134,7 +134,7 @@ export default function Header() {
             </Link>
             <div className="flex items-center gap-3 lg:hidden">
               <a
-                href="https://facebook.com"
+                href="https:
                 aria-label="Facebook"
                 className="text-brand-primary"
                 target="_blank"
@@ -143,7 +143,7 @@ export default function Header() {
                 <SocialIcon name="facebook" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https:
                 aria-label="Instagram"
                 className="text-brand-primary"
                 target="_blank"
@@ -152,7 +152,7 @@ export default function Header() {
                 <SocialIcon name="instagram" />
               </a>
               <a
-                href="https://wa.me/"
+                href="https:
                 aria-label="WhatsApp"
                 className="text-brand-primary"
                 target="_blank"

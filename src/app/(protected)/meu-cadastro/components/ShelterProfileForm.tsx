@@ -106,7 +106,7 @@ export default function ShelterProfileForm({
     const formData = new FormData(event.currentTarget);
     const foundationDateRaw = String(formData.get("foundationDate") ?? "");
 
-    // Normaliza data para ISO (yyyy-MM-dd) antes de validar/salvar.
+
     const foundationDateIso =
       foundationDateRaw && foundationDateRaw.includes("/")
         ? foundationDateRaw.split("/").reverse().join("-")

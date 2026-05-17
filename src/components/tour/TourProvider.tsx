@@ -25,7 +25,7 @@ export function TourProvider({ children }: TourProviderProps) {
   }
 
   function handleSkip(_step: number, tourName: string | null) {
-    // Também marca como completado quando o usuário pula
+
     handleComplete(tourName);
   }
 

@@ -18,12 +18,11 @@ export const volunteerProfileSchema = z
     descricao: z.string().min(1, "Descreva suas habilidades."),
     comentarios: z.string().optional(),
     referralSource: z.string().min(1, "Selecione como conheceu o projeto."),
-    acceptTerms: z
-      .boolean()
-      .refine((value) => value === true, { message: "Você deve aceitar os termos." }),
+    acceptTerms: z.boolean().refine((value) => value === true, {
+      message: "Você deve aceitar os termos.",
+    }),
   })
   .superRefine((data, ctx) => {
-    // Validação telefone - remove formatação
     const phoneDigits = unformatDigits(data.telefone);
     if (phoneDigits.length < 10 || phoneDigits.length > 11) {
       ctx.addIssue({
@@ -33,7 +32,6 @@ export const volunteerProfileSchema = z
       });
     }
 
-    // Validação profissão - não permitir apenas números
     const profissaoOnlyNumbers = /^\d+$/.test(data.profissao.trim());
     if (profissaoOnlyNumbers) {
       ctx.addIssue({
@@ -50,7 +48,6 @@ export function mapVolunteerProfileToDb(
   profileId: string,
   payload: VolunteerProfileInput,
 ) {
-  // Remove formatação do telefone
   const phoneDigits = unformatDigits(payload.telefone);
 
   return {
@@ -71,7 +68,6 @@ export function mapVolunteerProfileToDb(
     comentarios: payload.comentarios ?? null,
     referral_source: payload.referralSource,
     accept_terms: payload.acceptTerms,
-    // Novo fluxo: perfis cadastrados são públicos por padrão.
     is_public: true,
   };
 }

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 
 export interface SelectDropdownOption {
   value: string;
@@ -19,70 +19,62 @@ interface SelectDropdownProps {
   name?: string;
 }
 
-/**
- * Componente SelectDropdown - Dropdown estilizado sem busca
- * Mesmo visual do Combobox mas sem funcionalidade de busca
- *
- * @example
- * <SelectDropdown
- *   options={[{ value: 'sim', label: 'Sim' }]}
- *   value={experiencia}
- *   onChange={setExperiencia}
- *   placeholder="Selecione"
- * />
- */
+
 export function SelectDropdown({
   options,
   value,
   onChange,
-  placeholder = 'Selecione uma opção',
+  placeholder = "Selecione uma opção",
   disabled = false,
-  className = '',
+  className = "",
   name,
 }: SelectDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Encontra a label da opção selecionada
   const selectedOption = options.find((option) => option.value === value);
   const displayValue = selectedOption?.label || placeholder;
 
-  // Fecha dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Função para abrir o dropdown e inicializar o índice destacado
   const openDropdown = () => {
     const currentIndex = options.findIndex((opt) => opt.value === value);
     setHighlightedIndex(currentIndex >= 0 ? currentIndex : 0);
     setIsOpen(true);
   };
 
-  // Manipula navegação por teclado
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
 
     switch (e.key) {
-      case 'Enter':
-      case ' ':
+      case "Enter":
+      case " ":
         e.preventDefault();
-        if (isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled) {
+        if (
+          isOpen &&
+          options[highlightedIndex] &&
+          !options[highlightedIndex].disabled
+        ) {
           onChange(options[highlightedIndex].value);
           setIsOpen(false);
         } else if (!isOpen) {
           openDropdown();
         }
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         if (!isOpen) {
           openDropdown();
@@ -96,7 +88,7 @@ export function SelectDropdown({
           });
         }
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
         if (isOpen) {
           setHighlightedIndex((prev) => {
@@ -108,27 +100,26 @@ export function SelectDropdown({
           });
         }
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         setIsOpen(false);
         break;
     }
   };
 
-  // Scroll automático para opção destacada
   useEffect(() => {
     if (isOpen && highlightedIndex >= 0) {
-      const element = document.getElementById(`select-option-${highlightedIndex}`);
-      element?.scrollIntoView({ block: 'nearest' });
+      const element = document.getElementById(
+        `select-option-${highlightedIndex}`,
+      );
+      element?.scrollIntoView({ block: "nearest" });
     }
   }, [highlightedIndex, isOpen]);
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
-      {/* Hidden input para form submission */}
       <input type="hidden" name={name} value={value} />
 
-      {/* Campo de seleção */}
       <div
         tabIndex={disabled ? -1 : 0}
         role="button"
@@ -136,8 +127,8 @@ export function SelectDropdown({
         aria-expanded={isOpen}
         className={`
           flex items-center justify-between gap-2 w-full px-4 py-3 rounded-lg border text-base
-          ${disabled ? 'bg-gray-100 cursor-not-allowed text-slate-500' : 'bg-white cursor-pointer text-[#4f5464]'}
-          ${isOpen ? 'ring-2 ring-brand-primary/20 border-brand-primary' : 'border-slate-200'}
+          ${disabled ? "bg-gray-100 cursor-not-allowed text-slate-500" : "bg-white cursor-pointer text-[#4f5464]"}
+          ${isOpen ? "ring-2 ring-brand-primary/20 border-brand-primary" : "border-slate-200"}
           transition outline-none
         `}
         onClick={() => {
@@ -151,21 +142,26 @@ export function SelectDropdown({
         }}
         onKeyDown={handleKeyDown}
       >
-        <span className={selectedOption ? 'text-[#4f5464]' : 'text-[#a0a6b1]'}>
+        <span className={selectedOption ? "text-[#4f5464]" : "text-[#a0a6b1]"}>
           {displayValue}
         </span>
 
         <svg
-          className={`w-4 h-4 text-[#4f5464] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-[#4f5464] transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </div>
 
-      {/* Dropdown de opções */}
+      {}
       {isOpen && !disabled && (
         <div
           role="listbox"
@@ -180,11 +176,12 @@ export function SelectDropdown({
               aria-disabled={option.disabled}
               className={`
                 px-4 py-3 transition-colors text-base
-                ${option.disabled
-                  ? 'cursor-not-allowed text-slate-300 bg-slate-50'
-                  : `cursor-pointer text-[#4f5464] hover:bg-brand-primary/10
-                     ${index === highlightedIndex ? 'bg-brand-primary/10' : ''}
-                     ${option.value === value ? 'bg-brand-primary/5 font-medium' : ''}`
+                ${
+                  option.disabled
+                    ? "cursor-not-allowed text-slate-300 bg-slate-50"
+                    : `cursor-pointer text-[#4f5464] hover:bg-brand-primary/10
+                     ${index === highlightedIndex ? "bg-brand-primary/10" : ""}
+                     ${option.value === value ? "bg-brand-primary/5 font-medium" : ""}`
                 }
               `}
               onClick={() => {

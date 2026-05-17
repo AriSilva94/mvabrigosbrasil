@@ -47,7 +47,7 @@ export default function CookieBanner() {
     },
   );
 
-  // Despachar consentimento existente para ConditionalAnalytics no mount
+
   useEffect(() => {
     const raw = getCookieValue(COOKIE_CONSENT_NAME);
     const consent = parseConsent(raw);
@@ -84,7 +84,7 @@ export default function CookieBanner() {
     [],
   );
 
-  // Ouvir evento para reabrir o modal (footer / página de política)
+
   useEffect(() => {
     const handler = () => setModalOpen(true);
     window.addEventListener("open-cookie-preferences", handler);

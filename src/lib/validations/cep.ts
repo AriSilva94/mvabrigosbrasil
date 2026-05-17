@@ -19,7 +19,9 @@ export function isValidCepFormat(cep: string): boolean {
   return digits.length === 8;
 }
 
-export async function fetchAddressFromCep(cep: string): Promise<ViaCepResponse | null> {
+export async function fetchAddressFromCep(
+  cep: string,
+): Promise<ViaCepResponse | null> {
   const digits = unformatDigits(cep);
 
   if (!isValidCepFormat(cep)) {
@@ -27,8 +29,8 @@ export async function fetchAddressFromCep(cep: string): Promise<ViaCepResponse |
   }
 
   try {
-    const response = await fetch(`https://viacep.com.br/ws/${digits}/json/`, {
-      signal: AbortSignal.timeout(5000), // timeout 5s
+    const response = await fetch(`https:
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!response.ok) {

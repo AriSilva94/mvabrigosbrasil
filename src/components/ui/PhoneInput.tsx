@@ -1,53 +1,34 @@
-'use client';
+"use client";
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 
-interface PhoneInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+interface PhoneInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "onChange"
+> {
   value: string;
   onChange: (value: string) => void;
   className?: string;
 }
 
-/**
- * Componente PhoneInput - Input com máscara de telefone (DDD)
- * Formatos aceitos: (XX) X XXXX-XXXX (celular) ou (XX) XXXX-XXXX (fixo)
- * Remove caracteres especiais automaticamente ao processar
- *
- * @example
- * <PhoneInput
- *   value={telefone}
- *   onChange={setTelefone}
- *   placeholder="(00) 0 0000-0000"
- * />
- */
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
-  ({ value, onChange, className = '', ...props }, ref) => {
-    /**
-     * Aplica máscara de telefone: (XX) X XXXX-XXXX (celular) ou (XX) XXXX-XXXX (fixo)
-     */
+  ({ value, onChange, className = "", ...props }, ref) => {
     const applyPhoneMask = (rawValue: string): string => {
-      // Remove tudo que não é número
-      const numbers = rawValue.replace(/\D/g, '');
+      const numbers = rawValue.replace(/\D/g, "");
 
-      // Limita a 11 dígitos (DDD + número)
       const limitedNumbers = numbers.slice(0, 11);
 
-      // Aplica a máscara
       if (limitedNumbers.length === 0) {
-        return '';
+        return "";
       } else if (limitedNumbers.length <= 2) {
         return `(${limitedNumbers}`;
       } else if (limitedNumbers.length <= 3) {
-        // DDD + primeiro dígito
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2)}`;
       } else if (limitedNumbers.length <= 7) {
-        // DDD + primeiro bloco (até 4 dígitos após o 9)
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 3)} ${limitedNumbers.slice(3)}`;
       } else if (limitedNumbers.length <= 10) {
-        // Telefone fixo: (XX) XXXX-XXXX
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 6)}-${limitedNumbers.slice(6)}`;
       } else {
-        // 11 dígitos (celular): (XX) X XXXX-XXXX
         return `(${limitedNumbers.slice(0, 2)}) ${limitedNumbers.slice(2, 3)} ${limitedNumbers.slice(3, 7)}-${limitedNumbers.slice(7, 11)}`;
       }
     };
@@ -74,30 +55,15 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
-PhoneInput.displayName = 'PhoneInput';
+PhoneInput.displayName = "PhoneInput";
 
-/**
- * Remove formatação de telefone (mantém apenas números)
- * Útil para validação e envio de dados
- *
- * @example
- * removePhoneMask('(11) 98765-4321') // '11987654321'
- */
 export function removePhoneMask(phone: string): string {
-  return phone.replace(/\D/g, '');
+  return phone.replace(/\D/g, "");
 }
 
-/**
- * Valida se o telefone tem 10 ou 11 dígitos
- *
- * @example
- * isValidPhone('(11) 98765-4321') // true
- * isValidPhone('(11) 8765-4321') // true
- * isValidPhone('(11) 765-4321') // false
- */
 export function isValidPhone(phone: string): boolean {
   const numbers = removePhoneMask(phone);
   return numbers.length === 10 || numbers.length === 11;

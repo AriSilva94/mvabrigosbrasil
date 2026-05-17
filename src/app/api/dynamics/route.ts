@@ -102,7 +102,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // Extrair shelter_id da URL se fornecido (para gerentes)
+
   const { searchParams } = new URL(request.url);
   const shelterIdParam = searchParams.get("shelter_id");
   const shelterWpPostId = shelterIdParam ? parseInt(shelterIdParam, 10) : null;

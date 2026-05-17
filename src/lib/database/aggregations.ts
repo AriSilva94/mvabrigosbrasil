@@ -23,12 +23,18 @@ const MONTH_LABELS = [
   "DEZ",
 ];
 
-function matchesYear(recordYear: number | undefined, selectedYear: YearFilter): boolean {
+function matchesYear(
+  recordYear: number | undefined,
+  selectedYear: YearFilter,
+): boolean {
   if (selectedYear === ALL_YEARS_VALUE) return true;
   return recordYear === selectedYear;
 }
 
-function matchesState(recordState: string | undefined, selectedState: string): boolean {
+function matchesState(
+  recordState: string | undefined,
+  selectedState: string,
+): boolean {
   if (selectedState === ALL_STATES_VALUE) return true;
   return (recordState ?? "").toUpperCase() === selectedState.toUpperCase();
 }
@@ -36,11 +42,11 @@ function matchesState(recordState: string | undefined, selectedState: string): b
 export function computeOverview(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): OverviewMetrics {
-  // Count only shelters that were CREATED in the selected year (not shelters with movements in that year)
   const sheltersCreatedInYear = dataset.shelters.filter(
-    (shelter) => matchesYear(shelter.year, year) && matchesState(shelter.state, state)
+    (shelter) =>
+      matchesYear(shelter.year, year) && matchesState(shelter.state, state),
   );
 
   return sheltersCreatedInYear.reduce<OverviewMetrics>(
@@ -54,23 +60,30 @@ export function computeOverview(
 
       return acc;
     },
-    { totalShelters: 0, publicCount: 0, privateCount: 0, mixedCount: 0, ltpiCount: 0 }
+    {
+      totalShelters: 0,
+      publicCount: 0,
+      privateCount: 0,
+      mixedCount: 0,
+      ltpiCount: 0,
+    },
   );
 }
 
 export function hasAnyData(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): boolean {
-  // Check if there are any shelters for this filter
   const hasShelters = dataset.shelters.some(
-    (shelter) => matchesYear(shelter.year, year) && matchesState(shelter.state, state)
+    (shelter) =>
+      matchesYear(shelter.year, year) && matchesState(shelter.state, state),
   );
 
-  // Check if there are any movements for this filter
   const hasMovements = dataset.movements.some(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return hasShelters || hasMovements;
@@ -79,10 +92,12 @@ export function hasAnyData(
 export function computeMonthlyAnimalFlow(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): MonthlyAnimalFlow[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
@@ -92,12 +107,17 @@ export function computeMonthlyAnimalFlow(
       .filter((movement) => movement.month === month)
       .reduce(
         (acc, movement) => {
-          acc.entradas += movement.metrics.entradas + movement.metrics.entradasGatos;
-          acc.devolucoes += movement.metrics.devolucoes + movement.metrics.devolucoesGatos;
-          acc.adocoes += movement.metrics.adocoes + movement.metrics.adocoesGatos;
-          acc.eutanasias += movement.metrics.eutanasias + movement.metrics.eutanasiasGatos;
+          acc.entradas +=
+            movement.metrics.entradas + movement.metrics.entradasGatos;
+          acc.devolucoes +=
+            movement.metrics.devolucoes + movement.metrics.devolucoesGatos;
+          acc.adocoes +=
+            movement.metrics.adocoes + movement.metrics.adocoesGatos;
+          acc.eutanasias +=
+            movement.metrics.eutanasias + movement.metrics.eutanasiasGatos;
           acc.mortesNaturais +=
-            movement.metrics.mortesNaturais + movement.metrics.mortesNaturaisGatos;
+            movement.metrics.mortesNaturais +
+            movement.metrics.mortesNaturaisGatos;
           acc.retornoTutor += movement.metrics.retornoTutor;
           acc.retornoLocal += movement.metrics.retornoLocal;
           return acc;
@@ -110,7 +130,7 @@ export function computeMonthlyAnimalFlow(
           mortesNaturais: 0,
           retornoTutor: 0,
           retornoLocal: 0,
-        }
+        },
       );
 
     return { month, label, ...totals };
@@ -119,7 +139,9 @@ export function computeMonthlyAnimalFlow(
 
 export function resolveStateLabel(state: string, states: string[]): string {
   if (state === ALL_STATES_VALUE) return "Todos os estados";
-  const found = states.find((item) => item.toUpperCase() === state.toUpperCase());
+  const found = states.find(
+    (item) => item.toUpperCase() === state.toUpperCase(),
+  );
   return found ?? state;
 }
 
@@ -136,21 +158,32 @@ export function computeMonthlyEntriesByType(
   dataset: DatabaseDataset,
   year: YearFilter,
   state: string,
-  species: "all" | "cat" = "all"
+  species: "all" | "cat" = "all",
 ): TypeBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
     const month = index + 1;
-    const totals: TypeBreakdown = { month, label, publico: 0, privado: 0, misto: 0, ltpi: 0 };
+    const totals: TypeBreakdown = {
+      month,
+      label,
+      publico: 0,
+      privado: 0,
+      misto: 0,
+      ltpi: 0,
+    };
 
     movements
       .filter((movement) => movement.month === month)
       .forEach((movement) => {
-        const catEntries = movement.metrics.entradasGatos + movement.metrics.devolucoesGatos;
-        const dogEntries = movement.metrics.entradas + movement.metrics.devolucoes;
+        const catEntries =
+          movement.metrics.entradasGatos + movement.metrics.devolucoesGatos;
+        const dogEntries =
+          movement.metrics.entradas + movement.metrics.devolucoes;
         const entryValue = species === "cat" ? catEntries : dogEntries;
         const type = movement.shelterType;
         if (type === "Público") totals.publico += entryValue;
@@ -174,24 +207,27 @@ type SpeciesEntries = {
 export function computeMonthlySpeciesEntries(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): SpeciesEntries[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
     const month = index + 1;
-    const monthMovements = movements.filter((movement) => movement.month === month);
+    const monthMovements = movements.filter(
+      (movement) => movement.month === month,
+    );
 
-    // Entradas devem considerar apenas entradas (não devoluções)
     const cats = monthMovements.reduce(
       (acc, movement) => acc + movement.metrics.entradasGatos,
-      0
+      0,
     );
     const dogs = monthMovements.reduce(
       (acc, movement) => acc + movement.metrics.entradas,
-      0
+      0,
     );
     const totalsCombined = cats + dogs;
 
@@ -202,15 +238,19 @@ export function computeMonthlySpeciesEntries(
 export function computeMonthlyAnimalExits(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): SpeciesEntries[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
     const month = index + 1;
-    const monthMovements = movements.filter((movement) => movement.month === month);
+    const monthMovements = movements.filter(
+      (movement) => movement.month === month,
+    );
 
     const cats = monthMovements.reduce(
       (acc, movement) =>
@@ -218,7 +258,7 @@ export function computeMonthlyAnimalExits(
         movement.metrics.adocoesGatos +
         movement.metrics.mortesNaturaisGatos +
         movement.metrics.eutanasiasGatos,
-      0
+      0,
     );
     const dogs = monthMovements.reduce(
       (acc, movement) =>
@@ -226,7 +266,7 @@ export function computeMonthlyAnimalExits(
         movement.metrics.adocoes +
         movement.metrics.mortesNaturais +
         movement.metrics.eutanasias,
-      0
+      0,
     );
 
     return { month, label, dogs, cats, total: dogs + cats };
@@ -247,15 +287,19 @@ export function computeMonthlyOutcomes(
   dataset: DatabaseDataset,
   year: YearFilter,
   state: string,
-  species: "all" | "cat" | "dog" = "all"
+  species: "all" | "cat" | "dog" = "all",
 ): OutcomesBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
     const month = index + 1;
-    const monthMovements = movements.filter((movement) => movement.month === month);
+    const monthMovements = movements.filter(
+      (movement) => movement.month === month,
+    );
 
     const totals = monthMovements.reduce(
       (acc, movement) => {
@@ -272,14 +316,29 @@ export function computeMonthlyOutcomes(
         };
 
         acc.adocoes += select(metrics.adocoes, metrics.adocoesGatos);
-        acc.mortesNaturais += select(metrics.mortesNaturais, metrics.mortesNaturaisGatos);
+        acc.mortesNaturais += select(
+          metrics.mortesNaturais,
+          metrics.mortesNaturaisGatos,
+        );
         acc.eutanasias += select(metrics.eutanasias, metrics.eutanasiasGatos);
-        acc.retornoTutor += selectReturn(metrics.retornoTutor, metrics.retornoTutorGatos);
-        acc.retornoLocal += selectReturn(metrics.retornoLocal, metrics.retornoLocalGatos);
+        acc.retornoTutor += selectReturn(
+          metrics.retornoTutor,
+          metrics.retornoTutorGatos,
+        );
+        acc.retornoLocal += selectReturn(
+          metrics.retornoLocal,
+          metrics.retornoLocalGatos,
+        );
 
         return acc;
       },
-      { adocoes: 0, mortesNaturais: 0, eutanasias: 0, retornoTutor: 0, retornoLocal: 0 }
+      {
+        adocoes: 0,
+        mortesNaturais: 0,
+        eutanasias: 0,
+        retornoTutor: 0,
+        retornoLocal: 0,
+      },
     );
 
     return { month, label, ...totals };
@@ -289,15 +348,24 @@ export function computeMonthlyOutcomes(
 export function computeMonthlyAdoptionsByType(
   dataset: DatabaseDataset,
   year: YearFilter,
-  state: string
+  state: string,
 ): TypeBreakdown[] {
   const movements = dataset.movements.filter(
-    (movement) => matchesYear(movement.year, year) && matchesState(movement.shelterState, state)
+    (movement) =>
+      matchesYear(movement.year, year) &&
+      matchesState(movement.shelterState, state),
   );
 
   return MONTH_LABELS.map((label, index) => {
     const month = index + 1;
-    const totals: TypeBreakdown = { month, label, publico: 0, privado: 0, misto: 0, ltpi: 0 };
+    const totals: TypeBreakdown = {
+      month,
+      label,
+      publico: 0,
+      privado: 0,
+      misto: 0,
+      ltpi: 0,
+    };
 
     movements
       .filter((movement) => movement.month === month)

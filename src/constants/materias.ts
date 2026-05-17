@@ -17,7 +17,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "14/06/2024",
     externalUrl:
-      "https://www.crmv-ce.org.br/noticias/101235-crmv-ce-convida-abrigos-de-animais-a-se-cadastrarem-em-1-mapeamento-nacional.html",
+      "https:
   },
   {
     title: "PremieRpet apoia o projeto Medicina de Abrigos Brasil",
@@ -25,7 +25,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "05/06/2024",
     externalUrl:
-      "https://www.premierpet.com.br/premierpet-apoia-o-projeto-medicina-de-abrigos-brasil/",
+      "https:
   },
   {
     title:
@@ -34,7 +34,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "05/06/2024",
     externalUrl:
-      "https://www.ufpr.br/portalufpr/noticias/pesquisadores-da-ufpr-criam-projeto-para-mapear-abrigos-de-animais-do-brasil/",
+      "https:
   },
   {
     title:
@@ -43,7 +43,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "06/06/2024",
     externalUrl:
-      "https://www.amparanimal.org.br/voce-conhece-o-mapeamento-e-coleta-de-dados-dos-abrigos-de-caes-e-gatos-do-brasil/",
+      "https:
   },
   {
     title:
@@ -52,7 +52,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "14/06/2024",
     externalUrl:
-      "https://peritusvets.com.br/1a-iniciativa-de-mapeamento-e-coleta-de-dados-de-abrigos-de-caes-e-gatos-do-brasil/",
+      "https:
   },
   {
     title:
@@ -61,7 +61,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "05/06/2024",
     externalUrl:
-      "https://www.imvc.com.br/iniciativa-para-promover-a-ciencia-da-medicina-de-abrigos-no-brasil/",
+      "https:
   },
   {
     title:
@@ -70,7 +70,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "05/06/2024",
     externalUrl:
-      "https://www.anda.jor.br/2024/06/iniciativa-mapeia-e-coleta-dados-sobre-caes-e-gatos-do-pais/",
+      "https:
   },
   {
     title:
@@ -79,7 +79,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "05/06/2024",
     externalUrl:
-      "https://tribunapr.uol.com.br/noticias/curitiba-regiao/1o-mapeamento-de-abrigos-de-animais-do-brasil-e-feito-por-pesquisadores-da-ufpr/",
+      "https:
   },
   {
     title:
@@ -88,7 +88,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "27/04/2026",
     externalUrl:
-      "https://caesegatos.com.br/abandono-animal-abrigos-politicas-publicas/",
+      "https:
   },
   {
     title:
@@ -97,7 +97,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "10/05/2026",
     externalUrl:
-      "https://amazoniapress.com.br/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados/",
+      "https:
   },
   {
     title:
@@ -106,7 +106,7 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "10/05/2026",
     externalUrl:
-      "https://www.itatiaia.com.br/pets-e-animais/abrigos-cheios-e-politicas-frageis-mantem-abandono-de-pets-diz-estudo/",
+      "https:
   },
   {
     title:
@@ -115,6 +115,6 @@ export const MATERIAS_ITEMS: Materia[] = [
     category: "Matéria",
     publishedAt: "10/05/2026",
     externalUrl:
-      "https://observatorio3setor.org.br/relatorio-inedito-revela-pressao-crescente-sobre-abrigos-de-animais-no-brasil-e-aponta-urgencia-de-politicas-publicas-baseadas-em-dados-2/",
+      "https:
   },
 ];

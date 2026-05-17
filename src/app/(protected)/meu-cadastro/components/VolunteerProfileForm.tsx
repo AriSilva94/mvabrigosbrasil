@@ -85,7 +85,7 @@ export default function VolunteerProfileForm(): JSX.Element {
     Partial<Record<keyof VolunteerProfileInput, string>>
   >({});
 
-  // Estados e cidades
+
   const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
     useLocationData();
   const [telefone, setTelefone] = useState("");
@@ -93,7 +93,7 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [cidade, setCidade] = useState("");
   const initialEstadoRef = useRef<string | null>(null);
 
-  // Outros selects
+
   const [faixaEtaria, setFaixaEtaria] = useState("");
   const [genero, setGenero] = useState("");
   const [escolaridade, setEscolaridade] = useState("");
@@ -103,23 +103,23 @@ export default function VolunteerProfileForm(): JSX.Element {
   const [atuacao, setAtuacao] = useState("");
   const [referralSource, setReferralSource] = useState("");
 
-  // Converte estados para formato do Combobox
+
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
     value: e.sigla,
     label: e.nome,
   }));
 
-  // Converte cidades para formato do Combobox
+
   const cidadesOptions: ComboboxOption[] = cidades.map((c) => ({
     value: c.nome,
     label: c.nome,
   }));
 
-  // Carrega cidades quando estado muda (apenas limpa cidade se mudou manualmente)
+
   useEffect(() => {
     if (estado) {
       fetchCidades(estado);
-      // Só limpa cidade se o estado mudou E não é o estado inicial do voluntário
+
       if (
         initialEstadoRef.current !== null &&
         estado !== initialEstadoRef.current
@@ -129,10 +129,10 @@ export default function VolunteerProfileForm(): JSX.Element {
     }
   }, [estado, fetchCidades]);
 
-  // Inicializa valores quando voluntário carrega
+
   useEffect(() => {
     if (volunteer) {
-      // Guarda o estado inicial para comparação
+
       initialEstadoRef.current = volunteer.estado || null;
 
       setTelefone(formatPhone(volunteer.telefone || ""));
@@ -147,7 +147,7 @@ export default function VolunteerProfileForm(): JSX.Element {
       setAtuacao(volunteer.atuacao || "");
       setReferralSource(volunteer.referral_source || "");
 
-      // Carrega cidades do estado inicial
+
       if (volunteer.estado) {
         fetchCidades(volunteer.estado);
       }

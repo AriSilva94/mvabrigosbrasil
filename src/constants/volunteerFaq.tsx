@@ -8,7 +8,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
       <p>
         Acesse{" "}
         <a
-          href="https://wordpress-202441-5056961.cloudwaysapps.com/register?tipo=voluntario"
+          href="https:
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Cadastro de Voluntário
@@ -40,7 +40,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         disponíveis ou que se inscreveram para as vagas divulgadas pelo
         respectivo abrigo, conforme nossa{" "}
         <a
-          href="https://wordpress-202441-5056961.cloudwaysapps.com/politica-de-privacidade"
+          href="https:
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Política de Privacidade
@@ -108,7 +108,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         existentes. Ao conhecer o cenário e o universo no qual estará inserido,
         você estará preparado para uma melhor atuação. Acesse nosso{" "}
         <a
-          href="https://wordpress-202441-5056961.cloudwaysapps.com/guias-manuais/guia-do-voluntariado-digital/"
+          href="https:
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Guia do voluntariado

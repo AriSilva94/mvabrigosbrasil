@@ -46,7 +46,7 @@ export default function Footer() {
                     className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 text-brand-primary shadow-lg"
                   >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns="http:
                       viewBox="0 0 24 24"
                       fill="currentColor"
                       className="h-5 w-5"

@@ -95,7 +95,7 @@ export async function GET() {
         return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
       }
 
-      // Se a coluna ainda não existir, devolve cadastro vazio para não bloquear uso.
+
       return NextResponse.json({ volunteer: null, warning: "Campo owner_profile_id ausente em volunteers." });
     }
 
@@ -126,7 +126,7 @@ export async function POST(request: Request) {
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Verifica se o profile existe; não cria automaticamente para respeitar o fluxo de cadastro.
+
     const { data: existingProfile, error: profileLookupError } = await supabaseAdmin
       .from("profiles")
       .select("id")
@@ -188,12 +188,12 @@ export async function POST(request: Request) {
       });
     }
 
-    // Se já existe um cadastro, faz UPDATE, senão faz INSERT
+
     let data: Record<string, unknown> | null = null;
     let error: unknown = null;
 
     if (existingVolunteer) {
-      // UPDATE - atualiza o registro existente
+
       const updateResult = await supabaseAdmin
         .from("volunteers")
         .update(payload)
@@ -206,7 +206,7 @@ export async function POST(request: Request) {
       data = updateResult.data;
       error = updateResult.error;
     } else {
-      // INSERT - cria novo registro
+
       const insertResult = await supabaseAdmin
         .from("volunteers")
         .insert(payload)
@@ -218,7 +218,7 @@ export async function POST(request: Request) {
       data = insertResult.data;
       error = insertResult.error;
 
-      // Se a coluna slug ainda estiver vazia, gera e salva usando o ID recém-criado.
+
       if (!error && data && (!data.slug || data.slug === "")) {
         const generatedSlug = computeSlug(parsed.data.name, data.id as string);
         if (generatedSlug) {

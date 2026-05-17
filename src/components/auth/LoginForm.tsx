@@ -100,7 +100,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         throw new Error(message);
       }
 
-      // Replica a sessao no client sem reenviar senha ao Supabase.
+
       if (result?.accessToken && result?.refreshToken) {
         const supabase = getBrowserSupabaseClient();
         await supabase.auth.setSession({

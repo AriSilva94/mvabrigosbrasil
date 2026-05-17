@@ -23,18 +23,15 @@ export default function AppImage(props: AppImageProps) {
   const normalizeSrc = (rawSrc: string) => {
     const base = imageKitConfig.urlEndpoint;
 
-    // If src already includes our endpoint, strip it to let ImageKit handle transformations.
     if (base && rawSrc.startsWith(base)) {
       const withoutBase = rawSrc.slice(base.length);
       return withoutBase.startsWith("/") ? withoutBase : `/${withoutBase}`;
     }
 
-    // If absolute URL to another domain, keep as-is.
-    if (rawSrc.startsWith("http://") || rawSrc.startsWith("https://")) {
+    if (rawSrc.startsWith("http:
       return rawSrc;
     }
 
-    // Ensure leading slash for relative paths.
     return rawSrc.startsWith("/") ? rawSrc : `/${rawSrc}`;
   };
 

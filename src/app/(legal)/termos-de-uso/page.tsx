@@ -31,7 +31,7 @@ export default function Page(): JSX.Element {
           <Text className="leading-relaxed">
             O site{" "}
             <a
-              href="https://mvabrigosbrasil.com.br/"
+              href="https:
               className="font-semibold text-brand-primary underline underline-offset-4 transition hover:text-brand-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary"
             >
               www.mvabrigosbrasil.com.br

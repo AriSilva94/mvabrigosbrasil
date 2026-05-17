@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import { promises as fs } from "fs";
 import path from "path";
 import { ImageResponse } from "next/og";
@@ -21,7 +21,7 @@ async function loadFont(filePath: string) {
 
 const geistBold = loadFont(path.join("fonts", "geist-sans", "Geist-700.ttf"));
 const geistMedium = loadFont(path.join("fonts", "geist-sans", "Geist-500.ttf"));
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http:
 const siteHost = (() => {
   try {
     return new URL(siteUrl).host;

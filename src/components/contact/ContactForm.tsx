@@ -51,7 +51,7 @@ export default function ContactForm({
     setIsSubmitting(true);
 
     try {
-      // Placeholder para integração futura (API ou serviço de e-mail).
+
       toast.success("Mensagem enviada! Em breve entraremos em contato.");
       event.currentTarget.reset();
     } finally {

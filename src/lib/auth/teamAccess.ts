@@ -33,11 +33,13 @@ export async function loadUserAccess(): Promise<UserAccessInfo | null> {
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(
-    data.user.id,
-  );
+  const { data: authUser, error: authError } =
+    await supabaseAdmin.auth.admin.getUserById(data.user.id);
   if (authError) {
-    console.error("teamAccess.loadUserAccess: erro ao buscar user auth", authError);
+    console.error(
+      "teamAccess.loadUserAccess: erro ao buscar user auth",
+      authError,
+    );
   }
 
   const { profile } = await findProfileById(supabaseAdmin, data.user.id);
@@ -53,18 +55,21 @@ export async function loadUserAccess(): Promise<UserAccessInfo | null> {
     isTeamOnly: Boolean(profile?.is_team_only),
     isTeamDisabled: Boolean(authUser?.user?.user_metadata?.teamDisabled),
     creatorProfileId:
-      (authUser?.user?.user_metadata?.creator_profile_id as string | undefined) ?? null,
+      (authUser?.user?.user_metadata?.creator_profile_id as
+        | string
+        | undefined) ?? null,
   };
 }
 
-export async function enforceTeamAccess(pathname: string): Promise<UserAccessInfo> {
+export async function enforceTeamAccess(
+  pathname: string,
+): Promise<UserAccessInfo> {
   const access = await loadUserAccess();
 
   if (!access) {
     redirect("/login");
   }
 
-  // Admin só pode acessar rotas específicas
   if (
     access.registerType === REGISTER_TYPES.admin &&
     !isPathAllowed(pathname, ADMIN_ALLOWED_PATHS)

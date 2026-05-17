@@ -18,7 +18,7 @@ export async function POST() {
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Verifica se existe cadastro
+
     const { data: shelter, error: selectError } = await supabaseAdmin
       .from("shelters")
       .select("id, active")
@@ -34,7 +34,7 @@ export async function POST() {
       return NextResponse.json({ error: "Cadastro não encontrado" }, { status: 404 });
     }
 
-    // Alterna status (toggle)
+
     const newStatus = !shelter.active;
 
     const { error: updateError } = await supabaseAdmin
