@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -49,6 +49,10 @@ export default function ShelterProfileForm({
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
   const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
 
+  useEffect(() => {
+    setShelterType(shelter?.shelterType ?? "");
+    setDocumentValue(shelter?.cnpj ?? "");
+  }, [shelter?.shelterType, shelter?.cnpj]);
 
   usePopulationEditScroll(populationEditOnly && !isLoading, {
     anchorId:
