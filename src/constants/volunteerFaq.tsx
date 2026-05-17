@@ -167,7 +167,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         Nem sempre. Dependendo da atividade a ser desempenhada algumas
         instituições optam por disponibilizar vagas para atuação à distância,
         permitindo que você colabore com a ONG de qualquer lugar do país. Uma
-        dica: no campo “Deixe mais comentários que queira compartilhar” do seu
+        dica: no campo &quot;Deixe mais comentários que queira compartilhar&quot; do seu
         cadastro, especifique se você está disponível para atuação a distância
         ou presencial.
       </p>

@@ -2,11 +2,19 @@
 
 import { forwardRef, useState, type InputHTMLAttributes } from "react";
 import Input from "./Input";
-import { formatCnpj, formatCpf, formatPhone, formatCep } from "@/lib/formatters";
+import {
+  formatCnpj,
+  formatCpf,
+  formatPhone,
+  formatCep,
+} from "@/lib/formatters";
 
 type MaskType = "cnpj" | "cpf" | "phone" | "cep";
 
-type MaskedInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
+type MaskedInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "onChange"
+> & {
   mask: MaskType;
   onValueChange?: (unmasked: string, masked: string) => void;
 };
@@ -19,10 +27,10 @@ const maskFunctions: Record<MaskType, (value: string) => string> = {
 };
 
 const maxLengths: Record<MaskType, number> = {
-  cnpj: 18, // 00.000.000/0000-00
-  cpf: 14, // 000.000.000-00
-  phone: 16, // (00) 0 0000-0000
-  cep: 9, // 00000-000
+  cnpj: 18,
+  cpf: 14,
+  phone: 16,
+  cep: 9,
 };
 
 const placeholders: Record<MaskType, string> = {
@@ -42,14 +50,15 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
       placeholder,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [internalValue, setInternalValue] = useState(() => {
       const initial = defaultValue?.toString() || "";
       return maskFunctions[mask](initial);
     });
 
-    const value = controlledValue !== undefined ? String(controlledValue) : internalValue;
+    const value =
+      controlledValue !== undefined ? String(controlledValue) : internalValue;
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
       const rawValue = e.target.value;
@@ -74,7 +83,7 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
         placeholder={placeholder || placeholders[mask]}
       />
     );
-  }
+  },
 );
 
 MaskedInput.displayName = "MaskedInput";

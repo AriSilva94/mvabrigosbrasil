@@ -1,6 +1,6 @@
 export const COOKIE_CONSENT_NAME = "cookie_consent";
 export const COOKIE_CONSENT_VERSION = 1;
-/** Duração do cookie em segundos — 12 meses */
+
 export const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export type ConsentCategories = {

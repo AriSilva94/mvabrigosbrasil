@@ -8,7 +8,6 @@ export async function POST(
 ) {
   const { id: vacancyId } = await context.params;
 
-  // 1. Autenticar usuário
   const supabase = await getServerSupabaseClient({ readOnly: true });
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -16,7 +15,6 @@ export async function POST(
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
 
-  // 2. Buscar volunteer_id do usuário logado
   const supabaseAdmin = getSupabaseAdminClient();
   const { data: volunteer, error: volunteerError } = await supabaseAdmin
     .from("volunteers")
@@ -31,7 +29,6 @@ export async function POST(
     );
   }
 
-  // 3. Verificar se vaga existe e está ativa
   const { data: vacancy, error: vacancyError } = await supabaseAdmin
     .from("vacancies")
     .select("id, title, status, is_published")
@@ -49,7 +46,6 @@ export async function POST(
     );
   }
 
-  // 4. Criar candidatura (UNIQUE constraint evita duplicatas)
   const { data: application, error: insertError } = await supabaseAdmin
     .from("vacancy_applications")
     .insert({
@@ -61,7 +57,6 @@ export async function POST(
     .single();
 
   if (insertError) {
-    // Código 23505 = violação de UNIQUE constraint (já se candidatou)
     if (insertError.code === "23505") {
       return NextResponse.json(
         { error: "Você já se candidatou a esta vaga" },

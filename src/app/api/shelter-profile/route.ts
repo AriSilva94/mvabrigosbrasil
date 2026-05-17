@@ -164,7 +164,7 @@ export async function POST(request: Request) {
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Verifica se o profile existe; não cria automaticamente para respeitar o fluxo de cadastro.
+
     const { data: existingProfile, error: profileLookupError } = await supabaseAdmin
       .from("profiles")
       .select("id")

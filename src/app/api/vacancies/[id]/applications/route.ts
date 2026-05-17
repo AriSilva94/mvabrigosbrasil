@@ -4,19 +4,20 @@ import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 
 export async function GET(
   _: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> },
 ) {
   const { id: vacancyId } = await context.params;
 
-  // 1. Autenticar usuário
   const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
   if (authError || !user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
 
-  // 2. Verificar se vaga pertence ao abrigo do usuário
   const supabaseAdmin = getSupabaseAdminClient();
   const { data: shelter } = await supabaseAdmin
     .from("shelters")
@@ -25,7 +26,10 @@ export async function GET(
     .maybeSingle();
 
   if (!shelter) {
-    return NextResponse.json({ error: "Abrigo não encontrado" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Abrigo não encontrado" },
+      { status: 404 },
+    );
   }
 
   const { data: vacancy } = await supabaseAdmin
@@ -38,14 +42,14 @@ export async function GET(
   if (!vacancy) {
     return NextResponse.json(
       { error: "Vaga não encontrada ou sem permissão" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
-  // 3. Buscar candidaturas com dados do voluntário
   const { data: applications, error } = await supabaseAdmin
     .from("vacancy_applications")
-    .select(`
+    .select(
+      `
       id,
       status,
       applied_at,
@@ -60,7 +64,8 @@ export async function GET(
         experiencia,
         slug
       )
-    `)
+    `,
+    )
     .eq("vacancy_id", vacancyId)
     .order("applied_at", { ascending: false });
 
@@ -68,7 +73,7 @@ export async function GET(
     console.error("Error fetching applications:", error);
     return NextResponse.json(
       { error: "Erro ao buscar candidaturas" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 

@@ -25,7 +25,7 @@ export function useChartReflow(
       if (!chart.container || isChartDestroyed()) return;
       chart.reflow();
 
-      // Run extra passes shortly after mount/resize to avoid layout glitches.
+
       rafId = requestAnimationFrame(() => {
         if (!chart.container || isChartDestroyed()) return;
         chart.reflow();
@@ -56,6 +56,6 @@ export function useChartReflow(
       if (timeoutId) clearTimeout(timeoutId);
       observer?.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, deps);
 }

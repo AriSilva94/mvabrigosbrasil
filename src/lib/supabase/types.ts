@@ -2,7 +2,6 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-// Tipagem mínima do schema usada no login/migração.
 export type Database = {
   public: {
     Tables: {

@@ -8,7 +8,6 @@ import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
 
 export async function GET() {
   try {
-    // Verificar se usuário é admin
     const supabase = await getServerSupabaseClient({ readOnly: true });
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -26,7 +25,6 @@ export async function GET() {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
-    // Buscar todos os usuários com registerType = "gerente" (com paginação)
     let allUsers: User[] = [];
     let page = 1;
     let hasMore = true;
@@ -38,7 +36,6 @@ export async function GET() {
       });
 
       if (listError) {
-        console.error("Erro ao listar usuários:", listError);
         return NextResponse.json({ error: "Erro ao buscar gerentes" }, { status: 500 });
       }
 
@@ -49,21 +46,6 @@ export async function GET() {
 
     const authUsers = { users: allUsers };
 
-    // Debug: Logar todos os tipos de registro encontrados
-    console.log("Total de usuários:", authUsers.users?.length);
-
-    // Procurar email específico
-    const premierPet = authUsers.users?.find(u => u.email === 'institutopremierpet@premierpet.com.br');
-    console.log("institutopremierpet@premierpet.com.br encontrado?", {
-      found: !!premierPet,
-      email: premierPet?.email,
-      registerType: premierPet?.user_metadata?.registerType,
-      metadata: premierPet?.user_metadata
-    });
-
-    console.log("Procurando por registerType:", REGISTER_TYPES.manager);
-
-    // Filtrar apenas gerentes
     const managers = (authUsers.users || [])
       .filter(u => u.user_metadata?.registerType === REGISTER_TYPES.manager)
       .map(u => ({
@@ -72,16 +54,12 @@ export async function GET() {
         created_at: u.created_at,
       }));
 
-    console.log("Gerentes encontrados:", managers.length);
-
-    // Buscar profiles para pegar wp_user_id
     const managerIds = managers.map(m => m.id);
     const { data: profiles } = await supabaseAdmin
       .from("profiles")
       .select("id, wp_user_id, email")
       .in("id", managerIds);
 
-    // Buscar team_memberships para ver abrigos vinculados
     const wpUserIds = (profiles || []).map(p => p.wp_user_id).filter(Boolean);
     const { data: memberships } = await supabaseAdmin
       .from("team_memberships")
@@ -89,14 +67,12 @@ export async function GET() {
       .in("member_wp_user_id", wpUserIds)
       .eq("role", "manager");
 
-    // Buscar nomes dos abrigos
     const abrigoIds = (memberships || []).map(m => m.abrigo_post_id).filter(Boolean);
     const { data: shelters } = await supabaseAdmin
       .from("shelters")
       .select("id, name, wp_post_id")
       .in("wp_post_id", abrigoIds);
 
-    // Combinar dados
     const managersWithShelters = managers.map(manager => {
       const profile = profiles?.find(p => p.id === manager.id);
       const managerMemberships = memberships?.filter(
@@ -120,8 +96,7 @@ export async function GET() {
 
     return NextResponse.json({ managers: managersWithShelters });
 
-  } catch (error) {
-    console.error("Erro na API de gerentes:", error);
+  } catch {
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
   }
 }

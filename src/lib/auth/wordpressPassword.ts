@@ -8,15 +8,11 @@ type WordpressHashModule = {
   CheckPassword: (password: string, hash: string) => boolean;
 };
 
-const wordpressHash: WordpressHashModule = wordpressHashNode as WordpressHashModule;
+const wordpressHash: WordpressHashModule =
+  wordpressHashNode as WordpressHashModule;
 
-/**
- * Gera um hash PHPass do WordPress para uma senha
- * Usado para atualizar senhas MD5 temporárias para o formato correto
- */
 export function generateWordpressHash(password: string): string {
   try {
-    // wordpress-hash-node exporta HashPassword e CheckPassword diretamente
     const hash = wordpressHash.HashPassword(password);
     return hash ?? "";
   } catch (error) {
@@ -25,9 +21,6 @@ export function generateWordpressHash(password: string): string {
   }
 }
 
-/**
- * Verifica se um hash é MD5 temporário (32 caracteres hexadecimais)
- */
 export function isMd5Hash(hash: string): boolean {
   const trimmed = hash.trim();
   return trimmed.length === 32 && /^[a-f0-9]+$/i.test(trimmed);
@@ -35,7 +28,7 @@ export function isMd5Hash(hash: string): boolean {
 
 export async function verifyWordpressPassword(
   password: string,
-  hash: string | null | undefined
+  hash: string | null | undefined,
 ): Promise<boolean> {
   if (!hash || !password) {
     return false;
@@ -45,8 +38,6 @@ export async function verifyWordpressPassword(
   const trimmedPassword = password.trim();
 
   const prepareWordpressPassword = (pwd: string) => {
-    // Replica do fluxo WP 6.8 para hashes $wp$: stripslashes + htmlspecialchars (ENT_COMPAT),
-    // seguido de HMAC-SHA384 com chave "wp-sha384", em base64.
     const withoutSlashes = pwd.replace(/\\(.)/g, "$1");
     const escaped = withoutSlashes
       .replace(/&/g, "&amp;")
@@ -73,14 +64,14 @@ export async function verifyWordpressPassword(
     }
 
     if (trimmedHash.startsWith("$P") || trimmedHash.startsWith("$H")) {
-      // wordpress-hash-node exporta CheckPassword diretamente
       return Boolean(wordpressHash.CheckPassword(trimmedPassword, trimmedHash));
     }
 
-    // Fallback: MD5 temporário (usado para reset de senha em testes/migração)
-    // Se o hash tem 32 caracteres e são apenas hexadecimais, pode ser MD5
     if (trimmedHash.length === 32 && /^[a-f0-9]+$/i.test(trimmedHash)) {
-      const md5Hash = crypto.createHash('md5').update(trimmedPassword).digest('hex');
+      const md5Hash = crypto
+        .createHash("md5")
+        .update(trimmedPassword)
+        .digest("hex");
       return md5Hash === trimmedHash.toLowerCase();
     }
 

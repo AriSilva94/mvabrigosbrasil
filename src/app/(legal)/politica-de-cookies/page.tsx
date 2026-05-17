@@ -71,7 +71,7 @@ export default function Page(): JSX.Element {
             Quais cookies utilizamos?
           </Heading>
 
-          {/* Cookies Necessários */}
+          {}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
               1 – Cookies Necessários
@@ -108,7 +108,7 @@ export default function Page(): JSX.Element {
             </div>
           </div>
 
-          {/* Cookies Analíticos */}
+          {}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
               2 – Cookies Analíticos

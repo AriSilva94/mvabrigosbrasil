@@ -34,7 +34,6 @@ export async function resolvePostLoginRedirect(): Promise<string> {
     return data.redirectTo ?? (data.hasShelter ? ROUTES.panel : ROUTES.profile);
   } catch (error) {
     console.error("resolvePostLoginRedirect: erro ao decidir destino", error);
-    // Fallback seguro para forçar cadastro caso haja duvida.
     return ROUTES.profile;
   }
 }

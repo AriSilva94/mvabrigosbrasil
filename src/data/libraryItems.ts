@@ -432,7 +432,7 @@ export const libraryItems: LibraryItem[] = [
     contentUrl: "/assets/pdf/af3-projeto-mva-lamina-quarentena-digital-1.pdf",
   },
   {
-    slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais",
+    slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais-1a-edicao",
     title: "Diretrizes sobre os Padrões de Cuidados em Abrigos de Animais",
     category: "Guias/Manuais",
     publishedAt: "30/09/2022",

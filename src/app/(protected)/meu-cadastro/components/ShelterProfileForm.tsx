@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -48,21 +48,13 @@ export default function ShelterProfileForm({
   });
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
   const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
+
+
   usePopulationEditScroll(populationEditOnly && !isLoading, {
     anchorId:
       populationTarget === "lt" ? "populacao-inicial-lt" : "populacao-inicial",
   });
 
-  useEffect(() => {
-    setShelterType(shelter?.shelterType ?? "");
-    setDocumentValue(shelter?.cnpj ?? "");
-    setAddressData({
-      street: shelter?.street ?? "",
-      district: shelter?.district ?? "",
-      city: shelter?.city ?? "",
-      state: shelter?.state ?? "",
-    });
-  }, [shelter]);
 
   function handleCepAutocomplete(data: {
     street: string;
@@ -106,7 +98,7 @@ export default function ShelterProfileForm({
     const formData = new FormData(event.currentTarget);
     const foundationDateRaw = String(formData.get("foundationDate") ?? "");
 
-    // Normaliza data para ISO (yyyy-MM-dd) antes de validar/salvar.
+
     const foundationDateIso =
       foundationDateRaw && foundationDateRaw.includes("/")
         ? foundationDateRaw.split("/").reverse().join("-")

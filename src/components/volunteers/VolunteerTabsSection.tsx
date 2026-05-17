@@ -1,4 +1,3 @@
-// Client-side tabbed section for the Programa de Voluntários page
 "use client";
 
 import { useState, useMemo } from "react";

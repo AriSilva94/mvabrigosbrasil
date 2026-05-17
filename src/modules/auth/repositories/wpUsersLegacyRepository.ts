@@ -47,10 +47,7 @@ export async function markLegacyUserAsMigrated(
   return { error: error ?? null };
 }
 
-/**
- * Atualiza o hash de senha de um usuário legado
- * Usado para converter MD5 temporário para PHPass após login bem-sucedido
- */
+
 export async function updateLegacyUserPassword(
   supabaseAdmin: SupabaseClientType,
   legacyUserId: number,

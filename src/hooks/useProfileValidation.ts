@@ -53,8 +53,32 @@ export function useProfileValidation(): UseProfileValidationReturn {
   }, [fetchValidation]);
 
   useEffect(() => {
-    fetchValidation();
-  }, [fetchValidation]);
+    void (async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch("/api/validate-profile", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "Erro ao validar perfil");
+        }
+
+        const data: ProfileValidationResult = await response.json();
+        setValidation(data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Erro desconhecido";
+        setError(message);
+        console.error("useProfileValidation: erro", err);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
 
   return { validation, isLoading, error, refetch };
 }

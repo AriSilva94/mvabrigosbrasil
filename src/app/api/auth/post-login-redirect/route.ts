@@ -38,7 +38,7 @@ export async function GET(request: Request) {
       userEmail = userData.user?.email ?? null;
     }
 
-    // Admin sempre redireciona para o painel
+
     const registerType = await resolvePostTypeForUser(supabaseAdmin, {
       supabaseUserId: userId,
       email: userEmail,
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       });
     }
 
-    // Verifica se existe cadastro de abrigo
+
     const { data: shelterData, error: shelterError } = await supabaseAdmin
       .from("shelters")
       .select("id")
@@ -70,7 +70,7 @@ export async function GET(request: Request) {
 
     const hasShelter = Boolean(shelterData);
 
-    // Verifica se existe cadastro de voluntário
+
     const { data: volunteerData, error: volunteerError } = await supabaseAdmin
       .from("volunteers")
       .select("id")
@@ -87,8 +87,8 @@ export async function GET(request: Request) {
 
     const hasVolunteer = Boolean(volunteerData);
 
-    // Se tem cadastro (abrigo ou voluntário), redireciona para o painel
-    // Senão, redireciona para /meu-cadastro para completar o cadastro
+
+
     const hasProfile = hasShelter || hasVolunteer;
     const redirectTo = hasProfile ? ROUTES.panel : ROUTES.profile;
 

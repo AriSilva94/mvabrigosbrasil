@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabaseAdmin.auth.admin.createUser({
       email: trimmedEmail,
       password: trimmedPassword,
-      email_confirm: true, // Não usamos confirmação de e-mail neste projeto.
+      email_confirm: true,
       user_metadata: {
         registerType: normalizedRegisterType,
         teamOnly: isTeamOnly,

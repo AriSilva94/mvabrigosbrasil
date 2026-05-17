@@ -8,7 +8,6 @@ import {
   type VolunteerProfileInput,
 } from "@/modules/volunteer/volunteerProfileSchema";
 import type { VolunteerProfileFormData } from "@/types/volunteer.types";
-import { generateVolunteerSlug } from "@/repositories/newVolunteersRepository";
 
 type CurrentUser = { id: string; email: string | null };
 
@@ -65,12 +64,6 @@ function hasChanges(
   });
 }
 
-function computeSlug(name: string, id?: string | null, current?: string | null): string | null {
-  if (current && typeof current === "string" && current.trim()) return current;
-  if (!id) return null;
-  return generateVolunteerSlug(name, id);
-}
-
 export async function GET() {
   try {
     const user = await getCurrentUser();
@@ -95,7 +88,7 @@ export async function GET() {
         return NextResponse.json({ error: "Erro ao consultar cadastro" }, { status: 500 });
       }
 
-      // Se a coluna ainda não existir, devolve cadastro vazio para não bloquear uso.
+
       return NextResponse.json({ volunteer: null, warning: "Campo owner_profile_id ausente em volunteers." });
     }
 
@@ -126,7 +119,7 @@ export async function POST(request: Request) {
 
     const supabaseAdmin = getSupabaseAdminClient();
 
-    // Verifica se o profile existe; não cria automaticamente para respeitar o fluxo de cadastro.
+
     const { data: existingProfile, error: profileLookupError } = await supabaseAdmin
       .from("profiles")
       .select("id")
@@ -165,13 +158,8 @@ export async function POST(request: Request) {
       }
     }
 
-    const currentSlug = existingVolunteer?.slug;
-    const slugString = typeof currentSlug === "string" ? currentSlug : null;
-    const slug = computeSlug(parsed.data.name, existingVolunteer?.id ?? null, slugString);
-    const payload = {
-      ...mapVolunteerProfileToDb(user.id, parsed.data),
-      ...(slug ? { slug } : {}),
-    };
+    const dbData = mapVolunteerProfileToDb(user.id, parsed.data);
+    const { referral_source, is_public, ...cleanPayload } = dbData;
 
     const normalizedCurrentVolunteer = existingVolunteer
       ? {
@@ -181,22 +169,22 @@ export async function POST(request: Request) {
         }
       : null;
 
-    if (normalizedCurrentVolunteer && !hasChanges(normalizedCurrentVolunteer, payload)) {
+    if (normalizedCurrentVolunteer && !hasChanges(normalizedCurrentVolunteer, cleanPayload)) {
       return NextResponse.json({
         ok: true,
         volunteer: mapDbToFormData(normalizedCurrentVolunteer),
       });
     }
 
-    // Se já existe um cadastro, faz UPDATE, senão faz INSERT
+
     let data: Record<string, unknown> | null = null;
     let error: unknown = null;
 
     if (existingVolunteer) {
-      // UPDATE - atualiza o registro existente
+
       const updateResult = await supabaseAdmin
         .from("volunteers")
-        .update(payload)
+        .update(cleanPayload)
         .eq("id", existingVolunteer.id)
         .select(
           "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
@@ -206,10 +194,10 @@ export async function POST(request: Request) {
       data = updateResult.data;
       error = updateResult.error;
     } else {
-      // INSERT - cria novo registro
+
       const insertResult = await supabaseAdmin
         .from("volunteers")
-        .insert(payload)
+        .insert(cleanPayload)
         .select(
           "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
         )
@@ -217,29 +205,6 @@ export async function POST(request: Request) {
 
       data = insertResult.data;
       error = insertResult.error;
-
-      // Se a coluna slug ainda estiver vazia, gera e salva usando o ID recém-criado.
-      if (!error && data && (!data.slug || data.slug === "")) {
-        const generatedSlug = computeSlug(parsed.data.name, data.id as string);
-        if (generatedSlug) {
-          const slugUpdate = await supabaseAdmin
-            .from("volunteers")
-            .update({ slug: generatedSlug } as Record<string, unknown>)
-            .eq("id", data.id as string)
-            .select(
-              "id, owner_profile_id, name, telefone, profissao, faixa_etaria, genero, escolaridade, estado, cidade, disponibilidade, periodo, experiencia, atuacao, descricao, comentarios, referral_source, is_public, accept_terms, slug",
-            )
-            .maybeSingle();
-
-          if (slugUpdate.error) {
-            console.error("volunteer-profile POST: erro ao atualizar slug", slugUpdate.error);
-          } else if (slugUpdate.data) {
-            data = slugUpdate.data;
-          }
-        } else {
-          console.warn("volunteer-profile POST: falha ao gerar slug para", parsed.data.name);
-        }
-      }
     }
 
     if (error) {

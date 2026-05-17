@@ -5,18 +5,10 @@ const MONTH_LABELS = [
   "jul", "ago", "set", "out", "nov", "dez",
 ];
 
-/**
- * Extrai mês (MM) e ano (YYYY) de uma row da tabela de dinâmica.
- *
- * Formatos suportados:
- *  - referenceDate: "2025-02-01" (YYYY-MM-DD)
- *  - referenceLabel: "fev/2025" (abreviação/YYYY)
- */
 export function parseRowPeriod(row: Pick<DynamicsTableRow, "referenceDate" | "referenceLabel">): {
   month: string;
   year: string;
 } {
-  // Preferir referenceDate (YYYY-MM-DD)
   if (row.referenceDate) {
     const parts = row.referenceDate.split("-");
     if (parts.length >= 2) {
@@ -24,7 +16,6 @@ export function parseRowPeriod(row: Pick<DynamicsTableRow, "referenceDate" | "re
     }
   }
 
-  // Fallback: referenceLabel (ex.: "fev/2025")
   const label = row.referenceLabel;
   if (label && label.includes("/")) {
     const [abbrev, year] = label.split("/");

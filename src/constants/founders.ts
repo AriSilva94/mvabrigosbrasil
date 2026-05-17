@@ -51,12 +51,12 @@ export const FOUNDERS: Founder[] = [
     socials: [
       {
         type: "instagram",
-        href: "https://www.instagram.com/garciaritadecassiamaria",
+        href: "https://www.instagram.com/ritacmgarcia/",
         label: "Instagram de Rita de Cassia Maria Garcia",
       },
       {
         type: "lattes",
-        href: "http://lattes.cnpq.br/5410130617608486",
+        href: "http://lattes.cnpq.br/8218190633243831",
         label: "Currículo Lattes de Rita de Cassia Maria Garcia",
       },
     ],

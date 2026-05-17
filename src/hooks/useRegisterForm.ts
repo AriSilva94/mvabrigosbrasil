@@ -20,14 +20,17 @@ export function useRegisterForm(registerType: RegisterType) {
   const { signUp, isRegistering } = useRegister();
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const parseFormValues = useCallback((form: HTMLFormElement): RegisterFormValues => {
-    const formData = new FormData(form);
-    return {
-      email: String(formData.get("email") ?? "").trim(),
-      password: String(formData.get("password") ?? ""),
-      confirmPassword: String(formData.get("confirmPassword") ?? ""),
-    };
-  }, []);
+  const parseFormValues = useCallback(
+    (form: HTMLFormElement): RegisterFormValues => {
+      const formData = new FormData(form);
+      return {
+        email: String(formData.get("email") ?? "").trim(),
+        password: String(formData.get("password") ?? ""),
+        confirmPassword: String(formData.get("confirmPassword") ?? ""),
+      };
+    },
+    [],
+  );
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -59,12 +62,12 @@ export function useRegisterForm(registerType: RegisterType) {
           registerType,
         });
 
-        // Se o Supabase nao devolver sessao automaticamente, tenta logar direto.
         const supabase = getBrowserSupabaseClient();
-        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-          email: formValues.email,
-          password: formValues.password,
-        });
+        const { data: loginData, error: loginError } =
+          await supabase.auth.signInWithPassword({
+            email: formValues.email,
+            password: formValues.password,
+          });
 
         if (loginError) {
           throw loginError;
@@ -82,7 +85,9 @@ export function useRegisterForm(registerType: RegisterType) {
       } catch (error) {
         console.error("Erro ao registrar", error);
         const message =
-          error instanceof Error ? error.message : "Nao foi possivel concluir o cadastro.";
+          error instanceof Error
+            ? error.message
+            : "Nao foi possivel concluir o cadastro.";
         toast.error(message);
       }
     },

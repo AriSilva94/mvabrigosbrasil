@@ -5,9 +5,6 @@ import {
   fetchVolunteerProfileBySlugFromNew,
 } from "@/repositories/newVolunteersRepository";
 
-/**
- * Supabase-only volunteer cards (WordPress legacy removed).
- */
 export async function fetchVolunteerCardsFromSupabase(
   supabase: SupabaseClientType
 ): Promise<{ volunteers: VolunteerCard[]; error: Error | null }> {
@@ -23,9 +20,6 @@ export async function fetchVolunteerCardsFromSupabase(
   return { volunteers: volunteers ?? [], error };
 }
 
-/**
- * Supabase-only volunteer profile lookup (WordPress legacy removed).
- */
 export async function fetchVolunteerProfileBySlugFromSupabase(
   supabase: SupabaseClientType,
   slug: string

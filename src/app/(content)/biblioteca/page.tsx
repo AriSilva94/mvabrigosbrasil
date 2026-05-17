@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import LibraryItemCard from "@/components/content/LibraryItemCard";
@@ -35,19 +35,11 @@ export default function Page(): JSX.Element {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Derivar estado diretamente dos URL params
   const activeCategory = searchParams.get("categoria");
   const searchParamValue = searchParams.get("s") || "";
 
-  // Estado local apenas para controlar o input (não afeta a filtragem)
-  const [searchInputValue, setSearchInputValue] = useState(searchParamValue);
+  const [searchInputValue, setSearchInputValue] = useState(searchParamValue ?? "");
 
-  // Sincronizar o campo de busca com o parâmetro da URL
-  useEffect(() => {
-    setSearchInputValue(searchParamValue);
-  }, [searchParamValue]);
-
-  // Normalizar string para comparação (remove acentos, converte para lowercase)
   const normalizeString = (str: string): string => {
     return str
       .normalize("NFD")
@@ -55,11 +47,9 @@ export default function Page(): JSX.Element {
       .toLowerCase();
   };
 
-  // Filtrar itens baseado em categoria e busca (usa apenas searchParamValue da URL)
   const filteredItems = useMemo(() => {
     let items = [...libraryItems];
 
-    // Filtrar por categoria
     if (activeCategory) {
       const category = CATEGORIES.find((cat) => cat.value === activeCategory);
       if (category) {
@@ -67,7 +57,6 @@ export default function Page(): JSX.Element {
       }
     }
 
-    // Filtrar por busca (usa o valor da URL, não o estado do input)
     if (searchParamValue.trim()) {
       const normalizedSearch = normalizeString(searchParamValue.trim());
       items = items.filter((item) => {
@@ -86,11 +75,9 @@ export default function Page(): JSX.Element {
     return items;
   }, [activeCategory, searchParamValue]);
 
-  // Handler para filtro de categoria
   const handleCategoryClick = (categoryValue: string) => {
     const newCategory = activeCategory === categoryValue ? null : categoryValue;
 
-    // Atualizar URL
     const params = new URLSearchParams(searchParams.toString());
     if (newCategory) {
       params.set("categoria", newCategory);
@@ -100,7 +87,6 @@ export default function Page(): JSX.Element {
     router.push(`/biblioteca${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
-  // Handler para busca
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -114,7 +100,7 @@ export default function Page(): JSX.Element {
   };
 
   return (
-    <main>
+    <main key={`biblioteca-${activeCategory}-${searchParamValue}`}>
       <PageHeader
         title="Biblioteca"
         breadcrumbs={[{ label: "Inicial", href: "/" }, { label: "Biblioteca" }]}
@@ -173,7 +159,7 @@ export default function Page(): JSX.Element {
             </form>
           </div>
 
-          {/* Indicador de filtros ativos */}
+          {}
           {(activeCategory || searchParamValue) && (
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <span className="text-sm text-gray-600">

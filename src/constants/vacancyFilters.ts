@@ -1,4 +1,3 @@
-// Dicionário de normalização: mapeia valores do banco -> valor padronizado
 export const PERIOD_NORMALIZATION: Record<string, string> = {
   "Matutino": "manhã",
   "Vespertino": "tarde",
@@ -22,7 +21,6 @@ export const WORKLOAD_NORMALIZATION: Record<string, string> = {
   "Flexível": "flexível",
 } as const;
 
-// Função para normalizar valores
 export function normalizePeriod(value: string | null | undefined): string {
   if (!value) return "";
   return PERIOD_NORMALIZATION[value] || value.toLowerCase();
@@ -33,7 +31,6 @@ export function normalizeWorkload(value: string | null | undefined): string {
   return WORKLOAD_NORMALIZATION[value] || value.toLowerCase();
 }
 
-// Filtros para a UI
 export const VACANCY_STATE_FILTERS = [
   { value: "", label: "Todos os Estados" },
   { value: "AC", label: "Acre" },

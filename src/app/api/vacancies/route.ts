@@ -115,7 +115,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Erro ao salvar vaga" }, { status: 500 });
   }
 
-  // Gerar e salvar o slug usando o ID da vaga criada
+
   const inserted = insertedData as VacancyRow;
   const slug = buildVacancySlug(parsed.data.post_title, inserted.id);
   const { data, error: updateError } = await supabaseAdmin
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
 
   if (updateError) {
     console.error("api/vacancies POST slug update error", updateError);
-    // Retorna a vaga mesmo sem o slug salvo, mapVacancyRow gerará um em memória
+
   }
 
   const vacancy = { ...mapVacancyRow((data ?? inserted) as VacancyRow), source: "supabase" };

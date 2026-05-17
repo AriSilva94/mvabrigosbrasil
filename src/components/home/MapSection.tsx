@@ -43,11 +43,11 @@ export default function MapSection(): JSX.Element {
 
         const data: MapStatistics = await response.json();
 
-        // Converter dados para o formato do mapa
+
         const mapPoints = convertStateDataToMapPoints(data.byState);
         setMapData(mapPoints);
 
-        // Criar estatísticas para exibição
+
         const stats: MapStatisticItem[] = [
           {
             value: data.byType.total.toString(),
@@ -74,7 +74,7 @@ export default function MapSection(): JSX.Element {
         setStatistics(stats);
       } catch (error) {
         console.error("Error fetching map statistics:", error);
-        // Em caso de erro, manter arrays vazios
+
       } finally {
         setIsLoading(false);
       }

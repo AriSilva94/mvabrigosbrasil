@@ -37,30 +37,41 @@ export function extractVacancyIdFromSlug(slug: string): string | null {
 
 export function mapVacancyRow(row: VacancyRow): VacancyProfile {
   const title = row.title ?? "Vaga";
-  const slug = (typeof row.slug === 'string' ? row.slug : null) || buildVacancySlug(title, row.id);
+  const slug =
+    (typeof row.slug === "string" ? row.slug : null) ||
+    buildVacancySlug(title, row.id);
 
   return {
     id: row.id,
     title,
     slug,
-    city: typeof row.cidade === 'string' ? row.cidade : undefined,
-    state: typeof row.estado === 'string' ? row.estado : undefined,
-    period: typeof row.periodo === 'string' ? row.periodo : undefined,
-    workload: typeof row.carga_horaria === 'string' ? row.carga_horaria : undefined,
-    demand: typeof row.tipo_demanda === 'string' ? row.tipo_demanda : undefined,
-    area: typeof row.area_atuacao === 'string' ? row.area_atuacao : undefined,
-    quantity: typeof row.quantidade === 'string' ? row.quantidade : undefined,
-    isPublished: typeof row.is_published === 'boolean' ? row.is_published : undefined,
-    shelter: undefined, // Pode ser preenchido com join se necessário
-    description: typeof row.description === 'string' ? row.description : undefined,
-    skills: typeof row.habilidades_e_funcoes === 'string' ? row.habilidades_e_funcoes : undefined,
-    volunteerProfile: typeof row.perfil_dos_voluntarios === 'string' ? row.perfil_dos_voluntarios : undefined,
+    city: typeof row.cidade === "string" ? row.cidade : undefined,
+    state: typeof row.estado === "string" ? row.estado : undefined,
+    period: typeof row.periodo === "string" ? row.periodo : undefined,
+    workload:
+      typeof row.carga_horaria === "string" ? row.carga_horaria : undefined,
+    demand: typeof row.tipo_demanda === "string" ? row.tipo_demanda : undefined,
+    area: typeof row.area_atuacao === "string" ? row.area_atuacao : undefined,
+    quantity: typeof row.quantidade === "string" ? row.quantidade : undefined,
+    isPublished:
+      typeof row.is_published === "boolean" ? row.is_published : undefined,
+    shelter: undefined,
+    description:
+      typeof row.description === "string" ? row.description : undefined,
+    skills:
+      typeof row.habilidades_e_funcoes === "string"
+        ? row.habilidades_e_funcoes
+        : undefined,
+    volunteerProfile:
+      typeof row.perfil_dos_voluntarios === "string"
+        ? row.perfil_dos_voluntarios
+        : undefined,
   };
 }
 
 export async function fetchVacanciesByShelter(
   supabaseAdmin: SupabaseClient<Database>,
-  shelterId: string
+  shelterId: string,
 ): Promise<{ vacancies: VacancyProfile[]; error?: string }> {
   const { data, error } = await supabaseAdmin
     .from("vacancies")
@@ -73,6 +84,6 @@ export async function fetchVacanciesByShelter(
     return { vacancies: [], error: "Erro ao carregar vagas" };
   }
 
-  const vacancies = (data ?? []).map(row => mapVacancyRow(row as VacancyRow));
+  const vacancies = (data ?? []).map((row) => mapVacancyRow(row as VacancyRow));
   return { vacancies };
 }

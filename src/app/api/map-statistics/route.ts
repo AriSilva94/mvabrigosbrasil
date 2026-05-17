@@ -20,7 +20,7 @@ export async function GET() {
   try {
     const supabase = await getServerSupabaseClient({ readOnly: true });
 
-    // Buscar contagem de abrigos ativos por estado
+
     const { data: shelters, error: sheltersError } = await supabase
       .from("shelters")
       .select("state, shelter_type")
@@ -34,7 +34,7 @@ export async function GET() {
       );
     }
 
-    // Agregar dados por estado
+
     const byState = shelters.reduce(
       (acc, shelter) => {
         const state = shelter.state?.toUpperCase();
@@ -51,7 +51,7 @@ export async function GET() {
       [] as { state: string; count: number }[]
     );
 
-    // Agregar dados por tipo
+
     const byType = shelters.reduce(
       (acc, shelter) => {
         acc.total++;

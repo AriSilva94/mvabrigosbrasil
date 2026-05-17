@@ -51,12 +51,10 @@ async function resolveShelter(
     return withoutLt.data;
   };
 
-  // Se shelterWpPostId foi fornecido (gerente visualizando abrigo específico)
   if (shelterWpPostId) {
     return queryWithFallback("wp_post_id", shelterWpPostId);
   }
 
-  // Lógica original: buscar por profile_id
   const attemptOrder = [
     access?.userId ?? null,
     access?.isTeamOnly ? access?.creatorProfileId ?? null : null,
@@ -104,7 +102,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  // Extrair shelter_id da URL se fornecido (para gerentes)
+
   const { searchParams } = new URL(request.url);
   const shelterIdParam = searchParams.get("shelter_id");
   const shelterWpPostId = shelterIdParam ? parseInt(shelterIdParam, 10) : null;

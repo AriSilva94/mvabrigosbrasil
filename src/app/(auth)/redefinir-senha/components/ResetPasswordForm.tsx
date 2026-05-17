@@ -44,7 +44,6 @@ export default function ResetPasswordForm(): JSX.Element {
       }
     });
 
-    // Check if user has a valid session from the recovery link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setIsValidSession(true);

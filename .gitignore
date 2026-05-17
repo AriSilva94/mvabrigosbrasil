@@ -49,3 +49,5 @@ SUPABASE.md
 
 # migration outputs
 scripts/*
+
+src/data/wp/

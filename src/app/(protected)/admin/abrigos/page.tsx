@@ -15,7 +15,6 @@ export const metadata = buildMetadata({
 export default async function Page(): Promise<JSX.Element> {
   const access = await loadUserAccess();
 
-  // Apenas admins podem acessar esta página
   if (!access || access.registerType !== REGISTER_TYPES.admin) {
     redirect("/painel");
   }

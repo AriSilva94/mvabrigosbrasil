@@ -1,41 +1,41 @@
-'use client';
+"use client";
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 
-interface TextOnlyInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface TextOnlyInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   className?: string;
 }
 
-/**
- * Componente TextOnlyInput - Input que não permite apenas números
- * Bloqueia a digitação quando o campo contém somente números
- *
- * @example
- * <TextOnlyInput
- *   name="profissao"
- *   placeholder="Ex: Veterinário"
- * />
- */
+
 export const TextOnlyInput = forwardRef<HTMLInputElement, TextOnlyInputProps>(
-  ({ className = '', onKeyDown, ...props }, ref) => {
+  ({ className = "", onKeyDown, ...props }, ref) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       const input = e.currentTarget;
       const currentValue = input.value;
       const key = e.key;
 
-      // Permite teclas de controle
-      const controlKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+      const controlKeys = [
+        "Backspace",
+        "Delete",
+        "Tab",
+        "Escape",
+        "Enter",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+      ];
       if (controlKeys.includes(key) || e.ctrlKey || e.metaKey) {
         onKeyDown?.(e);
         return;
       }
 
-      // Se a tecla for um número
       if (/^\d$/.test(key)) {
-        // Pega o valor que seria após a digitação
         const newValue = currentValue + key;
 
-        // Se o novo valor for somente números, bloqueia
         if (/^\d+$/.test(newValue.trim())) {
           e.preventDefault();
           return;
@@ -59,7 +59,7 @@ export const TextOnlyInput = forwardRef<HTMLInputElement, TextOnlyInputProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
-TextOnlyInput.displayName = 'TextOnlyInput';
+TextOnlyInput.displayName = "TextOnlyInput";
