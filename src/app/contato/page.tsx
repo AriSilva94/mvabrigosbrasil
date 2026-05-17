@@ -8,7 +8,7 @@ import { Text } from "@/components/ui/typography";
 import { buildMetadata } from "@/lib/seo";
 
 const CONTACT_EMAIL = "mvabrigosbrasil@gmail.com";
-const WHATSAPP_LINK = "https:
+const WHATSAPP_LINK = "https://api.whatsapp.com/send?phone=5541995192977";
 
 export const metadata = buildMetadata({
   title: "Contato",

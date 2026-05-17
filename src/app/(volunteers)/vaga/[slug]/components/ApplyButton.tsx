@@ -40,10 +40,10 @@ export default function ApplyButton({
       }
 
       toast.success(`Candidatura enviada para "${vacancyTitle}"!`);
-      router.refresh(); // Atualiza página para refletir candidatura
+      router.refresh();
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Erro ao se candidatar"
+        error instanceof Error ? error.message : "Erro ao se candidatar",
       );
     } finally {
       setIsApplying(false);

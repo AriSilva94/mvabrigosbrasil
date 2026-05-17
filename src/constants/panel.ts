@@ -78,5 +78,5 @@ export const VOLUNTEER_SHORTCUTS = [
 ] as const;
 
 export const TRAINING_URL = "/treinamentos";
-export const TRAINING_VIDEO_URL = "https:
-export const TRAINING_VIDEO_URL_SHELTER = "https:
+export const TRAINING_VIDEO_URL = "https://www.youtube.com/watch?v=epVvIj6Z-gI";
+export const TRAINING_VIDEO_URL_SHELTER = "https://www.youtube.com/watch?v=EGRzX15pIvw";

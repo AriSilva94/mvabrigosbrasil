@@ -58,7 +58,7 @@ export default function VacancyFiltersPublic({
 }: VacancyFiltersPublicProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-      <div className="flex-1 min-w-[200px]">
+      <div className="flex-1 min-w-50">
         <label
           htmlFor="vacancy-state-filter"
           className="mb-2 block text-sm font-medium text-[#68707b]"
@@ -78,7 +78,7 @@ export default function VacancyFiltersPublic({
         </Select>
       </div>
 
-      <div className="flex-1 min-w-[200px]">
+      <div className="flex-1 min-w-50">
         <label
           htmlFor="vacancy-workload-filter"
           className="mb-2 block text-sm font-medium text-[#68707b]"

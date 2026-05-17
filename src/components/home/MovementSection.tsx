@@ -26,14 +26,14 @@ export default function MovementSection(): JSX.Element {
               Cadastre-se aqui!
             </Heading>
             <Link
-              href="https:
+              href="https://mvabrigosbrasil.com.br/register/?tipo=abrigo"
               className="btn-sample-y mt-6"
             >
               Cadastre seu Abrigo
             </Link>
             <Text className="mt-6 text-white/90">Tem dúvidas?</Text>
             <Link
-              href="https:
+              href="https://mvabrigosbrasil.com.br/como-funciona-o-cadastro-de-abrigos"
               className="text-white underline-offset-4 hover:underline"
             >
               Veja as Perguntas Frequentes
@@ -54,13 +54,13 @@ export default function MovementSection(): JSX.Element {
             </Heading>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               <Link
-                href="https:
+                href="https://mvabrigosbrasil.com.br/register/?tipo=voluntario"
                 className="btn-sample-y"
               >
                 Preciso de Voluntário
               </Link>
               <Link
-                href="https:
+                href="https://mvabrigosbrasil.com.br/register/?tipo=voluntario"
                 className="btn-sample-y"
               >
                 Quero ser Voluntário

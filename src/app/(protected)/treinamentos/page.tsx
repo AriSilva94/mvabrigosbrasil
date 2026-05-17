@@ -16,8 +16,8 @@ export const metadata = buildMetadata({
 });
 
 function TrainingCard({ video }: { video: TrainingVideo }): JSX.Element {
-  const videoUrl = `https:
-  const thumbnailUrl = `https:
+  const videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
+  const thumbnailUrl = `https://img.youtube.com/vi/${video.videoId}/0.jpg`;
 
   return (
     <li>

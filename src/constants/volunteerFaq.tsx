@@ -8,7 +8,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
       <p>
         Acesse{" "}
         <a
-          href="https:
+          href="https://wordpress-202441-5056961.cloudwaysapps.com/register?tipo=voluntario"
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Cadastro de Voluntário
@@ -40,7 +40,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         disponíveis ou que se inscreveram para as vagas divulgadas pelo
         respectivo abrigo, conforme nossa{" "}
         <a
-          href="https:
+          href="https://wordpress-202441-5056961.cloudwaysapps.com/politica-de-privacidade"
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Política de Privacidade
@@ -108,7 +108,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         existentes. Ao conhecer o cenário e o universo no qual estará inserido,
         você estará preparado para uma melhor atuação. Acesse nosso{" "}
         <a
-          href="https:
+          href="https://wordpress-202441-5056961.cloudwaysapps.com/guias-manuais/guia-do-voluntariado-digital/"
           className="text-brand-primary underline-offset-4 hover:underline"
         >
           Guia do voluntariado
@@ -167,7 +167,7 @@ export const VOLUNTEER_FAQ: VolunteerFaq[] = [
         Nem sempre. Dependendo da atividade a ser desempenhada algumas
         instituições optam por disponibilizar vagas para atuação à distância,
         permitindo que você colabore com a ONG de qualquer lugar do país. Uma
-        dica: no campo “Deixe mais comentários que queira compartilhar” do seu
+        dica: no campo "Deixe mais comentários que queira compartilhar" do seu
         cadastro, especifique se você está disponível para atuação a distância
         ou presencial.
       </p>

@@ -11,7 +11,7 @@ export default function WhoWeAreSupportersCtaSection(): JSX.Element {
           Gostou? Venha fazer parte e ajudar a nossa causa!
         </Heading>
         <ButtonLink
-          href="https:
+          href="https://mvabrigosbrasil.com.br/parceiros"
           className="mt-6 inline-flex"
         >
           Seja um Apoiador

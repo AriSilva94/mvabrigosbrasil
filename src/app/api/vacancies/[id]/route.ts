@@ -7,11 +7,15 @@ import {
   vacancyFormSchema,
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
-import { extractVacancyIdFromSlug, mapVacancyRow } from "@/services/vacanciesSupabase";
+import {
+  extractVacancyIdFromSlug,
+  mapVacancyRow,
+} from "@/services/vacanciesSupabase";
 
 type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
 
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 async function getCurrentUserId(): Promise<string | null> {
   const supabase = await getServerSupabaseClient({ readOnly: true });
@@ -36,7 +40,8 @@ async function getShelterForUser() {
     return { shelter: null, error: "Erro ao buscar abrigo", status: 500 };
   }
 
-  if (!data) return { shelter: null, error: "Abrigo não encontrado", status: 404 };
+  if (!data)
+    return { shelter: null, error: "Abrigo não encontrado", status: 404 };
 
   return { shelter: data, error: null, status: 200 };
 }
@@ -64,14 +69,23 @@ export async function GET(
 
     if (fetchError) {
       console.error("api/vacancies/[id] GET error", fetchError);
-      return NextResponse.json({ error: "Erro ao carregar vaga" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Erro ao carregar vaga" },
+        { status: 500 },
+      );
     }
 
     if (!data) {
-      return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Vaga não encontrada" },
+        { status: 404 },
+      );
     }
 
-    const vacancy = { ...mapVacancyRow(data as VacancyRow), source: "supabase" };
+    const vacancy = {
+      ...mapVacancyRow(data as VacancyRow),
+      source: "supabase",
+    };
 
     return NextResponse.json({ vacancy });
   }
@@ -98,7 +112,6 @@ export async function PUT(
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Se for UUID, atualiza vaga existente
   const uuidFromSlug = UUID_REGEX.test(id) ? id : extractVacancyIdFromSlug(id);
 
   if (uuidFromSlug) {
@@ -123,17 +136,24 @@ export async function PUT(
 
     if (updateError) {
       console.error("api/vacancies/[id] PUT error", updateError);
-      return NextResponse.json({ error: "Erro ao atualizar vaga" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Erro ao atualizar vaga" },
+        { status: 500 },
+      );
     }
 
     if (!data) {
-      return NextResponse.json({ error: "Vaga não encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Vaga não encontrada" },
+        { status: 404 },
+      );
     }
 
-    return NextResponse.json({ vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" } });
+    return NextResponse.json({
+      vacancy: { ...mapVacancyRow(data as VacancyRow), source: "supabase" },
+    });
   }
 
-  // Caso seja legado, cria uma nova vaga no Supabase vinculada ao abrigo do usuário
   const { data, error: insertError } = await supabaseAdmin
     .from("vacancies")
     .insert({
@@ -187,7 +207,6 @@ export async function DELETE(
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  // Primeiro, busca a vaga para verificar ownership
   const { data: vacancy, error: fetchError } = await supabaseAdmin
     .from("vacancies")
     .select("id, slug, shelter_id")
@@ -201,10 +220,12 @@ export async function DELETE(
   }
 
   if (!vacancy) {
-    return NextResponse.json({ error: "Vaga não encontrada ou sem permissão" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Vaga não encontrada ou sem permissão" },
+      { status: 404 },
+    );
   }
 
-  // Deleta a vaga
   const { error: deleteError } = await supabaseAdmin
     .from("vacancies")
     .delete()
@@ -213,8 +234,14 @@ export async function DELETE(
 
   if (deleteError) {
     console.error("api/vacancies/[id] DELETE error", deleteError);
-    return NextResponse.json({ error: "Erro ao deletar vaga" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao deletar vaga" },
+      { status: 500 },
+    );
   }
 
-  return NextResponse.json({ success: true, message: "Vaga deletada com sucesso" });
+  return NextResponse.json({
+    success: true,
+    message: "Vaga deletada com sucesso",
+  });
 }

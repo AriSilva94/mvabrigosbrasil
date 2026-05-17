@@ -53,7 +53,7 @@ export const libraryItems: LibraryItem[] = [
       "/assets/img/library/recursos-humanos-em-abrigos-de-caes-e-gatos-parametros-tecnicos-para-dimensionamento-de-equipes-de-medicos-veterinarios-e-tratadores.jpg",
     publishedAt: "13/06/2025",
     summary:
-      "Como citar o documento: GALDIOLI, L. Recursos Humanos em Abrigos de Cães e Gatos: Parâmetros Técnicos para Dimensionamento de Equipes de Médicos Veterinários e Tratadores. Instituto de Medicina Veterinária do Coletivo, 2025.\n\nDisponível em: https:
+      "Como citar o documento: GALDIOLI, L. Recursos Humanos em Abrigos de Cães e Gatos: Parâmetros Técnicos para Dimensionamento de Equipes de Médicos Veterinários e Tratadores. Instituto de Medicina Veterinária do Coletivo, 2025.\n\nDisponível em: https://institutomvc.org.br/site/medicinadeabrigos/",
     contentUrl:
       "/assets/pdf/Recursos-Humanos-em-Abrigos-de-Caes-e-Gatos-Parametros-Tecnicos-para-Dimensionamento-de-Equipes-de-Medicos-Veterinarios-e-Tratadores.pdf",
   },
@@ -184,7 +184,7 @@ export const libraryItems: LibraryItem[] = [
       "O documento, criado para dar suporte à conduta dos médicos-veterinários e zootecnistas que estão em campo resgatando animais vítimas de desastres, traz orientações para a atuação dos profissionais em cenários dessa natureza, com diretrizes de como conduzir o resgate, a assistência veterinária, a manutenção e a destinação de animais domésticos e silvestres.",
     imageSrc: "/assets/img/library/capa.jpeg",
     contentUrl:
-      "https:
+      "https://www.cfmv.gov.br/plano-nacional-de-contingencia-de-desastres-em-massa-envolvendo-animal/comunicacao/publicacoes/2020/10/05/#16",
   },
   {
     slug: "entenda-mais-sobre-a-iniciativa-medicina-de-abrigo-brasil",
@@ -196,7 +196,7 @@ export const libraryItems: LibraryItem[] = [
     summary:
       'Confira a entrevista exclusiva com a renomada médica veterinária Yasmin Gonçalves, que está revolucionando o cenário dos cuidados animais com a iniciativa "Medicina de Abrigo Brasil – Infodados de Animais".\n\nPublicada na edição 112 da revista Vet & Share, de abril de 2024, esta entrevista é um convite para todos os amantes dos animais se envolverem e entenderem mais sobre essa importante causa.\n\nYasmin compartilha em detalhes a missão do projeto, que vai além do mapeamento e levantamento de dados sobre abrigos em todos os estados brasileiros.\n\nEla destaca que o principal objetivo é promover o conhecimento e fornecer orientações sobre as boas práticas para garantir o bem-estar dos animais em situação de abrigo.\n\nNo link abaixo você terá acesso a insights valiosos sobre como a medicina veterinária está evoluindo para garantir um futuro mais digno e saudável para os animais em abrigos no Brasil. A entrevista com Yasmin Gonçalves é uma fonte inspiradora de conhecimento e um convite para fazer parte dessa transformação positiva.',
     contentUrl:
-      "https:
+      "https://vetshare.com.br/revista/edicao-112-abril-de-2024/#dearflip-df_2152/1/",
     externalLinkText: "CONFIRA A REVISTA NA ÍNTEGRA AQUI!!",
   },
   {
@@ -204,7 +204,7 @@ export const libraryItems: LibraryItem[] = [
     title: "Reflexoes e planejamento para implementação de abrigos",
     publishedAt: "28/03/2024",
     summary:
-      "No Brasil, existem aproximadamente 8,8 milhões de animais em condição de vulnerabilidade (ACV) e 400 Organizações Não Governamentais (ONGs) dedicadas à proteção dos animais, com 184.960 animais sob seus cuidados. Consulte o manual para reflexões e planejamento sobre a implementação de abrigos.\n\nGALDIOLI, L.; ROCHA, Y. S. G.; VIEIRA, R. O.; GARCIA, R. C. M. Reflexões e planejamento para a implementação de abrigos. Recursos Educacionais Abertos – REA UFPR.\n\nDisponível em: https:
+      "No Brasil, existem aproximadamente 8,8 milhões de animais em condição de vulnerabilidade (ACV) e 400 Organizações Não Governamentais (ONGs) dedicadas à proteção dos animais, com 184.960 animais sob seus cuidados. Consulte o manual para reflexões e planejamento sobre a implementação de abrigos.\n\nGALDIOLI, L.; ROCHA, Y. S. G.; VIEIRA, R. O.; GARCIA, R. C. M. Reflexões e planejamento para a implementação de abrigos. Recursos Educacionais Abertos – REA UFPR.\n\nDisponível em: https://hdl.handle.net/1884/87190",
     category: "Informativos Técnicos",
     imageSrc:
       "/assets/img/library/reflexoes-e-planejamento-para-implementacao-de-abrigos.jpg",
@@ -324,11 +324,11 @@ export const libraryItems: LibraryItem[] = [
     category: "Informativos Técnicos",
     publishedAt: "13/04/2023",
     summary:
-      "A interação humano-cão para os animais do abrigo deveria fazer parte do dia a dia de um abrigo assim como a limpeza das baias, a alimentação e os cuidados veterinários, pois os cães são seres sociais, gostam de viver em grupos e de ter contato com animais de outras espécies como nós os humanos. Muitos acham que o fato de os colaboradores estarem presentes durante a limpeza e ou alimentação já é o suficiente para aqueles cães alojados, mas não, os cães precisam ser acariciados, interagir de fato com os humanos e não só ganhar petiscos visto que muitos preferem o carinho a petiscos. O protocolo de interação humano-cão (IHC) foi um protocolo desenvolvido para proporcionar interação, e é bem importante que seja aplicado fora das baias para que o cão, além de se exercitar, sinta odores e texturas diferentes aliviando o estresse e proporcionando o bem-estar desses cães em confinamento. A interação com humanos serve como um enriquecimento ambiental aos cães abrigados. Após a prática do IHC pode-se aplicar, na sequência, o Protocolo de Treinamento (TR). Este protocolo foi desenvolvido para uma dissertação de mestrado e baseado no método Schutzhund, um método de adestramento sem castigo desenvolvido na Alemanha e trazido para o Brasil em 1990. O Schutzhund é um conjunto de comandos usados em treinos de cães de proteção e guarda, sempre aplicado com muito contato físico, gestos e carinho. O protocolo consiste em um treinamento para ensinar aos cães comandos básicos de adestramento, aplicados sempre com muito carinho e associado com petiscos. O propósito do carinho, nesse treinamento específico é proporcionar uma maior interação entre os cães e a pessoa que está aplicando o protocolo, para obter um vínculo e uma confiabilidade maior entre o cão e o humano (IHC), ajudando assim nas futuras adoções.\n\nBALDAN, A. L.; ROCHA, Y. S. G.; GALDIOLI, L.; GARCIA, R. C. M. Protocolos de Interação Humano-cão (IHC) e Treinamento (TR) para Cães em Situação de Abrigos. Recursos Educacionais Abertos – UFPR.\n\nDisponível em: https:
+      "A interação humano-cão para os animais do abrigo deveria fazer parte do dia a dia de um abrigo assim como a limpeza das baias, a alimentação e os cuidados veterinários, pois os cães são seres sociais, gostam de viver em grupos e de ter contato com animais de outras espécies como nós os humanos. Muitos acham que o fato de os colaboradores estarem presentes durante a limpeza e ou alimentação já é o suficiente para aqueles cães alojados, mas não, os cães precisam ser acariciados, interagir de fato com os humanos e não só ganhar petiscos visto que muitos preferem o carinho a petiscos. O protocolo de interação humano-cão (IHC) foi um protocolo desenvolvido para proporcionar interação, e é bem importante que seja aplicado fora das baias para que o cão, além de se exercitar, sinta odores e texturas diferentes aliviando o estresse e proporcionando o bem-estar desses cães em confinamento. A interação com humanos serve como um enriquecimento ambiental aos cães abrigados. Após a prática do IHC pode-se aplicar, na sequência, o Protocolo de Treinamento (TR). Este protocolo foi desenvolvido para uma dissertação de mestrado e baseado no método Schutzhund, um método de adestramento sem castigo desenvolvido na Alemanha e trazido para o Brasil em 1990. O Schutzhund é um conjunto de comandos usados em treinos de cães de proteção e guarda, sempre aplicado com muito contato físico, gestos e carinho. O protocolo consiste em um treinamento para ensinar aos cães comandos básicos de adestramento, aplicados sempre com muito carinho e associado com petiscos. O propósito do carinho, nesse treinamento específico é proporcionar uma maior interação entre os cães e a pessoa que está aplicando o protocolo, para obter um vínculo e uma confiabilidade maior entre o cão e o humano (IHC), ajudando assim nas futuras adoções.\n\nBALDAN, A. L.; ROCHA, Y. S. G.; GALDIOLI, L.; GARCIA, R. C. M. Protocolos de Interação Humano-cão (IHC) e Treinamento (TR) para Cães em Situação de Abrigos. Recursos Educacionais Abertos – UFPR.\n\nDisponível em: https://hdl.handle.net/1884/81932",
     imageSrc:
       "/assets/img/library/soroprevalencia-de-anticorpos-contra-o-virus-da-cinomose-canina-parvovirus-e-adenovirus-em-caes-de-um-abrigo-de-animais-brasileiro.jpg",
     contentUrl:
-      "https:
+      "https://www.cfmv.gov.br/plano-nacional-de-contingencia-de-desastres-em-massa-envolvendo-animal/comunicacao/publicacoes/2020/10/05/#16",
   },
   {
     slug: "2022-aafp-isfm-cat-friendly-veterinary-interaction-guidelines",
@@ -375,7 +375,7 @@ export const libraryItems: LibraryItem[] = [
     summary:
       "Livro Digital – Ebook | 1.140 páginas | ISBN: 978-65-00-55235-5\n\nMedicina de Abrigos: princípios e diretrizes, de Lucas Galdioli e Rita de Cassia Maria Garcia é dividida em 10 seções, e conta com a contribuição de mais de 60 colaboradores.\n\nEsta obra que tem como objetivo a difusão de conhecimento técnico-científico em medicina de abrigos para a promoção do manejo e bem-estar dos animais em situação de abrigos, o manejo populacional de cães e gatos, o ensino, pesquisa, extensão e a atuação profissional.\n\nEste livro visa fornecer parâmetros e diretrizes, de modo a padronizar e tornar correto os mais diversos procedimentos e atividades rotineiras de abrigos de animais de acordo com a realidade brasileira, seguindo uma sequência lógica, além de propiciar a disseminação e circulação de informações e conhecimentos técnico-científicos acerca da Medicina de Abrigos no Brasil. O livro será composto por informações amplas, mas específicas e detalhadas, com fornecimento de materiais para aplicação das práticas, bem como para uma consulta rápida e precisa escrita por diversos profissionais colaboradores experientes na área.\n\nEssa obra é grande importância para que seja possível a transformação de condições adversas e de vulnerabilidade, favorecendo a promoção da saúde coletiva, o bem-estar animal e o desenvolvimento sustentável.\n\nO livro digital Medicina de Abrigos: princípios e diretrizes, de Lucas Galdioli e Rita de Cassia Maria Garcia é dividida em 10 seções, e conta com a contribuição de mais de 60 colaboradores.",
     contentUrl:
-      "https:
+      "https://hotmart.com/pt-br/marketplace/produtos/medicina-de-abrigos-principios-e-diretrizes/W76195126H",
     externalLinkText: "Clique aqui para adquirir o livro",
   },
   {
@@ -432,7 +432,7 @@ export const libraryItems: LibraryItem[] = [
     contentUrl: "/assets/pdf/af3-projeto-mva-lamina-quarentena-digital-1.pdf",
   },
   {
-    slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais",
+    slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais-1a-edicao",
     title: "Diretrizes sobre os Padrões de Cuidados em Abrigos de Animais",
     category: "Guias/Manuais",
     publishedAt: "30/09/2022",
@@ -484,7 +484,7 @@ export const libraryItems: LibraryItem[] = [
     category: "Artigos Científicos",
     publishedAt: "26/08/2022",
     summary:
-      "Os objetivos desse estudo foram avaliar um curso de capacitação para colaboradores atuantes em abrigos de animais por meio da educação à distância (EaD) e suas percepções sobre os manejos e protocolos em Medicina de Abrigos (MA). Um curso de capacitação foi elaborado em formato de EaD, voltado para pessoas que trabalhavam de forma direta ou indireta em algum abrigo de cão e gato. A avaliação do curso e análise da percepção dos participantes sobre os manejos e protocolos em MA foi coletada por meio de questionários pré e pós-curso, sendo as respostas organizadas em Excel® para análise descritiva. A comparação entre as respostas foi empregada o Teste de McNemar (…)\n\nPublicado em: Research, Society and Development, v. 11, n. 11, e402111133721, 2022 (CC BY 4.0) | ISSN 2525-3409\n\nDOI: http:
+      "Os objetivos desse estudo foram avaliar um curso de capacitação para colaboradores atuantes em abrigos de animais por meio da educação à distância (EaD) e suas percepções sobre os manejos e protocolos em Medicina de Abrigos (MA). Um curso de capacitação foi elaborado em formato de EaD, voltado para pessoas que trabalhavam de forma direta ou indireta em algum abrigo de cão e gato. A avaliação do curso e análise da percepção dos participantes sobre os manejos e protocolos em MA foi coletada por meio de questionários pré e pós-curso, sendo as respostas organizadas em Excel® para análise descritiva. A comparação entre as respostas foi empregada o Teste de McNemar (…)\n\nPublicado em: Research, Society and Development, v. 11, n. 11, e402111133721, 2022 (CC BY 4.0) | ISSN 2525-3409\n\nDOI: http://dx.doi.org/10.33448/rsd-v11i11.33721\n\nRecebido: 03/08/2022 | Revisado: 16/08/2022 | Aceito: 18/08/2022 | Publicado: 26/08/2022\n\nAutores: Lucas Galdioli (ORCID: https://orcid.org/0000-0003-4870-013X) – Universidade Federal do Paraná, Brasil; Yasmin da Silva Gonçalves da Rocha (ORCID: https://orcid.org/0000-0002-3409-010X) – Universidade Federal do Paraná, Brasil; Rita de Cassia Maria Garcia (ORCID: https://orcid.org/0000-0001-7333-013X) – Universidade Federal do Paraná, Brasil.",
     imageSrc:
       "/assets/img/library/capacitacao-e-percepcao-de-medicos-veterinarios-gestores-funcionarios-e-voluntarios-atuantes-nos-abrigos-em-medicina-de-abrigos-no-brasil.jpg",
     contentUrl:

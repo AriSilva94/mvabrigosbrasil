@@ -20,11 +20,11 @@ export const LOGIN_TUTORIALS: LoginTutorialLink[] = [
   {
     id: "shelter-tutorial",
     label: "Tutorial Cadastro de Abrigo",
-    href: "https:
+    href: "https://youtu.be/c1_rAzP7ARo",
   },
   {
     id: "volunteer-tutorial",
     label: "Tutorial Cadastro de Voluntário",
-    href: "https:
+    href: "https://youtu.be/epVvIj6Z-gI",
   },
 ];

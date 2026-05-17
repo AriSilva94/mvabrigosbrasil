@@ -22,7 +22,7 @@ export function useLocationData() {
       setLoadingEstados(true);
       try {
         const response = await fetch(
-          'https:
+          'https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome'
         );
         const data = await response.json();
         setEstados(data);
@@ -46,7 +46,7 @@ export function useLocationData() {
     setLoadingCidades(true);
     try {
       const response = await fetch(
-        `https:
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSigla}/municipios?orderBy=nome`
       );
       const data = await response.json();
       setCidades(data);

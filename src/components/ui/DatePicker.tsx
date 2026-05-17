@@ -53,6 +53,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     },
     _ref,
   ) => {
+    void _ref;
     const selectedDate = value ? new Date(value + "T00:00:00") : null;
 
     const minDateObj = useMemo(

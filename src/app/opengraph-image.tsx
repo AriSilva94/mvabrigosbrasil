@@ -1,4 +1,3 @@
-
 import { promises as fs } from "fs";
 import path from "path";
 import { ImageResponse } from "next/og";
@@ -15,13 +14,13 @@ async function loadFont(filePath: string) {
   const buffer = await fs.readFile(absolutePath);
   return buffer.buffer.slice(
     buffer.byteOffset,
-    buffer.byteOffset + buffer.byteLength
+    buffer.byteOffset + buffer.byteLength,
   );
 }
 
 const geistBold = loadFont(path.join("fonts", "geist-sans", "Geist-700.ttf"));
 const geistMedium = loadFont(path.join("fonts", "geist-sans", "Geist-500.ttf"));
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http:
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const siteHost = (() => {
   try {
     return new URL(siteUrl).host;
@@ -35,187 +34,185 @@ export default async function OpengraphImage() {
   const [boldFont, mediumFont] = await Promise.all([geistBold, geistMedium]);
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "1200px",
+        height: "630px",
+        display: "flex",
+        alignItems: "stretch",
+        padding: "72px",
+        position: "relative",
+        color: "#f7f9f4",
+        background:
+          "linear-gradient(135deg, #0c6a48 0%, #108259 45%, #5e782a 100%)",
+        overflow: "hidden",
+      }}
+    >
       <div
         style={{
-          width: "1200px",
-          height: "630px",
-          display: "flex",
-          alignItems: "stretch",
-          padding: "72px",
-          position: "relative",
-          color: "#f7f9f4",
+          position: "absolute",
+          inset: 0,
           background:
-            "linear-gradient(135deg, #0c6a48 0%, #108259 45%, #5e782a 100%)",
-          overflow: "hidden",
+            "radial-gradient(circle at 18% 22%, rgba(255,255,255,0.08), transparent 32%), radial-gradient(circle at 82% 0%, rgba(255,255,255,0.12), transparent 38%), radial-gradient(circle at 60% 82%, rgba(0,0,0,0.16), transparent 42%)",
+        }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          gap: "18px",
+          maxWidth: "760px",
+          zIndex: 1,
         }}
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(circle at 18% 22%, rgba(255,255,255,0.08), transparent 32%), radial-gradient(circle at 82% 0%, rgba(255,255,255,0.12), transparent 38%), radial-gradient(circle at 60% 82%, rgba(0,0,0,0.16), transparent 42%)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
             display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-            maxWidth: "760px",
-            zIndex: 1,
+            alignItems: "center",
+            gap: "14px",
+            padding: "10px 12px",
+            borderRadius: "14px",
+            background: "#ffffff",
+            border: "1px solid rgba(16,130,89,0.15)",
+            boxShadow: "0 10px 22px rgba(16,130,89,0.12)",
+            alignSelf: "flex-start",
           }}
         >
-          <div
+          <img
+            src={logoUrl}
+            alt="Medicina de Abrigos Brasil"
+            width={210}
+            height={68}
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "14px",
-              padding: "10px 12px",
-              borderRadius: "14px",
-              background: "#ffffff",
-              border: "1px solid rgba(16,130,89,0.15)",
-              boxShadow: "0 10px 22px rgba(16,130,89,0.12)",
-              alignSelf: "flex-start",
+              display: "block",
+              objectFit: "contain",
+              maxHeight: "68px",
+              filter: "brightness(1.35)",
             }}
-          >
-            <img
-              src={logoUrl}
-              alt="Medicina de Abrigos Brasil"
-              width={210}
-              height={68}
-              style={{
-                display: "block",
-                objectFit: "contain",
-                maxHeight: "68px",
-                filter: "brightness(1.35)",
-              }}
-            />
-          </div>
-
-          <div
-            style={{
-              fontSize: "64px",
-              lineHeight: 1.05,
-              fontWeight: 700,
-              textShadow: "0 10px 40px rgba(0,0,0,0.25)",
-            }}
-          >
-            Mapeamento e Banco de Dados de Abrigos de Animais no Brasil.
-          </div>
-
-          <div
-            style={{
-              fontSize: "28px",
-              lineHeight: 1.3,
-              color: "rgba(247,249,244,0.9)",
-              maxWidth: "720px",
-            }}
-          >
-            Transparência sobre abrigos e lares temporários, biblioteca técnica
-            e apoio para proteger animais em todo o Brasil.
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "14px",
-              marginTop: "10px",
-            }}
-          >
-            <div
-              style={{
-                width: "72px",
-                height: "4px",
-                borderRadius: "999px",
-                background: "#f2a400",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.18)",
-              }}
-            />
-            <div
-              style={{
-                fontSize: "24px",
-                letterSpacing: "0.5px",
-                color: "rgba(247,249,244,0.9)",
-              }}
-            >
-              {siteHost}
-            </div>
-          </div>
+          />
         </div>
 
-        <div style={{ flex: 1 }} />
+        <div
+          style={{
+            fontSize: "64px",
+            lineHeight: 1.05,
+            fontWeight: 700,
+            textShadow: "0 10px 40px rgba(0,0,0,0.25)",
+          }}
+        >
+          Mapeamento e Banco de Dados de Abrigos de Animais no Brasil.
+        </div>
 
         <div
           style={{
-            position: "relative",
-            width: "320px",
-            zIndex: 1,
+            fontSize: "28px",
+            lineHeight: 1.3,
+            color: "rgba(247,249,244,0.9)",
+            maxWidth: "720px",
+          }}
+        >
+          Transparência sobre abrigos e lares temporários, biblioteca técnica e
+          apoio para proteger animais em todo o Brasil.
+        </div>
+
+        <div
+          style={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "8px 0",
-            gap: "12px",
+            alignItems: "center",
+            gap: "14px",
+            marginTop: "10px",
           }}
         >
           <div
             style={{
-              padding: "18px 16px",
-              borderRadius: "18px",
-              background: "rgba(12, 32, 22, 0.25)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              boxShadow: "0 16px 40px rgba(0,0,0,0.28)",
-              backdropFilter: "blur(4px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
+              width: "72px",
+              height: "4px",
+              borderRadius: "999px",
+              background: "#f2a400",
+              boxShadow: "0 6px 16px rgba(0,0,0,0.18)",
             }}
-          >
-            <div
-              style={{
-                fontSize: "18px",
-                letterSpacing: "0.6px",
-                textTransform: "uppercase",
-                color: "rgba(247,249,244,0.7)",
-              }}
-            >
-              Destaques
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                fontSize: "22px",
-              }}
-            >
-              <div>• Transparência de dados</div>
-              <div>• Biblioteca técnica</div>
-              <div>• Rede de voluntários</div>
-            </div>
-          </div>
-
+          />
           <div
             style={{
-              padding: "16px",
-              borderRadius: "18px",
-              background: "rgba(242, 164, 0, 0.12)",
-              border: "1px solid rgba(242,164,0,0.45)",
-              color: "#fdfcf7",
-              fontSize: "20px",
-              lineHeight: 1.3,
-              boxShadow: "0 10px 34px rgba(0,0,0,0.18)",
+              fontSize: "24px",
+              letterSpacing: "0.5px",
+              color: "rgba(247,249,244,0.9)",
             }}
           >
-            Cuidando de quem protege milhares de animais em todo o país.
+            {siteHost}
           </div>
         </div>
       </div>
-    ),
+
+      <div style={{ flex: 1 }} />
+
+      <div
+        style={{
+          position: "relative",
+          width: "320px",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "8px 0",
+          gap: "12px",
+        }}
+      >
+        <div
+          style={{
+            padding: "18px 16px",
+            borderRadius: "18px",
+            background: "rgba(12, 32, 22, 0.25)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            boxShadow: "0 16px 40px rgba(0,0,0,0.28)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "18px",
+              letterSpacing: "0.6px",
+              textTransform: "uppercase",
+              color: "rgba(247,249,244,0.7)",
+            }}
+          >
+            Destaques
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              fontSize: "22px",
+            }}
+          >
+            <div>• Transparência de dados</div>
+            <div>• Biblioteca técnica</div>
+            <div>• Rede de voluntários</div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: "16px",
+            borderRadius: "18px",
+            background: "rgba(242, 164, 0, 0.12)",
+            border: "1px solid rgba(242,164,0,0.45)",
+            color: "#fdfcf7",
+            fontSize: "20px",
+            lineHeight: 1.3,
+            boxShadow: "0 10px 34px rgba(0,0,0,0.18)",
+          }}
+        >
+          Cuidando de quem protege milhares de animais em todo o país.
+        </div>
+      </div>
+    </div>,
     {
       ...size,
       fonts: [
@@ -232,6 +229,6 @@ export default async function OpengraphImage() {
           weight: 500,
         },
       ],
-    }
+    },
   );
 }

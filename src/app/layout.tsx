@@ -9,7 +9,7 @@ import { TourProvider } from "@/components/tour/TourProvider";
 import CookieBanner from "@/components/cookies/CookieBanner";
 import ConditionalAnalytics from "@/components/cookies/ConditionalAnalytics";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http:
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 const geistSans = localFont({
   variable: "--font-geist-sans",

@@ -28,7 +28,7 @@ export default function AppImage(props: AppImageProps) {
       return withoutBase.startsWith("/") ? withoutBase : `/${withoutBase}`;
     }
 
-    if (rawSrc.startsWith("http:
+    if (rawSrc.startsWith("http://") || rawSrc.startsWith("https://")) {
       return rawSrc;
     }
 
