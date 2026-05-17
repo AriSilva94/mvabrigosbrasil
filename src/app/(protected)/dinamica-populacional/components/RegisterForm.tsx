@@ -29,26 +29,28 @@ type RegisterFormProps = {
   existingPeriods?: ExistingPeriod[];
 };
 
-const INITIAL_VALUES: RegisterFormValues = {
-  month: dayjs().subtract(1, "month").format("MM"),
-  year: dayjs().subtract(1, "month").format("YYYY"),
-  entries: "0",
-  entriesCats: "0",
-  adoptions: "0",
-  adoptionsCats: "0",
-  returns: "0",
-  returnsCats: "0",
-  euthanasias: "0",
-  euthanasiasCats: "0",
-  naturalDeaths: "0",
-  naturalDeathsCats: "0",
-  diseases: "0",
-  diseasesCats: "0",
-  tutorReturn: "0",
-  tutorReturnCats: "0",
-  originReturn: "0",
-  originReturnCats: "0",
-};
+function getInitialValues(): RegisterFormValues {
+  return {
+    month: dayjs().subtract(1, "month").format("MM"),
+    year: dayjs().subtract(1, "month").format("YYYY"),
+    entries: "0",
+    entriesCats: "0",
+    adoptions: "0",
+    adoptionsCats: "0",
+    returns: "0",
+    returnsCats: "0",
+    euthanasias: "0",
+    euthanasiasCats: "0",
+    naturalDeaths: "0",
+    naturalDeathsCats: "0",
+    diseases: "0",
+    diseasesCats: "0",
+    tutorReturn: "0",
+    tutorReturnCats: "0",
+    originReturn: "0",
+    originReturnCats: "0",
+  };
+}
 
 function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormValues {
   const previousMonthDate = dayjs().subtract(1, "month");
@@ -61,7 +63,7 @@ function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormV
     (p) => p.month === defaultMonth && p.year === defaultYear,
   );
 
-  if (!isDefaultTaken) return INITIAL_VALUES;
+  if (!isDefaultTaken) return getInitialValues();
 
   const firstAvailable = MONTH_OPTIONS.find((opt) => {
     const isFuture = opt.value > currentMonth;
@@ -71,7 +73,7 @@ function getSmartInitialValues(existingPeriods: ExistingPeriod[]): RegisterFormV
     return !isFuture && !isTaken;
   });
 
-  return { ...INITIAL_VALUES, month: firstAvailable?.value ?? defaultMonth };
+  return { ...getInitialValues(), month: firstAvailable?.value ?? defaultMonth };
 }
 
 function RegisterFormInner({
