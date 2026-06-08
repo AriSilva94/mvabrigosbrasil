@@ -147,6 +147,31 @@ export default function Page(): JSX.Element {
             o perfil do voluntário (dados já cadastrados) à vaga em questão, permitindo que o abrigo
             visualize as informações do candidato.
           </Text>
+
+          <Heading as="h4" className="text-lg font-semibold text-brand-primary">
+            Compartilhamento com operadores e parceiros
+          </Heading>
+          <Text className="leading-relaxed">
+            A Medicina de Abrigos Brasil poderá compartilhar dados pessoais e dados da plataforma
+            com operadores, fornecedores, parceiros técnicos, pesquisadores, instituições
+            acadêmicas e prestadores de serviço estritamente para finalidades relacionadas à
+            operação da plataforma, pesquisa científica, produção de relatórios, análises
+            estatísticas, desenvolvimento tecnológico, suporte técnico e melhoria dos serviços
+            oferecidos.
+          </Text>
+          <Text className="leading-relaxed">
+            Sempre que possível, os dados serão compartilhados de forma anonimizada ou agregada.
+            Quando houver necessidade de compartilhamento de dados pessoais identificáveis, a
+            Medicina de Abrigos Brasil adotará medidas técnicas e contratuais adequadas para
+            garantir a confidencialidade, segurança e uso limitado das informações, em
+            conformidade com a Lei Geral de Proteção de Dados (LGPD).
+          </Text>
+          <Text className="leading-relaxed">
+            Os terceiros que receberem dados deverão utilizá-los apenas para as finalidades
+            autorizadas pela Medicina de Abrigos Brasil, sendo vedado qualquer uso comercial não
+            autorizado, compartilhamento adicional ou tratamento incompatível com esta Política de
+            Privacidade.
+          </Text>
         </section>
 
         <section className="space-y-3">

@@ -109,6 +109,9 @@ export default function Page(): JSX.Element {
             .
           </Text>
           <Text className="leading-relaxed">
+            O tratamento e compartilhamento de dados pessoais seguem a Política de Privacidade.
+          </Text>
+          <Text className="leading-relaxed">
             Ao postar conteúdo (texto, fotos etc.) em páginas de grupo ou perfis, você declara possuir
             ou controlar os direitos necessários. Você não enviará conteúdo fraudulento ou enganoso e
             indeniza a Medicina de Abrigos Brasil por reclamações decorrentes do conteúdo enviado.
