@@ -33,6 +33,18 @@ export default function Page(): JSX.Element {
             operações de cada organização, visite seus sites individuais. Leia atentamente as
             informações abaixo para entender a responsabilidade associada ao acesso aos dados.
           </Text>
+          <Text className="leading-relaxed">
+            A Medicina de Abrigos Brasil poderá disponibilizar acesso aos Dados, integral ou
+            parcialmente, para parceiros técnicos, operadores de dados, pesquisadores,
+            instituições acadêmicas ou prestadores de serviço vinculados às atividades da
+            plataforma, desde que observadas medidas adequadas de segurança, confidencialidade e
+            limitação de finalidade.
+          </Text>
+          <Text className="leading-relaxed">
+            O compartilhamento de dados pessoais identificáveis ocorrerá apenas quando necessário e
+            em conformidade com a legislação aplicável, especialmente a Lei Geral de Proteção de
+            Dados (LGPD).
+          </Text>
         </section>
 
         <section className="space-y-3">
