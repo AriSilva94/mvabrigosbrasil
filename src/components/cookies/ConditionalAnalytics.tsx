@@ -65,14 +65,10 @@ export default function ConditionalAnalytics() {
           </Suspense>
         </>
       )}
-      {config.mode === "ga" && (
-        <>
-          <GoogleAnalytics gaId={config.gaId} />
-          <Suspense fallback={null}>
-            <RouteChangeTracker config={config} />
-          </Suspense>
-        </>
-      )}
+      {/* No modo `ga`, o gtag.js já registra page_view nas navegações client-side
+          via Enhanced Measurement ("Page changes based on browser history events"),
+          então não há rastreamento manual aqui para evitar page_view duplicado. */}
+      {config.mode === "ga" && <GoogleAnalytics gaId={config.gaId} />}
     </>
   );
 }
