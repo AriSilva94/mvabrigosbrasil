@@ -18,7 +18,11 @@ export function trackEvent(eventName: string, params?: Record<string, unknown>):
   if (!hasConsent("analytics", consentRaw)) return;
 
   if (config.mode === "gtm") {
-    sendGTMEvent({ event: eventName, ...params });
+    const gtmEvent = { event: eventName };
+    if (params) {
+      Object.assign(gtmEvent, params);
+    }
+    sendGTMEvent(gtmEvent);
     return;
   }
 
