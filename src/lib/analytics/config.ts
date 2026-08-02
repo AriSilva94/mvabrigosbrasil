@@ -4,7 +4,14 @@ export type AnalyticsConfig =
   | { mode: "ga"; gaId: string };
 
 export function getAnalyticsConfig(): AnalyticsConfig {
-  const enabled = process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
+  // NEXT_PUBLIC_VERCEL_ENV (not VERCEL_ENV) because this runs in client
+  // components too, and only NEXT_PUBLIC_-prefixed vars are inlined into
+  // the browser bundle. Vercel sets it automatically on its own infra,
+  // never locally — so a local `next build && next start` can't
+  // accidentally fire analytics no matter what .env.production says.
+  const isProductionDeploy = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+  const enabled =
+    isProductionDeploy && process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
   if (!enabled) {
     return { mode: "off" };
   }

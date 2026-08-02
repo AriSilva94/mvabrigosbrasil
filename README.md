@@ -358,7 +358,15 @@ src/
 
 ### Testando em desenvolvimento
 
-Por padrão, `NEXT_PUBLIC_ANALYTICS_ENABLED=false` bloqueia qualquer carregamento de GTM/GA, mesmo com IDs preenchidos. Para testar localmente, defina `NEXT_PUBLIC_ANALYTICS_ENABLED=true` no `.env.local` e aceite a categoria "analytics" no banner de cookies — sem esse consentimento, nada carrega de qualquer forma.
+Analytics só carrega quando `NEXT_PUBLIC_VERCEL_ENV=production` (variável que a própria Vercel injeta automaticamente nos deploys de produção — nunca localmente) **e** `NEXT_PUBLIC_ANALYTICS_ENABLED=true` **e** o usuário aceitou a categoria "analytics" no banner de cookies. Isso significa que `.env.local` e até um `npm run build && npm run start` local nunca disparam GTM/GA por engano, mesmo que `NEXT_PUBLIC_ANALYTICS_ENABLED=true` esteja setado — não precisa alternar essa flag manualmente entre dev e produção.
+
+Para testar o carregamento do GTM/GA localmente de propósito, force a variável só naquela sessão de terminal:
+
+```bash
+NEXT_PUBLIC_VERCEL_ENV=production npm run dev
+```
+
+e aceite a categoria "analytics" no banner de cookies.
 
 ### Ambientes não indexáveis
 
