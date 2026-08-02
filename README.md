@@ -332,6 +332,37 @@ src/
 
 ---
 
+## 📈 Analytics e SEO
+
+### Variáveis de ambiente
+
+| Variável | Descrição |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | URL absoluta de produção, usada por `robots.ts`, `sitemap.ts` e metadata OG/Twitter |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED` | `"true"`/`"false"` — chave geral, nada carrega se não for `"true"` |
+| `NEXT_PUBLIC_ANALYTICS_MODE` | `"gtm"` (recomendado) ou `"ga"` — nunca os dois ao mesmo tempo |
+| `NEXT_PUBLIC_GTM_ID` | Container ID do Google Tag Manager (`GTM-XXXXXXX`) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Measurement ID do GA4 (`G-XXXXXXXXXX`), usado tanto no modo `ga` direto quanto dentro do GTM |
+
+### Configurando o GTM
+
+1. Cole o Container ID em `NEXT_PUBLIC_GTM_ID` (`.env.local` para dev, variável de ambiente do provedor de deploy para produção).
+2. Dentro do painel do GTM, crie uma tag do tipo **Google Tag** apontando para o **Measurement ID do GA4** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`).
+3. Configure o trigger dessa tag para o **evento customizado `page_view`** (não use "All Pages"/History Change padrão). O app já dispara esse evento customizado a cada navegação client-side; o GTM carrega e conta o load inicial sozinho. Usar o trigger padrão além do evento customizado duplicaria os pageviews.
+4. Use o **modo Preview** do GTM (botão "Preview" no painel do container) para validar as tags antes de publicar.
+5. Instale a extensão **Google Tag Assistant** para conferir, em tempo real, se o container e as tags disparam corretamente na página.
+6. No GA4, confira os relatórios **Realtime** e **DebugView** para validar que os eventos (incluindo os `page_view` de navegação client-side) estão chegando.
+
+### Testando em desenvolvimento
+
+Por padrão, `NEXT_PUBLIC_ANALYTICS_ENABLED=false` bloqueia qualquer carregamento de GTM/GA, mesmo com IDs preenchidos. Para testar localmente, defina `NEXT_PUBLIC_ANALYTICS_ENABLED=true` no `.env.local` e aceite a categoria "analytics" no banner de cookies — sem esse consentimento, nada carrega de qualquer forma.
+
+### Ambientes não indexáveis
+
+`robots.ts` bloqueia todo crawler (`Disallow: /`) sempre que `VERCEL_ENV` não é `"production"` — cobre preview deployments e desenvolvimento local automaticamente, sem configuração manual.
+
+---
+
 ## 🤝 Contribuindo
 
 Contribuições são bem-vindas!
