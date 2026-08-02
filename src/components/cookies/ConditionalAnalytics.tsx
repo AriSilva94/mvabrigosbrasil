@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import {
   COOKIE_CONSENT_NAME,
   parseConsent,
   type CookieConsentValue,
 } from "@/lib/cookies/consent";
+import { getAnalyticsConfig } from "@/lib/analytics/config";
+import RouteChangeTracker from "./RouteChangeTracker";
 
 function getCookieValue(name: string): string | undefined {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
@@ -37,10 +40,28 @@ export default function ConditionalAnalytics() {
 
   if (!analyticsAllowed) return null;
 
+  const config = getAnalyticsConfig();
+
   return (
     <>
       <Analytics />
       <SpeedInsights />
+      {config.mode === "gtm" && (
+        <>
+          <GoogleTagManager gtmId={config.gtmId} />
+          <Suspense fallback={null}>
+            <RouteChangeTracker config={config} />
+          </Suspense>
+        </>
+      )}
+      {config.mode === "ga" && (
+        <>
+          <GoogleAnalytics gaId={config.gaId} />
+          <Suspense fallback={null}>
+            <RouteChangeTracker config={config} />
+          </Suspense>
+        </>
+      )}
     </>
   );
 }
