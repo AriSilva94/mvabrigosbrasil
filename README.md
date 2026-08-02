@@ -332,6 +332,48 @@ src/
 
 ---
 
+## 📈 Analytics e SEO
+
+### Variáveis de ambiente
+
+| Variável | Descrição |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | URL absoluta de produção, usada por `robots.ts`, `sitemap.ts` e metadata OG/Twitter |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED` | `"true"`/`"false"` — chave geral, nada carrega se não for `"true"` |
+| `NEXT_PUBLIC_ANALYTICS_MODE` | `"gtm"` (recomendado) ou `"ga"` — nunca os dois ao mesmo tempo |
+| `NEXT_PUBLIC_GTM_ID` | Container ID do Google Tag Manager (`GTM-XXXXXXX`) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Measurement ID do GA4 (`G-XXXXXXXXXX`), usado tanto no modo `ga` direto quanto dentro do GTM |
+
+### Configurando o GTM
+
+1. Cole o Container ID em `NEXT_PUBLIC_GTM_ID` (`.env.local` para dev, variável de ambiente do provedor de deploy para produção).
+2. Dentro do painel do GTM, crie uma tag do tipo **Google Tag** apontando para o **Measurement ID do GA4** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`).
+3. Configure **duas tags** para cobrir o load inicial e a navegação client-side (o GTM não envia nada ao GA4 sozinho — sem uma tag disparando na inicialização, o primeiro pageview de cada sessão nunca é contado):
+   - **Tag 1 — Google Tag (configuração GA4):** trigger **Initialization - All Pages**. Dispara uma vez por carregamento do container e envia o pageview inicial.
+   - **Tag 2 — GA4 Event:** nome do evento `page_view`, trigger **Custom Event** casando com `page_view`. Captura as trocas de rota client-side que o componente `RouteChangeTracker` dispara — ele ignora deliberadamente a primeira renderização, então nunca duplica o load inicial.
+   - **Não adicione um trigger History Change** a nenhuma das duas tags — é isso, e não o "All Pages", que causaria pageviews duplicados.
+4. Use o **modo Preview** do GTM (botão "Preview" no painel do container) para validar as tags antes de publicar.
+5. Instale a extensão **Google Tag Assistant** para conferir, em tempo real, se o container e as tags disparam corretamente na página.
+6. No GA4, confira os relatórios **Realtime** e **DebugView** para validar que os eventos (incluindo os `page_view` de navegação client-side) estão chegando.
+
+### Testando em desenvolvimento
+
+Analytics só carrega quando `NEXT_PUBLIC_VERCEL_ENV=production` (variável que a própria Vercel injeta automaticamente nos deploys de produção — nunca localmente) **e** `NEXT_PUBLIC_ANALYTICS_ENABLED=true` **e** o usuário aceitou a categoria "analytics" no banner de cookies. Isso significa que `.env.local` e até um `npm run build && npm run start` local nunca disparam GTM/GA por engano, mesmo que `NEXT_PUBLIC_ANALYTICS_ENABLED=true` esteja setado — não precisa alternar essa flag manualmente entre dev e produção.
+
+Para testar o carregamento do GTM/GA localmente de propósito, force a variável só naquela sessão de terminal:
+
+```bash
+NEXT_PUBLIC_VERCEL_ENV=production npm run dev
+```
+
+e aceite a categoria "analytics" no banner de cookies.
+
+### Ambientes não indexáveis
+
+`robots.ts` bloqueia todo crawler (`Disallow: /`) sempre que `VERCEL_ENV` não é `"production"` — cobre preview deployments e desenvolvimento local automaticamente, sem configuração manual.
+
+---
+
 ## 🤝 Contribuindo
 
 Contribuições são bem-vindas!

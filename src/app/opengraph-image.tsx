@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { ImageResponse } from "next/og";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 export const size = {
@@ -20,7 +21,7 @@ async function loadFont(filePath: string) {
 
 const geistBold = loadFont(path.join("fonts", "geist-sans", "Geist-700.ttf"));
 const geistMedium = loadFont(path.join("fonts", "geist-sans", "Geist-500.ttf"));
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = getSiteUrl();
 const siteHost = (() => {
   try {
     return new URL(siteUrl).host;
