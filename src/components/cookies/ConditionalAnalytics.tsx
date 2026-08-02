@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
@@ -19,6 +19,14 @@ function getCookieValue(name: string): string | undefined {
 
 export default function ConditionalAnalytics() {
   const [analyticsAllowed, setAnalyticsAllowed] = useState(false);
+  // Mirrors analyticsAllowed so the event handler below (registered once,
+  // in an effect with an empty dependency array) always reads the current
+  // value instead of the stale value captured at mount time.
+  const analyticsAllowedRef = useRef(analyticsAllowed);
+
+  useEffect(() => {
+    analyticsAllowedRef.current = analyticsAllowed;
+  }, [analyticsAllowed]);
 
   useEffect(() => {
     const check = () => {
@@ -31,6 +39,17 @@ export default function ConditionalAnalytics() {
 
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<CookieConsentValue>).detail;
+
+      // If analytics was previously allowed and is now being revoked, the
+      // GTM/GA scripts already executed: dataLayer, gtag, _ga* cookies and
+      // any triggers registered inside the container keep running even
+      // after we unmount <GoogleTagManager>/<GoogleAnalytics>. A full
+      // reload is the only reliable way to actually stop tracking.
+      if (analyticsAllowedRef.current && !detail.analytics) {
+        window.location.reload();
+        return;
+      }
+
       setAnalyticsAllowed(detail.analytics);
     };
 

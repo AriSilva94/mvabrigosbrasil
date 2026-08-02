@@ -8,7 +8,7 @@ const PRIVATE_PATHS = [
   "/minhas-vagas",
   "/voluntarios",
   "/admin",
-  "/equipe",
+  "/equipe$",
   "/meu-cadastro",
   "/dinamica-populacional",
   "/login",
@@ -18,6 +18,8 @@ const PRIVATE_PATHS = [
   "/alterar-senha",
   "/treinamentos",
   "/conteudos-exclusivos",
+  "/voluntario/",
+  "/vaga/",
 ];
 
 export default function robots(): MetadataRoute.Robots {

@@ -348,7 +348,10 @@ src/
 
 1. Cole o Container ID em `NEXT_PUBLIC_GTM_ID` (`.env.local` para dev, variável de ambiente do provedor de deploy para produção).
 2. Dentro do painel do GTM, crie uma tag do tipo **Google Tag** apontando para o **Measurement ID do GA4** (`NEXT_PUBLIC_GA_MEASUREMENT_ID`).
-3. Configure o trigger dessa tag para o **evento customizado `page_view`** (não use "All Pages"/History Change padrão). O app já dispara esse evento customizado a cada navegação client-side; o GTM carrega e conta o load inicial sozinho. Usar o trigger padrão além do evento customizado duplicaria os pageviews.
+3. Configure **duas tags** para cobrir o load inicial e a navegação client-side (o GTM não envia nada ao GA4 sozinho — sem uma tag disparando na inicialização, o primeiro pageview de cada sessão nunca é contado):
+   - **Tag 1 — Google Tag (configuração GA4):** trigger **Initialization - All Pages**. Dispara uma vez por carregamento do container e envia o pageview inicial.
+   - **Tag 2 — GA4 Event:** nome do evento `page_view`, trigger **Custom Event** casando com `page_view`. Captura as trocas de rota client-side que o componente `RouteChangeTracker` dispara — ele ignora deliberadamente a primeira renderização, então nunca duplica o load inicial.
+   - **Não adicione um trigger History Change** a nenhuma das duas tags — é isso, e não o "All Pages", que causaria pageviews duplicados.
 4. Use o **modo Preview** do GTM (botão "Preview" no painel do container) para validar as tags antes de publicar.
 5. Instale a extensão **Google Tag Assistant** para conferir, em tempo real, se o container e as tags disparam corretamente na página.
 6. No GA4, confira os relatórios **Realtime** e **DebugView** para validar que os eventos (incluindo os `page_view` de navegação client-side) estão chegando.
