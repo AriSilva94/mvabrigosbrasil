@@ -46,6 +46,7 @@ SUPABASE.md
 
 # claude code
 .claude
+CLAUDE.md
 
 # migration outputs
 scripts/*
