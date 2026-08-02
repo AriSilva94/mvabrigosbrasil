@@ -19,9 +19,6 @@ function getCookieValue(name: string): string | undefined {
 
 export default function ConditionalAnalytics() {
   const [analyticsAllowed, setAnalyticsAllowed] = useState(false);
-  // Mirrors analyticsAllowed so the event handler below (registered once,
-  // in an effect with an empty dependency array) always reads the current
-  // value instead of the stale value captured at mount time.
   const analyticsAllowedRef = useRef(analyticsAllowed);
 
   useEffect(() => {
@@ -40,11 +37,6 @@ export default function ConditionalAnalytics() {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<CookieConsentValue>).detail;
 
-      // If analytics was previously allowed and is now being revoked, the
-      // GTM/GA scripts already executed: dataLayer, gtag, _ga* cookies and
-      // any triggers registered inside the container keep running even
-      // after we unmount <GoogleTagManager>/<GoogleAnalytics>. A full
-      // reload is the only reliable way to actually stop tracking.
       if (analyticsAllowedRef.current && !detail.analytics) {
         window.location.reload();
         return;
