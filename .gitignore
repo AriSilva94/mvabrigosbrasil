@@ -52,3 +52,5 @@ CLAUDE.md
 scripts/*
 
 src/data/wp/
+
+.superpowers/

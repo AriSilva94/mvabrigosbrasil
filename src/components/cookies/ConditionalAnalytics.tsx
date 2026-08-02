@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import {
   COOKIE_CONSENT_NAME,
   parseConsent,
   type CookieConsentValue,
 } from "@/lib/cookies/consent";
+import { getAnalyticsConfig } from "@/lib/analytics/config";
+import RouteChangeTracker from "./RouteChangeTracker";
 
 function getCookieValue(name: string): string | undefined {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
@@ -16,6 +19,11 @@ function getCookieValue(name: string): string | undefined {
 
 export default function ConditionalAnalytics() {
   const [analyticsAllowed, setAnalyticsAllowed] = useState(false);
+  const analyticsAllowedRef = useRef(analyticsAllowed);
+
+  useEffect(() => {
+    analyticsAllowedRef.current = analyticsAllowed;
+  }, [analyticsAllowed]);
 
   useEffect(() => {
     const check = () => {
@@ -28,6 +36,12 @@ export default function ConditionalAnalytics() {
 
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<CookieConsentValue>).detail;
+
+      if (analyticsAllowedRef.current && !detail.analytics) {
+        window.location.reload();
+        return;
+      }
+
       setAnalyticsAllowed(detail.analytics);
     };
 
@@ -37,10 +51,28 @@ export default function ConditionalAnalytics() {
 
   if (!analyticsAllowed) return null;
 
+  const config = getAnalyticsConfig();
+
   return (
     <>
       <Analytics />
       <SpeedInsights />
+      {config.mode === "gtm" && (
+        <>
+          <GoogleTagManager gtmId={config.gtmId} />
+          <Suspense fallback={null}>
+            <RouteChangeTracker config={config} />
+          </Suspense>
+        </>
+      )}
+      {config.mode === "ga" && (
+        <>
+          <GoogleAnalytics gaId={config.gaId} />
+          <Suspense fallback={null}>
+            <RouteChangeTracker config={config} />
+          </Suspense>
+        </>
+      )}
     </>
   );
 }
