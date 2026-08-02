@@ -11,6 +11,16 @@ export type LibraryItem = {
 
 export const libraryItems: LibraryItem[] = [
   {
+    slug: "panorama-da-adocao-no-brasil-ongs",
+    title: "Panorama da adoção no Brasil - ONGs",
+    category: "Informativos Técnicos",
+    imageSrc: "/assets/img/library/panorama-da-adocao-no-brasil-ongs.jpg",
+    publishedAt: "04/02/2026",
+    summary:
+      "2ª Edição | Versão em Português\n\nAs Diretrizes para Padrões de Cuidados em Abrigos de Animais da Associação de Veterinários de Abrigos (ASV) foram originalmente publicadas em 2010. Esta segunda edição, atualizada em 2022, compartilha os mesmos objetivos fundamentais: fornecer um conjunto de padrões comuns para o cuidado e bem-estar de animais de companhia em abrigos, com base em evidências científicas e consenso de especialistas; orientações que auxiliem as organizações de proteção animal a reduzir superlotação, estresse e doenças; e uma ferramenta para organizações e comunidades avaliarem e aprimorarem seus abrigos.",
+    contentUrl: "/assets/pdf/REL_Panorama da adoção no Brasil - ONGs_mar26.pdf",
+  },
+  {
     slug: "diretrizes-sobre-os-padroes-de-cuidados-em-abrigos-de-animais",
     title: "Diretrizes sobre os Padrões de Cuidados em Abrigos de Animais",
     category: "Guias/Manuais",
