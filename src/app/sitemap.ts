@@ -34,6 +34,9 @@ const STATIC_ROUTES: Array<{
   { path: "/compromisso-privacidade", priority: 0.6, changeFrequency: "monthly" },
   { path: "/contrato-para-dados-de-abrigo", priority: 0.6, changeFrequency: "monthly" },
   { path: "/politica-de-cookies", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/contrato-de-uso-de-dados", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/politica-de-privacidade", priority: 0.6, changeFrequency: "monthly" },
+  { path: "/termos-de-uso", priority: 0.6, changeFrequency: "monthly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
