@@ -11,6 +11,77 @@ export type LibraryItem = {
 
 export const libraryItems: LibraryItem[] = [
   {
+    slug: "guia-tecnico-para-construcao-e-manutencao-de-abrigos-e-canis",
+    title: "Guia Técnico para Construção e Manutenção de Abrigos e Canis",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guia-tecnico-para-construcao-e-manutencao-de-abrigos-e-canis.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "Conselho Regional de Medicina Veterinária do Estado do Paraná (CRMV-PR) | 2016\n\nNos últimos anos a sociedade brasileira sofreu uma série de transformações nas relações entre seres humanos e animais, o que ensejou o surgimento de protetores e abrigos. Isso levou à necessidade de orientações técnicas para a construção e manutenção destes locais, contribuindo para que não se tornem fatores críticos na qualidade de vida para os animais abrigados.\n\nO guia não tem a pretensão de ditar regras, mas sim contribuir para que as pessoas e instituições com intuito de abrigar animais o façam da melhor maneira possível; serve também de orientação aos responsáveis técnicos, no exercício de suas funções junto a estas instituições, e como base para a fiscalização do CRMV-PR nas questões relativas a abrigos e canis.\n\nO conteúdo aborda a diferença entre abrigos e canis comerciais, orientações técnicas referentes à estrutura física e a estrutura mínima sugerida, considerações sobre rotina e aspectos sanitários (medidas referentes às instalações, aos funcionários e aos animais), bem-estar animal, políticas de controle populacional, programa de adoção e guarda responsável, além de anexos com as atividades do proprietário do estabelecimento e do responsável técnico do canil.",
+    contentUrl: "/assets/pdf/Guia-Canil-e-Abrigo.pdf",
+  },
+  {
+    slug: "guidelines-for-the-design-and-management-of-animal-shelters",
+    title: "Guidelines for the design and management of animal shelters",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guidelines-for-the-design-and-management-of-animal-shelters.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "RSPCA International | Versão em Inglês\n\nO objetivo desta publicação é apresentar todos os aspectos a serem considerados na construção de um abrigo de animais. O documento enfatiza que construir um abrigo pode não ser a melhor solução em todas as situações e sugere projetos alternativos a serem avaliados antes dessa decisão.\n\nA introdução apresenta as necessidades básicas dos animais – fisiológicas, sociais, psicológicas, ambientais e comportamentais – e as Cinco Liberdades adotadas pela RSPCA como referência de bem-estar animal também em abrigos: liberdade de fome e sede; de dor, lesão e doença; de medo e angústia; de desconforto; e liberdade para expressar o comportamento normal.\n\nAs seções seguintes tratam de quando abrir um abrigo é a opção correta, do estabelecimento de políticas do abrigo (castração, readoção e eutanásia), do projeto do abrigo (recursos financeiros, escolha do terreno e layout da edificação), das rotinas (admissão de animais, readoção, rotinas diárias, alimentação, higiene e limpeza, registros), das questões de pessoal (equipe e voluntários, saúde e segurança) e trazem um checklist para o planejamento de um abrigo de animais.",
+    contentUrl: "/assets/pdf/Shelter-guidelines-English.pdf",
+  },
+  {
+    slug: "nota-tecnica-3581-2025-mma-animais-comunitarios-em-condominios",
+    title:
+      "Nota Técnica nº 3581/2025-MMA – Proteção e manejo populacional ético de animais comunitários em condomínios",
+    category: "Informativos Técnicos",
+    imageSrc:
+      "/assets/img/library/nota-tecnica-3581-2025-mma-animais-comunitarios-em-condominios.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "Ministério do Meio Ambiente e Mudança do Clima (MMA) | Secretaria Nacional de Biodiversidade, Florestas e Direitos Animais | Departamento de Proteção, Defesa e Direitos Animais (DPDA)\n\nA Nota Técnica reúne os esclarecimentos técnicos do DPDA/SBIO/MMA sobre legislação, proteção, alimentação e manejo populacional ético de animais comunitários em áreas urbanas e, especificamente, em condomínios.\n\nO documento apresenta o marco legal aplicável – art. 225, §1º, VII da Constituição Federal; Lei de Crimes Ambientais (Lei nº 9.605/1998, art. 32); Resolução CFMV nº 1.236/2018; Lei nº 14.228/2021; Lei nº 13.426/2017; Decreto nº 12.439/2025, que instituiu o Programa Nacional de Proteção e Manejo Populacional Ético de Cães e Gatos (ProPatinhas) e o Cadastro Nacional de Animais Domésticos (SinPatinhas); e a Lei distrital nº 6.612/2020 – além do conceito e do status jurídico do animal comunitário.",
+    contentUrl: "/assets/pdf/SEI_2154078_Nota_Tecnica_3581.pdf",
+  },
+  {
+    slug: "guia-introdutorio-de-bem-estar-e-comportamento-de-caes-e-gatos-para-gestores-e-funcionarios-de-abrigos",
+    title:
+      "Guia introdutório de bem-estar e comportamento de cães e gatos para gestores e funcionários de abrigos",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guia-introdutorio-de-bem-estar-e-comportamento-de-caes-e-gatos-para-gestores-e-funcionarios-de-abrigos.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "1ª Edição | julho de 2021 | 72 páginas | ISBN eBook 978-65-89713-09-8\n\nMedicina Veterinária do Coletivo – UFPR, com apoio e revisão do Instituto PremieRpet®.\n\nEditores e organizadores: Lucas Galdioli, Heloise Zavatieri Polato, Luis Fernando Turozi Mausson, Cíntia Parolim Ferraz e Rita de Cassia Maria Garcia.\n\nO guia reúne, em 12 capítulos, os fundamentos de senciência e bem-estar animal, indicadores para monitoramento dos níveis de bem-estar de cães e gatos em abrigos, etograma, comunicação e aspectos sensoriais das duas espécies, socialização, avaliação e tratamento comportamental, educação e adestramento pré-adoção, os principais problemas que reduzem o bem-estar em abrigos, enriquecimento ambiental, monitoramento das adoções e aconselhamento comportamental, além de orientações básicas para adotantes.\n\nGALDIOLI, L.; POLATO, H. Z.; MAUSSON, L. F. T.; FERRAZ, C. P.; GARCIA, R. C. M. (Ed./Org.). Guia introdutório de bem-estar e comportamento de cães e gatos para gestores e funcionários de abrigos. Curitiba: MVC, 2021.",
+    contentUrl:
+      "/assets/pdf/GUIA-INTRODUTORIO-DE-BEM-ESTAR-E-COMPORTAMENTO-DE-CAES-E-GATOS-PARA-GESTORES-E-FUNCIONARIOS-DE-ABRIGOS-DIGITAL.pdf",
+  },
+  {
+    slug: "guia-pratico-politicas-de-manejo-etico-populacional-de-caes-e-gatos-em-minas-gerais",
+    title:
+      "Guia Prático: Políticas de Manejo Ético Populacional de Cães e Gatos em Minas Gerais",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guia-pratico-politicas-de-manejo-etico-populacional-de-caes-e-gatos-em-minas-gerais.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "1ª Edição | Ministério Público do Estado de Minas Gerais | Belo Horizonte, 2019\n\nGuia idealizado pelo Ministério Público de Minas Gerais (MPMG), por meio da Coordenadoria Estadual de Defesa da Fauna (CEDEF), em conjunto com a Escola de Veterinária da Universidade Federal de Minas Gerais (UFMG), com o objetivo de fomentar e orientar as práticas de manejo ético/humanitário de controle populacional de cães e gatos e a promoção do bem-estar animal e da qualidade de vida das pessoas nos municípios mineiros.\n\nO material percorre as principais estratégias do manejo ético populacional: diagnóstico de situação e métodos para estimar as populações de cães e gatos (censo, amostragem estratificada proporcional, Técnica Pasteur São Paulo, amostragem por blocos e captura e recaptura), registro e identificação animal (tatuagem, microchip, colares, brincos), banco de dados de sistemas de registro e proposta de Lei Municipal de Manejo Ético Populacional Animal.\n\nAs informações técnicas também se destinam a profissionais do Direito – Promotores de Justiça, Juízes de Direito e advogados – que atuem em questões legais referentes ao manejo populacional de cães e gatos.",
+    contentUrl: "/assets/pdf/Guia_politicas_manejo.pdf",
+  },
+  {
+    slug: "manual-de-normas-tecnicas-para-estruturas-fisicas-de-unidades-de-vigilancia-de-zoonoses",
+    title:
+      "Manual de Normas Técnicas para Estruturas Físicas de Unidades de Vigilância de Zoonoses",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/manual-de-normas-tecnicas-para-estruturas-fisicas-de-unidades-de-vigilancia-de-zoonoses.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "1ª Edição | Brasília/DF, 2017 | 68 páginas | ISBN 978-85-334-2219-3\n\nMinistério da Saúde | Secretaria de Vigilância em Saúde | Departamento de Vigilância das Doenças Transmissíveis.\n\nCom vistas ao fortalecimento, à adequação e ao aperfeiçoamento das ações e dos serviços de saúde voltados para a vigilância, a prevenção e o controle de zoonoses e de acidentes causados por animais peçonhentos e venenosos, a Secretaria de Vigilância em Saúde institui neste manual as normas técnicas de estruturas físicas para as Unidades de Vigilância de Zoonoses (UVZs).\n\nO documento define o que são as UVZs e seus objetivos, as características do terreno para implantação, a legislação a ser observada, o memorial justificativo para construção, ampliação e reforma, o programa arquitetônico com os ambientes obrigatórios e opcionais, o critério populacional e os critérios de projeto – incluindo especificações para canis coletivos e individuais, gatil coletivo, solário, ambulatório, central de material esterilizado, laboratório de diagnóstico de leishmaniose e depósito de produtos químicos. Tem como principal referência a RDC/Anvisa nº 50, de 21 de fevereiro de 2002.",
+    contentUrl: "/assets/pdf/Manual-estruturas-fisicas-UVZ.pdf",
+  },
+  {
     slug: "panorama-da-adocao-no-brasil-ongs",
     title: "Panorama da adoção no Brasil - ONGs",
     category: "Informativos Técnicos",
