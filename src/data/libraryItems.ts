@@ -11,6 +11,28 @@ export type LibraryItem = {
 
 export const libraryItems: LibraryItem[] = [
   {
+    slug: "guia-tecnico-para-construcao-e-manutencao-de-abrigos-e-canis",
+    title: "Guia Técnico para Construção e Manutenção de Abrigos e Canis",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guia-tecnico-para-construcao-e-manutencao-de-abrigos-e-canis.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "Conselho Regional de Medicina Veterinária do Estado do Paraná (CRMV-PR) | 2016\n\nNos últimos anos a sociedade brasileira sofreu uma série de transformações nas relações entre seres humanos e animais, o que ensejou o surgimento de protetores e abrigos. Isso levou à necessidade de orientações técnicas para a construção e manutenção destes locais, contribuindo para que não se tornem fatores críticos na qualidade de vida para os animais abrigados.\n\nO guia não tem a pretensão de ditar regras, mas sim contribuir para que as pessoas e instituições com intuito de abrigar animais o façam da melhor maneira possível; serve também de orientação aos responsáveis técnicos, no exercício de suas funções junto a estas instituições, e como base para a fiscalização do CRMV-PR nas questões relativas a abrigos e canis.\n\nO conteúdo aborda a diferença entre abrigos e canis comerciais, orientações técnicas referentes à estrutura física e a estrutura mínima sugerida, considerações sobre rotina e aspectos sanitários (medidas referentes às instalações, aos funcionários e aos animais), bem-estar animal, políticas de controle populacional, programa de adoção e guarda responsável, além de anexos com as atividades do proprietário do estabelecimento e do responsável técnico do canil.",
+    contentUrl: "/assets/pdf/Guia-Canil-e-Abrigo.pdf",
+  },
+  {
+    slug: "guidelines-for-the-design-and-management-of-animal-shelters",
+    title: "Guidelines for the design and management of animal shelters",
+    category: "Guias/Manuais",
+    imageSrc:
+      "/assets/img/library/guidelines-for-the-design-and-management-of-animal-shelters.jpg",
+    publishedAt: "05/08/2026",
+    summary:
+      "RSPCA International | Versão em Inglês\n\nO objetivo desta publicação é apresentar todos os aspectos a serem considerados na construção de um abrigo de animais. O documento enfatiza que construir um abrigo pode não ser a melhor solução em todas as situações e sugere projetos alternativos a serem avaliados antes dessa decisão.\n\nA introdução apresenta as necessidades básicas dos animais – fisiológicas, sociais, psicológicas, ambientais e comportamentais – e as Cinco Liberdades adotadas pela RSPCA como referência de bem-estar animal também em abrigos: liberdade de fome e sede; de dor, lesão e doença; de medo e angústia; de desconforto; e liberdade para expressar o comportamento normal.\n\nAs seções seguintes tratam de quando abrir um abrigo é a opção correta, do estabelecimento de políticas do abrigo (castração, readoção e eutanásia), do projeto do abrigo (recursos financeiros, escolha do terreno e layout da edificação), das rotinas (admissão de animais, readoção, rotinas diárias, alimentação, higiene e limpeza, registros), das questões de pessoal (equipe e voluntários, saúde e segurança) e trazem um checklist para o planejamento de um abrigo de animais.",
+    contentUrl: "/assets/pdf/Shelter-guidelines-English.pdf",
+  },
+  {
     slug: "nota-tecnica-3581-2025-mma-animais-comunitarios-em-condominios",
     title:
       "Nota Técnica nº 3581/2025-MMA – Proteção e manejo populacional ético de animais comunitários em condomínios",
