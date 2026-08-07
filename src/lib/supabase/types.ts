@@ -68,6 +68,7 @@ export type Database = {
         Row: {
           id: string;
           profile_id: string | null;
+          wp_post_id: number | null;
           shelter_type: string | null;
           cnpj: string | null;
           cpf: string | null;
@@ -99,6 +100,7 @@ export type Database = {
         Insert: {
           id?: string;
           profile_id?: string | null;
+          wp_post_id?: number | null;
           shelter_type?: string | null;
           cnpj?: string | null;
           cpf?: string | null;
@@ -129,6 +131,7 @@ export type Database = {
         Update: {
           id?: string;
           profile_id?: string | null;
+          wp_post_id?: number | null;
           shelter_type?: string | null;
           cnpj?: string | null;
           cpf?: string | null;

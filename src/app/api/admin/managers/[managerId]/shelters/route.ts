@@ -53,6 +53,33 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       .select("id, wp_post_id")
       .in("id", shelter_ids);
 
+    const sheltersMissingWpPostId = (shelters || []).filter(s => !s.wp_post_id);
+
+    for (const shelter of sheltersMissingWpPostId) {
+      let assigned = false;
+
+      for (let attempt = 0; attempt < 5 && !assigned; attempt++) {
+        // wp_post_id é INTEGER (int4); valor sintético negativo fica fora do
+        // range de IDs reais do WordPress (sempre positivos) e cabe no int4.
+        const syntheticWpPostId = -(Math.floor(Math.random() * 1_000_000_000) + 1);
+        const { error: assignError } = await supabaseAdmin
+          .from("shelters")
+          .update({ wp_post_id: syntheticWpPostId })
+          .eq("id", shelter.id);
+
+        if (!assignError) {
+          shelter.wp_post_id = syntheticWpPostId;
+          assigned = true;
+        } else if (assignError.code !== "23505") {
+          return NextResponse.json({ error: "Erro ao vincular abrigo sem ID legado" }, { status: 500 });
+        }
+      }
+
+      if (!assigned) {
+        return NextResponse.json({ error: "Erro ao vincular abrigo sem ID legado" }, { status: 500 });
+      }
+    }
+
     const wpPostIds = (shelters || []).map(s => s.wp_post_id).filter(Boolean) as number[];
 
     const { error: deleteError } = await supabaseAdmin
