@@ -10,14 +10,14 @@ type Manager = {
   shelters: Array<{
     id: string;
     name: string;
-    wp_post_id: number;
+    wp_post_id: number | null;
   }>;
 };
 
 type Shelter = {
   id: string;
   name: string;
-  wp_post_id: number;
+  wp_post_id: number | null;
 };
 
 type EditSheltersModalProps = {
@@ -185,7 +185,9 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
                     >
                       <div className="flex-1">
                         <p className="font-medium text-slate-900">{shelter.name}</p>
-                        <p className="text-xs text-slate-500">ID: {shelter.wp_post_id}</p>
+                        <p className="text-xs text-slate-500">
+                          ID: {shelter.wp_post_id ?? `${shelter.id.slice(0, 8)} (novo)`}
+                        </p>
                       </div>
                       <div
                         className={`flex h-5 w-5 items-center justify-center rounded border-2 transition ${
