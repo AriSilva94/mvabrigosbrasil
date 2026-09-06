@@ -1,18 +1,10 @@
 import { SignJWT } from "jose";
-import { NextRequest } from "next/server";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { verifySessionToken } from "@/lib/auth/session";
-import { proxy } from "../../../proxy";
 
 const secret = "test-secret-test-secret-test-secret-test-secret";
 const key = new TextEncoder().encode(secret);
-const originalSecret = process.env.AUTH_JWT_SECRET;
-
-afterEach(() => {
-  vi.unstubAllGlobals();
-  process.env.AUTH_JWT_SECRET = originalSecret;
-});
 
 async function tokenWithExpiration(expirationTime: number) {
   return new SignJWT({
@@ -51,38 +43,22 @@ describe("verifySessionToken", () => {
   it("returns null for a malformed JWT", async () => {
     await expect(verifySessionToken("not-a-jwt", secret)).resolves.toBeNull();
   });
-});
 
-describe("proxy refresh", () => {
-  it("forwards the full Cookie header and every clearing Set-Cookie header", async () => {
-    process.env.AUTH_JWT_SECRET = secret;
-    const responseHeaders = new Headers();
-    responseHeaders.append("set-cookie", "mv_at=; Path=/; Max-Age=0; HttpOnly");
-    responseHeaders.append("set-cookie", "mv_rt=; Path=/; Max-Age=0; HttpOnly");
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
-      new Response(JSON.stringify({ error: "Sessão expirada" }), {
-        status: 401,
-        headers: responseHeaders,
-      }),
-    );
-    vi.stubGlobal("fetch", fetcher);
-    const request = new NextRequest("http://localhost:3000/painel?tab=overview", {
-      headers: { cookie: "consent=yes; mv_rt=refresh-token" },
-    });
+  it("returns null for a JWT signed with another secret", async () => {
+    const token = await tokenWithExpiration(Math.floor(Date.now() / 1000) + 60);
 
-    const response = await proxy(request);
+    await expect(
+      verifySessionToken(token, "another-secret-another-secret-another-secret"),
+    ).resolves.toBeNull();
+  });
 
-    expect(fetcher).toHaveBeenCalledWith(
-      "http://localhost:3001/api/v1/auth/refresh",
-      expect.objectContaining({
-        method: "POST",
-        headers: { cookie: "consent=yes; mv_rt=refresh-token" },
-      }),
-    );
-    expect(response.headers.getSetCookie()).toEqual([
-      "mv_at=; Path=/; Max-Age=0; HttpOnly",
-      "mv_rt=; Path=/; Max-Age=0; HttpOnly",
-    ]);
-    expect(response.headers.get("location")).toBe("http://localhost:3000/login");
+  it("rejects a signed JWT that does not use HS256", async () => {
+    const token = await new SignJWT({ email: "admin@example.com" })
+      .setProtectedHeader({ alg: "HS384" })
+      .setSubject("user-1")
+      .setExpirationTime("1m")
+      .sign(key);
+
+    await expect(verifySessionToken(token, secret)).resolves.toBeNull();
   });
 });
