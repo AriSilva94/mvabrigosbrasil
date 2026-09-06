@@ -45,10 +45,11 @@ The design intentionally avoids direct browser calls to port 3001. Therefore:
 
 - the browser does not require backend CORS;
 - `mv_at` and `mv_rt` remain `httpOnly` and same-origin;
-- the refresh cookie path `/api/v1/auth` matches the browser-visible path;
+- the refresh cookie path is `/`, so page requests expose it to the trusted
+  Next proxy while it remains inaccessible to browser JavaScript;
 - client components do not need a public backend origin variable.
 
-Server Components use `src/lib/api/client.ts` to call
+Server Components use `src/lib/api/server.ts` to call
 `${INTERNAL_API_URL}/api/v1/*` directly. The helper forwards the incoming Cookie
 header, disables accidental Next fetch caching by default, parses JSON, and
 throws a typed `ApiError` containing the HTTP status and backend message.
@@ -70,6 +71,11 @@ with this flow:
    then exposes the new access cookie to Server Components.
 4. If refresh fails, public routes continue and protected routes redirect to
    `/login`.
+
+Refresh rotation is atomic in Redis. Uses of the immediately previous refresh
+token within a short grace window return the same successor, preventing races
+between tabs, browser requests, and the Next proxy. Reuse outside that window
+still revokes the session.
 
 The redirect prevents Server Components from rendering with an expired access
 cookie during the same request that refreshed it.

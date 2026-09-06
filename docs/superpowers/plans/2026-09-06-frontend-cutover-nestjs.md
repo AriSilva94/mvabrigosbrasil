@@ -19,6 +19,15 @@
 - Commit each task independently and verify frontend build after every task.
 - Use only synthetic test identities and restore backend Postgres/Redis baseline.
 
+### Task 1 Prerequisite: Refresh Cookie and Rotation
+
+The page proxy can receive `mv_rt` only when the backend sets it with `Path=/`.
+Backend `develop` must set and clear that path consistently while retaining
+`HttpOnly`, `SameSite=Lax`, configured `Secure`, and the existing lifetime.
+Refresh rotation must be atomic and return the same successor for concurrent
+use of the immediately previous token within a short grace window; reuse after
+that window continues to revoke the session.
+
 ### Task 1: Same-Origin API and Session Foundation
 
 **Files:**
