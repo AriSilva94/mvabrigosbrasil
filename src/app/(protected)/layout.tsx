@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
-import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 import ProfileValidationProvider from "@/components/providers/ProfileValidationProvider";
+import { getSession } from "@/lib/auth/session";
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -11,10 +11,9 @@ interface ProtectedLayoutProps {
 export default async function ProtectedLayout({
   children,
 }: ProtectedLayoutProps): Promise<ReactNode> {
-  const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data, error } = await supabase.auth.getUser();
+  const session = await getSession();
 
-  if (error || !data.user) {
+  if (!session) {
     redirect("/login");
   }
 

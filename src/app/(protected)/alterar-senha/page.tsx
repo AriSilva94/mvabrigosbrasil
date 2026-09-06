@@ -2,8 +2,8 @@ import type { JSX } from "react";
 import { redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import ChangePasswordForm from "@/app/(protected)/alterar-senha/components/ChangePasswordForm";
+import { getSession } from "@/lib/auth/session";
 import { buildMetadata } from "@/lib/seo";
-import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
 
 export const metadata = buildMetadata({
   title: "Alterar Senha",
@@ -13,10 +13,9 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
-  const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data } = await supabase.auth.getUser();
+  const session = await getSession();
 
-  if (!data.user?.email) {
+  if (!session?.email) {
     redirect("/login");
   }
 
@@ -30,7 +29,7 @@ export default async function Page(): Promise<JSX.Element> {
         ]}
       />
 
-      <ChangePasswordForm userEmail={data.user.email} />
+      <ChangePasswordForm userEmail={session.email} />
     </main>
   );
 }
