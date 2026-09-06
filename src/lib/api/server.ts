@@ -18,8 +18,8 @@ export async function serverApi<T>(path: string, init?: RequestInit): Promise<T>
   if (cookieHeader) headers.set("cookie", cookieHeader);
 
   return requestJson<T>(fetch, `${internalApiOrigin()}${apiPath(path)}`, {
-    cache: "no-store",
     ...init,
+    cache: "no-store",
     headers,
   });
 }

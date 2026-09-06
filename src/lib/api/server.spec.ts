@@ -43,7 +43,7 @@ describe("serverApi", () => {
     );
   });
 
-  it("preserves caller headers and allows caller overrides", async () => {
+  it("preserves caller headers and forces no-store over caller cache settings", async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
       new Response(JSON.stringify({ ok: true }), { status: 200 }),
     );
@@ -58,7 +58,7 @@ describe("serverApi", () => {
 
     const init = fetcher.mock.calls[0][1];
     const headers = new Headers(init?.headers);
-    expect(init).toMatchObject({ method: "POST", cache: "force-cache" });
+    expect(init).toMatchObject({ method: "POST", cache: "no-store" });
     expect(headers.get("content-type")).toBe("application/json");
     expect(headers.get("x-request-id")).toBe("req-1");
     expect(headers.get("cookie")).toBe("mv_at=access-token; consent=yes");
