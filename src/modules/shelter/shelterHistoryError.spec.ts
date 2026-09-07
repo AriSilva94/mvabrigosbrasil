@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { ApiError } from "@/lib/api/errors";
-import { shelterHistoryErrorMessage } from "./shelterHistoryError";
+import {
+  isCurrentShelterHistoryRequest,
+  shelterHistoryErrorMessage,
+} from "./shelterHistoryError";
 
 describe("shelterHistoryErrorMessage", () => {
   it.each([
@@ -27,5 +30,15 @@ describe("shelterHistoryErrorMessage", () => {
     Object.assign(new Error("aborted"), { name: "AbortError" }),
   ])("returns null for an aborted request", (error) => {
     expect(shelterHistoryErrorMessage(error)).toBeNull();
+  });
+});
+
+describe("isCurrentShelterHistoryRequest", () => {
+  it("marks the active request eligible for success and loading updates", () => {
+    expect(isCurrentShelterHistoryRequest(3, 3)).toBe(true);
+  });
+
+  it("marks stale requests ineligible for success and loading updates", () => {
+    expect(isCurrentShelterHistoryRequest(2, 3)).toBe(false);
   });
 });

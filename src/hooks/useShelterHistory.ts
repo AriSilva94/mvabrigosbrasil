@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getShelterHistory } from "@/modules/shelter/shelterProfileApi";
-import { shelterHistoryErrorMessage } from "@/modules/shelter/shelterHistoryError";
+import {
+  isCurrentShelterHistoryRequest,
+  shelterHistoryErrorMessage,
+} from "@/modules/shelter/shelterHistoryError";
 import type { ShelterHistoryItem } from "@/types/shelter.types";
 
 interface UseShelterHistoryReturn {
@@ -38,7 +41,9 @@ export function useShelterHistory(): UseShelterHistoryReturn {
           currentOffset,
           controller.signal,
         );
-        if (requestId !== requestRef.current) return;
+        if (!isCurrentShelterHistoryRequest(requestId, requestRef.current)) {
+          return;
+        }
 
         if (resetOffset) {
           setHistory(data.history);
@@ -50,12 +55,17 @@ export function useShelterHistory(): UseShelterHistoryReturn {
 
         setTotal(data.total);
       } catch (error) {
-        if (!controller.signal.aborted && requestId === requestRef.current) {
+        if (
+          !controller.signal.aborted &&
+          isCurrentShelterHistoryRequest(requestId, requestRef.current)
+        ) {
           const message = shelterHistoryErrorMessage(error);
           if (message !== null) setError(message);
         }
       } finally {
-        if (requestId === requestRef.current) setIsLoading(false);
+        if (isCurrentShelterHistoryRequest(requestId, requestRef.current)) {
+          setIsLoading(false);
+        }
       }
     },
     [],
