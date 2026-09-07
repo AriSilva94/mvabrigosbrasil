@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getShelterHistory } from "@/modules/shelter/shelterProfileApi";
+import { shelterHistoryErrorMessage } from "@/modules/shelter/shelterHistoryError";
 import type { ShelterHistoryItem } from "@/types/shelter.types";
 
 interface UseShelterHistoryReturn {
@@ -48,9 +49,10 @@ export function useShelterHistory(): UseShelterHistoryReturn {
         }
 
         setTotal(data.total);
-      } catch {
+      } catch (error) {
         if (!controller.signal.aborted && requestId === requestRef.current) {
-          setError("Erro ao carregar histórico");
+          const message = shelterHistoryErrorMessage(error);
+          if (message !== null) setError(message);
         }
       } finally {
         if (requestId === requestRef.current) setIsLoading(false);
