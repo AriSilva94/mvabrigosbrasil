@@ -63,7 +63,7 @@ describe("createAuthStateCoordinator", () => {
     });
   });
 
-  it("blocks loads during logout and ignores outstanding responses", async () => {
+  it("clears cached auth only after logout succeeds", async () => {
     const refresh = deferred<TestUser>();
     const logoutRequest = deferred<unknown>();
     const requestUser = vi
@@ -79,16 +79,59 @@ describe("createAuthStateCoordinator", () => {
     await authState.load();
     expect(requestUser).toHaveBeenCalledTimes(2);
 
-    refresh.resolve({ id: "stale-user" });
-    await outstandingRefresh;
-    expect(authState.getSnapshot().user).toEqual({ id: "current-user" });
-
-    logoutRequest.reject(new Error("network failure"));
-    await expect(logout).rejects.toThrow("network failure");
+    logoutRequest.resolve({ ok: true });
+    await expect(logout).resolves.toBeUndefined();
     expect(authState.getSnapshot()).toEqual({
       user: null,
       isLoading: false,
     });
+
+    refresh.resolve({ id: "stale-user" });
+    await outstandingRefresh;
+    expect(authState.getSnapshot()).toEqual({
+      user: null,
+      isLoading: false,
+    });
+
+    await expect(authState.load()).resolves.toBeNull();
+    expect(requestUser).toHaveBeenCalledTimes(2);
+  });
+
+  it("restores cached auth when logout fails and ignores stale responses", async () => {
+    const staleRefresh = deferred<TestUser>();
+    const recoveryRefresh = deferred<TestUser>();
+    const logoutRequest = deferred<unknown>();
+    const requestUser = vi
+      .fn<() => Promise<TestUser>>()
+      .mockResolvedValueOnce({ id: "current-user" })
+      .mockReturnValueOnce(staleRefresh.promise)
+      .mockReturnValueOnce(recoveryRefresh.promise);
+    const authState = createAuthStateCoordinator(requestUser);
+
+    await authState.load();
+    const outstandingRefresh = authState.refresh();
+    const logout = authState.logout(() => logoutRequest.promise);
+
+    await expect(authState.load()).resolves.toEqual({ id: "current-user" });
+    expect(requestUser).toHaveBeenCalledTimes(2);
+
+    logoutRequest.reject(new Error("network failure"));
+    await expect(logout).rejects.toThrow("network failure");
+    expect(authState.getSnapshot()).toEqual({
+      user: { id: "current-user" },
+      isLoading: false,
+    });
+
+    staleRefresh.resolve({ id: "stale-user" });
+    await outstandingRefresh;
+    expect(authState.getSnapshot().user).toEqual({ id: "current-user" });
+
+    await expect(authState.load()).resolves.toEqual({ id: "current-user" });
+    const recovery = authState.refresh();
+    expect(requestUser).toHaveBeenCalledTimes(3);
+    recoveryRefresh.resolve({ id: "recovered-user" });
+    await expect(recovery).resolves.toEqual({ id: "recovered-user" });
+    expect(authState.getSnapshot().user).toEqual({ id: "recovered-user" });
   });
 
   it("settles rejected loads and permits a later retry", async () => {

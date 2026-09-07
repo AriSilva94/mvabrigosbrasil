@@ -71,19 +71,29 @@ export function createAuthStateCoordinator<T>(
   }
 
   async function logout(requestLogout: () => Promise<unknown>): Promise<void> {
+    const previousSnapshot = snapshot;
+    const previouslyHadCachedResult = hasCachedResult;
+
     generation += 1;
     activeLoad = null;
     isLoggingOut = true;
 
     try {
       await requestLogout();
-    } finally {
+    } catch (error) {
       generation += 1;
       activeLoad = null;
-      hasCachedResult = true;
+      hasCachedResult = previouslyHadCachedResult;
       isLoggingOut = false;
-      publish({ user: null, isLoading: false });
+      publish(previousSnapshot);
+      throw error;
     }
+
+    generation += 1;
+    activeLoad = null;
+    hasCachedResult = true;
+    isLoggingOut = false;
+    publish({ user: null, isLoading: false });
   }
 
   return {

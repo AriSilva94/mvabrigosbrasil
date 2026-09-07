@@ -47,13 +47,10 @@ export function useAuth() {
   }, []);
 
   const logout = useCallback(async () => {
-    try {
-      await authState.logout(() =>
-        apiClient("/auth/logout", { method: "POST" }),
-      );
-    } finally {
-      router.refresh();
-    }
+    await authState.logout(() =>
+      apiClient("/auth/logout", { method: "POST" }),
+    );
+    router.refresh();
   }, [router]);
 
   return { user: state.user, isLoading: state.isLoading, logout };
