@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+  deleteDynamics,
+  getDynamics,
+  isCurrentDynamicsRequest,
+  saveDynamics,
+} from "@/modules/dynamics/dynamicsApi";
 
 import type {
   DynamicType,
@@ -76,62 +83,82 @@ export function useDynamicsData({
   const [registerType, setRegisterType] = useState<DynamicType | null>(null);
   const [formInitialValues, setFormInitialValues] = useState<RegisterFormValues | null>(null);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
+  const dataRevision = useRef(0);
+  const saveRevision = useRef(0);
+  const deleteRevision = useRef(0);
   const [sections, setSections] = useState<DynamicsDisplay[]>(() =>
     buildFallbackSections(userSummary, BASE_STATS),
   );
 
 
   useEffect(() => {
+    const controller = new AbortController();
+    const revision = ++dataRevision.current;
     void (async () => {
       setLoading(true);
       try {
-        const url = shelterWpPostId
-          ? `/api/dynamics?shelter_id=${shelterWpPostId}`
-          : "/api/dynamics";
-
-        const response = await fetch(url);
-        if (!response.ok) {
-          setSections(buildFallbackSections(userSummary, BASE_STATS));
+        const json = await getDynamics(shelterWpPostId, controller.signal);
+        if (
+          !isCurrentDynamicsRequest(
+            revision,
+            dataRevision.current,
+            controller.signal.aborted,
+          )
+        ) {
           return;
         }
-        const json = (await response.json()) as { sections?: DynamicsDisplay[] };
         const nextSections =
-          json.sections && json.sections.length > 0
+          json.sections.length > 0
             ? json.sections
             : buildFallbackSections(userSummary, BASE_STATS);
         setSections(nextSections);
       } catch (error) {
+        if (
+          !isCurrentDynamicsRequest(
+            revision,
+            dataRevision.current,
+            controller.signal.aborted,
+          )
+        ) {
+          return;
+        }
         console.error("dinamica-populacional: falha ao carregar dados", error);
         setSections(buildFallbackSections(userSummary, BASE_STATS));
       } finally {
-        setLoading(false);
+        if (
+          isCurrentDynamicsRequest(
+            revision,
+            dataRevision.current,
+            controller.signal.aborted,
+          )
+        ) {
+          setLoading(false);
+        }
       }
     })();
+    return () => {
+      controller.abort();
+      if (dataRevision.current === revision) dataRevision.current += 1;
+    };
   }, [userSummary, shelterWpPostId]);
 
   const handleSubmit = useCallback(
     async (values: RegisterFormSubmit) => {
+      const revision = ++dataRevision.current;
+      const currentSave = ++saveRevision.current;
       setSaving(true);
       try {
-        const response = await fetch("/api/dynamics", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-
-        if (!response.ok) {
-          console.error("Erro ao salvar registro de dinâmica");
-        } else {
-          const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-          const nextSections =
-            json.sections && json.sections.length > 0
-              ? json.sections
-              : buildFallbackSections(userSummary, BASE_STATS);
-          setSections(nextSections);
-        }
+        const json = await saveDynamics(values);
+        if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
+        const nextSections = json.sections.length > 0
+          ? json.sections
+          : buildFallbackSections(userSummary, BASE_STATS);
+        setSections(nextSections);
       } catch (error) {
+        if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
         console.error("dinamica-populacional: falha ao salvar registro", error);
       } finally {
+        if (currentSave !== saveRevision.current) return;
         setSaving(false);
         setRegisterType(null);
         setEditingRowId(null);
@@ -191,28 +218,22 @@ export function useDynamicsData({
 
   const handleDelete = useCallback(async () => {
     if (!editingRowId) return;
+    const revision = ++dataRevision.current;
+    const currentDelete = ++deleteRevision.current;
     setDeleting(true);
     try {
-      const response = await fetch("/api/dynamics", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: editingRowId }),
-      });
-
-      if (!response.ok) {
-        console.error("Erro ao excluir registro de dinâmica");
-        return;
-      }
-
-      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+      const json = await deleteDynamics(editingRowId);
+      if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
       const nextSections =
-        json.sections && json.sections.length > 0
+        json.sections.length > 0
           ? json.sections
           : buildFallbackSections(userSummary, BASE_STATS);
       setSections(nextSections);
     } catch (error) {
+      if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
       console.error("dinamica-populacional: falha ao excluir registro", error);
     } finally {
+      if (currentDelete !== deleteRevision.current) return;
       setDeleting(false);
       setRegisterType(null);
       setFormInitialValues(null);
