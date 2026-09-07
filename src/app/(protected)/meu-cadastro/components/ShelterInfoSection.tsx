@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Input from "@/components/ui/Input";
 import MaskedInput from "@/components/ui/MaskedInput";
@@ -71,6 +71,7 @@ export default function ShelterInfoSection({
     clearError: clearAddressError,
   } = useAddressCheck();
   const [addressWarning, setAddressWarning] = useState<string | null>(null);
+  const addressCheckRequestRef = useRef(0);
   const disabledStyles = lockNonPopulation
     ? "disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
     : "";
@@ -126,6 +127,7 @@ export default function ShelterInfoSection({
   async function handleCepBlur(e: React.FocusEvent<HTMLInputElement>) {
     const value = e.target.value;
     if (!value || value.replace(/\D/g, "").length !== 8) return;
+    const requestId = ++addressCheckRequestRef.current;
 
 
     setAddressWarning(null);
@@ -133,6 +135,7 @@ export default function ShelterInfoSection({
 
 
     const result = await searchCep(value);
+    if (requestId !== addressCheckRequestRef.current) return;
     if (result && onCepAutocomplete) {
       onCepAutocomplete({
         street: result.logradouro,
@@ -148,6 +151,7 @@ export default function ShelterInfoSection({
 
 
       const addressCheck = await checkAddress(value);
+      if (requestId !== addressCheckRequestRef.current) return;
       if (addressCheck?.exists && addressCheck.count > 0) {
         const shelterNames = addressCheck.shelters
           .map((s) => s.name)
@@ -252,6 +256,7 @@ export default function ShelterInfoSection({
               mask="cep"
               value={cepValue}
               onValueChange={(_, masked) => {
+                addressCheckRequestRef.current += 1;
                 setCepValue(masked);
                 clearError();
                 setAddressWarning(null);

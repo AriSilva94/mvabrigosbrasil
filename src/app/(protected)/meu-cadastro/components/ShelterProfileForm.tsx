@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,11 @@ import ShelterAuthorizationSection from "./ShelterAuthorizationSection";
 import ShelterInfoSection from "./ShelterInfoSection";
 import { DeactivateDialog } from "./DeactivateDialog";
 import { AlertCircle } from "lucide-react";
-import { buildPopulationPayload } from "@/modules/shelter/populationEditHelpers";
+import {
+  buildShelterProfileFormPayload,
+  deactivateShelter,
+  saveShelterProfile,
+} from "@/modules/shelter/shelterProfileApi";
 
 export default function ShelterProfileForm({
   populationEditOnly = false,
@@ -34,12 +38,10 @@ export default function ShelterProfileForm({
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof ShelterProfileInput, string>>
   >({});
-  const [shelterType, setShelterType] = useState<string>(
-    shelter?.shelterType ?? ""
-  );
-  const [documentValue, setDocumentValue] = useState<string>(
-    shelter?.cnpj ?? ""
-  );
+  const [shelterTypeOverride, setShelterType] = useState<string | null>(null);
+  const [documentValueOverride, setDocumentValue] = useState<string | null>(null);
+  const shelterType = shelterTypeOverride ?? shelter?.shelterType ?? "";
+  const documentValue = documentValueOverride ?? shelter?.cnpj ?? "";
   const [addressData, setAddressData] = useState({
     street: shelter?.street ?? "",
     district: shelter?.district ?? "",
@@ -48,11 +50,6 @@ export default function ShelterProfileForm({
   });
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
   const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
-
-  useEffect(() => {
-    setShelterType(shelter?.shelterType ?? "");
-    setDocumentValue(shelter?.cnpj ?? "");
-  }, [shelter?.shelterType, shelter?.cnpj]);
 
   usePopulationEditScroll(populationEditOnly && !isLoading, {
     anchorId:
@@ -71,20 +68,9 @@ export default function ShelterProfileForm({
 
   async function handleDeactivate() {
     try {
-      const response = await fetch("/api/shelter-profile/deactivate", {
-        method: "POST",
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result?.error || "Não foi possível alterar o status do cadastro."
-        );
-      }
-
+      const result = await deactivateShelter();
       toast.success(result.message);
-      await refresh();
+      await Promise.all([refresh(), refetchValidation()]);
     } catch (error) {
       console.error("Erro ao alterar status do cadastro", error);
       const message =
@@ -100,51 +86,13 @@ export default function ShelterProfileForm({
     if (isSubmitting) return;
 
     const formData = new FormData(event.currentTarget);
-    const foundationDateRaw = String(formData.get("foundationDate") ?? "");
-
-
-    const foundationDateIso =
-      foundationDateRaw && foundationDateRaw.includes("/")
-        ? foundationDateRaw.split("/").reverse().join("-")
-        : foundationDateRaw;
-
-    const nextShelterType =
-      shelterType || String(formData.get("shelterType") ?? "");
-    const temporaryAgreementValue =
-      nextShelterType === "temporary"
-        ? false
-        : formData.get("temporaryAgreement");
-    const payload = populationEditOnly
-      ? buildPopulationPayload(shelter, formData)
-      : {
-          shelterType: nextShelterType,
-          cnpj: documentValue || String(formData.get("cnpj") ?? ""),
-          shelterName: String(formData.get("shelterName") ?? ""),
-          cep: String(formData.get("cep") ?? ""),
-          street: String(formData.get("street") ?? ""),
-          number: formData.get("number"),
-          district: String(formData.get("district") ?? ""),
-          state: String(formData.get("state") ?? ""),
-          city: String(formData.get("city") ?? ""),
-          website: String(formData.get("website") ?? ""),
-          foundationDate: foundationDateIso,
-          species: String(formData.get("species") ?? ""),
-          additionalSpecies: formData.getAll("additionalSpecies").map(String),
-          temporaryAgreement:
-            typeof temporaryAgreementValue === "boolean"
-              ? temporaryAgreementValue
-              : temporaryAgreementValue === "true",
-          referralSource: String(formData.get("referralSource") ?? ""),
-          initialDogs: formData.get("initialDogs"),
-          initialCats: formData.get("initialCats"),
-          initialDogsLt: formData.get("initialDogsLt"),
-          initialCatsLt: formData.get("initialCatsLt"),
-          authorizedName: String(formData.get("authorizedName") ?? ""),
-          authorizedRole: String(formData.get("authorizedRole") ?? ""),
-          authorizedEmail: String(formData.get("authorizedEmail") ?? ""),
-          authorizedPhone: String(formData.get("authorizedPhone") ?? ""),
-          acceptTerms: formData.get("acceptTerms") === "on",
-        };
+    const payload = buildShelterProfileFormPayload({
+      formData,
+      shelter,
+      shelterType,
+      documentValue,
+      populationEditOnly,
+    });
 
     const parsed = shelterProfileSchema.safeParse(payload);
     if (!parsed.success) {
@@ -162,18 +110,7 @@ export default function ShelterProfileForm({
     try {
       setIsSubmitting(true);
       setFieldErrors({});
-      const response = await fetch("/api/shelter-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result?.error || "Não foi possível salvar o cadastro.");
-      }
-
+      await saveShelterProfile(parsed.data);
       toast.success("Cadastro do abrigo salvo com sucesso.");
       await refetchValidation();
       if (populationEditOnly) {

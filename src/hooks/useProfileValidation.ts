@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import type { RegisterType } from "@/constants/registerTypes";
+import {
+  getProfileValidation,
+  type ProfileValidationResult,
+} from "@/modules/shelter/shelterProfileApi";
 
-export type ProfileValidationResult = {
-  isValid: boolean;
-  requiresProfileUpdate: boolean;
-  missingFields: string[];
-  registerType: RegisterType | null;
-  profileExists: boolean;
-};
+export type { ProfileValidationResult } from "@/modules/shelter/shelterProfileApi";
 
 type UseProfileValidationReturn = {
   validation: ProfileValidationResult | null;
@@ -22,62 +19,41 @@ export function useProfileValidation(): UseProfileValidationReturn {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchValidation = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
+  const fetchValidation = useCallback(async (signal?: AbortSignal) => {
     try {
-      const response = await fetch("/api/validate-profile", {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Erro ao validar perfil");
-      }
-
-      const data: ProfileValidationResult = await response.json();
-      setValidation(data);
+      setValidation(await getProfileValidation(signal));
     } catch (err) {
+      if (signal?.aborted) return;
       const message = err instanceof Error ? err.message : "Erro desconhecido";
       setError(message);
       console.error("useProfileValidation: erro", err);
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) setIsLoading(false);
     }
   }, []);
 
   const refetch = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
     await fetchValidation();
   }, [fetchValidation]);
 
   useEffect(() => {
-    void (async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetch("/api/validate-profile", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || "Erro ao validar perfil");
-        }
-
-        const data: ProfileValidationResult = await response.json();
-        setValidation(data);
-      } catch (err) {
+    const controller = new AbortController();
+    void getProfileValidation(controller.signal)
+      .then((result) => {
+        if (!controller.signal.aborted) setValidation(result);
+      })
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
         const message = err instanceof Error ? err.message : "Erro desconhecido";
         setError(message);
         console.error("useProfileValidation: erro", err);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setIsLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
   return { validation, isLoading, error, refetch };
