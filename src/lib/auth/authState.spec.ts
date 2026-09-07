@@ -134,6 +134,84 @@ describe("createAuthStateCoordinator", () => {
     expect(authState.getSnapshot().user).toEqual({ id: "recovered-user" });
   });
 
+  it("serializes concurrent logout success so a second failure cannot restore auth", async () => {
+    const successfulRequest = deferred<unknown>();
+    const authState = createAuthStateCoordinator<TestUser>(() =>
+      Promise.resolve({ id: "current-user" }),
+    );
+    const firstRequest = vi.fn(() => successfulRequest.promise);
+    const secondRequest = vi.fn(async () => {
+      await successfulRequest.promise;
+      throw new Error("late concurrent failure");
+    });
+
+    await authState.load();
+    const firstLogout = authState.logout(firstRequest);
+    const secondLogout = authState.logout(secondRequest);
+    const outcomes = Promise.allSettled([firstLogout, secondLogout]);
+
+    successfulRequest.resolve({ ok: true });
+
+    expect(await outcomes).toEqual([
+      { status: "fulfilled", value: undefined },
+      { status: "fulfilled", value: undefined },
+    ]);
+    expect(firstLogout).toBe(secondLogout);
+    expect(firstRequest).toHaveBeenCalledTimes(1);
+    expect(secondRequest).not.toHaveBeenCalled();
+    expect(authState.getSnapshot()).toEqual({
+      user: null,
+      isLoading: false,
+    });
+  });
+
+  it("shares concurrent logout failure and allows a subsequent retry", async () => {
+    const staleRefresh = deferred<TestUser>();
+    const failedRequest = deferred<unknown>();
+    const requestUser = vi
+      .fn<() => Promise<TestUser>>()
+      .mockResolvedValueOnce({ id: "current-user" })
+      .mockReturnValueOnce(staleRefresh.promise);
+    const authState = createAuthStateCoordinator(requestUser);
+    const firstRequest = vi.fn(() => failedRequest.promise);
+    const secondRequest = vi.fn(() => Promise.resolve({ ok: true }));
+
+    await authState.load();
+    const outstandingRefresh = authState.refresh();
+    const firstLogout = authState.logout(firstRequest);
+    const secondLogout = authState.logout(secondRequest);
+    const outcomes = Promise.allSettled([firstLogout, secondLogout]);
+
+    failedRequest.reject(new Error("network failure"));
+
+    const results = await outcomes;
+    expect(results).toHaveLength(2);
+    expect(results[0]).toMatchObject({
+      status: "rejected",
+      reason: { message: "network failure" },
+    });
+    expect(results[1]).toMatchObject({
+      status: "rejected",
+      reason: { message: "network failure" },
+    });
+    expect(firstLogout).toBe(secondLogout);
+    expect(firstRequest).toHaveBeenCalledTimes(1);
+    expect(secondRequest).not.toHaveBeenCalled();
+    expect(authState.getSnapshot().user).toEqual({ id: "current-user" });
+
+    staleRefresh.resolve({ id: "stale-user" });
+    await outstandingRefresh;
+    expect(authState.getSnapshot().user).toEqual({ id: "current-user" });
+
+    await expect(
+      authState.logout(() => Promise.resolve({ ok: true })),
+    ).resolves.toBeUndefined();
+    expect(authState.getSnapshot()).toEqual({
+      user: null,
+      isLoading: false,
+    });
+  });
+
   it("settles rejected loads and permits a later retry", async () => {
     const failed = deferred<TestUser>();
     const retry = deferred<TestUser>();

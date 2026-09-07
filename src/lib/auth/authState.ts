@@ -15,6 +15,7 @@ export function createAuthStateCoordinator<T>(
   let hasCachedResult = false;
   let isLoggingOut = false;
   let activeLoad: ActiveLoad<T> | null = null;
+  let logoutInFlight: Promise<void> | null = null;
   const listeners = new Set<() => void>();
 
   function publish(next: AuthStateSnapshot<T>): void {
@@ -70,7 +71,9 @@ export function createAuthStateCoordinator<T>(
     return promise;
   }
 
-  async function logout(requestLogout: () => Promise<unknown>): Promise<void> {
+  function logout(requestLogout: () => Promise<unknown>): Promise<void> {
+    if (logoutInFlight) return logoutInFlight;
+
     const previousSnapshot = snapshot;
     const previouslyHadCachedResult = hasCachedResult;
 
@@ -78,22 +81,32 @@ export function createAuthStateCoordinator<T>(
     activeLoad = null;
     isLoggingOut = true;
 
-    try {
-      await requestLogout();
-    } catch (error) {
+    const operation = (async () => {
+      try {
+        await requestLogout();
+      } catch (error) {
+        generation += 1;
+        activeLoad = null;
+        hasCachedResult = previouslyHadCachedResult;
+        isLoggingOut = false;
+        publish(previousSnapshot);
+        throw error;
+      }
+
       generation += 1;
       activeLoad = null;
-      hasCachedResult = previouslyHadCachedResult;
+      hasCachedResult = true;
       isLoggingOut = false;
-      publish(previousSnapshot);
-      throw error;
-    }
+      publish({ user: null, isLoading: false });
+    })();
 
-    generation += 1;
-    activeLoad = null;
-    hasCachedResult = true;
-    isLoggingOut = false;
-    publish({ user: null, isLoading: false });
+    const trackedOperation = operation.finally(() => {
+      if (logoutInFlight === trackedOperation) {
+        logoutInFlight = null;
+      }
+    });
+    logoutInFlight = trackedOperation;
+    return trackedOperation;
   }
 
   return {
