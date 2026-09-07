@@ -36,3 +36,11 @@ export class LatestRequest {
     }
   }
 }
+
+export class LatestRequestScope {
+  readonly requests = new LatestRequest();
+
+  dispose(): void {
+    this.requests.invalidate();
+  }
+}

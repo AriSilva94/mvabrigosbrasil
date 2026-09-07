@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { LatestRequest } from "./latestRequest";
+import { LatestRequest, LatestRequestScope } from "./latestRequest";
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -56,5 +56,24 @@ describe("LatestRequest", () => {
     await staleRun;
 
     expect(state).toEqual({ data: "newest", error: "", loading: false });
+  });
+});
+
+describe("LatestRequestScope", () => {
+  it("prevents a pending operation from publishing after disposal", async () => {
+    const scope = new LatestRequestScope();
+    const request = deferred<string>();
+    const published: string[] = [];
+
+    const pending = scope.requests.run(() => request.promise, {
+      onSuccess: (value) => published.push(value),
+      onSettled: () => published.push("settled"),
+    });
+
+    scope.dispose();
+    request.resolve("stale");
+    await pending;
+
+    expect(published).toEqual([]);
   });
 });

@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -36,12 +36,8 @@ export default function ShelterProfileForm({
   populationTarget?: "shelter" | "lt";
 }): JSX.Element {
   const router = useRouter();
-  const { shelter, isLoading, refresh } = useShelterProfile();
+  const { shelter, profileRevision, isLoading, refresh } = useShelterProfile();
   const { refetch: refetchValidation } = useProfileValidationContext();
-  const formKey = useMemo(
-    () => (shelter ? JSON.stringify(shelter) : "empty"),
-    [shelter],
-  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof ShelterProfileInput, string>>
@@ -54,20 +50,22 @@ export default function ShelterProfileForm({
   >(null);
   const shelterType = resolveProfileOverride(
     shelterTypeOverride,
-    formKey,
+    profileRevision,
     shelter?.shelterType ?? "",
   );
   const documentValue = resolveProfileOverride(
     documentValueOverride,
-    formKey,
+    profileRevision,
     shelter?.cnpj ?? "",
   );
-  const [addressData, setAddressData] = useState({
-    street: shelter?.street ?? "",
-    district: shelter?.district ?? "",
-    city: shelter?.city ?? "",
-    state: shelter?.state ?? "",
-  });
+  const [addressDataOverride, setAddressDataOverride] = useState<
+    ProfileOverride<{
+      street: string;
+      district: string;
+      city: string;
+      state: string;
+    }>
+  >(null);
   const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
   const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
 
@@ -83,7 +81,7 @@ export default function ShelterProfileForm({
     city: string;
     state: string;
   }) {
-    setAddressData(data);
+    setAddressDataOverride({ profileRevision, value: data });
   }
 
   async function handleDeactivate() {
@@ -150,6 +148,16 @@ export default function ShelterProfileForm({
     }
   }
 
+  const addressData = resolveProfileOverride(
+    addressDataOverride,
+    profileRevision,
+    {
+      street: shelter?.street ?? "",
+      district: shelter?.district ?? "",
+      city: shelter?.city ?? "",
+      state: shelter?.state ?? "",
+    },
+  );
   const addressOverrides = Object.fromEntries(
     Object.entries(addressData).filter(([, value]) => value !== "")
   );
@@ -172,7 +180,7 @@ export default function ShelterProfileForm({
     <form
       onSubmit={handleSubmit}
       noValidate
-      key={formKey}
+      key={profileRevision}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
       {shelter?.active === false && (
@@ -194,8 +202,8 @@ export default function ShelterProfileForm({
           fieldErrors={fieldErrors}
           shelterType={shelterType}
           onShelterTypeChange={(value) => {
-            setShelterTypeOverride({ profileKey: formKey, value });
-            setDocumentValueOverride({ profileKey: formKey, value: "" });
+            setShelterTypeOverride({ profileRevision, value });
+            setDocumentValueOverride({ profileRevision, value: "" });
             setFieldErrors((prev) => ({
               ...prev,
               shelterType: undefined,
@@ -204,7 +212,7 @@ export default function ShelterProfileForm({
           }}
           documentValue={documentValue}
           onDocumentValueChange={(value) => {
-            setDocumentValueOverride({ profileKey: formKey, value });
+            setDocumentValueOverride({ profileRevision, value });
             setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
           }}
           onCepAutocomplete={handleCepAutocomplete}

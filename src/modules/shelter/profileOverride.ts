@@ -1,12 +1,21 @@
 export type ProfileOverride<T> = {
-  profileKey: string;
+  profileRevision: number;
   value: T;
 } | null;
 
 export function resolveProfileOverride<T>(
   override: ProfileOverride<T>,
-  profileKey: string,
+  profileRevision: number,
   fallback: T,
 ): T {
-  return override?.profileKey === profileKey ? override.value : fallback;
+  return override?.profileRevision === profileRevision
+    ? override.value
+    : fallback;
+}
+
+export function publishShelterProfile<T>(revision: number, shelter: T) {
+  return {
+    shelter,
+    revision: revision + 1,
+  };
 }

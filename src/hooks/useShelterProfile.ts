@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { LatestRequest } from "@/lib/async/latestRequest";
+import { publishShelterProfile } from "@/modules/shelter/profileOverride";
 import { getShelterProfile } from "@/modules/shelter/shelterProfileApi";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 
 export function useShelterProfile() {
-  const [shelter, setShelter] = useState<Partial<ShelterProfileFormData> | null>(null);
+  const [profile, setProfile] = useState<{
+    shelter: Partial<ShelterProfileFormData> | null;
+    revision: number;
+  }>({ shelter: null, revision: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const requests = useRef(new LatestRequest());
@@ -14,7 +18,10 @@ export function useShelterProfile() {
     setIsLoading(true);
     setError(null);
     await requests.current.run(() => getShelterProfile(signal), {
-      onSuccess: (data) => setShelter(data.shelter ?? null),
+      onSuccess: (data) =>
+        setProfile((current) =>
+          publishShelterProfile(current.revision, data.shelter ?? null),
+        ),
       onError: (err) => {
         if (signal?.aborted) return;
         console.error("useShelterProfile: erro ao buscar cadastro", err);
@@ -28,7 +35,10 @@ export function useShelterProfile() {
     const controller = new AbortController();
     const requestTracker = requests.current;
     void requestTracker.run(() => getShelterProfile(controller.signal), {
-      onSuccess: (data) => setShelter(data.shelter ?? null),
+      onSuccess: (data) =>
+        setProfile((current) =>
+          publishShelterProfile(current.revision, data.shelter ?? null),
+        ),
       onError: (err) => {
         if (controller.signal.aborted) return;
         console.error("useShelterProfile: erro ao buscar cadastro", err);
@@ -47,7 +57,8 @@ export function useShelterProfile() {
   }, [fetchShelter]);
 
   return {
-    shelter,
+    shelter: profile.shelter,
+    profileRevision: profile.revision,
     isLoading,
     error,
     refresh,
