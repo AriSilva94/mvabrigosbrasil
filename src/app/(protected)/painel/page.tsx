@@ -10,11 +10,14 @@ import {
   TRAINING_VIDEO_URL_SHELTER,
 } from "@/constants/panel";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
-import { serverApi } from "@/lib/api/server";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
+import {
+  loadManagerShelters,
+  type ManagerShelter,
+} from "@/app/(protected)/painel/managerShelters";
 import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
 import TrainingBanner from "@/app/(protected)/painel/components/TrainingBanner";
 import { TourTrigger } from "@/components/tour/TourTrigger";
@@ -25,34 +28,6 @@ export const metadata = buildMetadata({
     "Área logada do projeto para acompanhar atalhos, treinamentos e recursos de abrigos ou voluntários.",
   canonical: "/painel",
 });
-
-type ManagerShelter = {
-  id: string;
-  name: string;
-  wp_post_id: number;
-};
-
-type ManagerShelterResponse = {
-  id: string;
-  name: string;
-  wp_post_id: number | null;
-};
-
-type ManagerSheltersResponse = {
-  shelters?: ManagerShelterResponse[];
-};
-
-function isManagerShelter(
-  shelter: ManagerShelterResponse,
-): shelter is ManagerShelter {
-  return (
-    typeof shelter.id === "string" &&
-    typeof shelter.name === "string" &&
-    typeof shelter.wp_post_id === "number" &&
-    Number.isSafeInteger(shelter.wp_post_id) &&
-    shelter.wp_post_id !== 0
-  );
-}
 
 function VolunteerPanel(): JSX.Element {
   return (
@@ -167,17 +142,7 @@ export default async function Page(): Promise<JSX.Element> {
 
   let managerShelters: ManagerShelter[] = [];
   if (isManager) {
-    try {
-      const response = await serverApi<ManagerSheltersResponse>(
-        "/admin/managers/me/shelters",
-      );
-      managerShelters = (response.shelters ?? []).filter(isManagerShelter);
-    } catch (error) {
-      console.error(
-        "painel: erro ao buscar abrigos do gerente",
-        error instanceof Error ? error.message : error,
-      );
-    }
+    managerShelters = await loadManagerShelters();
   }
 
   return (
