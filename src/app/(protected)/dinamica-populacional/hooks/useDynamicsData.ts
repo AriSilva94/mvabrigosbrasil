@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   deleteDynamics,
   getDynamics,
-  isCurrentDynamicsRequest,
   saveDynamics,
 } from "@/modules/dynamics/dynamicsApi";
+import { createDynamicsOperationCoordinator } from "@/modules/dynamics/dynamicsOperationCoordinator";
 
 import type {
   DynamicType,
@@ -83,89 +83,73 @@ export function useDynamicsData({
   const [registerType, setRegisterType] = useState<DynamicType | null>(null);
   const [formInitialValues, setFormInitialValues] = useState<RegisterFormValues | null>(null);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
-  const dataRevision = useRef(0);
-  const saveRevision = useRef(0);
-  const deleteRevision = useRef(0);
   const [sections, setSections] = useState<DynamicsDisplay[]>(() =>
     buildFallbackSections(userSummary, BASE_STATS),
   );
+  const [operationCoordinator] = useState(() =>
+    createDynamicsOperationCoordinator({
+      setFlags: ({ isLoading: loading, isSaving: saving, isDeleting: deleting }) => {
+        setLoading(loading);
+        setSaving(saving);
+        setDeleting(deleting);
+      },
+    }),
+  );
+
+  useEffect(() => {
+    operationCoordinator.activate();
+    return () => operationCoordinator.dispose();
+  }, [operationCoordinator]);
 
 
   useEffect(() => {
     const controller = new AbortController();
-    const revision = ++dataRevision.current;
-    void (async () => {
-      setLoading(true);
-      try {
-        const json = await getDynamics(shelterWpPostId, controller.signal);
-        if (
-          !isCurrentDynamicsRequest(
-            revision,
-            dataRevision.current,
-            controller.signal.aborted,
-          )
-        ) {
-          return;
-        }
-        const nextSections =
-          json.sections.length > 0
-            ? json.sections
-            : buildFallbackSections(userSummary, BASE_STATS);
-        setSections(nextSections);
-      } catch (error) {
-        if (
-          !isCurrentDynamicsRequest(
-            revision,
-            dataRevision.current,
-            controller.signal.aborted,
-          )
-        ) {
-          return;
-        }
-        console.error("dinamica-populacional: falha ao carregar dados", error);
-        setSections(buildFallbackSections(userSummary, BASE_STATS));
-      } finally {
-        if (
-          isCurrentDynamicsRequest(
-            revision,
-            dataRevision.current,
-            controller.signal.aborted,
-          )
-        ) {
-          setLoading(false);
-        }
-      }
-    })();
+    operationCoordinator.invalidateContext();
+    void operationCoordinator.run(
+      "get",
+      () => getDynamics(shelterWpPostId, controller.signal),
+      {
+        onSuccess: (json) => {
+          if (controller.signal.aborted) return;
+          const nextSections =
+            json.sections.length > 0
+              ? json.sections
+              : buildFallbackSections(userSummary, BASE_STATS);
+          setSections(nextSections);
+        },
+        onError: (error) => {
+          if (controller.signal.aborted) return;
+          console.error("dinamica-populacional: falha ao carregar dados", error);
+          setSections(buildFallbackSections(userSummary, BASE_STATS));
+        },
+        onSettled: () => undefined,
+      },
+    );
     return () => {
       controller.abort();
-      if (dataRevision.current === revision) dataRevision.current += 1;
     };
-  }, [userSummary, shelterWpPostId]);
+  }, [operationCoordinator, userSummary, shelterWpPostId]);
 
   const handleSubmit = useCallback(
     async (values: RegisterFormSubmit) => {
-      const revision = ++dataRevision.current;
-      const currentSave = ++saveRevision.current;
-      setSaving(true);
-      try {
-        const json = await saveDynamics(values);
-        if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
-        const nextSections = json.sections.length > 0
-          ? json.sections
-          : buildFallbackSections(userSummary, BASE_STATS);
-        setSections(nextSections);
-      } catch (error) {
-        if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
-        console.error("dinamica-populacional: falha ao salvar registro", error);
-      } finally {
-        if (currentSave !== saveRevision.current) return;
-        setSaving(false);
-        setRegisterType(null);
-        setEditingRowId(null);
-        setFormInitialValues(null);
-      }
+      await operationCoordinator.run("save", () => saveDynamics(values), {
+        onSuccess: (json) => {
+          const nextSections = json.sections.length > 0
+            ? json.sections
+            : buildFallbackSections(userSummary, BASE_STATS);
+          setSections(nextSections);
+        },
+        onError: (error) => {
+          console.error("dinamica-populacional: falha ao salvar registro", error);
+        },
+        onSettled: () => {
+          setRegisterType(null);
+          setEditingRowId(null);
+          setFormInitialValues(null);
+        },
+      });
     },
-    [userSummary],
+    [operationCoordinator, userSummary],
   );
 
   const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
@@ -218,28 +202,24 @@ export function useDynamicsData({
 
   const handleDelete = useCallback(async () => {
     if (!editingRowId) return;
-    const revision = ++dataRevision.current;
-    const currentDelete = ++deleteRevision.current;
-    setDeleting(true);
-    try {
-      const json = await deleteDynamics(editingRowId);
-      if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
-      const nextSections =
-        json.sections.length > 0
-          ? json.sections
-          : buildFallbackSections(userSummary, BASE_STATS);
-      setSections(nextSections);
-    } catch (error) {
-      if (!isCurrentDynamicsRequest(revision, dataRevision.current, false)) return;
-      console.error("dinamica-populacional: falha ao excluir registro", error);
-    } finally {
-      if (currentDelete !== deleteRevision.current) return;
-      setDeleting(false);
-      setRegisterType(null);
-      setFormInitialValues(null);
-      setEditingRowId(null);
-    }
-  }, [editingRowId, userSummary]);
+    await operationCoordinator.run("delete", () => deleteDynamics(editingRowId), {
+      onSuccess: (json) => {
+        const nextSections =
+          json.sections.length > 0
+            ? json.sections
+            : buildFallbackSections(userSummary, BASE_STATS);
+        setSections(nextSections);
+      },
+      onError: (error) => {
+        console.error("dinamica-populacional: falha ao excluir registro", error);
+      },
+      onSettled: () => {
+        setRegisterType(null);
+        setFormInitialValues(null);
+        setEditingRowId(null);
+      },
+    });
+  }, [editingRowId, operationCoordinator, userSummary]);
 
   return {
     sections,
