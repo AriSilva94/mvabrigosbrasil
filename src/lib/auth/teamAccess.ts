@@ -56,9 +56,23 @@ export function getAccessRedirect(
   }
 
   if (
+    access.registerType !== REGISTER_TYPES.admin &&
+    isPathAllowed(pathname, ["/admin"])
+  ) {
+    return "/painel";
+  }
+
+  if (
     access.isTeamOnly &&
     (access.isTeamDisabled || !isPathAllowed(pathname, TEAM_ALLOWED_PATHS)) &&
     pathname !== "/painel"
+  ) {
+    return "/painel";
+  }
+
+  if (
+    access.registerType !== REGISTER_TYPES.shelter &&
+    isPathAllowed(pathname, ["/equipe"])
   ) {
     return "/painel";
   }

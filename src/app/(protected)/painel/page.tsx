@@ -10,10 +10,10 @@ import {
   TRAINING_VIDEO_URL_SHELTER,
 } from "@/constants/panel";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
+import { serverApi } from "@/lib/api/server";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
 import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
 import TrainingBanner from "@/app/(protected)/painel/components/TrainingBanner";
@@ -25,6 +25,34 @@ export const metadata = buildMetadata({
     "Área logada do projeto para acompanhar atalhos, treinamentos e recursos de abrigos ou voluntários.",
   canonical: "/painel",
 });
+
+type ManagerShelter = {
+  id: string;
+  name: string;
+  wp_post_id: number;
+};
+
+type ManagerShelterResponse = {
+  id: string;
+  name: string;
+  wp_post_id: number | null;
+};
+
+type ManagerSheltersResponse = {
+  shelters?: ManagerShelterResponse[];
+};
+
+function isManagerShelter(
+  shelter: ManagerShelterResponse,
+): shelter is ManagerShelter {
+  return (
+    typeof shelter.id === "string" &&
+    typeof shelter.name === "string" &&
+    typeof shelter.wp_post_id === "number" &&
+    Number.isSafeInteger(shelter.wp_post_id) &&
+    shelter.wp_post_id !== 0
+  );
+}
 
 function VolunteerPanel(): JSX.Element {
   return (
@@ -137,43 +165,18 @@ export default async function Page(): Promise<JSX.Element> {
   const isTeamOnly = access.isTeamOnly;
   const isTeamDisabled = access.isTeamDisabled;
 
-  let managerShelters: { id: string; name: string; wp_post_id: number }[] = [];
+  let managerShelters: ManagerShelter[] = [];
   if (isManager) {
-    const supabaseAdmin = getSupabaseAdminClient();
-
-    const { data: profile } = await supabaseAdmin
-      .from("profiles")
-      .select("wp_user_id")
-      .eq("id", access.userId)
-      .maybeSingle();
-
-    if (profile?.wp_user_id) {
-      const { data: memberships } = await supabaseAdmin
-        .from("team_memberships")
-        .select("abrigo_post_id")
-        .eq("member_wp_user_id", profile.wp_user_id)
-        .eq("role", "manager")
-        .eq("status", "active");
-
-      if (memberships && memberships.length > 0) {
-        const abrigoIds = (
-          memberships as Array<{ abrigo_post_id: number | null }>
-        )
-          .map((m) => m.abrigo_post_id)
-          .filter((id): id is number => id !== null);
-
-        if (abrigoIds.length > 0) {
-          const { data: shelters } = await supabaseAdmin
-            .from("shelters")
-            .select("id, name, wp_post_id")
-            .in("wp_post_id", abrigoIds);
-
-          managerShelters = (shelters || []).filter(
-            (s): s is { id: string; name: string; wp_post_id: number } =>
-              s.id !== null && s.name !== null && s.wp_post_id !== null
-          );
-        }
-      }
+    try {
+      const response = await serverApi<ManagerSheltersResponse>(
+        "/admin/managers/me/shelters",
+      );
+      managerShelters = (response.shelters ?? []).filter(isManagerShelter);
+    } catch (error) {
+      console.error(
+        "painel: erro ao buscar abrigos do gerente",
+        error instanceof Error ? error.message : error,
+      );
     }
   }
 

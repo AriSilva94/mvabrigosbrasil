@@ -70,74 +70,120 @@ describe("getAccessRedirect", () => {
     ]);
   });
 
-  it.each([
-    REGISTER_TYPES.shelter,
-    REGISTER_TYPES.volunteer,
-    REGISTER_TYPES.manager,
-    null,
-  ])("allows normal role %s on unrestricted protected paths", (registerType) => {
-    expect(getAccessRedirect("/minhas-vagas", access({ registerType }))).toBeNull();
-  });
+  const roleMatrix = [
+    {
+      label: "admin",
+      value: access({ registerType: REGISTER_TYPES.admin }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": null,
+        "/admin/gerentes/manager-1": null,
+        "/admin/abrigos": null,
+        "/equipe": "/painel",
+        "/dinamica-populacional": "/painel",
+        "/minhas-vagas": "/painel",
+      },
+    },
+    {
+      label: "manager",
+      value: access({ registerType: REGISTER_TYPES.manager }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": "/painel",
+        "/admin/abrigos": "/painel",
+        "/equipe": "/painel",
+        "/dinamica-populacional": null,
+        "/minhas-vagas": null,
+      },
+    },
+    {
+      label: "shelter",
+      value: access({ registerType: REGISTER_TYPES.shelter }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": "/painel",
+        "/admin/abrigos": "/painel",
+        "/equipe": null,
+        "/dinamica-populacional": null,
+        "/minhas-vagas": null,
+      },
+    },
+    {
+      label: "volunteer",
+      value: access({ registerType: REGISTER_TYPES.volunteer }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": "/painel",
+        "/admin/abrigos": "/painel",
+        "/equipe": "/painel",
+        "/dinamica-populacional": null,
+        "/minhas-vagas": null,
+      },
+    },
+    {
+      label: "active team-only",
+      value: access({ isTeamOnly: true, creatorProfileId: "creator-1" }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": "/painel",
+        "/admin/abrigos": "/painel",
+        "/equipe": "/painel",
+        "/dinamica-populacional": null,
+        "/dinamica-populacional/abrigo-1": null,
+        "/minhas-vagas": "/painel",
+      },
+    },
+    {
+      label: "disabled team-only",
+      value: access({
+        isTeamOnly: true,
+        isTeamDisabled: true,
+        creatorProfileId: "creator-1",
+      }),
+      redirects: {
+        "/painel": null,
+        "/admin/gerentes": "/painel",
+        "/admin/abrigos": "/painel",
+        "/equipe": "/painel",
+        "/dinamica-populacional": "/painel",
+        "/dinamica-populacional/abrigo-1": "/painel",
+        "/minhas-vagas": "/painel",
+      },
+    },
+  ] as const;
 
-  it.each([
-    "/painel",
-    "/admin/gerentes",
-    "/admin/gerentes/manager-1",
-    "/admin/abrigos",
-  ])("allows admins on %s", (pathname) => {
-    expect(
-      getAccessRedirect(
-        pathname,
-        access({ registerType: REGISTER_TYPES.admin }),
-      ),
-    ).toBeNull();
-  });
-
-  it("redirects admins away from non-admin protected paths", () => {
-    expect(
-      getAccessRedirect(
-        "/meu-cadastro",
-        access({ registerType: REGISTER_TYPES.admin }),
-      ),
-    ).toBe("/painel");
-  });
-
-  it.each([
-    "/painel",
-    "/dinamica-populacional",
-    "/dinamica-populacional/abrigo-1",
-  ])("allows active team-only users on %s", (pathname) => {
-    expect(
-      getAccessRedirect(pathname, access({ isTeamOnly: true })),
-    ).toBeNull();
-  });
-
-  it("redirects active team-only users away from other protected paths", () => {
-    expect(
-      getAccessRedirect("/vagas", access({ isTeamOnly: true })),
-    ).toBe("/painel");
-  });
-
-  it("allows disabled team-only users to see only the panel", () => {
-    const disabledTeam = access({ isTeamOnly: true, isTeamDisabled: true });
-
-    expect(getAccessRedirect("/painel", disabledTeam)).toBeNull();
-    expect(getAccessRedirect("/dinamica-populacional", disabledTeam)).toBe(
-      "/painel",
-    );
-  });
+  it.each(roleMatrix)(
+    "applies the exact protected-path matrix for $label",
+    ({ value, redirects }) => {
+      for (const [pathname, expected] of Object.entries(redirects)) {
+        expect(getAccessRedirect(pathname, value), pathname).toBe(expected);
+      }
+    },
+  );
 });
 
 describe("filterPanelShortcuts", () => {
-  const shortcuts = [{ id: "profile" }, { id: "dynamic-data" }] as const;
+  const shortcuts = [
+    { id: "profile" },
+    { id: "dynamic-data" },
+    { id: "team" },
+  ] as const;
 
-  it("keeps all shortcuts for normal users", () => {
-    expect(filterPanelShortcuts(shortcuts, false)).toBe(shortcuts);
+  it.each([
+    ["admin", false],
+    ["manager", false],
+    ["shelter", false],
+    ["volunteer", false],
+  ] as const)("keeps every shortcut for normal %s access", (_, isTeamOnly) => {
+    expect(filterPanelShortcuts(shortcuts, isTeamOnly)).toBe(shortcuts);
   });
 
-  it("keeps only population dynamics for team-only users", () => {
-    expect(filterPanelShortcuts(shortcuts, true)).toEqual([
-      { id: "dynamic-data" },
-    ]);
-  });
+  it.each(["active team-only", "disabled team-only"])(
+    "keeps only population dynamics for %s access",
+    () => {
+      expect(filterPanelShortcuts(shortcuts, true)).toEqual([
+        { id: "dynamic-data" },
+      ]);
+    },
+  );
 });
