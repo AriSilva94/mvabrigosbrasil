@@ -119,6 +119,28 @@ describe("profile response adapters", () => {
     });
   });
 
+  it("accepts a legacy incomplete profile without a shelter type", () => {
+    const legacy = { ...apiShelter } as Record<string, unknown>;
+    delete legacy.shelterType;
+
+    expect(parseShelterProfileResponse({ shelter: legacy })).toEqual({
+      shelter: expect.objectContaining({
+        shelterType: undefined,
+        cnpj: "12.345.678/0001-90",
+        name: "Abrigo Esperanca",
+      }),
+    });
+    expect(
+      parseShelterUpsertResponse({
+        ok: true,
+        shelter: { ...legacy, shelterType: null },
+      }),
+    ).toEqual({
+      ok: true,
+      shelter: expect.objectContaining({ shelterType: undefined }),
+    });
+  });
+
   it("accepts the identical upsert result used by backend no-op saves", () => {
     const response = { ok: true, shelter: apiShelter };
 
@@ -283,6 +305,22 @@ describe("history and address adapters", () => {
       "/api/v1/shelters/check-address?cep=90000-001",
       expect.objectContaining({ credentials: "include" }),
     );
+  });
+
+  it("normalizes nullable Prisma address fields without losing duplicate totals", () => {
+    expect(
+      parseAddressCheckResponse({
+        exists: true,
+        count: 1,
+        shelters: [
+          { name: null, street: null, number: null, city: null, state: null },
+        ],
+      }),
+    ).toEqual({
+      exists: true,
+      count: 1,
+      shelters: [{ name: "", street: "", number: 0, city: "", state: "" }],
+    });
   });
 
   it("treats missing-profile history as an exhausted empty page", () => {

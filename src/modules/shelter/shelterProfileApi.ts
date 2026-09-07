@@ -59,7 +59,7 @@ const nullableNumberSchema = z.number().nullable().optional();
 
 const shelterSchema = z
   .object({
-    shelterType: shelterTypeSchema,
+    shelterType: shelterTypeSchema.nullable().optional(),
     cnpj: z.string(),
     name: z.string(),
     cep: z.string(),
@@ -131,11 +131,11 @@ const addressCheckSchema = z
     shelters: z.array(
       z
         .object({
-          name: z.string(),
-          street: z.string(),
-          number: z.number(),
-          city: z.string(),
-          state: z.string(),
+          name: z.string().nullable(),
+          street: z.string().nullable(),
+          number: z.number().nullable(),
+          city: z.string().nullable(),
+          state: z.string().nullable(),
         })
         .strict(),
     ),
@@ -185,6 +185,7 @@ function formatShelter(
 ): Partial<ShelterProfileFormData> {
   return {
     ...shelter,
+    shelterType: shelter.shelterType ?? undefined,
     cnpj:
       shelter.shelterType === "temporary"
         ? formatCpf(shelter.cnpj)
@@ -304,7 +305,16 @@ export function parseShelterHistoryResponse(
 export function parseAddressCheckResponse(value: unknown): AddressCheckResult {
   const parsed = addressCheckSchema.safeParse(value);
   if (!parsed.success) invalidResponse("Erro ao verificar endereço");
-  return parsed.data;
+  return {
+    ...parsed.data,
+    shelters: parsed.data.shelters.map((shelter) => ({
+      name: shelter.name ?? "",
+      street: shelter.street ?? "",
+      number: shelter.number ?? 0,
+      city: shelter.city ?? "",
+      state: shelter.state ?? "",
+    })),
+  };
 }
 
 export function parseDeactivateShelterResponse(

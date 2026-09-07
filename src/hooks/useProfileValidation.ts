@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import { LatestRequest } from "@/lib/async/latestRequest";
 import {
   getProfileValidation,
   type ProfileValidationResult,
@@ -18,43 +19,45 @@ export function useProfileValidation(): UseProfileValidationReturn {
   const [validation, setValidation] = useState<ProfileValidationResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const requests = useRef(new LatestRequest());
 
   const fetchValidation = useCallback(async (signal?: AbortSignal) => {
-    try {
-      setValidation(await getProfileValidation(signal));
-    } catch (err) {
-      if (signal?.aborted) return;
-      const message = err instanceof Error ? err.message : "Erro desconhecido";
-      setError(message);
-      console.error("useProfileValidation: erro", err);
-    } finally {
-      if (!signal?.aborted) setIsLoading(false);
-    }
+    setIsLoading(true);
+    setError(null);
+    await requests.current.run(() => getProfileValidation(signal), {
+      onSuccess: setValidation,
+      onError: (err) => {
+        if (signal?.aborted) return;
+        const message = err instanceof Error ? err.message : "Erro desconhecido";
+        setError(message);
+        console.error("useProfileValidation: erro", err);
+      },
+      onSettled: () => setIsLoading(false),
+    });
   }, []);
 
   const refetch = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
     await fetchValidation();
   }, [fetchValidation]);
 
   useEffect(() => {
     const controller = new AbortController();
-    void getProfileValidation(controller.signal)
-      .then((result) => {
-        if (!controller.signal.aborted) setValidation(result);
-      })
-      .catch((err: unknown) => {
+    const requestTracker = requests.current;
+    void requestTracker.run(() => getProfileValidation(controller.signal), {
+      onSuccess: setValidation,
+      onError: (err) => {
         if (controller.signal.aborted) return;
         const message = err instanceof Error ? err.message : "Erro desconhecido";
         setError(message);
         console.error("useProfileValidation: erro", err);
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setIsLoading(false);
-      });
-    return () => controller.abort();
-  }, []);
+      },
+      onSettled: () => setIsLoading(false),
+    });
+    return () => {
+      controller.abort();
+      requestTracker.invalidate();
+    };
+  }, [fetchValidation]);
 
   return { validation, isLoading, error, refetch };
 }

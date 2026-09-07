@@ -23,6 +23,10 @@ import {
   deactivateShelter,
   saveShelterProfile,
 } from "@/modules/shelter/shelterProfileApi";
+import {
+  resolveProfileOverride,
+  type ProfileOverride,
+} from "@/modules/shelter/profileOverride";
 
 export default function ShelterProfileForm({
   populationEditOnly = false,
@@ -34,14 +38,30 @@ export default function ShelterProfileForm({
   const router = useRouter();
   const { shelter, isLoading, refresh } = useShelterProfile();
   const { refetch: refetchValidation } = useProfileValidationContext();
+  const formKey = useMemo(
+    () => (shelter ? JSON.stringify(shelter) : "empty"),
+    [shelter],
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof ShelterProfileInput, string>>
   >({});
-  const [shelterTypeOverride, setShelterType] = useState<string | null>(null);
-  const [documentValueOverride, setDocumentValue] = useState<string | null>(null);
-  const shelterType = shelterTypeOverride ?? shelter?.shelterType ?? "";
-  const documentValue = documentValueOverride ?? shelter?.cnpj ?? "";
+  const [shelterTypeOverride, setShelterTypeOverride] = useState<
+    ProfileOverride<string>
+  >(null);
+  const [documentValueOverride, setDocumentValueOverride] = useState<
+    ProfileOverride<string>
+  >(null);
+  const shelterType = resolveProfileOverride(
+    shelterTypeOverride,
+    formKey,
+    shelter?.shelterType ?? "",
+  );
+  const documentValue = resolveProfileOverride(
+    documentValueOverride,
+    formKey,
+    shelter?.cnpj ?? "",
+  );
   const [addressData, setAddressData] = useState({
     street: shelter?.street ?? "",
     district: shelter?.district ?? "",
@@ -130,11 +150,6 @@ export default function ShelterProfileForm({
     }
   }
 
-  const formKey = useMemo(
-    () => (shelter ? JSON.stringify(shelter) : "empty"),
-    [shelter]
-  );
-
   const addressOverrides = Object.fromEntries(
     Object.entries(addressData).filter(([, value]) => value !== "")
   );
@@ -179,8 +194,8 @@ export default function ShelterProfileForm({
           fieldErrors={fieldErrors}
           shelterType={shelterType}
           onShelterTypeChange={(value) => {
-            setShelterType(value);
-            setDocumentValue("");
+            setShelterTypeOverride({ profileKey: formKey, value });
+            setDocumentValueOverride({ profileKey: formKey, value: "" });
             setFieldErrors((prev) => ({
               ...prev,
               shelterType: undefined,
@@ -189,7 +204,7 @@ export default function ShelterProfileForm({
           }}
           documentValue={documentValue}
           onDocumentValueChange={(value) => {
-            setDocumentValue(value);
+            setDocumentValueOverride({ profileKey: formKey, value });
             setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
           }}
           onCepAutocomplete={handleCepAutocomplete}
