@@ -24,9 +24,9 @@ import {
   saveShelterProfile,
 } from "@/modules/shelter/shelterProfileApi";
 import {
-  resolveProfileOverride,
-  type ProfileOverride,
-} from "@/modules/shelter/profileOverride";
+  createShelterProfileEditorState,
+  type ShelterAddressOverride,
+} from "@/modules/shelter/shelterProfileEditorState";
 
 export default function ShelterProfileForm({
   populationEditOnly = false,
@@ -38,42 +38,62 @@ export default function ShelterProfileForm({
   const router = useRouter();
   const { shelter, profileRevision, isLoading, refresh } = useShelterProfile();
   const { refetch: refetchValidation } = useProfileValidationContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<
-    Partial<Record<keyof ShelterProfileInput, string>>
-  >({});
-  const [shelterTypeOverride, setShelterTypeOverride] = useState<
-    ProfileOverride<string>
-  >(null);
-  const [documentValueOverride, setDocumentValueOverride] = useState<
-    ProfileOverride<string>
-  >(null);
-  const shelterType = resolveProfileOverride(
-    shelterTypeOverride,
-    profileRevision,
-    shelter?.shelterType ?? "",
-  );
-  const documentValue = resolveProfileOverride(
-    documentValueOverride,
-    profileRevision,
-    shelter?.cnpj ?? "",
-  );
-  const [addressDataOverride, setAddressDataOverride] = useState<
-    ProfileOverride<{
-      street: string;
-      district: string;
-      city: string;
-      state: string;
-    }>
-  >(null);
-  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
-  const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
 
   usePopulationEditScroll(populationEditOnly && !isLoading, {
     anchorId:
       populationTarget === "lt" ? "populacao-inicial-lt" : "populacao-inicial",
   });
 
+  if (isLoading && !shelter) {
+    return <FormLoading />;
+  }
+
+  return (
+    <ShelterProfileEditor
+      key={profileRevision}
+      shelter={shelter}
+      isLoading={isLoading}
+      populationEditOnly={populationEditOnly}
+      onRefresh={refresh}
+      onRefetchValidation={refetchValidation}
+      onSaved={() =>
+        router.push(populationEditOnly ? "/dinamica-populacional" : "/painel")
+      }
+    />
+  );
+}
+
+type ShelterProfileEditorProps = {
+  shelter: Partial<ShelterProfileFormData> | null;
+  isLoading: boolean;
+  populationEditOnly: boolean;
+  onRefresh: () => Promise<void>;
+  onRefetchValidation: () => Promise<void>;
+  onSaved: () => void;
+};
+
+function ShelterProfileEditor({
+  shelter,
+  isLoading,
+  populationEditOnly,
+  onRefresh,
+  onRefetchValidation,
+  onSaved,
+}: ShelterProfileEditorProps): JSX.Element {
+  const initialState = createShelterProfileEditorState(shelter);
+  const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
+  const [fieldErrors, setFieldErrors] = useState(initialState.fieldErrors);
+  const [shelterType, setShelterType] = useState(initialState.shelterType);
+  const [documentValue, setDocumentValue] = useState(initialState.documentValue);
+  const [addressDataOverride, setAddressDataOverride] = useState<
+    ShelterAddressOverride | null
+  >(initialState.addressDataOverride);
+  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(
+    initialState.isDeactivateDialogOpen,
+  );
+  const [hasDuplicateCep, setHasDuplicateCep] = useState(
+    initialState.hasDuplicateCep,
+  );
 
   function handleCepAutocomplete(data: {
     street: string;
@@ -81,14 +101,14 @@ export default function ShelterProfileForm({
     city: string;
     state: string;
   }) {
-    setAddressDataOverride({ profileRevision, value: data });
+    setAddressDataOverride(data);
   }
 
   async function handleDeactivate() {
     try {
       const result = await deactivateShelter();
       toast.success(result.message);
-      await Promise.all([refresh(), refetchValidation()]);
+      await Promise.all([onRefresh(), onRefetchValidation()]);
     } catch (error) {
       console.error("Erro ao alterar status do cadastro", error);
       const message =
@@ -130,12 +150,8 @@ export default function ShelterProfileForm({
       setFieldErrors({});
       await saveShelterProfile(parsed.data);
       toast.success("Cadastro do abrigo salvo com sucesso.");
-      await refetchValidation();
-      if (populationEditOnly) {
-        router.push("/dinamica-populacional");
-      } else {
-        router.push("/painel");
-      }
+      await onRefetchValidation();
+      onSaved();
     } catch (error) {
       console.error("Erro ao salvar cadastro do abrigo", error);
       const message =
@@ -148,16 +164,13 @@ export default function ShelterProfileForm({
     }
   }
 
-  const addressData = resolveProfileOverride(
-    addressDataOverride,
-    profileRevision,
-    {
+  const addressData =
+    addressDataOverride ?? {
       street: shelter?.street ?? "",
       district: shelter?.district ?? "",
       city: shelter?.city ?? "",
       state: shelter?.state ?? "",
-    },
-  );
+    };
   const addressOverrides = Object.fromEntries(
     Object.entries(addressData).filter(([, value]) => value !== "")
   );
@@ -172,15 +185,10 @@ export default function ShelterProfileForm({
     ? "Salvando..."
     : "Salvar Cadastro";
 
-  if (isLoading && !shelter) {
-    return <FormLoading />;
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
-      key={profileRevision}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
       {shelter?.active === false && (
@@ -202,8 +210,8 @@ export default function ShelterProfileForm({
           fieldErrors={fieldErrors}
           shelterType={shelterType}
           onShelterTypeChange={(value) => {
-            setShelterTypeOverride({ profileRevision, value });
-            setDocumentValueOverride({ profileRevision, value: "" });
+            setShelterType(value);
+            setDocumentValue("");
             setFieldErrors((prev) => ({
               ...prev,
               shelterType: undefined,
@@ -212,7 +220,7 @@ export default function ShelterProfileForm({
           }}
           documentValue={documentValue}
           onDocumentValueChange={(value) => {
-            setDocumentValueOverride({ profileRevision, value });
+            setDocumentValue(value);
             setFieldErrors((prev) => ({ ...prev, cnpj: undefined }));
           }}
           onCepAutocomplete={handleCepAutocomplete}
