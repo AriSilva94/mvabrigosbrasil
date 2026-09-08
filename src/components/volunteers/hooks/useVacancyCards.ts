@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { VacancyCard } from "@/types/vacancy.types";
+import { getPublicVacancies } from "@/modules/vacancies/vacanciesApi";
 
 type UseVacancyCardsResult = {
   vacancies: VacancyCard[];
@@ -24,24 +25,20 @@ export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacanc
         setLoading(true);
         setError(null);
 
-        const response = await fetch("/api/public-vacancies");
-
-        if (!response.ok) {
-          throw new Error("Falha ao carregar vagas");
-        }
-
-        const data = await response.json();
-        setVacancies(data.vacancies || []);
+        setVacancies(await getPublicVacancies(controller.signal));
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("useVacancyCards - erro:", err);
         setError(err as Error);
         setVacancies([]);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
+    const controller = new AbortController();
     loadVacancies();
+    return () => controller.abort();
   }, [initialVacancies]);
 
   return { vacancies, loading, error };

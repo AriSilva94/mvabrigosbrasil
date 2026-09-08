@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { applyToVacancy } from "@/modules/vacancies/vacanciesApi";
+import { createExclusiveAction } from "@/modules/vacancies/exclusiveAction";
 
 interface ApplyButtonProps {
   vacancyId: string;
@@ -19,6 +21,12 @@ export default function ApplyButton({
 }: ApplyButtonProps) {
   const [isApplying, setIsApplying] = useState(false);
   const router = useRouter();
+  const applyAction = useRef(createExclusiveAction());
+  useEffect(() => {
+    const action = applyAction.current;
+    action.activate();
+    return () => action.dispose();
+  }, []);
 
   async function handleApply() {
     if (!isAuthenticated) {
@@ -26,28 +34,15 @@ export default function ApplyButton({
       return;
     }
 
-    try {
-      setIsApplying(true);
-
-      const response = await fetch(`/api/vacancies/${vacancyId}/apply`, {
-        method: "POST",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Erro ao se candidatar");
-      }
-
-      toast.success(`Candidatura enviada para "${vacancyTitle}"!`);
-      router.refresh();
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Erro ao se candidatar",
-      );
-    } finally {
-      setIsApplying(false);
-    }
+    setIsApplying(true);
+    await applyAction.current.run(() => applyToVacancy(vacancyId), {
+      onSuccess: () => {
+        toast.success(`Candidatura enviada para "${vacancyTitle}"!`);
+        router.refresh();
+      },
+      onError: (error) => toast.error(error instanceof Error ? error.message : "Erro ao se candidatar"),
+      onSettled: () => setIsApplying(false),
+    });
   }
 
   if (hasApplied) {

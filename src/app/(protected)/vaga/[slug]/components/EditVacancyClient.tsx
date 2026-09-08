@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -18,6 +18,8 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
+import { updateVacancy } from "@/modules/vacancies/vacanciesApi";
+import { createExclusiveAction } from "@/modules/vacancies/exclusiveAction";
 
 type EditVacancyClientProps = {
   vacancy: UiVacancy;
@@ -40,6 +42,12 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const updateAction = useRef(createExclusiveAction());
+  useEffect(() => {
+    const action = updateAction.current;
+    action.activate();
+    return () => action.dispose();
+  }, []);
 
   const vacancyId = useMemo(() => vacancy.id, [vacancy.id]);
 
@@ -87,32 +95,21 @@ export default function EditVacancyClient({ vacancy }: EditVacancyClientProps) {
     setErrors({});
     setIsSubmitting(true);
     setIsSaving(true);
-    try {
-      const response = await fetch(`/api/vacancies/${vacancyId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
-      const json = await response.json();
-      if (!response.ok) {
-        throw new Error(json?.error || "Erro ao atualizar vaga");
-      }
-
-      toast.success("Vaga atualizada com sucesso!");
-      router.refresh();
-      router.push("/minhas-vagas");
-    } catch (error) {
-      console.error("EditVacancyClient: erro ao atualizar vaga", error);
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Erro ao atualizar vaga. Tente novamente.";
-      toast.error(message);
-    } finally {
-      setIsSubmitting(false);
-      setIsSaving(false);
-    }
+    await updateAction.current.run(() => updateVacancy(vacancyId, parsed.data), {
+      onSuccess: () => {
+        toast.success("Vaga atualizada com sucesso!");
+        router.refresh();
+        router.push("/minhas-vagas");
+      },
+      onError: (error) => {
+        console.error("EditVacancyClient: erro ao atualizar vaga", error);
+        toast.error(error instanceof Error ? error.message : "Erro ao atualizar vaga. Tente novamente.");
+      },
+      onSettled: () => {
+        setIsSubmitting(false);
+        setIsSaving(false);
+      },
+    });
   }
 
   return (

@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import { Heading, Text } from "@/components/ui/typography";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import NewVacancyModal from "@/app/(protected)/minhas-vagas/components/NewVacancyModal";
 import VacancyCard from "@/app/(protected)/minhas-vagas/components/VacancyCard";
+import { LatestRequestScope } from "@/lib/async/latestRequest";
+import { loadOwnerVacancies } from "@/modules/vacancies/vacanciesApi";
 
 type MinhasVagasClientProps = {
   vacancies: UiVacancy[];
@@ -20,24 +22,23 @@ export default function MinhasVagasClient({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [items, setItems] = useState<UiVacancy[]>(vacancies);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const refreshScope = useRef(new LatestRequestScope());
   const hasShelterName = useMemo(
     () => Boolean(shelterName?.trim()),
     [shelterName]
   );
-
+  useEffect(() => () => refreshScope.current.dispose(), []);
 
   async function refreshVacancies() {
-    try {
-      setIsRefreshing(true);
-      const response = await fetch("/api/vacancies");
-      if (!response.ok) throw new Error("Erro ao carregar vagas");
-      const json = (await response.json()) as { vacancies?: UiVacancy[] };
-      if (json.vacancies) setItems(json.vacancies);
-    } catch (error) {
-      console.error("refreshVacancies: erro ao buscar vagas", error);
-    } finally {
-      setIsRefreshing(false);
-    }
+    setIsRefreshing(true);
+    await refreshScope.current.requests.run(
+      () => loadOwnerVacancies(shelterName),
+      {
+        onSuccess: setItems,
+        onError: (error) => console.error("refreshVacancies: erro ao buscar vagas", error),
+        onSettled: () => setIsRefreshing(false),
+      },
+    );
   }
 
   function handleCreated(vacancy: UiVacancy) {

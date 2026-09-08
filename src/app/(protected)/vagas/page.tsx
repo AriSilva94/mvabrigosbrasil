@@ -2,11 +2,11 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Text } from "@/components/ui/typography";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { fetchVacancyCards } from "@/repositories/vacanciesRepository";
 import VacancyListClient from "./components/VacancyListClient";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
+import { getVacancyCardsOrThrow } from "@/services/publicDataService";
+import type { VacancyCard } from "@/types/vacancy.types";
 
 export const metadata = buildMetadata({
   title: "Vagas Disponíveis",
@@ -18,8 +18,14 @@ export const metadata = buildMetadata({
 export default async function Page(): Promise<JSX.Element> {
   await enforceTeamAccess("/vagas");
 
-  const supabase = getSupabaseAdminClient();
-  const { vacancies, error } = await fetchVacancyCards(supabase);
+  let vacancies: VacancyCard[] = [];
+  let hasError = false;
+  try {
+    vacancies = await getVacancyCardsOrThrow();
+  } catch (error) {
+    console.error("vagas: erro ao carregar vagas", error);
+    hasError = true;
+  }
 
   return (
     <main>
@@ -32,7 +38,7 @@ export default async function Page(): Promise<JSX.Element> {
         ]}
       />
 
-      {error ? (
+      {hasError ? (
         <section className="bg-white">
           <div className="container px-6 py-12">
             <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center">

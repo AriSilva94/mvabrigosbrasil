@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
 import SelectField from "@/components/data/SelectField";
@@ -21,6 +21,8 @@ import {
   type VacancyFormInput,
 } from "@/app/(protected)/minhas-vagas/schema";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
+import { createVacancy } from "@/modules/vacancies/vacanciesApi";
+import { createExclusiveAction } from "@/modules/vacancies/exclusiveAction";
 
 type NewVacancyModalProps = {
   open: boolean;
@@ -48,6 +50,13 @@ export default function NewVacancyModal({
     Partial<Record<keyof VacancyFormInput, string>>
   >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const createAction = useRef(createExclusiveAction());
+
+  useEffect(() => {
+    const action = createAction.current;
+    action.activate();
+    return () => action.dispose();
+  }, []);
 
   function resetForm() {
     setPeriod("");
@@ -102,24 +111,19 @@ export default function NewVacancyModal({
 
     setErrors({});
     setIsSubmitting(true);
-    fetch("/api/vacancies", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsed.data),
-    })
-      .then(async (response) => {
-        const json = await response.json();
-        if (!response.ok) {
-          throw new Error(json?.error || "Erro ao salvar vaga");
-        }
-        if (json?.vacancy) onCreated(json.vacancy as UiVacancy);
-        if (onRefresh) onRefresh();
-        handleClose();
-      })
-      .catch((error) => {
-        console.error("NewVacancyModal: erro ao salvar", error);
-      })
-      .finally(() => setIsSubmitting(false));
+    void createAction.current.run(
+      () => createVacancy(parsed.data),
+      {
+        onSuccess: (vacancy) => {
+          onCreated(vacancy);
+          if (onRefresh) onRefresh();
+          handleClose();
+        },
+        onError: (error) =>
+          console.error("NewVacancyModal: erro ao salvar", error),
+        onSettled: () => setIsSubmitting(false),
+      },
+    );
   }
 
   const renderError = (message?: string) => (

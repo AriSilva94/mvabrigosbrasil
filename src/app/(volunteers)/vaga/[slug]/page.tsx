@@ -9,15 +9,10 @@ import { Heading } from "@/components/ui/typography";
 import ProfileField from "@/components/ui/ProfileField";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
-import { mapVacancyRow } from "@/services/vacanciesSupabase";
-import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import type { Database } from "@/lib/supabase/types";
-import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
-import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { normalizeWorkload } from "@/app/(protected)/minhas-vagas/constants";
-import { getPublicVacancyBySlug } from "@/services/publicDataService";
+import { getSession } from "@/lib/auth/session";
+import { loadSharedVacancy } from "@/modules/vacancies/vacancyPageData";
 import ApplyButton from "./components/ApplyButton";
 
 type VacancyPageProps = {
@@ -25,85 +20,19 @@ type VacancyPageProps = {
   searchParams: Promise<{ from?: string }>;
 };
 
-async function loadUserContext() {
-  const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user)
-    return { userId: null, postType: null, shelterId: null };
-
-  const supabaseAdmin = getSupabaseAdminClient();
-  const postType = await resolvePostTypeForUser(supabaseAdmin, {
-    supabaseUserId: data.user.id,
-    email: data.user.email ?? null,
-  }).catch(() => null);
-
-  const { data: shelterRow } = await supabaseAdmin
-    .from("shelters")
-    .select("id")
-    .eq("profile_id", data.user.id)
-    .limit(1)
-    .maybeSingle();
-
-  return { userId: data.user.id, postType, shelterId: shelterRow?.id ?? null };
-}
-
 const getVacancyBySlug = cache(async (slug: string): Promise<{
   vacancy: UiVacancy | null;
   canEdit: boolean;
   hasApplied: boolean;
   isAuthenticated: boolean;
 }> => {
-  const { userId, postType, shelterId } = await loadUserContext();
-  const isAuthenticated = !!userId;
-  let hasApplied = false;
-
-  if (postType === REGISTER_TYPES.shelter && shelterId) {
-    const supabaseAdmin = getSupabaseAdminClient();
-    const { data: ownVacancy } = await supabaseAdmin
-      .from("vacancies")
-      .select("*")
-      .eq("slug", slug)
-      .eq("shelter_id", shelterId)
-      .limit(1)
-      .maybeSingle();
-
-    if (ownVacancy) {
-      type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
-      const mapped = {
-        ...mapVacancyRow(ownVacancy as VacancyRow),
-        source: "supabase",
-      } as UiVacancy;
-
-      return { vacancy: mapped, canEdit: true, hasApplied: false, isAuthenticated };
-    }
-  }
-
-  const publicVacancy = await getPublicVacancyBySlug(slug);
-  if (!publicVacancy) {
-    return { vacancy: null, canEdit: false, hasApplied: false, isAuthenticated };
-  }
-
-  if (isAuthenticated && publicVacancy.id) {
-    const supabaseAdmin = getSupabaseAdminClient();
-    const { data: volunteer } = await supabaseAdmin
-      .from("volunteers")
-      .select("id")
-      .eq("owner_profile_id", userId)
-      .maybeSingle();
-
-    if (volunteer) {
-      const { data: existingApplication } = await supabaseAdmin
-        .from("vacancy_applications")
-        .select("id")
-        .eq("vacancy_id", publicVacancy.id)
-        .eq("volunteer_id", volunteer.id)
-        .maybeSingle();
-
-      hasApplied = !!existingApplication;
-    }
-  }
-
-  return { vacancy: publicVacancy, canEdit: false, hasApplied, isAuthenticated };
+  const result = await loadSharedVacancy(slug, Boolean(await getSession()));
+  return result ?? {
+    vacancy: null,
+    canEdit: false,
+    hasApplied: false,
+    isAuthenticated: false,
+  };
 });
 
 function getLocation(vacancy: UiVacancy): string {
