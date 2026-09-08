@@ -5,45 +5,32 @@ import type { JSX } from "react";
 import { UserCog, Building2, PawPrint } from "lucide-react";
 
 import { Heading, Text } from "@/components/ui/typography";
-
-type Manager = {
-  id: string;
-  email: string | null;
-  wp_user_id: number | null;
-  created_at: string;
-  shelters: Array<{
-    id: string;
-    name: string;
-    wp_post_id: number;
-  }>;
-};
+import { getAdminManagers, type AdminManager } from "@/modules/admin/adminApi";
 
 type ManagersListProps = {
-  onEdit: (manager: Manager) => void;
+  onEdit: (manager: AdminManager) => void;
 };
 
 export default function ManagersList({ onEdit }: ManagersListProps): JSX.Element {
-  const [managers, setManagers] = useState<Manager[]>([]);
+  const [managers, setManagers] = useState<AdminManager[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function fetchManagers() {
       try {
-        const response = await fetch("/api/admin/managers");
-        if (!response.ok) {
-          throw new Error("Erro ao carregar gerentes");
-        }
-        const data = await response.json();
-        setManagers(data.managers || []);
+        setManagers(await getAdminManagers(controller.signal));
       } catch (err) {
+        if (controller.signal.aborted) return;
         setError(err instanceof Error ? err.message : "Erro desconhecido");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
-    fetchManagers();
+    void fetchManagers();
+    return () => controller.abort();
   }, []);
 
   if (loading) {
