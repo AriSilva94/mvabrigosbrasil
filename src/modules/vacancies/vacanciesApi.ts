@@ -134,8 +134,17 @@ export async function loadOwnerVacancies(
   return Promise.all(vacancies.map(async (vacancy) => ({
     ...vacancy,
     shelter: shelterName ?? undefined,
-    applicationsCount: (await getVacancyApplications(vacancy.id, signal)).length,
+    applicationsCount: await loadApplicationCount(vacancy.id, signal),
   })));
+}
+
+async function loadApplicationCount(vacancyId: string, signal?: AbortSignal): Promise<number> {
+  try {
+    return (await getVacancyApplications(vacancyId, signal)).length;
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    return 0;
+  }
 }
 
 export async function createVacancy(input: VacancyFormInput): Promise<UiVacancy> {

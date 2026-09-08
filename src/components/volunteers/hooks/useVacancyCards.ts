@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { VacancyCard } from "@/types/vacancy.types";
 import { getPublicVacancies } from "@/modules/vacancies/vacanciesApi";
+import { getInitialVacanciesTransition } from "@/modules/vacancies/vacancyCardsState";
 
 type UseVacancyCardsResult = {
   vacancies: VacancyCard[];
@@ -10,13 +11,16 @@ type UseVacancyCardsResult = {
   error: Error | null;
 };
 
-export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacancyCardsResult {
+const EMPTY_INITIAL_VACANCIES: VacancyCard[] = [];
+
+export function useVacancyCards(initialVacancies: VacancyCard[] = EMPTY_INITIAL_VACANCIES): UseVacancyCardsResult {
   const [vacancies, setVacancies] = useState<VacancyCard[]>(initialVacancies);
   const [loading, setLoading] = useState(initialVacancies.length === 0);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (initialVacancies.length > 0) {
+    const initialTransition = getInitialVacanciesTransition(initialVacancies);
+    if (initialTransition) {
       return;
     }
 
@@ -41,5 +45,5 @@ export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacanc
     return () => controller.abort();
   }, [initialVacancies]);
 
-  return { vacancies, loading, error };
+  return getInitialVacanciesTransition(initialVacancies) ?? { vacancies, loading, error };
 }

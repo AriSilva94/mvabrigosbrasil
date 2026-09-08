@@ -25,6 +25,24 @@ describe("vacancy server page data", () => {
     expect(mocks.serverApi).toHaveBeenNthCalledWith(3, "/vacancies/v1/applications");
   });
 
+  it("preserves every vacancy when some application counts fail", async () => {
+    const secondVacancy = { ...vacancy, id: "v2", slug: "plantao-v2" };
+    const countError = new ApiError(500, "Erro ao carregar candidaturas");
+    mocks.serverApi
+      .mockResolvedValueOnce({ shelter: { name: "Abrigo", shelterType: null, cnpj: "", cep: "", street: "", number: "", district: "", state: "", city: "", website: "", foundationDate: "", species: "", additionalSpecies: [], initialDogs: 0, initialCats: 0, authorizedName: "", authorizedRole: "", authorizedEmail: "", authorizedPhone: "", acceptTerms: false } })
+      .mockResolvedValueOnce({ vacancies: [vacancy, secondVacancy] })
+      .mockRejectedValueOnce(countError)
+      .mockResolvedValueOnce({ applications: [] });
+
+    await expect(loadOwnerVacanciesPageData()).resolves.toEqual({
+      shelterName: "Abrigo",
+      vacancies: [
+        { ...vacancy, shelter: "Abrigo", applicationsCount: 0 },
+        { ...secondVacancy, shelter: "Abrigo", applicationsCount: 0 },
+      ],
+    });
+  });
+
   it("keeps an absent shelter and empty list empty", async () => {
     mocks.serverApi.mockResolvedValueOnce({ shelter: null }).mockResolvedValueOnce({ vacancies: [] });
     await expect(loadOwnerVacanciesPageData()).resolves.toEqual({ shelterName: null, vacancies: [] });

@@ -100,6 +100,19 @@ describe("vacancies browser API", () => {
     ]);
   });
 
+  it("preserves vacancies when multiple candidate counts fail on client refresh", async () => {
+    const secondVacancy = { ...vacancy, id: "vacancy-2", slug: "plantao-vacancy-2" };
+    mocks.apiClient
+      .mockResolvedValueOnce({ vacancies: [vacancy, secondVacancy] })
+      .mockRejectedValueOnce(new ApiError(500, "Falha na primeira contagem"))
+      .mockRejectedValueOnce(new ApiError(500, "Falha na segunda contagem"));
+
+    await expect(loadOwnerVacancies("Abrigo")).resolves.toEqual([
+      { ...vacancy, shelter: "Abrigo", applicationsCount: 0 },
+      { ...secondVacancy, shelter: "Abrigo", applicationsCount: 0 },
+    ]);
+  });
+
   it("loads optional-auth status", async () => {
     mocks.apiClient.mockResolvedValue({ isOwner: false, hasApplied: true });
     await expect(getMyVacancyStatus("vacancy-1")).resolves.toEqual({ isOwner: false, hasApplied: true });

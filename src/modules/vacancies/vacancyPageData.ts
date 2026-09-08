@@ -21,11 +21,19 @@ export async function loadOwnerVacanciesPageData() {
   const composed = await Promise.all(vacancies.map(async (vacancy) => ({
     ...vacancy,
     shelter: shelterName ?? undefined,
-    applicationsCount: parseApplications(
-      await serverApi<unknown>(`/vacancies/${encodeURIComponent(vacancy.id)}/applications`),
-    ).length,
+    applicationsCount: await loadServerApplicationCount(vacancy.id),
   })));
   return { shelterName, vacancies: composed };
+}
+
+async function loadServerApplicationCount(vacancyId: string): Promise<number> {
+  try {
+    return parseApplications(
+      await serverApi<unknown>(`/vacancies/${encodeURIComponent(vacancyId)}/applications`),
+    ).length;
+  } catch {
+    return 0;
+  }
 }
 
 export async function loadSharedVacancy(slug: string, isAuthenticated: boolean) {
