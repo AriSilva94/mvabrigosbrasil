@@ -184,10 +184,6 @@ export default function Page(): JSX.Element {
           </Text>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>
-              <strong>Supabase</strong> — autenticação de usuários e armazenamento de dados da
-              plataforma (banco de dados).
-            </li>
-            <li>
               <strong>Vercel Analytics</strong> — coleta de dados analíticos de uso do site,
               condicionada ao consentimento de cookies analíticos.
             </li>

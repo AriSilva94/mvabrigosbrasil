@@ -90,11 +90,18 @@ export default function Page(): JSX.Element {
                 </thead>
                 <tbody>
                   <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">sb-*-auth-token</td>
+                    <td className="border-b border-gray-200 px-3 py-2">mv_at</td>
                     <td className="border-b border-gray-200 px-3 py-2">
-                      Cookie de autenticação do Supabase. Mantém a sessão do usuário logado.
+                      Token de acesso necessário para autenticar a sessão do usuário.
                     </td>
-                    <td className="border-b border-gray-200 px-3 py-2">Durante a sessão</td>
+                    <td className="border-b border-gray-200 px-3 py-2">15 minutos</td>
+                  </tr>
+                  <tr className="even:bg-gray-50">
+                    <td className="border-b border-gray-200 px-3 py-2">mv_rt</td>
+                    <td className="border-b border-gray-200 px-3 py-2">
+                      Token necessário para renovar a sessão de forma segura.
+                    </td>
+                    <td className="border-b border-gray-200 px-3 py-2">30 dias</td>
                   </tr>
                   <tr className="even:bg-gray-50">
                     <td className="border-b border-gray-200 px-3 py-2">cookie_consent</td>
