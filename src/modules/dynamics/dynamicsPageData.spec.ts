@@ -48,7 +48,9 @@ describe("population dynamics page data", () => {
   it.each([
     ["42", 42],
     ["0", null],
-    ["-1", null],
+    ["-1", -1],
+    ["-2147483648", -2147483648],
+    ["-2147483649", null],
     ["1.5", null],
     ["42abc", null],
     ["2147483648", null],

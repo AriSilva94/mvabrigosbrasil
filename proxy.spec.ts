@@ -2,7 +2,7 @@ import { SignJWT } from "jose";
 import { NextRequest } from "next/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { config, proxy } from "./proxy";
+import { config, proxy } from "./src/proxy";
 
 const secret = "test-secret-test-secret-test-secret-test-secret";
 const key = new TextEncoder().encode(secret);

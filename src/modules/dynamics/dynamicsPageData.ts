@@ -17,11 +17,15 @@ type PopulationDynamicsPageData = {
 };
 
 const PRISMA_INT_MAX = 2_147_483_647;
+const PRISMA_INT_MIN = -2_147_483_648;
 
 export function parseShelterWpPostIdParam(value: string): number | null {
-  if (!/^\d+$/.test(value)) return null;
+  if (!/^-?\d+$/.test(value)) return null;
   const parsed = Number(value);
-  return Number.isSafeInteger(parsed) && parsed >= 1 && parsed <= PRISMA_INT_MAX
+  return Number.isSafeInteger(parsed) &&
+    parsed !== 0 &&
+    parsed >= PRISMA_INT_MIN &&
+    parsed <= PRISMA_INT_MAX
     ? parsed
     : null;
 }

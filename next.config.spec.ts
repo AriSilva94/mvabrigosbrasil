@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 import nextConfig from "./next.config";
 
@@ -16,6 +18,10 @@ async function rewrites() {
 }
 
 describe("Next API rewrite", () => {
+  it("keeps the proxy beside src/app so Next includes it", () => {
+    expect(existsSync(resolve("src/proxy.ts"))).toBe(true);
+  });
+
   it("uses the local backend fallback", async () => {
     delete process.env.INTERNAL_API_URL;
 
