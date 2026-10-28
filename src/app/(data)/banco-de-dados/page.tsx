@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import type { JSX } from "react";
 
 import DatabaseDashboard from "@/components/data/database/DatabaseDashboard";
@@ -15,6 +16,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
+  await connection();
   const dataset = await loadPublicDatabaseDataset();
 
   return (

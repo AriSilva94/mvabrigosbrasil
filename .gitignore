@@ -41,7 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-docs/
+docs/*
+!docs/deployment/
+docs/deployment/*
+!docs/deployment/dokploy.md
 SUPABASE.md
 
 # claude code
@@ -50,6 +53,7 @@ CLAUDE.md
 
 # migration outputs
 scripts/*
+!scripts/audit.mjs
 
 src/data/wp/
 

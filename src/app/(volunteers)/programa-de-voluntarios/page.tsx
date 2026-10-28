@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import PageHeader from "@/components/layout/PageHeader";
 import VolunteerTabsSection from "@/components/volunteers/VolunteerTabsSection";
 import { buildMetadata } from "@/lib/seo";
@@ -13,6 +14,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page() {
+  await connection();
   const [volunteers, vacancies] = await Promise.all([
     getVolunteerCards(),
     getVacancyCards(),

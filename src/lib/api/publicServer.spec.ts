@@ -7,6 +7,7 @@ import { publicServerApi } from "./publicServer";
 const originalInternalApiUrl = process.env.INTERNAL_API_URL;
 
 afterEach(() => {
+  vi.unstubAllEnvs();
   vi.unstubAllGlobals();
   process.env.INTERNAL_API_URL = originalInternalApiUrl;
 });

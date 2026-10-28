@@ -6,6 +6,7 @@ if (process.env.NEXT_TURBOPACK_USE_WORKER === undefined) {
 }
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   turbopack: {},
 
   async rewrites() {

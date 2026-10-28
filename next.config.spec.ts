@@ -18,6 +18,9 @@ async function rewrites() {
 }
 
 describe("Next API rewrite", () => {
+  it("emits the standalone server used by the production Docker image", () => {
+    expect(nextConfig.output).toBe("standalone");
+  });
   it("keeps the proxy beside src/app so Next includes it", () => {
     expect(existsSync(resolve("src/proxy.ts"))).toBe(true);
   });

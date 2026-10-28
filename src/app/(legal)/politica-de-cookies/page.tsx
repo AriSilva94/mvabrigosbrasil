@@ -44,7 +44,7 @@ export default function Page(): JSX.Element {
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>
               <strong>Cookies de sessão:</strong> temporários, duram apenas enquanto o navegador está
-              aberto. Fazem identificação genérica e não coletam dados pessoais.
+              aberto. Podem conter identificadores relacionados à sessão do usuário.
             </li>
             <li>
               <strong>Cookies permanentes:</strong> registram identificação do usuário, comportamento
@@ -71,13 +71,13 @@ export default function Page(): JSX.Element {
             Quais cookies utilizamos?
           </Heading>
 
-          {}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
               1 – Cookies Necessários
             </Heading>
             <Text className="text-sm leading-relaxed">
-              Essenciais para autenticação e funcionamento básico do site. Não podem ser desativados.
+              Essenciais para manter sua sessão, permitir o acesso às áreas protegidas e registrar
+              suas preferências de consentimento. Não podem ser desativados pelo painel de preferências.
             </Text>
             <div className="overflow-x-auto">
               <table className="w-full border border-gray-200 text-sm text-brand-secondary">
@@ -115,7 +115,6 @@ export default function Page(): JSX.Element {
             </div>
           </div>
 
-          {}
           <div className="space-y-3">
             <Heading as="h4" className="text-lg font-semibold text-brand-primary">
               2 – Cookies Analíticos
@@ -123,40 +122,11 @@ export default function Page(): JSX.Element {
             <Text className="text-sm leading-relaxed">
               Nos ajudam a entender como você usa o site para melhorar a experiência. Só são carregados com seu consentimento.
             </Text>
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-200 text-sm text-brand-secondary">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Nome</th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Finalidade</th>
-                    <th className="border-b border-gray-200 px-3 py-2 text-left font-semibold">Duração</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">va (Vercel Analytics)</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Registra dados anônimos de visitas para análise de uso do site.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">Durante a sessão</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">_ga</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Registrar um número individual de ID para gerar dados estatísticos de visitas (Google Analytics).
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">24 meses</td>
-                  </tr>
-                  <tr className="even:bg-gray-50">
-                    <td className="border-b border-gray-200 px-3 py-2">_gcl_au</td>
-                    <td className="border-b border-gray-200 px-3 py-2">
-                      Usado pelo Google Analytics para entender a interação do usuário com o site.
-                    </td>
-                    <td className="border-b border-gray-200 px-3 py-2">3 meses</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <Text className="text-sm leading-relaxed">
+              Quando utilizado, o Google Analytics pode definir cookies como <strong>_ga</strong> e{" "}
+              <strong>_ga_*</strong> para medir visitas e sessões. A duração depende das configurações
+              do serviço. Essas ferramentas são opcionais e dependem do seu consentimento.
+            </Text>
           </div>
         </section>
 
@@ -181,8 +151,8 @@ export default function Page(): JSX.Element {
           </div>
 
           <Text className="leading-relaxed">
-            A desativação pode afetar algumas ferramentas e funcionalidades e remover preferências
-            salvas, impactando a experiência.
+            Recusar cookies analíticos não impede o cadastro ou o login. Se você apagar os cookies
+            de autenticação pelo navegador, será necessário entrar novamente na sua conta.
           </Text>
         </section>
 
@@ -217,6 +187,7 @@ export default function Page(): JSX.Element {
             .
           </Text>
         </section>
+        <Text className="text-sm leading-relaxed">Última atualização: 18/10/2026.</Text>
       </LegalPageLayout>
     </main>
   );
