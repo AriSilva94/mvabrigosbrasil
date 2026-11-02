@@ -20,7 +20,7 @@ describe("vacancy server page data", () => {
     mocks.serverApi
       .mockResolvedValueOnce({ shelter: { name: "Abrigo", shelterType: null, cnpj: "", cep: "", street: "", number: "", district: "", state: "", city: "", website: "", foundationDate: "", species: "", additionalSpecies: [], initialDogs: 0, initialCats: 0, authorizedName: "", authorizedRole: "", authorizedEmail: "", authorizedPhone: "", acceptTerms: false } })
       .mockResolvedValueOnce({ vacancies: [vacancy] })
-      .mockResolvedValueOnce({ applications: [{ id: "a", status: "pending", applied_at: "2026-09-07T00:00:00.000Z", created_at: "2026-09-07T00:00:00.000Z", volunteers: { id: "vol", name: "Ana", cidade: null, estado: null, telefone: null, profissao: null, experiencia: null, slug: null } }] });
+      .mockResolvedValueOnce({ applications: [{ id: "a", status: "pending", applied_at: "2026-09-07T00:00:00.000Z", created_at: "2026-09-07T00:00:00.000Z", volunteers: { id: "vol", name: "Ana", cidade: null, estado: null, telefone: null, profissao: null, experiencia: null, slug: null }, thread_id: null }] });
     await expect(loadOwnerVacanciesPageData()).resolves.toEqual({ shelterName: "Abrigo", vacancies: [{ ...vacancy, shelter: "Abrigo", applicationsCount: 1 }] });
     expect(mocks.serverApi).toHaveBeenNthCalledWith(3, "/vacancies/v1/applications");
   });
@@ -55,25 +55,25 @@ describe("vacancy server page data", () => {
   });
 
   it("loads owner unpublished detail after my-status", async () => {
-    mocks.serverApi.mockResolvedValueOnce({ isOwner: true, hasApplied: false }).mockResolvedValueOnce({ vacancy });
+    mocks.serverApi.mockResolvedValueOnce({ isOwner: true, hasApplied: false, threadId: null, shelterProfileId: null }).mockResolvedValueOnce({ vacancy });
     await expect(loadSharedVacancy("plantao-v1", true)).resolves.toEqual({ vacancy, canEdit: true, hasApplied: false, isAuthenticated: true });
     expect(mocks.serverApi).toHaveBeenNthCalledWith(1, "/vacancies/plantao-v1/my-status");
     expect(mocks.serverApi).toHaveBeenNthCalledWith(2, "/vacancies/plantao-v1");
   });
 
   it("loads raw public detail for anonymous optional auth", async () => {
-    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false }).mockResolvedValueOnce(vacancy);
+    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false, threadId: null, shelterProfileId: null }).mockResolvedValueOnce(vacancy);
     await expect(loadSharedVacancy("plantao-v1", false)).resolves.toEqual({ vacancy, canEdit: false, hasApplied: false, isAuthenticated: false });
     expect(mocks.serverApi).toHaveBeenNthCalledWith(2, "/public/vacancies/plantao-v1");
   });
 
   it("returns null only for public detail 404", async () => {
-    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false }).mockRejectedValueOnce(new ApiError(404, "Vaga não encontrada"));
+    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false, threadId: null, shelterProfileId: null }).mockRejectedValueOnce(new ApiError(404, "Vaga não encontrada"));
     await expect(loadSharedVacancy("missing", false)).resolves.toBeNull();
   });
 
   it("propagates non-404 public failures", async () => {
-    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false }).mockRejectedValueOnce(new ApiError(500, "Falha"));
+    mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false, threadId: null, shelterProfileId: null }).mockRejectedValueOnce(new ApiError(500, "Falha"));
     await expect(loadSharedVacancy("broken", false)).rejects.toMatchObject({ status: 500 });
   });
 

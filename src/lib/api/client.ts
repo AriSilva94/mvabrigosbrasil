@@ -16,7 +16,7 @@ function isSessionPath(path: string): boolean {
   return NO_REFRESH_PATHS.has(normalized);
 }
 
-async function refreshSession(): Promise<void> {
+export async function refreshSession(): Promise<void> {
   if (!refreshInFlight) {
     refreshInFlight = requestJson(fetch, apiPath("/auth/refresh"), {
       method: "POST",

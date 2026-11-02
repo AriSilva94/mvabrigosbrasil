@@ -56,6 +56,7 @@ const applicationWithVolunteerSchema = z.object({
   applied_at: z.string(),
   created_at: z.string(),
   volunteers: volunteerSchema,
+  thread_id: z.string().nullable(),
 }).strict();
 const applicationsEnvelopeSchema = z.object({
   applications: z.array(applicationWithVolunteerSchema),
@@ -64,6 +65,8 @@ const applicationsEnvelopeSchema = z.object({
 const statusSchema = z.object({
   isOwner: z.boolean(),
   hasApplied: z.boolean(),
+  threadId: z.string().nullable(),
+  shelterProfileId: z.string().nullable(),
 }).strict();
 
 const applySchema = z.object({
@@ -77,6 +80,7 @@ const applySchema = z.object({
     created_at: z.string(),
     updated_at: z.string(),
   }).strict(),
+  thread_id: z.string().nullable(),
 }).strict();
 
 const deleteSchema = z.object({

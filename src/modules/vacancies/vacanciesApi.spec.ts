@@ -85,6 +85,7 @@ describe("vacancies browser API", () => {
     const applications = [{
       id: "app-1", status: "pending", applied_at: "2026-09-07T00:00:00.000Z", created_at: "2026-09-07T00:00:00.000Z",
       volunteers: { id: "vol-1", name: "Ana", cidade: null, estado: "PE", telefone: null, profissao: null, experiencia: null, slug: null },
+      thread_id: "thread-1",
     }];
     mocks.apiClient.mockResolvedValue({ applications });
     await expect(getVacancyApplications("vacancy-1")).resolves.toEqual(applications);
@@ -114,8 +115,9 @@ describe("vacancies browser API", () => {
   });
 
   it("loads optional-auth status", async () => {
-    mocks.apiClient.mockResolvedValue({ isOwner: false, hasApplied: true });
-    await expect(getMyVacancyStatus("vacancy-1")).resolves.toEqual({ isOwner: false, hasApplied: true });
+    const status = { isOwner: false, hasApplied: true, threadId: "thread-1", shelterProfileId: "owner-1" };
+    mocks.apiClient.mockResolvedValue(status);
+    await expect(getMyVacancyStatus("vacancy-1")).resolves.toEqual(status);
     expect(mocks.apiClient).toHaveBeenCalledWith("/vacancies/vacancy-1/my-status", { signal: undefined });
   });
 
@@ -129,7 +131,7 @@ describe("vacancies browser API", () => {
   });
 
   it("applies with POST and no fabricated body", async () => {
-    const result = { success: true, application: { id: "app", vacancy_id: "vacancy-1", volunteer_id: "vol-1", status: "pending", applied_at: "2026-09-07T00:00:00.000Z", created_at: "2026-09-07T00:00:00.000Z", updated_at: "2026-09-07T00:00:00.000Z" } };
+    const result = { success: true, application: { id: "app", vacancy_id: "vacancy-1", volunteer_id: "vol-1", status: "pending", applied_at: "2026-09-07T00:00:00.000Z", created_at: "2026-09-07T00:00:00.000Z", updated_at: "2026-09-07T00:00:00.000Z" }, thread_id: "thread-1" };
     mocks.apiClient.mockResolvedValue(result);
     await expect(applyToVacancy("vacancy-1")).resolves.toEqual(result);
     expect(mocks.apiClient).toHaveBeenCalledWith("/vacancies/vacancy-1/apply", { method: "POST" });
