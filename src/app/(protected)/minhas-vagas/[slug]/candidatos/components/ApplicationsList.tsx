@@ -83,7 +83,7 @@ export default function ApplicationsList({
               {app.thread_id && (
                 <button
                   type="button"
-                  onClick={() => openChatWidget({ threadId: app.thread_id ?? undefined })}
+                  onClick={() => openChatWidget({ threadId: app.thread_id ?? undefined, otherName: app.volunteers.name })}
                   className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
                 >
                   <MessageCircle className="h-4 w-4" />

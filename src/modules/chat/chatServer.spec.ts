@@ -20,3 +20,25 @@ describe("loadThreadsByVacancy", () => {
     await expect(loadThreadsByVacancy()).resolves.toEqual({});
   });
 });
+
+describe("loadThreadWithVolunteer", () => {
+  it("returns the conversation id for the volunteer slug", async () => {
+    const { loadThreadWithVolunteer } = await import("./chatServer");
+    mocks.serverApi.mockResolvedValue({ thread_id: "t1" });
+    await expect(loadThreadWithVolunteer("maria-123")).resolves.toBe("t1");
+    expect(mocks.serverApi).toHaveBeenCalledWith("/chat/threads/with-volunteer/maria-123");
+  });
+
+  it("encodes the slug", async () => {
+    const { loadThreadWithVolunteer } = await import("./chatServer");
+    mocks.serverApi.mockResolvedValue({ thread_id: null });
+    await loadThreadWithVolunteer("a/b");
+    expect(mocks.serverApi).toHaveBeenCalledWith("/chat/threads/with-volunteer/a%2Fb");
+  });
+
+  it("is null for anonymous visitors and request failures", async () => {
+    const { loadThreadWithVolunteer } = await import("./chatServer");
+    mocks.serverApi.mockRejectedValue(new Error("401"));
+    await expect(loadThreadWithVolunteer("maria-123")).resolves.toBeNull();
+  });
+});

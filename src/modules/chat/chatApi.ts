@@ -57,6 +57,7 @@ const readSchema = z.object({
   success: z.literal(true),
   unread_count: z.number(),
 }).strict();
+const withVolunteerSchema = z.object({ thread_id: z.string().nullable() }).strict();
 const byVacancySchema = z.object({
   threads: z.record(z.string(), z.string()),
 }).strict();
@@ -128,6 +129,10 @@ export async function markThreadRead(threadId: string): Promise<number> {
     await apiClient<unknown>(`${threadPath(threadId)}/read`, { method: "POST" }),
     "marcar como lida",
   ).unread_count;
+}
+
+export function parseThreadWithVolunteer(value: unknown): string | null {
+  return parse(withVolunteerSchema, value, "carregar conversa com voluntário").thread_id;
 }
 
 export function parseThreadsByVacancy(value: unknown): Record<string, string> {

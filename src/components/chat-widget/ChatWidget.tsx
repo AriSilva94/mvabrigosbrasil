@@ -7,12 +7,15 @@ import { useUnreadCount } from "@/hooks/useUnreadCount";
 import { usePresence } from "@/hooks/usePresence";
 import ChatWidgetButton from "./ChatWidgetButton";
 import ChatWidgetPanel from "./ChatWidgetPanel";
+import { listThreads } from "@/modules/chat/chatApi";
+import { resolveCurrentThread } from "@/modules/chat/threadMeta";
 import type { CurrentThread } from "@/types/chat.types";
 
 export default function ChatWidget() {
   const { user, isLoading: authLoading } = useAuth();
   const { count, refetch, setCount } = useUnreadCount(user?.id);
-  const { isOnline } = usePresence(user?.id);
+  const userId = user?.id;
+  const { isOnline } = usePresence(userId);
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<"inbox" | "thread">("inbox");
   const [currentThread, setCurrentThread] = useState<CurrentThread | null>(null);
@@ -23,19 +26,31 @@ export default function ChatWidget() {
       const detail = (e as CustomEvent).detail;
       setIsOpen(true);
       if (detail?.threadId) {
+        const threadId: string = detail.threadId;
         setCurrentThread({
-          id: detail.threadId,
+          id: threadId,
           otherName: detail.otherName || "Chat",
           otherProfileId: detail.otherProfileId || "",
           vacancyTitle: detail.vacancyTitle || "Vaga",
         });
         setView("thread");
+
+        if (userId) {
+          listThreads()
+            .then((threads) => {
+              const resolved = resolveCurrentThread(threads, threadId, userId);
+              if (resolved) {
+                setCurrentThread((current) => (current?.id === threadId ? resolved : current));
+              }
+            })
+            .catch(() => undefined);
+        }
       }
       refetch();
     }
     window.addEventListener("open-chat-widget", handleOpenWidget);
     return () => window.removeEventListener("open-chat-widget", handleOpenWidget);
-  }, [refetch]);
+  }, [refetch, userId]);
 
   // Fechar com ESC
   useEffect(() => {
