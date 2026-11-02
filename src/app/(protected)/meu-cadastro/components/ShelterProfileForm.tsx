@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,15 @@ import ShelterAuthorizationSection from "./ShelterAuthorizationSection";
 import ShelterInfoSection from "./ShelterInfoSection";
 import { DeactivateDialog } from "./DeactivateDialog";
 import { AlertCircle } from "lucide-react";
-import { buildPopulationPayload } from "@/modules/shelter/populationEditHelpers";
+import {
+  buildShelterProfileFormPayload,
+  deactivateShelter,
+  saveShelterProfile,
+} from "@/modules/shelter/shelterProfileApi";
+import {
+  createShelterProfileEditorState,
+  type ShelterAddressOverride,
+} from "@/modules/shelter/shelterProfileEditorState";
 
 export default function ShelterProfileForm({
   populationEditOnly = false,
@@ -28,37 +36,64 @@ export default function ShelterProfileForm({
   populationTarget?: "shelter" | "lt";
 }): JSX.Element {
   const router = useRouter();
-  const { shelter, isLoading, refresh } = useShelterProfile();
+  const { shelter, profileRevision, isLoading, refresh } = useShelterProfile();
   const { refetch: refetchValidation } = useProfileValidationContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<
-    Partial<Record<keyof ShelterProfileInput, string>>
-  >({});
-  const [shelterType, setShelterType] = useState<string>(
-    shelter?.shelterType ?? ""
-  );
-  const [documentValue, setDocumentValue] = useState<string>(
-    shelter?.cnpj ?? ""
-  );
-  const [addressData, setAddressData] = useState({
-    street: shelter?.street ?? "",
-    district: shelter?.district ?? "",
-    city: shelter?.city ?? "",
-    state: shelter?.state ?? "",
-  });
-  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false);
-  const [hasDuplicateCep, setHasDuplicateCep] = useState(false);
-
-  useEffect(() => {
-    setShelterType(shelter?.shelterType ?? "");
-    setDocumentValue(shelter?.cnpj ?? "");
-  }, [shelter?.shelterType, shelter?.cnpj]);
 
   usePopulationEditScroll(populationEditOnly && !isLoading, {
     anchorId:
       populationTarget === "lt" ? "populacao-inicial-lt" : "populacao-inicial",
   });
 
+  if (isLoading && !shelter) {
+    return <FormLoading />;
+  }
+
+  return (
+    <ShelterProfileEditor
+      key={profileRevision}
+      shelter={shelter}
+      isLoading={isLoading}
+      populationEditOnly={populationEditOnly}
+      onRefresh={refresh}
+      onRefetchValidation={refetchValidation}
+      onSaved={() =>
+        router.push(populationEditOnly ? "/dinamica-populacional" : "/painel")
+      }
+    />
+  );
+}
+
+type ShelterProfileEditorProps = {
+  shelter: Partial<ShelterProfileFormData> | null;
+  isLoading: boolean;
+  populationEditOnly: boolean;
+  onRefresh: () => Promise<void>;
+  onRefetchValidation: () => Promise<void>;
+  onSaved: () => void;
+};
+
+function ShelterProfileEditor({
+  shelter,
+  isLoading,
+  populationEditOnly,
+  onRefresh,
+  onRefetchValidation,
+  onSaved,
+}: ShelterProfileEditorProps): JSX.Element {
+  const initialState = createShelterProfileEditorState(shelter);
+  const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
+  const [fieldErrors, setFieldErrors] = useState(initialState.fieldErrors);
+  const [shelterType, setShelterType] = useState(initialState.shelterType);
+  const [documentValue, setDocumentValue] = useState(initialState.documentValue);
+  const [addressDataOverride, setAddressDataOverride] = useState<
+    ShelterAddressOverride | null
+  >(initialState.addressDataOverride);
+  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(
+    initialState.isDeactivateDialogOpen,
+  );
+  const [hasDuplicateCep, setHasDuplicateCep] = useState(
+    initialState.hasDuplicateCep,
+  );
 
   function handleCepAutocomplete(data: {
     street: string;
@@ -66,25 +101,14 @@ export default function ShelterProfileForm({
     city: string;
     state: string;
   }) {
-    setAddressData(data);
+    setAddressDataOverride(data);
   }
 
   async function handleDeactivate() {
     try {
-      const response = await fetch("/api/shelter-profile/deactivate", {
-        method: "POST",
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result?.error || "Não foi possível alterar o status do cadastro."
-        );
-      }
-
+      const result = await deactivateShelter();
       toast.success(result.message);
-      await refresh();
+      await Promise.all([onRefresh(), onRefetchValidation()]);
     } catch (error) {
       console.error("Erro ao alterar status do cadastro", error);
       const message =
@@ -100,51 +124,13 @@ export default function ShelterProfileForm({
     if (isSubmitting) return;
 
     const formData = new FormData(event.currentTarget);
-    const foundationDateRaw = String(formData.get("foundationDate") ?? "");
-
-
-    const foundationDateIso =
-      foundationDateRaw && foundationDateRaw.includes("/")
-        ? foundationDateRaw.split("/").reverse().join("-")
-        : foundationDateRaw;
-
-    const nextShelterType =
-      shelterType || String(formData.get("shelterType") ?? "");
-    const temporaryAgreementValue =
-      nextShelterType === "temporary"
-        ? false
-        : formData.get("temporaryAgreement");
-    const payload = populationEditOnly
-      ? buildPopulationPayload(shelter, formData)
-      : {
-          shelterType: nextShelterType,
-          cnpj: documentValue || String(formData.get("cnpj") ?? ""),
-          shelterName: String(formData.get("shelterName") ?? ""),
-          cep: String(formData.get("cep") ?? ""),
-          street: String(formData.get("street") ?? ""),
-          number: formData.get("number"),
-          district: String(formData.get("district") ?? ""),
-          state: String(formData.get("state") ?? ""),
-          city: String(formData.get("city") ?? ""),
-          website: String(formData.get("website") ?? ""),
-          foundationDate: foundationDateIso,
-          species: String(formData.get("species") ?? ""),
-          additionalSpecies: formData.getAll("additionalSpecies").map(String),
-          temporaryAgreement:
-            typeof temporaryAgreementValue === "boolean"
-              ? temporaryAgreementValue
-              : temporaryAgreementValue === "true",
-          referralSource: String(formData.get("referralSource") ?? ""),
-          initialDogs: formData.get("initialDogs"),
-          initialCats: formData.get("initialCats"),
-          initialDogsLt: formData.get("initialDogsLt"),
-          initialCatsLt: formData.get("initialCatsLt"),
-          authorizedName: String(formData.get("authorizedName") ?? ""),
-          authorizedRole: String(formData.get("authorizedRole") ?? ""),
-          authorizedEmail: String(formData.get("authorizedEmail") ?? ""),
-          authorizedPhone: String(formData.get("authorizedPhone") ?? ""),
-          acceptTerms: formData.get("acceptTerms") === "on",
-        };
+    const payload = buildShelterProfileFormPayload({
+      formData,
+      shelter,
+      shelterType,
+      documentValue,
+      populationEditOnly,
+    });
 
     const parsed = shelterProfileSchema.safeParse(payload);
     if (!parsed.success) {
@@ -162,25 +148,10 @@ export default function ShelterProfileForm({
     try {
       setIsSubmitting(true);
       setFieldErrors({});
-      const response = await fetch("/api/shelter-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result?.error || "Não foi possível salvar o cadastro.");
-      }
-
+      await saveShelterProfile(parsed.data);
       toast.success("Cadastro do abrigo salvo com sucesso.");
-      await refetchValidation();
-      if (populationEditOnly) {
-        router.push("/dinamica-populacional");
-      } else {
-        router.push("/painel");
-      }
+      await onRefetchValidation();
+      onSaved();
     } catch (error) {
       console.error("Erro ao salvar cadastro do abrigo", error);
       const message =
@@ -193,11 +164,13 @@ export default function ShelterProfileForm({
     }
   }
 
-  const formKey = useMemo(
-    () => (shelter ? JSON.stringify(shelter) : "empty"),
-    [shelter]
-  );
-
+  const addressData =
+    addressDataOverride ?? {
+      street: shelter?.street ?? "",
+      district: shelter?.district ?? "",
+      city: shelter?.city ?? "",
+      state: shelter?.state ?? "",
+    };
   const addressOverrides = Object.fromEntries(
     Object.entries(addressData).filter(([, value]) => value !== "")
   );
@@ -212,15 +185,10 @@ export default function ShelterProfileForm({
     ? "Salvando..."
     : "Salvar Cadastro";
 
-  if (isLoading && !shelter) {
-    return <FormLoading />;
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
-      key={formKey}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
       {shelter?.active === false && (

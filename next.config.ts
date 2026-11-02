@@ -6,7 +6,21 @@ if (process.env.NEXT_TURBOPACK_USE_WORKER === undefined) {
 }
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   turbopack: {},
+
+  async rewrites() {
+    const origin = (
+      process.env.INTERNAL_API_URL ?? "http://localhost:3001"
+    ).replace(/\/+$/, "");
+
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: `${origin}/api/v1/:path*`,
+      },
+    ];
+  },
 
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {

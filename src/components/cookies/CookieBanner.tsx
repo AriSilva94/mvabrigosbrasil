@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import Button from "@/components/ui/Button";
 import CookiePreferencesModal from "./CookiePreferencesModal";
 import {
@@ -32,42 +32,54 @@ function dispatchConsentChange(consent: CookieConsentValue) {
   );
 }
 
+const SERVER_COOKIE_SNAPSHOT = "__server_cookie_snapshot__";
+
+function subscribeToConsent(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener("cookie-consent-change", handler);
+  return () => window.removeEventListener("cookie-consent-change", handler);
+}
+
+function getConsentSnapshot(): string {
+  return getCookieValue(COOKIE_CONSENT_NAME) ?? "";
+}
+
+function getServerConsentSnapshot(): string {
+  return SERVER_COOKIE_SNAPSHOT;
+}
+
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(() => {
-    if (typeof document === "undefined") return false;
-    return parseConsent(getCookieValue(COOKIE_CONSENT_NAME)) === null;
-  });
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentConsent, setCurrentConsent] = useState<ConsentCategories>(
-    () => {
-      if (typeof document === "undefined") return DEFAULT_CONSENT;
-      return (
-        parseConsent(getCookieValue(COOKIE_CONSENT_NAME)) ?? DEFAULT_CONSENT
-      );
-    },
+  const consentSnapshot = useSyncExternalStore(
+    subscribeToConsent,
+    getConsentSnapshot,
+    getServerConsentSnapshot,
   );
+  const consent =
+    consentSnapshot === SERVER_COOKIE_SNAPSHOT
+      ? null
+      : parseConsent(consentSnapshot || undefined);
+  const visible =
+    consentSnapshot !== SERVER_COOKIE_SNAPSHOT && consent === null;
+  const [modalOpen, setModalOpen] = useState(false);
+  const currentConsent: ConsentCategories = consent ?? DEFAULT_CONSENT;
 
 
   useEffect(() => {
-    const raw = getCookieValue(COOKIE_CONSENT_NAME);
-    const consent = parseConsent(raw);
-    if (consent) {
-      dispatchConsentChange({ ...consent });
+    if (consentSnapshot === SERVER_COOKIE_SNAPSHOT) return;
+    const storedConsent = parseConsent(consentSnapshot || undefined);
+    if (storedConsent) {
+      dispatchConsentChange({ ...storedConsent });
     }
-  }, []);
+  }, [consentSnapshot]);
 
   const handleAcceptAll = useCallback(async () => {
     await saveConsent(ACCEPT_ALL_CONSENT);
-    setCurrentConsent(ACCEPT_ALL_CONSENT);
     dispatchConsentChange(ACCEPT_ALL_CONSENT);
-    setVisible(false);
   }, []);
 
   const handleReject = useCallback(async () => {
     await saveConsent(DEFAULT_CONSENT);
-    setCurrentConsent(DEFAULT_CONSENT);
     dispatchConsentChange(DEFAULT_CONSENT);
-    setVisible(false);
   }, []);
 
   const handleSavePreferences = useCallback(
@@ -77,9 +89,7 @@ export default function CookieBanner() {
         ...categories,
       };
       await saveConsent(consent);
-      setCurrentConsent(consent);
       dispatchConsentChange(consent);
-      setVisible(false);
     },
     [],
   );

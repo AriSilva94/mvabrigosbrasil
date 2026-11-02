@@ -1,62 +1,66 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import { LatestRequest } from "@/lib/async/latestRequest";
+import { publishShelterProfile } from "@/modules/shelter/profileOverride";
+import { getShelterProfile } from "@/modules/shelter/shelterProfileApi";
 import type { ShelterProfileFormData } from "@/types/shelter.types";
 
-type ShelterProfileResponse = {
-  shelter: Partial<ShelterProfileFormData> | null;
-};
-
 export function useShelterProfile() {
-  const [shelter, setShelter] = useState<Partial<ShelterProfileFormData> | null>(null);
+  const [profile, setProfile] = useState<{
+    shelter: Partial<ShelterProfileFormData> | null;
+    revision: number;
+  }>({ shelter: null, revision: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const requests = useRef(new LatestRequest());
 
-  const fetchShelter = useCallback(async () => {
+  const fetchShelter = useCallback(async (signal?: AbortSignal) => {
     setIsLoading(true);
     setError(null);
-    try {
-      const response = await fetch("/api/shelter-profile");
-      const data = (await response.json()) as ShelterProfileResponse;
-
-      if (!response.ok) {
-        throw new Error((data as { error?: string })?.error || "Erro ao carregar cadastro.");
-      }
-
-      setShelter(data.shelter ?? null);
-    } catch (err) {
-      console.error("useShelterProfile: erro ao buscar cadastro", err);
-      setError(err instanceof Error ? err.message : "Erro ao carregar cadastro.");
-    } finally {
-      setIsLoading(false);
-    }
+    await requests.current.run(() => getShelterProfile(signal), {
+      onSuccess: (data) =>
+        setProfile((current) =>
+          publishShelterProfile(current.revision, data.shelter ?? null),
+        ),
+      onError: (err) => {
+        if (signal?.aborted) return;
+        console.error("useShelterProfile: erro ao buscar cadastro", err);
+        setError(err instanceof Error ? err.message : "Erro ao carregar cadastro.");
+      },
+      onSettled: () => setIsLoading(false),
+    });
   }, []);
 
   useEffect(() => {
-    void (async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch("/api/shelter-profile");
-        const data = (await response.json()) as ShelterProfileResponse;
-
-        if (!response.ok) {
-          throw new Error((data as { error?: string })?.error || "Erro ao carregar cadastro.");
-        }
-
-        setShelter(data.shelter ?? null);
-      } catch (err) {
+    const controller = new AbortController();
+    const requestTracker = requests.current;
+    void requestTracker.run(() => getShelterProfile(controller.signal), {
+      onSuccess: (data) =>
+        setProfile((current) =>
+          publishShelterProfile(current.revision, data.shelter ?? null),
+        ),
+      onError: (err) => {
+        if (controller.signal.aborted) return;
         console.error("useShelterProfile: erro ao buscar cadastro", err);
         setError(err instanceof Error ? err.message : "Erro ao carregar cadastro.");
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+      },
+      onSettled: () => setIsLoading(false),
+    });
+    return () => {
+      controller.abort();
+      requestTracker.invalidate();
+    };
+  }, [fetchShelter]);
+
+  const refresh = useCallback(async () => {
+    await fetchShelter();
+  }, [fetchShelter]);
 
   return {
-    shelter,
+    shelter: profile.shelter,
+    profileRevision: profile.revision,
     isLoading,
     error,
-    refresh: fetchShelter,
+    refresh,
   };
 }

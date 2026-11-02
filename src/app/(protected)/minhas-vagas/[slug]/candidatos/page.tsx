@@ -1,7 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
+import { REGISTER_TYPES } from "@/constants/registerTypes";
+import { ApiError } from "@/lib/api/errors";
+import { loadCandidatesPageData } from "@/modules/vacancies/vacancyPageData";
 import ApplicationsList from "./components/ApplicationsList";
 
 type CandidatosPageProps = {
@@ -13,45 +15,15 @@ export default async function CandidatosPage({
 }: CandidatosPageProps) {
   const { slug } = await params;
   const access = await enforceTeamAccess(`/minhas-vagas/${slug}/candidatos`);
-
-  const supabaseAdmin = getSupabaseAdminClient();
-
-  const { data: shelter } = await supabaseAdmin
-    .from("shelters")
-    .select("id, name")
-    .eq("profile_id", access.userId)
-    .maybeSingle();
-
-  if (!shelter) redirect("/painel");
-
-  const { data: vacancy } = await supabaseAdmin
-    .from("vacancies")
-    .select("id, title, slug, shelter_id")
-    .eq("slug", slug)
-    .eq("shelter_id", shelter.id)
-    .maybeSingle();
-
-  if (!vacancy) notFound();
-
-  const { data: applications } = await supabaseAdmin
-    .from("vacancy_applications")
-    .select(`
-      id,
-      status,
-      applied_at,
-      volunteers (
-        id,
-        name,
-        cidade,
-        estado,
-        telefone,
-        profissao,
-        experiencia,
-        slug
-      )
-    `)
-    .eq("vacancy_id", vacancy.id)
-    .order("applied_at", { ascending: false });
+  if (access.registerType !== REGISTER_TYPES.shelter) redirect("/painel");
+  let data;
+  try {
+    data = await loadCandidatesPageData(slug);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
+  }
+  const { vacancy, applications } = data;
 
   return (
     <main>
@@ -67,13 +39,7 @@ export default async function CandidatosPage({
       <section className="bg-white">
         <div className="container px-6 py-12">
           <ApplicationsList
-            applications={(applications || []).map((a) => ({
-              ...a,
-              volunteers: {
-                ...a.volunteers,
-                slug: a.volunteers.slug as string | null | undefined,
-              },
-            }))}
+            applications={applications}
           />
         </div>
       </section>

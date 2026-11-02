@@ -2,11 +2,11 @@ import type { JSX } from "react";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { Text } from "@/components/ui/typography";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { fetchVolunteerCardsFromSupabase } from "@/services/volunteersAggregator";
+import { getVolunteerCardsOrThrow } from "@/services/publicDataService";
 import VolunteerListClient from "./components/VolunteerListClient";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
+import type { VolunteerCard } from "@/types/volunteer.types";
 
 export const metadata = buildMetadata({
   title: "Voluntários",
@@ -18,8 +18,13 @@ export const metadata = buildMetadata({
 export default async function Page(): Promise<JSX.Element> {
   await enforceTeamAccess("/voluntarios");
 
-  const supabase = getSupabaseAdminClient();
-  const { volunteers, error } = await fetchVolunteerCardsFromSupabase(supabase);
+  let volunteers: VolunteerCard[] = [];
+  let error = false;
+  try {
+    volunteers = await getVolunteerCardsOrThrow();
+  } catch {
+    error = true;
+  }
 
   return (
     <main>

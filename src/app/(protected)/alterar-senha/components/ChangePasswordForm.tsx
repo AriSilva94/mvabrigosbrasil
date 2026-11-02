@@ -12,7 +12,8 @@ import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
+import { apiClient } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/errors";
 
 type ChangePasswordFormProps = {
   userEmail: string;
@@ -60,32 +61,33 @@ export default function ChangePasswordForm({
     setIsSubmitting(true);
 
     try {
-      const supabase = getBrowserSupabaseClient();
-
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: userEmail,
-        password: values.currentPassword,
+      await apiClient("/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: values.currentPassword,
+          newPassword: values.newPassword,
+        }),
       });
-
-      if (signInError) {
-        setFieldErrors({ currentPassword: "Senha atual incorreta." });
-        toast.error("Senha atual incorreta.");
-        return;
-      }
-
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: values.newPassword,
-      });
-
-      if (updateError) {
-        toast.error("Não foi possível alterar a senha. Tente novamente.");
-        return;
-      }
 
       toast.success("Senha alterada com sucesso!");
       router.push("/painel");
-    } catch {
-      toast.error("Erro ao processar a solicitação.");
+    } catch (error) {
+      if (
+        error instanceof ApiError &&
+        error.status === 400 &&
+        error.message === "Senha atual incorreta."
+      ) {
+        setFieldErrors({ currentPassword: error.message });
+        toast.error(error.message);
+        return;
+      }
+
+      toast.error(
+        error instanceof ApiError
+          ? "Não foi possível alterar a senha. Tente novamente."
+          : "Erro ao processar a solicitação.",
+      );
     } finally {
       setIsSubmitting(false);
     }

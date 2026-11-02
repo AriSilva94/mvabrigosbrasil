@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import Alert from "@/components/ui/Alert";
 import ProfileField from "@/components/ui/ProfileField";
+import OpenChatButton from "@/components/chat-widget/OpenChatButton";
+import { loadThreadWithVolunteer } from "@/modules/chat/chatServer";
 import { getVolunteerProfileBySlug } from "@/services/volunteersService";
 import { buildMetadata } from "@/lib/seo";
 import { formatPhone } from "@/lib/formatters";
@@ -55,6 +57,8 @@ export default async function Page({
   const profile = await getVolunteerProfileBySlug(slug);
 
   if (!profile) redirect("/programa-de-voluntarios");
+
+  const threadId = await loadThreadWithVolunteer(profile.slug || slug);
 
   const displayName = profile.name || "Perfil de voluntário";
   const location =
@@ -142,10 +146,21 @@ export default async function Page({
                 </Link>
               </div>
             ) : (
-              <Alert variant="info">
-                Em caso de interesse, entre em contato com o voluntário através dos contatos de{" "}
-                <strong>e-mail</strong> ou <strong>telefone</strong>.
-              </Alert>
+              <>
+                <Alert variant="info">
+                  Em caso de interesse, entre em contato com o voluntário através dos contatos de{" "}
+                  <strong>e-mail</strong> ou <strong>telefone</strong>.
+                </Alert>
+                {threadId && (
+                  <div className="pt-2">
+                    <OpenChatButton
+                      threadId={threadId}
+                      label="Conversar com o voluntário"
+                      otherName={profile.name ?? undefined}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </article>
         </div>

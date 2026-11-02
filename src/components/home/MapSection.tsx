@@ -5,7 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 
 import type { MapStatisticItem } from "@/types/map.types";
-import type { MapStatistics } from "@/app/api/map-statistics/route";
+import { loadPublicMapStatistics } from "@/modules/public-data/publicData";
 import StatCard from "@/components/ui/StatCard";
 import { Heading, Text } from "@/components/ui/typography";
 import { convertStateDataToMapPoints } from "@/lib/utils/stateMapping";
@@ -34,14 +34,10 @@ export default function MapSection(): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function fetchMapStatistics() {
       try {
-        const response = await fetch("/api/map-statistics");
-        if (!response.ok) {
-          throw new Error("Failed to fetch map statistics");
-        }
-
-        const data: MapStatistics = await response.json();
+        const data = await loadPublicMapStatistics(controller.signal);
 
 
         const mapPoints = convertStateDataToMapPoints(data.byState);
@@ -73,14 +69,16 @@ export default function MapSection(): JSX.Element {
         ];
         setStatistics(stats);
       } catch (error) {
+        if (controller.signal.aborted) return;
         console.error("Error fetching map statistics:", error);
 
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     }
 
     fetchMapStatistics();
+    return () => controller.abort();
   }, []);
 
   return (

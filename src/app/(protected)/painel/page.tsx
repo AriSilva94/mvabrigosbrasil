@@ -13,8 +13,11 @@ import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess, filterPanelShortcuts } from "@/lib/auth/teamAccess";
 import type { PanelShortcut } from "@/types/panel.types";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
 import ManagerPanel from "@/app/(protected)/painel/components/ManagerPanel";
+import {
+  loadManagerShelters,
+  type ManagerShelter,
+} from "@/app/(protected)/painel/managerShelters";
 import AdminPanel from "@/app/(protected)/painel/components/AdminPanel";
 import TrainingBanner from "@/app/(protected)/painel/components/TrainingBanner";
 import { TourTrigger } from "@/components/tour/TourTrigger";
@@ -33,7 +36,7 @@ function VolunteerPanel(): JSX.Element {
         <TrainingBanner href={TRAINING_VIDEO_URL} />
 
         <section id="tour-shortcuts" className="mt-10">
-          <ul className="grid gap-5 grid-cols-1 md:grid-cols-3">
+          <ul className="grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
             {VOLUNTEER_SHORTCUTS.map(({ id, title, href, icon: Icon }) => (
               <li key={id} id={id === "profile" ? "tour-profile-shortcut" : undefined}>
                 <Link
@@ -137,44 +140,9 @@ export default async function Page(): Promise<JSX.Element> {
   const isTeamOnly = access.isTeamOnly;
   const isTeamDisabled = access.isTeamDisabled;
 
-  let managerShelters: { id: string; name: string; wp_post_id: number }[] = [];
+  let managerShelters: ManagerShelter[] = [];
   if (isManager) {
-    const supabaseAdmin = getSupabaseAdminClient();
-
-    const { data: profile } = await supabaseAdmin
-      .from("profiles")
-      .select("wp_user_id")
-      .eq("id", access.userId)
-      .maybeSingle();
-
-    if (profile?.wp_user_id) {
-      const { data: memberships } = await supabaseAdmin
-        .from("team_memberships")
-        .select("abrigo_post_id")
-        .eq("member_wp_user_id", profile.wp_user_id)
-        .eq("role", "manager")
-        .eq("status", "active");
-
-      if (memberships && memberships.length > 0) {
-        const abrigoIds = (
-          memberships as Array<{ abrigo_post_id: number | null }>
-        )
-          .map((m) => m.abrigo_post_id)
-          .filter((id): id is number => id !== null);
-
-        if (abrigoIds.length > 0) {
-          const { data: shelters } = await supabaseAdmin
-            .from("shelters")
-            .select("id, name, wp_post_id")
-            .in("wp_post_id", abrigoIds);
-
-          managerShelters = (shelters || []).filter(
-            (s): s is { id: string; name: string; wp_post_id: number } =>
-              s.id !== null && s.name !== null && s.wp_post_id !== null
-          );
-        }
-      }
-    }
+    managerShelters = await loadManagerShelters();
   }
 
   return (

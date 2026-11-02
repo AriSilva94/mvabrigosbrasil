@@ -4,44 +4,16 @@ import type { Metadata } from "next";
 
 import PageHeader from "@/components/layout/PageHeader";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import type { Database } from "@/lib/supabase/types";
-import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import EditVacancyClient from "@/app/(protected)/vaga/[slug]/components/EditVacancyClient";
-import { buildVacancySlug, mapVacancyRow } from "@/services/vacanciesSupabase";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
-
-type VacancyRow = Database["public"]["Tables"]["vacancies"]["Row"];
+import { ApiError } from "@/lib/api/errors";
+import { serverApi } from "@/lib/api/server";
+import { parseVacancyResponse } from "@/modules/vacancies/vacanciesApi";
 
 type PageParams = {
   slug: string;
 };
-
-async function loadVacancy(slug: string, shelterId: string | null): Promise<UiVacancy | null> {
-  if (!slug || !shelterId) return null;
-  const supabaseAdmin = getSupabaseAdminClient();
-  const { data, error } = await supabaseAdmin
-    .from("vacancies")
-    .select("*")
-    .eq("shelter_id", shelterId);
-
-  if (error) {
-    console.error("minhas-vagas/editar: erro ao buscar vagas do abrigo", error);
-  }
-
-  const rows = (data ?? []) as VacancyRow[];
-  const match = rows.find((row) => {
-    const candidateSlug = buildVacancySlug(row.title ?? "Vaga", row.id);
-    return candidateSlug === slug;
-  });
-
-  if (match) {
-    return { ...mapVacancyRow(match as VacancyRow), source: "supabase" };
-  }
-
-  return null;
-}
 
 export async function generateMetadata({
   params,
@@ -69,30 +41,14 @@ export default async function Page({
     redirect("/painel");
   }
 
-  const supabaseAdmin = getSupabaseAdminClient();
-  const { data: shelterRow, error: shelterError } = await supabaseAdmin
-    .from("shelters")
-    .select("id")
-    .eq("profile_id", access.userId)
-    .limit(1)
-    .maybeSingle();
-
-  if (shelterError && shelterError.code !== "42703") {
-    console.error(
-      "minhas-vagas/editar: erro ao buscar abrigo do usuário",
-      shelterError
+  let vacancy;
+  try {
+    vacancy = parseVacancyResponse(
+      await serverApi<unknown>(`/vacancies/${encodeURIComponent(slug)}`),
     );
-  }
-
-  const shelterId = shelterRow?.id ?? null;
-
-  if (!shelterId) {
-    notFound();
-  }
-
-  const vacancy = await loadVacancy(slug, shelterId);
-  if (!vacancy) {
-    notFound();
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
   }
 
   return (

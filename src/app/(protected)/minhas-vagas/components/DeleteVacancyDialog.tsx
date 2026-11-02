@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -9,6 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/Dialog";
 import { Text } from "@/components/ui/typography";
+import { deleteVacancy } from "@/modules/vacancies/vacanciesApi";
+import { createExclusiveAction } from "@/modules/vacancies/exclusiveAction";
 
 interface DeleteVacancyDialogProps {
   open: boolean;
@@ -26,31 +28,27 @@ export default function DeleteVacancyDialog({
   onDeleted,
 }: DeleteVacancyDialogProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const deleteAction = useRef(createExclusiveAction());
+  useEffect(() => {
+    const action = deleteAction.current;
+    action.activate();
+    return () => action.dispose();
+  }, []);
 
   async function handleDelete() {
-    try {
-      setIsDeleting(true);
-
-      const response = await fetch(`/api/vacancies/${vacancyId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Erro ao deletar vaga");
-      }
-
-      toast.success("Vaga deletada com sucesso!");
-      onDeleted();
-      onOpenChange(false);
-    } catch (error) {
-      console.error("Erro ao deletar vaga:", error);
-      toast.error(
-        error instanceof Error ? error.message : "Erro ao deletar vaga"
-      );
-    } finally {
-      setIsDeleting(false);
-    }
+    setIsDeleting(true);
+    await deleteAction.current.run(() => deleteVacancy(vacancyId), {
+      onSuccess: () => {
+        toast.success("Vaga deletada com sucesso!");
+        onDeleted();
+        onOpenChange(false);
+      },
+      onError: (error) => {
+        console.error("Erro ao deletar vaga:", error);
+        toast.error(error instanceof Error ? error.message : "Erro ao deletar vaga");
+      },
+      onSettled: () => setIsDeleting(false),
+    });
   }
 
   return (

@@ -3,31 +3,21 @@
 import { useState, useEffect, useMemo } from "react";
 import type { JSX } from "react";
 import { X, Building2, Check, Search } from "lucide-react";
-
-type Manager = {
-  id: string;
-  email: string | null;
-  shelters: Array<{
-    id: string;
-    name: string;
-    wp_post_id: number | null;
-  }>;
-};
-
-type Shelter = {
-  id: string;
-  name: string;
-  wp_post_id: number | null;
-};
+import {
+  assignManagerShelters,
+  getAdminShelters,
+  type AdminManager,
+  type AdminShelter,
+} from "@/modules/admin/adminApi";
 
 type EditSheltersModalProps = {
-  manager: Manager;
+  manager: AdminManager;
   onClose: () => void;
   onSave: () => void;
 };
 
 export default function EditSheltersModal({ manager, onClose, onSave }: EditSheltersModalProps): JSX.Element {
-  const [shelters, setShelters] = useState<Shelter[]>([]);
+  const [shelters, setShelters] = useState<AdminShelter[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>(manager.shelters.map(s => s.id));
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,22 +25,20 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function fetchShelters() {
       try {
-        const response = await fetch("/api/shelters");
-        if (!response.ok) {
-          throw new Error("Erro ao carregar abrigos");
-        }
-        const data = await response.json();
-        setShelters(data.shelters || []);
+        setShelters(await getAdminShelters(controller.signal));
       } catch (err) {
+        if (controller.signal.aborted) return;
         setError(err instanceof Error ? err.message : "Erro desconhecido");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
-    fetchShelters();
+    void fetchShelters();
+    return () => controller.abort();
   }, []);
 
   const filteredShelters = useMemo(() => {
@@ -76,16 +64,7 @@ export default function EditSheltersModal({ manager, onClose, onSave }: EditShel
     setError(null);
 
     try {
-      const response = await fetch(`/api/admin/managers/${manager.id}/shelters`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shelter_ids: selectedIds }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Erro ao atualizar vínculos");
-      }
+      await assignManagerShelters(manager.id, selectedIds);
 
       onSave();
 

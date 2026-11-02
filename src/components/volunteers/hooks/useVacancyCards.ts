@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import type { VacancyCard } from "@/types/vacancy.types";
+import { getPublicVacancies } from "@/modules/vacancies/vacanciesApi";
+import { getInitialVacanciesTransition } from "@/modules/vacancies/vacancyCardsState";
 
 type UseVacancyCardsResult = {
   vacancies: VacancyCard[];
@@ -9,13 +11,16 @@ type UseVacancyCardsResult = {
   error: Error | null;
 };
 
-export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacancyCardsResult {
+const EMPTY_INITIAL_VACANCIES: VacancyCard[] = [];
+
+export function useVacancyCards(initialVacancies: VacancyCard[] = EMPTY_INITIAL_VACANCIES): UseVacancyCardsResult {
   const [vacancies, setVacancies] = useState<VacancyCard[]>(initialVacancies);
   const [loading, setLoading] = useState(initialVacancies.length === 0);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (initialVacancies.length > 0) {
+    const initialTransition = getInitialVacanciesTransition(initialVacancies);
+    if (initialTransition) {
       return;
     }
 
@@ -24,25 +29,21 @@ export function useVacancyCards(initialVacancies: VacancyCard[] = []): UseVacanc
         setLoading(true);
         setError(null);
 
-        const response = await fetch("/api/public-vacancies");
-
-        if (!response.ok) {
-          throw new Error("Falha ao carregar vagas");
-        }
-
-        const data = await response.json();
-        setVacancies(data.vacancies || []);
+        setVacancies(await getPublicVacancies(controller.signal));
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("useVacancyCards - erro:", err);
         setError(err as Error);
         setVacancies([]);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
+    const controller = new AbortController();
     loadVacancies();
+    return () => controller.abort();
   }, [initialVacancies]);
 
-  return { vacancies, loading, error };
+  return getInitialVacanciesTransition(initialVacancies) ?? { vacancies, loading, error };
 }

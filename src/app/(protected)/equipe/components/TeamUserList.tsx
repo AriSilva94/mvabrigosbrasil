@@ -1,9 +1,10 @@
 "use client";
 
 import type { JSX } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Heading, Text } from "@/components/ui/typography";
+import { apiClient } from "@/lib/api/client";
 
 type TeamUser = {
   id: string;
@@ -17,30 +18,16 @@ type FetchState =
   | { status: "error"; users: TeamUser[]; error: string };
 
 async function fetchTeamUsers(): Promise<TeamUser[]> {
-  const response = await fetch("/api/team-users");
-  if (!response.ok) {
-    const result = await response.json().catch(() => null);
-    const errorMessage =
-      result?.error || "Não foi possível carregar os usuários da equipe.";
-    throw new Error(errorMessage);
-  }
-  const result = (await response.json()) as { users?: TeamUser[] };
+  const result = await apiClient<{ users?: TeamUser[] }>("/team/users");
   return result.users ?? [];
 }
 
 async function toggleTeamUser(userId: string, disable: boolean): Promise<void> {
-  const response = await fetch("/api/team-users/toggle", {
+  await apiClient<{ ok: true }>("/team/users/toggle", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, disable }),
   });
-
-  if (!response.ok) {
-    const result = await response.json().catch(() => null);
-    const errorMessage =
-      result?.error || "Não foi possível alterar o status do usuário.";
-    throw new Error(errorMessage);
-  }
 }
 
 export default function TeamUserList(): JSX.Element {
@@ -50,15 +37,20 @@ export default function TeamUserList(): JSX.Element {
     error: null,
   });
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
+  const loadUsersRef = useRef<(preserveUsersOnError?: boolean) => Promise<void>>(
+    async () => undefined,
+  );
 
   useEffect(() => {
     let isMounted = true;
+    let latestRequest = 0;
 
-    const loadUsers = async () => {
-      setState((prev) => ({ ...prev, status: "loading", error: null }));
+    async function loadUsers(preserveUsersOnError = false) {
+      const requestId = ++latestRequest;
+
       try {
         const users = await fetchTeamUsers();
-        if (isMounted) {
+        if (isMounted && requestId === latestRequest) {
           setState({ status: "idle", users, error: null });
         }
       } catch (error) {
@@ -66,22 +58,31 @@ export default function TeamUserList(): JSX.Element {
           error instanceof Error
             ? error.message
             : "Erro ao carregar usuários da equipe.";
-        if (isMounted) {
-          setState({ status: "error", users: [], error: message });
+        if (isMounted && requestId === latestRequest) {
+          setState((prev) => ({
+            status: "error",
+            users: preserveUsersOnError ? prev.users : [],
+            error: message,
+          }));
         }
       }
-    };
+    }
 
-    loadUsers();
+    loadUsersRef.current = loadUsers;
+
+    void loadUsers();
 
     function handleRefresh() {
-      loadUsers();
+      setState((prev) => ({ ...prev, status: "loading", error: null }));
+      void loadUsers();
     }
 
     window.addEventListener("team-users:refresh", handleRefresh);
 
     return () => {
       isMounted = false;
+      latestRequest += 1;
+      loadUsersRef.current = async () => undefined;
       window.removeEventListener("team-users:refresh", handleRefresh);
     };
   }, []);
@@ -93,8 +94,7 @@ export default function TeamUserList(): JSX.Element {
     try {
       setPendingUserId(userId);
       await toggleTeamUser(userId, disable);
-      const refreshed = await fetchTeamUsers();
-      setState({ status: "idle", users: refreshed, error: null });
+      await loadUsersRef.current(true);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erro ao alterar status.";

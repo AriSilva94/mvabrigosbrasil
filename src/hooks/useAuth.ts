@@ -1,40 +1,57 @@
-import { useEffect, useState } from 'react';
+"use client";
 
-import { getBrowserSupabaseClient } from '@/lib/supabase/clientBrowser';
+import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 
-type AuthUser = {
+import type { RegisterType } from "@/constants/registerTypes";
+import { apiClient } from "@/lib/api/client";
+import {
+  createAuthStateCoordinator,
+  type AuthStateSnapshot,
+} from "@/lib/auth/authState";
+
+export type AuthUser = {
   id: string;
-  email?: string | null;
+  email: string;
+  role: RegisterType | null;
+  isTeamOnly: boolean;
+  teamDisabled: boolean;
+  creatorProfileId: string | null;
 };
 
+type AuthMeResponse = { user: AuthUser };
+
+const serverSnapshot: AuthStateSnapshot<AuthUser> = {
+  user: null,
+  isLoading: true,
+};
+
+const authState = createAuthStateCoordinator<AuthUser>(() =>
+  apiClient<AuthMeResponse>("/auth/me").then(({ user }) => user),
+);
+
+export function refreshAuthUser(): Promise<AuthUser | null> {
+  return authState.refresh();
+}
+
 export function useAuth() {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const state = useSyncExternalStore(
+    authState.subscribe,
+    authState.getSnapshot,
+    () => serverSnapshot,
+  );
 
   useEffect(() => {
-    const supabase = getBrowserSupabaseClient();
-
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null);
-      setIsLoading(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    void authState.load();
   }, []);
 
-  const logout = async () => {
-    const supabase = getBrowserSupabaseClient();
-    await supabase.auth.signOut();
-    setUser(null);
-  };
+  const logout = useCallback(async () => {
+    await authState.logout(() =>
+      apiClient("/auth/logout", { method: "POST" }),
+    );
+    router.refresh();
+  }, [router]);
 
-  return { user, isLoading, logout };
+  return { user: state.user, isLoading: state.isLoading, logout };
 }

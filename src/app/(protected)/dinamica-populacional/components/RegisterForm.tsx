@@ -13,7 +13,7 @@ import type {
   RegisterFormSubmit,
   RegisterFormValues,
 } from "../types";
-import { registerSchema } from "../validations";
+import { submitValidRegister } from "../validations";
 
 type ExistingPeriod = { month: string; year: string };
 
@@ -192,21 +192,13 @@ function RegisterFormInner({
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    const parsed = registerSchema.safeParse(values);
-    if (!parsed.success) {
-      const errors: Partial<Record<keyof RegisterFormValues, string>> = {};
-      parsed.error.issues.forEach((issue) => {
-        const path = issue.path[0];
-        if (typeof path === "string") {
-          errors[path as keyof RegisterFormValues] = issue.message;
-        }
-      });
-      setFieldErrors(errors);
+    const result = submitValidRegister(values, dynamicType, onSubmit);
+    if (!result.success) {
+      setFieldErrors(result.fieldErrors);
       return;
     }
 
     setFieldErrors({});
-    onSubmit({ ...parsed.data, dynamicType });
   };
   const handleDeleteConfirm = (): void => {
     if (!onDelete || isDeleting) return;
