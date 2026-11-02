@@ -15,18 +15,28 @@ export function createChatSocket(): Socket {
   });
 }
 
+const MAX_RECOVERIES_WITHOUT_CONNECT = 3;
+
 // O servidor recusa o handshake sem access token válido e derruba o socket
 // quando ele expira; renovar a sessão e reconectar mantém o chat vivo sem
-// recarregar a página. Se a renovação falhar o usuário saiu, então para.
+// recarregar a página. Se a renovação falhar o usuário saiu, então para. O
+// limite evita um laço refresh→recusa quando o cookie renovado não chega ao
+// socket (ex.: segredo JWT diferente entre front e API).
 export function attachSessionRecovery(
   socket: Socket,
   refreshSession: () => Promise<unknown>,
 ): () => void {
+  let attempts = 0;
   const recover = () => {
+    if (attempts >= MAX_RECOVERIES_WITHOUT_CONNECT) return;
+    attempts += 1;
     refreshSession().then(
       () => socket.connect(),
       () => undefined,
     );
+  };
+  const onConnect = () => {
+    attempts = 0;
   };
   const onConnectError = (error: Error) => {
     if (error.message === "unauthorized") recover();
@@ -35,9 +45,11 @@ export function attachSessionRecovery(
     if (reason === "io server disconnect") recover();
   };
 
+  socket.on("connect", onConnect);
   socket.on("connect_error", onConnectError);
   socket.on("disconnect", onDisconnect);
   return () => {
+    socket.off("connect", onConnect);
     socket.off("connect_error", onConnectError);
     socket.off("disconnect", onDisconnect);
   };

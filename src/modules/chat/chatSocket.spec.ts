@@ -89,11 +89,27 @@ describe("attachSessionRecovery", () => {
     expect(refresh).not.toHaveBeenCalled();
   });
 
+  it("gives up after 3 recoveries in a row without connecting and resets on connect", async () => {
+    const socket = fakeSocket();
+    const refresh = vi.fn().mockResolvedValue(undefined);
+    attachSessionRecovery(socket as never, refresh);
+
+    for (let i = 0; i < 5; i += 1) {
+      socket.fire("connect_error", new Error("unauthorized"));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+    expect(refresh).toHaveBeenCalledTimes(3);
+
+    socket.fire("connect");
+    socket.fire("connect_error", new Error("unauthorized"));
+    await vi.waitFor(() => expect(refresh).toHaveBeenCalledTimes(4));
+  });
+
   it("detaches its listeners", () => {
     const socket = fakeSocket();
     const detach = attachSessionRecovery(socket as never, vi.fn());
     detach();
-    expect(socket.off).toHaveBeenCalledTimes(2);
+    expect(socket.off).toHaveBeenCalledTimes(3);
   });
 });
 
