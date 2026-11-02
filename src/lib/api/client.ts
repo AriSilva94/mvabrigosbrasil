@@ -7,9 +7,13 @@ function browserInit(init?: RequestInit): RequestInit {
   return { ...init, credentials: "include" };
 }
 
-function isAuthPath(path: string): boolean {
+// `auth/me` fica de fora porque o proxy já renova a sessão na navegação;
+// renovar aqui só dobraria as chamadas de todo visitante anônimo.
+const NO_REFRESH_PATHS = new Set(["auth/login", "auth/logout", "auth/refresh", "auth/me"]);
+
+function isSessionPath(path: string): boolean {
   const normalized = path.replace(/[?#].*$/, "").replace(/^\/+/, "");
-  return normalized === "auth" || normalized.startsWith("auth/");
+  return NO_REFRESH_PATHS.has(normalized);
 }
 
 async function refreshSession(): Promise<void> {
@@ -32,7 +36,7 @@ export async function apiClient<T>(path: string, init?: RequestInit): Promise<T>
   try {
     return await requestJson<T>(fetch, url, requestInit);
   } catch (error) {
-    if (!(error instanceof ApiError) || error.status !== 401 || isAuthPath(path)) {
+    if (!(error instanceof ApiError) || error.status !== 401 || isSessionPath(path)) {
       throw error;
     }
   }

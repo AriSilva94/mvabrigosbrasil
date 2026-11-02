@@ -243,7 +243,7 @@ describe("apiClient", () => {
     expect(fetcher.mock.calls.filter(([url]) => url === "/api/v1/shelters/me")).toHaveLength(4);
   });
 
-  it("does not refresh auth endpoints with query strings or hash fragments", async () => {
+  it("does not refresh session endpoints with query strings or hash fragments", async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => {
       return new Response(JSON.stringify({ error: "Não autenticado" }), { status: 401 });
     });
@@ -251,10 +251,31 @@ describe("apiClient", () => {
 
     await expect(apiClient("/auth/me?x=1")).rejects.toMatchObject({ status: 401 });
     await expect(apiClient("/auth/login#x")).rejects.toMatchObject({ status: 401 });
+    await expect(apiClient("/auth/logout")).rejects.toMatchObject({ status: 401 });
+    await expect(apiClient("/auth/refresh")).rejects.toMatchObject({ status: 401 });
 
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(fetcher.mock.calls.filter(([url]) => url === "/api/v1/auth/refresh")).toHaveLength(0);
+    expect(fetcher).toHaveBeenCalledTimes(4);
   });
+
+  it.each(["/auth/change-password", "/auth/register"])(
+    "refreshes an expired session and retries %s",
+    async (path) => {
+      const fetcher = vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(new Response(null, { status: 401 }))
+        .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }))
+        .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+      vi.stubGlobal("fetch", fetcher);
+
+      await expect(apiClient(path, { method: "POST" })).resolves.toEqual({ ok: true });
+
+      expect(fetcher.mock.calls.map(([url]) => url)).toEqual([
+        `/api/v1${path}`,
+        "/api/v1/auth/refresh",
+        `/api/v1${path}`,
+      ]);
+    },
+  );
 
   it("never retries more than once", async () => {
     const fetcher = vi
