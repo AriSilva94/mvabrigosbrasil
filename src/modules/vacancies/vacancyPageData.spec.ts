@@ -56,15 +56,29 @@ describe("vacancy server page data", () => {
 
   it("loads owner unpublished detail after my-status", async () => {
     mocks.serverApi.mockResolvedValueOnce({ isOwner: true, hasApplied: false, threadId: null, shelterProfileId: null }).mockResolvedValueOnce({ vacancy });
-    await expect(loadSharedVacancy("plantao-v1", true)).resolves.toEqual({ vacancy, canEdit: true, hasApplied: false, isAuthenticated: true });
+    await expect(loadSharedVacancy("plantao-v1", true)).resolves.toEqual({ vacancy, canEdit: true, hasApplied: false, isAuthenticated: true, threadId: null, shelterProfileId: null });
     expect(mocks.serverApi).toHaveBeenNthCalledWith(1, "/vacancies/plantao-v1/my-status");
     expect(mocks.serverApi).toHaveBeenNthCalledWith(2, "/vacancies/plantao-v1");
   });
 
   it("loads raw public detail for anonymous optional auth", async () => {
     mocks.serverApi.mockResolvedValueOnce({ isOwner: false, hasApplied: false, threadId: null, shelterProfileId: null }).mockResolvedValueOnce(vacancy);
-    await expect(loadSharedVacancy("plantao-v1", false)).resolves.toEqual({ vacancy, canEdit: false, hasApplied: false, isAuthenticated: false });
+    await expect(loadSharedVacancy("plantao-v1", false)).resolves.toEqual({ vacancy, canEdit: false, hasApplied: false, isAuthenticated: false, threadId: null, shelterProfileId: null });
     expect(mocks.serverApi).toHaveBeenNthCalledWith(2, "/public/vacancies/plantao-v1");
+  });
+
+  it("passes threadId and shelterProfileId from my-status to the page data", async () => {
+    mocks.serverApi
+      .mockResolvedValueOnce({ isOwner: false, hasApplied: true, threadId: "thread-1", shelterProfileId: "owner-1" })
+      .mockResolvedValueOnce(vacancy);
+    await expect(loadSharedVacancy("plantao-v1", true)).resolves.toEqual({
+      vacancy,
+      canEdit: false,
+      hasApplied: true,
+      isAuthenticated: true,
+      threadId: "thread-1",
+      shelterProfileId: "owner-1",
+    });
   });
 
   it("returns null only for public detail 404", async () => {

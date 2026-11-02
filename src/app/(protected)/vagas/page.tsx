@@ -6,6 +6,7 @@ import VacancyListClient from "./components/VacancyListClient";
 import { buildMetadata } from "@/lib/seo";
 import { enforceTeamAccess } from "@/lib/auth/teamAccess";
 import { getVacancyCardsOrThrow } from "@/services/publicDataService";
+import { loadThreadsByVacancy } from "@/modules/chat/chatServer";
 import type { VacancyCard } from "@/types/vacancy.types";
 
 export const metadata = buildMetadata({
@@ -20,12 +21,14 @@ export default async function Page(): Promise<JSX.Element> {
 
   let vacancies: VacancyCard[] = [];
   let hasError = false;
+  const threadMapPromise = loadThreadsByVacancy();
   try {
     vacancies = await getVacancyCardsOrThrow();
   } catch (error) {
     console.error("vagas: erro ao carregar vagas", error);
     hasError = true;
   }
+  const threadMap = await threadMapPromise;
 
   return (
     <main>
@@ -49,7 +52,7 @@ export default async function Page(): Promise<JSX.Element> {
           </div>
         </section>
       ) : (
-        <VacancyListClient vacancies={vacancies} />
+        <VacancyListClient vacancies={vacancies} threadMap={threadMap} />
       )}
     </main>
   );

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { MessageCircle } from "lucide-react";
 import { Text, Heading } from "@/components/ui/typography";
+import { openChatWidget } from "@/components/chat-widget";
 
 interface Application {
   id: string;
@@ -17,6 +19,7 @@ interface Application {
     experiencia?: string | null;
     slug?: string | null;
   };
+  thread_id?: string | null;
 }
 
 export default function ApplicationsList({
@@ -76,7 +79,17 @@ export default function ApplicationsList({
               </Text>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              {app.thread_id && (
+                <button
+                  type="button"
+                  onClick={() => openChatWidget({ threadId: app.thread_id ?? undefined })}
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Conversar
+                </button>
+              )}
               {app.volunteers.slug && (
                 <Link
                   href={`/voluntario/${app.volunteers.slug}?from=painel`}

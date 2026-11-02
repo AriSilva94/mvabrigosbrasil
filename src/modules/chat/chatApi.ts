@@ -130,10 +130,10 @@ export async function markThreadRead(threadId: string): Promise<number> {
   ).unread_count;
 }
 
+export function parseThreadsByVacancy(value: unknown): Record<string, string> {
+  return parse(byVacancySchema, value, "carregar conversas por vaga").threads;
+}
+
 export async function getThreadsByVacancy(signal?: AbortSignal): Promise<Record<string, string>> {
-  return parse(
-    byVacancySchema,
-    await apiClient<unknown>("/chat/threads/by-vacancy", { signal }),
-    "carregar conversas por vaga",
-  ).threads;
+  return parseThreadsByVacancy(await apiClient<unknown>("/chat/threads/by-vacancy", { signal }));
 }

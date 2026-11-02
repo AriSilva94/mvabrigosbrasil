@@ -48,6 +48,8 @@ export async function loadSharedVacancy(slug: string, isAuthenticated: boolean) 
       canEdit: status.isOwner,
       hasApplied: status.hasApplied,
       isAuthenticated,
+      threadId: status.threadId,
+      shelterProfileId: status.shelterProfileId,
     };
   } catch (error) {
     if (!status.isOwner && error instanceof ApiError && error.status === 404) return null;

@@ -25,6 +25,8 @@ const getVacancyBySlug = cache(async (slug: string): Promise<{
   canEdit: boolean;
   hasApplied: boolean;
   isAuthenticated: boolean;
+  threadId: string | null;
+  shelterProfileId: string | null;
 }> => {
   const result = await loadSharedVacancy(slug, Boolean(await getSession()));
   return result ?? {
@@ -32,6 +34,8 @@ const getVacancyBySlug = cache(async (slug: string): Promise<{
     canEdit: false,
     hasApplied: false,
     isAuthenticated: false,
+    threadId: null,
+    shelterProfileId: null,
   };
 });
 
@@ -74,12 +78,16 @@ function VacancyDetailView({
   backLabel,
   hasApplied,
   isAuthenticated,
+  threadId,
+  shelterProfileId,
 }: {
   vacancy: UiVacancy;
   backHref: string;
   backLabel: string;
   hasApplied: boolean;
   isAuthenticated: boolean;
+  threadId: string | null;
+  shelterProfileId: string | null;
 }): JSX.Element {
   const displayTitle = vacancy.title || "Vaga";
   const location = getLocation(vacancy);
@@ -147,6 +155,8 @@ function VacancyDetailView({
                 vacancyTitle={vacancy.title || "Vaga"}
                 hasApplied={hasApplied}
                 isAuthenticated={isAuthenticated}
+                threadId={threadId}
+                shelterProfileId={shelterProfileId}
               />
             </div>
           </article>
@@ -162,7 +172,8 @@ export default async function Page({
 }: VacancyPageProps): Promise<JSX.Element> {
   const { slug } = await params;
   const { from } = await searchParams;
-  const { vacancy, canEdit, hasApplied, isAuthenticated } = await getVacancyBySlug(slug);
+  const { vacancy, canEdit, hasApplied, isAuthenticated, threadId, shelterProfileId } =
+    await getVacancyBySlug(slug);
 
   if (!vacancy) redirect("/programa-de-voluntarios");
 
@@ -198,6 +209,8 @@ export default async function Page({
       backLabel={backLabel}
       hasApplied={hasApplied}
       isAuthenticated={isAuthenticated}
+      threadId={threadId}
+      shelterProfileId={shelterProfileId}
     />
   );
 }

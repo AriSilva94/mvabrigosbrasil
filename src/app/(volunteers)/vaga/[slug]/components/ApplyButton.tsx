@@ -2,15 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { applyToVacancy } from "@/modules/vacancies/vacanciesApi";
 import { createExclusiveAction } from "@/modules/vacancies/exclusiveAction";
+import { openChatWidget } from "@/components/chat-widget";
 
 interface ApplyButtonProps {
   vacancyId: string;
   vacancyTitle: string;
   hasApplied: boolean;
   isAuthenticated: boolean;
+  threadId?: string | null;
+  shelterProfileId?: string | null;
 }
 
 export default function ApplyButton({
@@ -18,6 +22,8 @@ export default function ApplyButton({
   vacancyTitle,
   hasApplied,
   isAuthenticated,
+  threadId,
+  shelterProfileId,
 }: ApplyButtonProps) {
   const [isApplying, setIsApplying] = useState(false);
   const router = useRouter();
@@ -47,13 +53,21 @@ export default function ApplyButton({
 
   if (hasApplied) {
     return (
-      <button
-        type="button"
-        disabled
-        className="inline-flex items-center rounded-full bg-green-100 px-6 py-3 text-sm font-semibold text-green-800 cursor-not-allowed"
-      >
-        ✓ Já candidatado
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="inline-flex items-center rounded-full bg-green-100 px-6 py-3 text-sm font-semibold text-green-800">
+          ✓ Já candidatado
+        </span>
+        {threadId && (
+          <button
+            type="button"
+            onClick={() => openChatWidget({ threadId, otherProfileId: shelterProfileId || undefined })}
+            className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Conversar com Abrigo
+          </button>
+        )}
+      </div>
     );
   }
 
