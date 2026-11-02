@@ -11,8 +11,10 @@ import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
 import FormError from "@/components/ui/FormError";
+import { refreshAuthUser } from "@/hooks/useAuth";
+import { apiClient } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/errors";
 import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 
 type LoginFormProps = {
   className?: string;
@@ -69,7 +71,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/login", {
+      await apiClient("/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,43 +79,25 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         body: JSON.stringify(values),
       });
 
-      const isJson = response.headers
-        .get("content-type")
-        ?.includes("application/json");
-      const result = isJson ? await response.json() : null;
-
-      if (!response.ok) {
-        const message = result?.error || "Nao foi possivel autenticar.";
-
-        if (response.status === 401) {
-          setFieldErrors({ password: message });
-          toast.error(message);
-          return;
-        }
-
-        if (response.status === 404) {
-          setFieldErrors({ email: message });
-          toast.error(message);
-          return;
-        }
-
-        throw new Error(message);
-      }
-
-
-      if (result?.accessToken && result?.refreshToken) {
-        const supabase = getBrowserSupabaseClient();
-        await supabase.auth.setSession({
-          access_token: result.accessToken,
-          refresh_token: result.refreshToken,
-        });
-      }
-
+      await refreshAuthUser();
       const redirectTo = await resolvePostLoginRedirect();
       router.push(redirectTo);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Nao foi possivel autenticar.";
+
+      if (error instanceof ApiError && error.status === 401) {
+        setFieldErrors({ password: message });
+        toast.error(message);
+        return;
+      }
+
+      if (error instanceof ApiError && error.status === 404) {
+        setFieldErrors({ email: message });
+        toast.error(message);
+        return;
+      }
+
       console.error("Erro ao autenticar", error);
       toast.error(message);
     } finally {

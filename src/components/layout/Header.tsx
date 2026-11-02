@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 
 import AppImage from "@/components/ui/AppImage";
 import SocialIcon from "@/components/ui/SocialIcon";
@@ -21,6 +23,28 @@ export default function Header() {
   const institutionalRef = useRef<HTMLLIElement | null>(null);
   const isDropdownVisible = isInstitutionalOpen;
   const pathname = usePathname();
+  const router = useRouter();
+  const logoutPendingRef = useRef(false);
+
+  async function handleLogout(event: ReactMouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    if (logoutPendingRef.current) return;
+
+    logoutPendingRef.current = true;
+    const detailsEl = event.currentTarget.closest(
+      "details",
+    ) as HTMLDetailsElement | null;
+    if (detailsEl) detailsEl.open = false;
+
+    try {
+      await logout();
+      router.push("/login");
+    } catch {
+      toast.error("Não foi possível sair. Tente novamente.");
+    } finally {
+      logoutPendingRef.current = false;
+    }
+  }
 
   const isLinkActive = (href: string): boolean => {
     if (href === "/") {
@@ -289,13 +313,7 @@ export default function Header() {
                       </Link>
                       <Link
                         href="/login"
-                        onClick={async (e) => {
-                          const detailsEl = e.currentTarget.closest(
-                            "details",
-                          ) as HTMLDetailsElement | null;
-                          if (detailsEl) detailsEl.open = false;
-                          await logout();
-                        }}
+                        onClick={handleLogout}
                         className="block px-4 py-2 text-brand-primary hover:bg-brand-primary hover:text-white"
                       >
                         Sair

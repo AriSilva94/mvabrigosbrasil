@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,8 @@ import { Combobox, type ComboboxOption } from "@/components/ui/Combobox";
 import { SelectDropdown } from "@/components/ui/SelectDropdown";
 import { useLocationData } from "@/hooks/useLocationData";
 import { REFERRAL_SOURCE_OPTIONS } from "@/constants/referralSource";
+import { saveMyVolunteerProfile } from "@/modules/volunteers/volunteersApi";
+import { getVolunteerControlledFields } from "@/modules/volunteers/volunteerFormState";
 
 const FAIXA_ETARIA_OPTIONS = [
   { value: "18 a 35", label: "18 a 35 anos" },
@@ -76,8 +78,28 @@ const ATUACAO_OPTIONS = [
 ];
 
 export default function VolunteerProfileForm(): JSX.Element {
-  const router = useRouter();
   const { volunteer, isLoading } = useVolunteerProfile();
+
+  if (isLoading && !volunteer) return <FormLoading />;
+
+  const formKey = volunteer ? JSON.stringify(volunteer) : "empty";
+  return (
+    <VolunteerProfileFormContent
+      key={formKey}
+      volunteer={volunteer}
+      isLoading={isLoading}
+    />
+  );
+}
+
+function VolunteerProfileFormContent({
+  volunteer,
+  isLoading,
+}: {
+  volunteer: Partial<VolunteerProfileFormData> | null;
+  isLoading: boolean;
+}): JSX.Element {
+  const router = useRouter();
   const { refetch: refetchValidation } = useProfileValidationContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<
@@ -86,19 +108,20 @@ export default function VolunteerProfileForm(): JSX.Element {
 
   const { estados, cidades, loadingEstados, loadingCidades, fetchCidades } =
     useLocationData();
-  const [telefone, setTelefone] = useState("");
-  const [estado, setEstado] = useState("");
-  const [cidade, setCidade] = useState("");
-  const initialEstadoRef = useRef<string | null>(null);
+  const initialFields = getVolunteerControlledFields(volunteer);
+  const [telefone, setTelefone] = useState(initialFields.telefone);
+  const [estado, setEstado] = useState(initialFields.estado);
+  const [cidade, setCidade] = useState(initialFields.cidade);
+  const initialEstadoRef = useRef<string | null>(initialFields.estado || null);
 
-  const [faixaEtaria, setFaixaEtaria] = useState("");
-  const [genero, setGenero] = useState("");
-  const [escolaridade, setEscolaridade] = useState("");
-  const [disponibilidade, setDisponibilidade] = useState("");
-  const [periodo, setPeriodo] = useState("");
-  const [experiencia, setExperiencia] = useState("");
-  const [atuacao, setAtuacao] = useState("");
-  const [referralSource, setReferralSource] = useState("");
+  const [faixaEtaria, setFaixaEtaria] = useState(initialFields.faixaEtaria);
+  const [genero, setGenero] = useState(initialFields.genero);
+  const [escolaridade, setEscolaridade] = useState(initialFields.escolaridade);
+  const [disponibilidade, setDisponibilidade] = useState(initialFields.disponibilidade);
+  const [periodo, setPeriodo] = useState(initialFields.periodo);
+  const [experiencia, setExperiencia] = useState(initialFields.experiencia);
+  const [atuacao, setAtuacao] = useState(initialFields.atuacao);
+  const [referralSource, setReferralSource] = useState(initialFields.referralSource);
 
   const estadosOptions: ComboboxOption[] = estados.map((e) => ({
     value: e.sigla,
@@ -163,17 +186,7 @@ export default function VolunteerProfileForm(): JSX.Element {
     try {
       setIsSubmitting(true);
       setFieldErrors({});
-      const response = await fetch("/api/volunteer-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result?.error || "Não foi possível salvar o cadastro.");
-      }
+      await saveMyVolunteerProfile(parsed.data);
 
       toast.success("Cadastro de voluntário salvo com sucesso.");
       await refetchValidation();
@@ -190,11 +203,6 @@ export default function VolunteerProfileForm(): JSX.Element {
     }
   }
 
-  const formKey = useMemo(
-    () => (volunteer ? JSON.stringify(volunteer) : "empty"),
-    [volunteer],
-  );
-
   const data: Partial<VolunteerProfileFormData> | null = volunteer ?? null;
 
   const submitLabel = isLoading
@@ -203,15 +211,10 @@ export default function VolunteerProfileForm(): JSX.Element {
       ? "Salvando..."
       : "Salvar Cadastro";
 
-  if (isLoading && !volunteer) {
-    return <FormLoading />;
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
-      key={formKey}
       className="mx-auto flex max-w-6xl flex-col gap-10 rounded-2xl bg-white px-6 py-10 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10"
     >
       <div id="tour-form-section" className="space-y-6">

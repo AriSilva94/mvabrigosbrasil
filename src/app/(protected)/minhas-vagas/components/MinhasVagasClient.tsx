@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 import { Heading, Text } from "@/components/ui/typography";
 import type { UiVacancy } from "@/app/(protected)/minhas-vagas/types";
 import NewVacancyModal from "@/app/(protected)/minhas-vagas/components/NewVacancyModal";
 import VacancyCard from "@/app/(protected)/minhas-vagas/components/VacancyCard";
+import { loadOwnerVacancies } from "@/modules/vacancies/vacanciesApi";
+import { createVacancyListCoordinator } from "@/modules/vacancies/vacancyListCoordinator";
 
 type MinhasVagasClientProps = {
   vacancies: UiVacancy[];
@@ -20,33 +22,30 @@ export default function MinhasVagasClient({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [items, setItems] = useState<UiVacancy[]>(vacancies);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [coordinator] = useState(() =>
+    createVacancyListCoordinator<UiVacancy>({
+      setItems,
+      setRefreshing: setIsRefreshing,
+      onRefreshError: (error) => console.error("refreshVacancies: erro ao buscar vagas", error),
+    }),
+  );
   const hasShelterName = useMemo(
     () => Boolean(shelterName?.trim()),
     [shelterName]
   );
-
+  useEffect(() => () => coordinator.dispose(), [coordinator]);
 
   async function refreshVacancies() {
-    try {
-      setIsRefreshing(true);
-      const response = await fetch("/api/vacancies");
-      if (!response.ok) throw new Error("Erro ao carregar vagas");
-      const json = (await response.json()) as { vacancies?: UiVacancy[] };
-      if (json.vacancies) setItems(json.vacancies);
-    } catch (error) {
-      console.error("refreshVacancies: erro ao buscar vagas", error);
-    } finally {
-      setIsRefreshing(false);
-    }
+    await coordinator.refresh(() => loadOwnerVacancies(shelterName));
   }
 
   function handleCreated(vacancy: UiVacancy) {
-    setItems((prev) => [vacancy, ...prev]);
+    coordinator.prepend(vacancy);
     setIsModalOpen(false);
   }
 
   function handleDeleted(vacancyId: string) {
-    setItems((prev) => prev.filter((v) => v.id !== vacancyId));
+    coordinator.remove(vacancyId);
   }
 
   return (

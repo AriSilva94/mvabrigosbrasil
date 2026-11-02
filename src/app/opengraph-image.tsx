@@ -29,10 +29,12 @@ const siteHost = (() => {
     return "mvabrigosbrasil.com.br";
   }
 })();
-const logoUrl = `${siteUrl}/assets/img/logo-medicina-de-abrigos-brasil.svg`;
+const logo = fs
+  .readFile(path.join(process.cwd(), "public", "assets", "img", "logo-medicina-de-abrigos-brasil.svg"))
+  .then((buffer) => `data:image/svg+xml;base64,${buffer.toString("base64")}`);
 
 export default async function OpengraphImage() {
-  const [boldFont, mediumFont] = await Promise.all([geistBold, geistMedium]);
+  const [boldFont, mediumFont, logoUrl] = await Promise.all([geistBold, geistMedium, logo]);
 
   return new ImageResponse(
     <div

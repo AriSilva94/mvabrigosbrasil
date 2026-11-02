@@ -1,36 +1,18 @@
 import { ROUTES } from "@/constants/routes";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
+import { apiClient } from "@/lib/api/client";
 
 type RedirectResponse = {
   hasShelter: boolean;
   hasVolunteer?: boolean;
   hasProfile?: boolean;
-  redirectTo: string;
+  redirectTo: "/painel" | "/meu-cadastro";
 };
-
-async function getAccessToken(): Promise<string | null> {
-  const supabase = getBrowserSupabaseClient();
-  const { data } = await supabase.auth.getSession();
-  return data.session?.access_token ?? null;
-}
 
 export async function resolvePostLoginRedirect(): Promise<string> {
   try {
-    const accessToken = await getAccessToken();
-
-    const response = await fetch("/api/auth/post-login-redirect", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Falha ao verificar destino de redirecionamento.");
-    }
-
-    const data = (await response.json()) as RedirectResponse;
+    const data = await apiClient<RedirectResponse>(
+      "/auth/post-login-redirect",
+    );
     return data.redirectTo ?? (data.hasShelter ? ROUTES.panel : ROUTES.profile);
   } catch (error) {
     console.error("resolvePostLoginRedirect: erro ao decidir destino", error);

@@ -1,8 +1,9 @@
+import { connection } from "next/server";
 import type { JSX } from "react";
 
 import DatabaseDashboard from "@/components/data/database/DatabaseDashboard";
 import PageHeader from "@/components/layout/PageHeader";
-import { loadDatabaseDataset } from "@/lib/database/dataLoader";
+import { loadPublicDatabaseDataset } from "@/modules/public-data/publicDataServer";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 900;
@@ -15,7 +16,8 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
-  const dataset = await loadDatabaseDataset();
+  await connection();
+  const dataset = await loadPublicDatabaseDataset();
 
   return (
     <main>

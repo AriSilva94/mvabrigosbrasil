@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 
+import {
+  deleteDynamics,
+  getDynamics,
+  saveDynamics,
+} from "@/modules/dynamics/dynamicsApi";
+import { createDynamicsOperationCoordinator } from "@/modules/dynamics/dynamicsOperationCoordinator";
+
 import type {
   DynamicType,
   DynamicsDisplay,
@@ -79,66 +86,70 @@ export function useDynamicsData({
   const [sections, setSections] = useState<DynamicsDisplay[]>(() =>
     buildFallbackSections(userSummary, BASE_STATS),
   );
+  const [operationCoordinator] = useState(() =>
+    createDynamicsOperationCoordinator({
+      setFlags: ({ isLoading: loading, isSaving: saving, isDeleting: deleting }) => {
+        setLoading(loading);
+        setSaving(saving);
+        setDeleting(deleting);
+      },
+    }),
+  );
+
+  useEffect(() => {
+    operationCoordinator.activate();
+    return () => operationCoordinator.dispose();
+  }, [operationCoordinator]);
 
 
   useEffect(() => {
-    void (async () => {
-      setLoading(true);
-      try {
-        const url = shelterWpPostId
-          ? `/api/dynamics?shelter_id=${shelterWpPostId}`
-          : "/api/dynamics";
-
-        const response = await fetch(url);
-        if (!response.ok) {
-          setSections(buildFallbackSections(userSummary, BASE_STATS));
-          return;
-        }
-        const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-        const nextSections =
-          json.sections && json.sections.length > 0
-            ? json.sections
-            : buildFallbackSections(userSummary, BASE_STATS);
-        setSections(nextSections);
-      } catch (error) {
-        console.error("dinamica-populacional: falha ao carregar dados", error);
-        setSections(buildFallbackSections(userSummary, BASE_STATS));
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [userSummary, shelterWpPostId]);
-
-  const handleSubmit = useCallback(
-    async (values: RegisterFormSubmit) => {
-      setSaving(true);
-      try {
-        const response = await fetch("/api/dynamics", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-
-        if (!response.ok) {
-          console.error("Erro ao salvar registro de dinâmica");
-        } else {
-          const json = (await response.json()) as { sections?: DynamicsDisplay[] };
+    const controller = new AbortController();
+    operationCoordinator.invalidateContext();
+    void operationCoordinator.run(
+      "get",
+      () => getDynamics(shelterWpPostId, controller.signal),
+      {
+        onSuccess: (json) => {
+          if (controller.signal.aborted) return;
           const nextSections =
-            json.sections && json.sections.length > 0
+            json.sections.length > 0
               ? json.sections
               : buildFallbackSections(userSummary, BASE_STATS);
           setSections(nextSections);
-        }
-      } catch (error) {
-        console.error("dinamica-populacional: falha ao salvar registro", error);
-      } finally {
-        setSaving(false);
-        setRegisterType(null);
-        setEditingRowId(null);
-        setFormInitialValues(null);
-      }
+        },
+        onError: (error) => {
+          if (controller.signal.aborted) return;
+          console.error("dinamica-populacional: falha ao carregar dados", error);
+          setSections(buildFallbackSections(userSummary, BASE_STATS));
+        },
+        onSettled: () => undefined,
+      },
+    );
+    return () => {
+      controller.abort();
+    };
+  }, [operationCoordinator, userSummary, shelterWpPostId]);
+
+  const handleSubmit = useCallback(
+    async (values: RegisterFormSubmit) => {
+      await operationCoordinator.run("save", () => saveDynamics(values), {
+        onSuccess: (json) => {
+          const nextSections = json.sections.length > 0
+            ? json.sections
+            : buildFallbackSections(userSummary, BASE_STATS);
+          setSections(nextSections);
+        },
+        onError: (error) => {
+          console.error("dinamica-populacional: falha ao salvar registro", error);
+        },
+        onSettled: () => {
+          setRegisterType(null);
+          setEditingRowId(null);
+          setFormInitialValues(null);
+        },
+      });
     },
-    [userSummary],
+    [operationCoordinator, userSummary],
   );
 
   const openRegisterChoice = (): void => setRegisterChoiceOpen(true);
@@ -191,34 +202,24 @@ export function useDynamicsData({
 
   const handleDelete = useCallback(async () => {
     if (!editingRowId) return;
-    setDeleting(true);
-    try {
-      const response = await fetch("/api/dynamics", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: editingRowId }),
-      });
-
-      if (!response.ok) {
-        console.error("Erro ao excluir registro de dinâmica");
-        return;
-      }
-
-      const json = (await response.json()) as { sections?: DynamicsDisplay[] };
-      const nextSections =
-        json.sections && json.sections.length > 0
-          ? json.sections
-          : buildFallbackSections(userSummary, BASE_STATS);
-      setSections(nextSections);
-    } catch (error) {
-      console.error("dinamica-populacional: falha ao excluir registro", error);
-    } finally {
-      setDeleting(false);
-      setRegisterType(null);
-      setFormInitialValues(null);
-      setEditingRowId(null);
-    }
-  }, [editingRowId, userSummary]);
+    await operationCoordinator.run("delete", () => deleteDynamics(editingRowId), {
+      onSuccess: (json) => {
+        const nextSections =
+          json.sections.length > 0
+            ? json.sections
+            : buildFallbackSections(userSummary, BASE_STATS);
+        setSections(nextSections);
+      },
+      onError: (error) => {
+        console.error("dinamica-populacional: falha ao excluir registro", error);
+      },
+      onSettled: () => {
+        setRegisterType(null);
+        setFormInitialValues(null);
+        setEditingRowId(null);
+      },
+    });
+  }, [editingRowId, operationCoordinator, userSummary]);
 
   return {
     sections,

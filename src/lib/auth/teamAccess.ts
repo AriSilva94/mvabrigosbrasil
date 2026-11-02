@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation";
 
 import { REGISTER_TYPES, type RegisterType } from "@/constants/registerTypes";
-import { getServerSupabaseClient } from "@/lib/supabase/clientServer";
-import { getSupabaseAdminClient } from "@/lib/supabase/supabase-admin";
-import { resolvePostTypeForUser } from "@/modules/auth/postTypeResolver";
-import { findProfileById } from "@/modules/auth/repositories/profileRepository";
+import { getSession, type SessionClaims } from "@/lib/auth/session";
 
-const TEAM_ALLOWED_PATHS = ["/painel", "/dinamica-populacional"];
-const ADMIN_ALLOWED_PATHS = ["/painel", "/admin/gerentes", "/admin/abrigos"];
+export const TEAM_ALLOWED_PATHS = ["/painel", "/dinamica-populacional"];
+export const ADMIN_ALLOWED_PATHS = [
+  "/painel",
+  "/admin/gerentes",
+  "/admin/abrigos",
+];
 
 export type UserAccessInfo = {
   userId: string;
@@ -25,40 +26,58 @@ function isPathAllowed(pathname: string, allowed: string[]): boolean {
   );
 }
 
+export function mapSessionClaimsToUserAccess(
+  session: SessionClaims,
+): UserAccessInfo {
+  return {
+    userId: session.sub,
+    email: session.email ?? null,
+    registerType: session.role ?? null,
+    isTeamOnly: session.isTeamOnly,
+    isTeamDisabled: session.teamDisabled,
+    creatorProfileId: session.creatorProfileId ?? null,
+  };
+}
+
 export async function loadUserAccess(): Promise<UserAccessInfo | null> {
-  const supabase = await getServerSupabaseClient({ readOnly: true });
-  const { data, error } = await supabase.auth.getUser();
+  const session = await getSession();
+  return session ? mapSessionClaimsToUserAccess(session) : null;
+}
 
-  if (error || !data.user) return null;
-
-  const supabaseAdmin = getSupabaseAdminClient();
-
-  const { data: authUser, error: authError } =
-    await supabaseAdmin.auth.admin.getUserById(data.user.id);
-  if (authError) {
-    console.error(
-      "teamAccess.loadUserAccess: erro ao buscar user auth",
-      authError,
-    );
+export function getAccessRedirect(
+  pathname: string,
+  access: UserAccessInfo,
+): string | null {
+  if (
+    access.registerType === REGISTER_TYPES.admin &&
+    !isPathAllowed(pathname, ADMIN_ALLOWED_PATHS)
+  ) {
+    return "/painel";
   }
 
-  const { profile } = await findProfileById(supabaseAdmin, data.user.id);
-  const registerType = await resolvePostTypeForUser(supabaseAdmin, {
-    supabaseUserId: data.user.id,
-    email: data.user.email ?? profile?.email ?? null,
-  });
+  if (
+    access.registerType !== REGISTER_TYPES.admin &&
+    isPathAllowed(pathname, ["/admin"])
+  ) {
+    return "/painel";
+  }
 
-  return {
-    userId: data.user.id,
-    email: data.user.email ?? profile?.email ?? null,
-    registerType: registerType ?? null,
-    isTeamOnly: Boolean(profile?.is_team_only),
-    isTeamDisabled: Boolean(authUser?.user?.user_metadata?.teamDisabled),
-    creatorProfileId:
-      (authUser?.user?.user_metadata?.creator_profile_id as
-        | string
-        | undefined) ?? null,
-  };
+  if (
+    access.isTeamOnly &&
+    (access.isTeamDisabled || !isPathAllowed(pathname, TEAM_ALLOWED_PATHS)) &&
+    pathname !== "/painel"
+  ) {
+    return "/painel";
+  }
+
+  if (
+    access.registerType !== REGISTER_TYPES.shelter &&
+    isPathAllowed(pathname, ["/equipe"])
+  ) {
+    return "/painel";
+  }
+
+  return null;
 }
 
 export async function enforceTeamAccess(
@@ -70,20 +89,8 @@ export async function enforceTeamAccess(
     redirect("/login");
   }
 
-  if (
-    access.registerType === REGISTER_TYPES.admin &&
-    !isPathAllowed(pathname, ADMIN_ALLOWED_PATHS)
-  ) {
-    redirect("/painel");
-  }
-
-  if (
-    access.isTeamOnly &&
-    (access.isTeamDisabled || !isPathAllowed(pathname, TEAM_ALLOWED_PATHS)) &&
-    pathname !== "/painel"
-  ) {
-    redirect("/painel");
-  }
+  const redirectTo = getAccessRedirect(pathname, access);
+  if (redirectTo) redirect(redirectTo);
 
   return access;
 }

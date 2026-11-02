@@ -4,8 +4,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import PopulationDynamicsContent from "./components/PopulationDynamicsContent";
 import { TourTrigger } from "@/components/tour/TourTrigger";
 import { buildMetadata } from "@/lib/seo";
-import { enforceTeamAccess } from "@/lib/auth/teamAccess";
-import { getDynamicsUserSummary } from "@/modules/dynamics/getDynamicsUserSummary";
+import { loadPopulationDynamicsPageData } from "@/modules/dynamics/dynamicsPageData";
 
 export const metadata = buildMetadata({
   title: "Registrar Dinâmica Populacional",
@@ -15,14 +14,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page(): Promise<JSX.Element> {
-  const access = await enforceTeamAccess("/dinamica-populacional");
-
-  const { summary: userSummary } = await getDynamicsUserSummary({
-    userId: access.userId,
-    fallbackEmail: access.email,
-    creatorProfileId: access.creatorProfileId,
-    isTeamOnly: access.isTeamOnly,
-  });
+  const { access, userSummary } = await loadPopulationDynamicsPageData();
 
   return (
     <main>

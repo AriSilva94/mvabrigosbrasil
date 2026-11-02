@@ -8,6 +8,8 @@ import ToastProvider from "@/components/providers/ToastProvider";
 import { TourProvider } from "@/components/tour/TourProvider";
 import CookieBanner from "@/components/cookies/CookieBanner";
 import ConditionalAnalytics from "@/components/cookies/ConditionalAnalytics";
+import { ChatWidget } from "@/components/chat-widget";
+import { ChatSocketProvider } from "@/modules/chat/ChatSocketProvider";
 import { getSiteUrl } from "@/lib/site-url";
 
 const siteUrl = getSiteUrl();
@@ -172,6 +174,9 @@ export default function RootLayout({
               <main>{children}</main>
               <Footer />
             </TourProvider>
+            <ChatSocketProvider>
+              <ChatWidget />
+            </ChatSocketProvider>
             <ConditionalAnalytics />
             <CookieBanner />
           </ToastProvider>

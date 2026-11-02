@@ -117,7 +117,7 @@ export default function Page(): JSX.Element {
           </Text>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>E-mail</li>
-            <li>Senha (armazenada de forma criptografada)</li>
+            <li>Senha (armazenada como hash, sem guardar a senha em texto legível)</li>
           </ul>
           <Text className="leading-relaxed font-semibold">Finalidade:</Text>
           <Text className="leading-relaxed">
@@ -176,27 +176,21 @@ export default function Page(): JSX.Element {
 
         <section className="space-y-3">
           <Heading as="h3" className="text-xl font-semibold text-brand-primary">
-            Serviços de terceiros
+            Armazenamento e serviços de terceiros
           </Heading>
           <Text className="leading-relaxed">
-            Para o funcionamento da plataforma, utilizamos os seguintes serviços de terceiros que
-            podem processar dados:
+            Os dados de cadastro e acesso são armazenados em banco de dados sob responsabilidade
+            da Medicina de Abrigos Brasil. O acesso às informações é restrito a pessoas autorizadas,
+            conforme suas funções e as finalidades descritas nesta Política.
+          </Text>
+          <Text className="leading-relaxed">
+            Para o funcionamento da plataforma, utilizamos serviços de apoio que podem processar
+            os dados necessários às suas funções:
           </Text>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li>
-              <strong>Supabase</strong> — autenticação de usuários e armazenamento de dados da
-              plataforma (banco de dados).
-            </li>
-            <li>
-              <strong>Vercel Analytics</strong> — coleta de dados analíticos de uso do site,
-              condicionada ao consentimento de cookies analíticos.
-            </li>
-            <li>
-              <strong>Vercel Speed Insights</strong> — monitoramento de desempenho do site,
-              condicionado ao consentimento de cookies analíticos.
-            </li>
-            <li>
-              <strong>ImageKit</strong> — hospedagem e otimização de imagens exibidas na plataforma.
+              <strong>Cloudflare R2</strong> — armazenamento de imagens e vídeos utilizados na
+              plataforma.
             </li>
             <li>
               <strong>ViaCEP</strong> — consulta de endereço a partir do CEP informado no cadastro
@@ -206,11 +200,15 @@ export default function Page(): JSX.Element {
               <strong>IBGE</strong> — consulta de lista de estados e cidades para os formulários de
               cadastro.
             </li>
+            <li>
+              <strong>Ferramentas de análise de uso e desempenho</strong> — quando habilitadas,
+              como Google Analytics e Google Tag Manager, são utilizadas para compreender o uso
+              do site e melhorar a experiência, mediante consentimento para cookies analíticos.
+            </li>
           </ul>
           <Text className="leading-relaxed">
-            Nenhum desses serviços recebe mais dados do que o estritamente necessário para sua
-            função. Os dados analíticos (Vercel Analytics e Speed Insights) só são coletados após o
-            consentimento do usuário, conforme nossa{" "}
+            Você pode alterar suas preferências de cookies opcionais a qualquer momento,
+            conforme nossa{" "}
             <a
               href="/politica-de-cookies"
               className="font-semibold text-brand-primary underline underline-offset-4 transition hover:text-brand-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary"
@@ -318,7 +316,7 @@ export default function Page(): JSX.Element {
           <Heading as="h3" className="text-xl font-semibold text-brand-primary">
             Atualização
           </Heading>
-          <Text className="leading-relaxed">Nossa última atualização foi 08/02/2026.</Text>
+          <Text className="leading-relaxed">Nossa última atualização foi 18/10/2026.</Text>
           <Text className="leading-relaxed">
             Dúvidas? Entre em contato:{" "}
             <a

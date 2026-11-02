@@ -1,8 +1,8 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 import { toast } from "sonner";
@@ -13,7 +13,8 @@ import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
+import { apiClient } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/errors";
 
 const passwordSchema = z
   .object({
@@ -29,29 +30,12 @@ type FieldErrors = Partial<Record<"newPassword" | "confirmPassword", string>>;
 
 export default function ResetPasswordForm(): JSX.Element {
   const router = useRouter();
+  const token = useSearchParams().get("token");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isValidSession, setIsValidSession] = useState<boolean | null>(null);
+  const [isValidSession, setIsValidSession] = useState(Boolean(token));
 
   const inputBaseClass = "bg-[#f2f2f2]";
-
-  useEffect(() => {
-    const supabase = getBrowserSupabaseClient();
-
-    supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setIsValidSession(true);
-      }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsValidSession(true);
-      } else {
-        setIsValidSession(false);
-      }
-    });
-  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -81,39 +65,32 @@ export default function ResetPasswordForm(): JSX.Element {
     setIsSubmitting(true);
 
     try {
-      const supabase = getBrowserSupabaseClient();
-      const { error } = await supabase.auth.updateUser({
-        password: values.newPassword,
+      await apiClient("/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, password: values.newPassword }),
       });
-
-      if (error) {
-        toast.error("Não foi possível redefinir a senha. Tente novamente.");
-        return;
-      }
 
       toast.success("Senha redefinida com sucesso!");
       router.push("/login");
-    } catch {
-      toast.error("Erro ao processar a solicitação.");
+    } catch (error) {
+      if (
+        error instanceof ApiError &&
+        error.status === 400 &&
+        error.message === "Link inválido ou expirado"
+      ) {
+        setIsValidSession(false);
+        return;
+      }
+
+      toast.error(
+        error instanceof ApiError
+          ? "Não foi possível redefinir a senha. Tente novamente."
+          : "Erro ao processar a solicitação.",
+      );
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  if (isValidSession === null) {
-    return (
-      <section className="bg-white pb-16 pt-8">
-        <div className="container px-6">
-          <div className="mx-auto max-w-3xl">
-            <div className="rounded-2xl border border-slate-200 bg-white px-6 py-8 shadow-[0_18px_50px_rgba(16,130,89,0.08)] md:px-10 md:py-10">
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
   }
 
   if (!isValidSession) {

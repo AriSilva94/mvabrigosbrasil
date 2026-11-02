@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { VolunteerCard } from "@/types/volunteer.types";
+import { getPublicVolunteerCards } from "@/modules/volunteers/volunteersApi";
 
 type UseVolunteerCardsResult = {
   volunteers: VolunteerCard[];
@@ -19,29 +20,25 @@ export function useVolunteerCards(initialVolunteers: VolunteerCard[] = []): UseV
       return;
     }
 
+    const controller = new AbortController();
     async function loadVolunteers() {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch("/api/volunteers");
-
-        if (!response.ok) {
-          throw new Error("Falha ao carregar voluntários");
-        }
-
-        const data = await response.json();
-        setVolunteers(data.volunteers || []);
+        setVolunteers(await getPublicVolunteerCards(controller.signal));
       } catch (err) {
+        if (controller.signal.aborted) return;
         console.error("useVolunteerCards - erro:", err);
         setError(err as Error);
         setVolunteers([]);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
-    loadVolunteers();
+    void loadVolunteers();
+    return () => controller.abort();
   }, [initialVolunteers]);
 
   return { volunteers, loading, error };

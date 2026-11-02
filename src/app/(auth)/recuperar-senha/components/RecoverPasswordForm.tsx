@@ -12,7 +12,8 @@ import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
+import { apiClient } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/errors";
 
 const emailSchema = z
   .string()
@@ -45,20 +46,20 @@ export default function RecoverPasswordForm(): JSX.Element {
     setIsSubmitting(true);
 
     try {
-      const supabase = getBrowserSupabaseClient();
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/redefinir-senha`,
+      await apiClient("/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
-
-      if (error) {
-        toast.error("Não foi possível enviar o e-mail. Tente novamente.");
-        return;
-      }
 
       setEmailSent(true);
       toast.success("E-mail enviado com sucesso!");
-    } catch {
-      toast.error("Erro ao processar a solicitação.");
+    } catch (error) {
+      toast.error(
+        error instanceof ApiError
+          ? "Não foi possível enviar o e-mail. Tente novamente."
+          : "Erro ao processar a solicitação.",
+      );
     } finally {
       setIsSubmitting(false);
     }

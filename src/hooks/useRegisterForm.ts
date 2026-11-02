@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { registerSchema } from "@/components/auth/registerSchema";
+import { refreshAuthUser } from "@/hooks/useAuth";
 import { useRegister } from "@/hooks/useRegister";
 import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
-import { getBrowserSupabaseClient } from "@/lib/supabase/clientBrowser";
 import type { RegisterType } from "@/types/auth.types";
 
 type RegisterFormValues = {
@@ -62,26 +62,10 @@ export function useRegisterForm(registerType: RegisterType) {
           registerType,
         });
 
-        const supabase = getBrowserSupabaseClient();
-        const { data: loginData, error: loginError } =
-          await supabase.auth.signInWithPassword({
-            email: formValues.email,
-            password: formValues.password,
-          });
-
-        if (loginError) {
-          throw loginError;
-        }
-
-        if (loginData.session) {
-          toast.success("Cadastro realizado com sucesso!");
-          const redirectTo = await resolvePostLoginRedirect();
-          router.push(redirectTo);
-          return;
-        }
-
-        toast.success("Cadastro criado. Voce ja pode acessar o painel.");
-        form.reset();
+        await refreshAuthUser();
+        toast.success("Cadastro realizado com sucesso!");
+        const redirectTo = await resolvePostLoginRedirect();
+        router.push(redirectTo);
       } catch (error) {
         console.error("Erro ao registrar", error);
         const message =
