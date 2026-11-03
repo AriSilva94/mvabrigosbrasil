@@ -29,10 +29,24 @@ describe("changePasswordSchema", () => {
   it("keeps the minimum length for the new password", () => {
     const result = changePasswordSchema.safeParse({
       currentPassword: "abc",
-      newPassword: "12345",
-      confirmNewPassword: "12345",
+      newPassword: "1234567",
+      confirmNewPassword: "1234567",
     });
 
     expect(result.error?.issues[0]?.path).toEqual(["newPassword"]);
+  });
+
+  it("rejects new passwords longer than the 72 bytes bcrypt uses", () => {
+    const longPassword = "á".repeat(37);
+    const result = changePasswordSchema.safeParse({
+      currentPassword: "abc",
+      newPassword: longPassword,
+      confirmNewPassword: longPassword,
+    });
+
+    expect(result.error?.issues[0]).toMatchObject({
+      path: ["newPassword"],
+      message: "A senha deve ter no máximo 72 caracteres.",
+    });
   });
 });
