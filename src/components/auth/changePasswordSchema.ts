@@ -1,12 +1,12 @@
 import { z } from "zod";
 
+import { newPasswordSchema } from "./newPasswordSchema";
+
 export const changePasswordSchema = z
   .object({
-    // Contas vindas do WordPress podem ter senha atual com menos de 6 caracteres.
+    // Contas vindas do WordPress podem ter senha atual curta.
     currentPassword: z.string().min(1, "Informe a senha atual."),
-    newPassword: z
-      .string()
-      .min(6, "A nova senha deve ter pelo menos 6 caracteres."),
+    newPassword: newPasswordSchema,
     confirmNewPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {

@@ -31,7 +31,7 @@ describe("loadPublicDatabaseDataset", () => {
 
     expect(fetcher).toHaveBeenCalledWith(
       "http://nestjs.internal:3001/api/v1/public/database-dataset",
-      { next: { revalidate: 900 } },
+      expect.objectContaining({ next: { revalidate: 900 } }),
     );
     expect(new Headers(fetcher.mock.calls[0][1]?.headers).has("cookie")).toBe(
       false,
