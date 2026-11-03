@@ -59,3 +59,21 @@ describe("Next API rewrite", () => {
     });
   });
 });
+
+describe("Next security headers", () => {
+  it("blocks framing, sniffing and cross-origin referrers on every page", async () => {
+    if (typeof nextConfig.headers !== "function") {
+      throw new Error("Next headers are not configured");
+    }
+    const [rule] = await nextConfig.headers();
+    const headers = Object.fromEntries(rule.headers.map((h) => [h.key, h.value]));
+
+    expect(rule.source).toBe("/:path*");
+    expect(headers).toMatchObject({
+      "X-Frame-Options": "DENY",
+      "Content-Security-Policy": "frame-ancestors 'none'",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+    });
+  });
+});

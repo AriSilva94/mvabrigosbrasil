@@ -72,7 +72,10 @@ describe("proxy refresh", () => {
 
     expect(fetcher).toHaveBeenCalledWith(
       "http://localhost:3001/api/v1/auth/refresh",
-      expect.objectContaining({ method: "POST", headers: { cookie } }),
+      expect.objectContaining({ method: "POST" }),
+    );
+    expect(new Headers(fetcher.mock.calls[0][1]?.headers).get("cookie")).toBe(
+      cookie,
     );
     expect(response.status).toBe(307);
     expect(response.headers.get("location")).toBe(

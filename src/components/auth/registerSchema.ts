@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { newPasswordSchema } from "./newPasswordSchema";
+
 export const emailSchema = z
   .string()
   .trim()
@@ -10,7 +12,7 @@ export const emailSchema = z
 export const registerSchema = z
   .object({
     email: emailSchema,
-    password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres."),
+    password: newPasswordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

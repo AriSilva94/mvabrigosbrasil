@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { withInternalToken } from "@/lib/api/internalToken";
 import { verifySessionToken } from "@/lib/auth/session";
 
 const PROTECTED_PATHS = [
@@ -49,7 +50,9 @@ export async function proxy(request: NextRequest) {
     try {
       refreshResponse = await fetch(`${origin}/api/v1/auth/refresh`, {
         method: "POST",
-        headers: cookieHeader ? { cookie: cookieHeader } : undefined,
+        headers: withInternalToken(
+          new Headers(cookieHeader ? { cookie: cookieHeader } : undefined),
+        ),
         cache: "no-store",
       });
     } catch {

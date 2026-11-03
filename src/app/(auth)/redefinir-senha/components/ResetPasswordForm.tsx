@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, JSX } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
@@ -15,10 +15,11 @@ import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
 import { apiClient } from "@/lib/api/client";
 import { ApiError } from "@/lib/api/errors";
+import { newPasswordSchema } from "@/components/auth/newPasswordSchema";
 
 const passwordSchema = z
   .object({
-    newPassword: z.string().min(6, "A senha deve ter no mínimo 6 caracteres."),
+    newPassword: newPasswordSchema,
     confirmPassword: z.string().min(1, "Confirme a nova senha."),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -30,7 +31,16 @@ type FieldErrors = Partial<Record<"newPassword" | "confirmPassword", string>>;
 
 export default function ResetPasswordForm(): JSX.Element {
   const router = useRouter();
-  const token = useSearchParams().get("token");
+  const searchParams = useSearchParams();
+  const [token] = useState(() => searchParams.get("token"));
+
+  // Tira o token da barra de endereço (histórico, capturas de tela, extensões)
+  // assim que ele foi lido.
+  useEffect(() => {
+    if (searchParams.has("token")) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, [searchParams]);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValidSession, setIsValidSession] = useState(Boolean(token));
@@ -144,7 +154,7 @@ export default function ResetPasswordForm(): JSX.Element {
                 Defina sua nova senha
               </Heading>
               <Text className="text-base leading-relaxed text-[#68707b]">
-                Escolha uma senha segura com pelo menos 6 caracteres.
+                Escolha uma senha segura com pelo menos 8 caracteres.
               </Text>
             </header>
 

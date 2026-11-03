@@ -1,5 +1,6 @@
 import "server-only";
 
+import { withInternalToken } from "./internalToken";
 import { apiPath, requestJson } from "./request";
 
 function internalApiOrigin(): string {
@@ -7,5 +8,8 @@ function internalApiOrigin(): string {
 }
 
 export function publicServerApi<T>(path: string, init?: RequestInit): Promise<T> {
-  return requestJson<T>(fetch, `${internalApiOrigin()}${apiPath(path)}`, init);
+  return requestJson<T>(fetch, `${internalApiOrigin()}${apiPath(path)}`, {
+    ...init,
+    headers: withInternalToken(new Headers(init?.headers)),
+  });
 }

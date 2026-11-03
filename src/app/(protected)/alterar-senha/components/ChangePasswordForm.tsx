@@ -111,7 +111,7 @@ export default function ChangePasswordForm({
               </Heading>
               <Text className="text-base leading-relaxed text-[#68707b]">
                 Atualize a senha do seu acesso sempre que necessário. Use pelo
-                menos 6 caracteres e escolha uma combinação única.
+                menos 8 caracteres e escolha uma combinação única.
               </Text>
             </header>
 

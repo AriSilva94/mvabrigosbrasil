@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 
+import { withInternalToken } from "./internalToken";
 import { apiPath, requestJson } from "./request";
 
 function internalApiOrigin(): string {
@@ -13,7 +14,7 @@ function internalApiOrigin(): string {
 
 export async function serverApi<T>(path: string, init?: RequestInit): Promise<T> {
   const cookieHeader = (await cookies()).toString();
-  const headers = new Headers(init?.headers);
+  const headers = withInternalToken(new Headers(init?.headers));
 
   if (cookieHeader) headers.set("cookie", cookieHeader);
 

@@ -92,12 +92,6 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         return;
       }
 
-      if (error instanceof ApiError && error.status === 404) {
-        setFieldErrors({ email: message });
-        toast.error(message);
-        return;
-      }
-
       console.error("Erro ao autenticar", error);
       toast.error(message);
     } finally {
