@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 describe("loadPublicDatabaseDataset", () => {
-  it("uses the internal public endpoint with a 900 second cache and no cookies", async () => {
+  it("uses the internal public endpoint without the Next data cache and no cookies", async () => {
     process.env.INTERNAL_API_URL = "http://nestjs.internal:3001///";
     const dataset = {
       shelters: [],
@@ -31,7 +31,7 @@ describe("loadPublicDatabaseDataset", () => {
 
     expect(fetcher).toHaveBeenCalledWith(
       "http://nestjs.internal:3001/api/v1/public/database-dataset",
-      expect.objectContaining({ next: { revalidate: 900 } }),
+      expect.objectContaining({ cache: "no-store" }),
     );
     expect(new Headers(fetcher.mock.calls[0][1]?.headers).has("cookie")).toBe(
       false,
