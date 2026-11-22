@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import AppImage from "@/components/ui/AppImage";
+import InstallAppBanner from "@/components/layout/InstallAppBanner";
 import SocialIcon from "@/components/ui/SocialIcon";
 import {
   INSTITUTIONAL_LINKS,
@@ -80,6 +81,7 @@ export default function Header() {
 
   return (
     <header id="tour-header" className="relative z-20 w-full border-b border-slate-200">
+      <InstallAppBanner />
       <div className="bg-white text-sm text-brand-primary">
         <div className="container flex items-center justify-between px-4 py-2">
           <nav id="tour-top-nav" className="hidden items-center gap-2 lg:flex">
