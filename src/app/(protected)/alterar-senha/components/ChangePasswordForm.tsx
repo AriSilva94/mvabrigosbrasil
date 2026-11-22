@@ -9,7 +9,7 @@ import { Loader2 } from "lucide-react";
 
 import { changePasswordSchema } from "@/components/auth/changePasswordSchema";
 import FormError from "@/components/ui/FormError";
-import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
 import { apiClient } from "@/lib/api/client";
@@ -132,10 +132,9 @@ export default function ChangePasswordForm({
                 >
                   Senha Atual
                 </label>
-                <Input
+                <PasswordInput
                   id="current-password"
                   name="currentPassword"
-                  type="password"
                   autoComplete="current-password"
                   required
                   aria-invalid={Boolean(fieldErrors.currentPassword)}
@@ -163,10 +162,9 @@ export default function ChangePasswordForm({
                 >
                   Nova Senha (mínimo 6 dígitos)
                 </label>
-                <Input
+                <PasswordInput
                   id="new-password"
                   name="newPassword"
-                  type="password"
                   autoComplete="new-password"
                   minLength={6}
                   required
@@ -193,10 +191,9 @@ export default function ChangePasswordForm({
                 >
                   Repetir Nova Senha
                 </label>
-                <Input
+                <PasswordInput
                   id="confirm-new-password"
                   name="confirmNewPassword"
-                  type="password"
                   autoComplete="new-password"
                   required
                   aria-invalid={Boolean(fieldErrors.confirmNewPassword)}

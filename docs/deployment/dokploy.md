@@ -59,7 +59,7 @@ Configurar no runtime da API:
 
 - DATABASE_URL e REDIS_URL de serviços exclusivos daquele ambiente.
 - AUTH_JWT_SECRET, APP_URL e COOKIE_SECURE=true com HTTPS.
-- RESEND_API_KEY e MAIL_FROM quando o envio de e-mail estiver habilitado.
+- RESEND_API_KEY (uma key por ambiente, só envio), MAIL_FROM (`MV Abrigos <no-reply@mail.mvabrigosbrasil.com.br>`) e RESEND_WEBHOOK_SECRET quando o envio de e-mail estiver habilitado.
 
 APP_REVISION é incorporado pelo build; não sobrescrever no Dokploy. Os endpoints de health retornam Cache-Control: no-store. A API mantém as verificações reais de PostgreSQL e Redis.
 

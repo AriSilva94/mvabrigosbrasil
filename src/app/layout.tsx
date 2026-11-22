@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "../components/layout/Header";
@@ -10,6 +10,7 @@ import CookieBanner from "@/components/cookies/CookieBanner";
 import ConditionalAnalytics from "@/components/cookies/ConditionalAnalytics";
 import { ChatWidget } from "@/components/chat-widget";
 import { ChatSocketProvider } from "@/modules/chat/ChatSocketProvider";
+import ServiceWorkerRegister from "@/components/pwa/ServiceWorkerRegister";
 import { getSiteUrl } from "@/lib/site-url";
 
 const siteUrl = getSiteUrl();
@@ -154,7 +155,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/fav.png",
+    apple: "/icons/icon-192.png",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#108259",
 };
 
 export default function RootLayout({
@@ -179,6 +185,7 @@ export default function RootLayout({
             </ChatSocketProvider>
             <ConditionalAnalytics />
             <CookieBanner />
+            <ServiceWorkerRegister />
           </ToastProvider>
         </AppImageProvider>
       </body>

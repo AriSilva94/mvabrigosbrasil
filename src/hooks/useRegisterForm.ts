@@ -4,9 +4,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { registerSchema } from "@/components/auth/registerSchema";
-import { refreshAuthUser } from "@/hooks/useAuth";
 import { useRegister } from "@/hooks/useRegister";
-import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
+import { rememberPendingVerificationEmail } from "@/lib/auth/emailVerification";
 import type { RegisterType } from "@/types/auth.types";
 
 type RegisterFormValues = {
@@ -62,10 +61,9 @@ export function useRegisterForm(registerType: RegisterType) {
           registerType,
         });
 
-        await refreshAuthUser();
-        toast.success("Cadastro realizado com sucesso!");
-        const redirectTo = await resolvePostLoginRedirect();
-        router.push(redirectTo);
+        toast.success("Cadastro realizado! Confirme seu e-mail para entrar.");
+        rememberPendingVerificationEmail(formValues.email);
+        router.push("/verificar-email");
       } catch (error) {
         console.error("Erro ao registrar", error);
         const message =
