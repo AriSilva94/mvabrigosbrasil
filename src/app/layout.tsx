@@ -122,7 +122,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Medicina de Abrigos Brasil",
+    default: "Medicina de Abrigos Brasil | Mapa de Abrigos de Animais",
     template: "%s | Medicina de Abrigos Brasil",
   },
   description:
