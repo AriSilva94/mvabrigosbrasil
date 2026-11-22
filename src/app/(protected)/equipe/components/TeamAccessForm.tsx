@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { registerSchema } from "@/components/auth/registerSchema";
 import FormError from "@/components/ui/FormError";
 import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { Text } from "@/components/ui/typography";
 import { REGISTER_TYPES } from "@/constants/registerTypes";
 import { useRegister } from "@/hooks/useRegister";
@@ -108,10 +109,9 @@ export default function TeamAccessForm(): JSX.Element {
         >
           Senha
         </label>
-        <Input
+        <PasswordInput
           id="team-password"
           name="password"
-          type="password"
           autoComplete="new-password"
           minLength={8}
           required
@@ -135,10 +135,9 @@ export default function TeamAccessForm(): JSX.Element {
         >
           Confirmar senha
         </label>
-        <Input
+        <PasswordInput
           id="team-confirm-password"
           name="confirmPassword"
-          type="password"
           autoComplete="new-password"
           required
           aria-invalid={Boolean(fieldErrors.confirmPassword)}
