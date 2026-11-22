@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 
 import Button from "@/components/ui/Button";
 import FormError from "@/components/ui/FormError";
-import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import { Heading, Text } from "@/components/ui/typography";
 import { apiClient } from "@/lib/api/client";
 import { isInvalidPasswordError } from "@/lib/auth/emailVerification";
@@ -96,10 +96,9 @@ export default function ConfirmEmailStatus(): JSX.Element {
                   >
                     Senha
                   </label>
-                  <Input
+                  <PasswordInput
                     id="password"
                     name="password"
-                    type="password"
                     autoComplete="current-password"
                     aria-invalid={Boolean(passwordError)}
                     aria-describedby={

@@ -4,12 +4,13 @@ import type { FormEvent, JSX } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import Alert from "@/components/ui/Alert";
 import ResendVerificationButton from "@/components/auth/ResendVerificationButton";
 import FormError from "@/components/ui/FormError";
@@ -44,7 +45,6 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [showPassword, setShowPassword] = useState(false);
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -145,31 +145,20 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         >
           Senha
         </label>
-        <div className="relative">
-          <Input
-            id="user_pass"
-            name="pwd"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            aria-invalid={Boolean(fieldErrors.password)}
-            aria-describedby={
-              fieldErrors.password ? "login-password-error" : undefined
-            }
-            className={clsx(
-              "bg-[#f2f2f2] pr-11",
-              fieldErrors.password &&
-                "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
-            )}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-            className="absolute inset-y-0 right-3 flex items-center text-[#a0a6b1] hover:text-[#4f5464]"
-          >
-            {showPassword ? <EyeOff size={18} aria-hidden /> : <Eye size={18} aria-hidden />}
-          </button>
-        </div>
+        <PasswordInput
+          id="user_pass"
+          name="pwd"
+          autoComplete="current-password"
+          aria-invalid={Boolean(fieldErrors.password)}
+          aria-describedby={
+            fieldErrors.password ? "login-password-error" : undefined
+          }
+          className={clsx(
+            "bg-[#f2f2f2]",
+            fieldErrors.password &&
+              "border-brand-red focus:border-brand-red focus:ring-brand-red/15",
+          )}
+        />
         <FormError id="login-password-error" message={fieldErrors.password} />
       </div>
 

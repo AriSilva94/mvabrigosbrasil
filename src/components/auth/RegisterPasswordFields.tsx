@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import RegisterField from "@/components/auth/RegisterField";
 import FormError from "@/components/ui/FormError";
-import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 type RegisterPasswordFieldsProps = {
   errors?: Partial<Record<"password" | "confirmPassword", string>>;
@@ -15,10 +15,9 @@ export default function RegisterPasswordFields({
   return (
     <>
       <RegisterField id="password" label="Senha" required>
-        <Input
+        <PasswordInput
           id="password"
           name="password"
-          type="password"
           autoComplete="new-password"
           aria-invalid={Boolean(errors.password)}
           aria-describedby={
@@ -34,10 +33,9 @@ export default function RegisterPasswordFields({
       </RegisterField>
 
       <RegisterField id="confirmPassword" label="Confirmar senha" required>
-        <Input
+        <PasswordInput
           id="confirmPassword"
           name="confirmPassword"
-          type="password"
           autoComplete="new-password"
           aria-invalid={Boolean(errors.confirmPassword)}
           aria-describedby={

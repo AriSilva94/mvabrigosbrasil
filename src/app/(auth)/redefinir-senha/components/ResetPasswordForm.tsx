@@ -10,7 +10,7 @@ import { z } from "zod";
 import { Loader2 } from "lucide-react";
 
 import FormError from "@/components/ui/FormError";
-import Input from "@/components/ui/Input";
+import PasswordInput from "@/components/ui/PasswordInput";
 import Button from "@/components/ui/Button";
 import { Heading, Text } from "@/components/ui/typography";
 import { apiClient } from "@/lib/api/client";
@@ -166,10 +166,9 @@ export default function ResetPasswordForm(): JSX.Element {
                 >
                   Nova Senha
                 </label>
-                <Input
+                <PasswordInput
                   id="new-password"
                   name="newPassword"
-                  type="password"
                   autoComplete="new-password"
                   minLength={6}
                   required
@@ -196,10 +195,9 @@ export default function ResetPasswordForm(): JSX.Element {
                 >
                   Confirmar Nova Senha
                 </label>
-                <Input
+                <PasswordInput
                   id="confirm-password"
                   name="confirmPassword"
-                  type="password"
                   autoComplete="new-password"
                   required
                   aria-invalid={Boolean(fieldErrors.confirmPassword)}
