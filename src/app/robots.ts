@@ -24,7 +24,7 @@ const PRIVATE_PATHS = [
 
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl();
-  const isProduction = process.env.VERCEL_ENV === "production";
+  const isProduction = process.env.NEXT_PUBLIC_DEPLOY_ENV === "production";
 
   if (!isProduction) {
     return {

@@ -89,8 +89,8 @@ export default function InstallAppBanner() {
   return (
     <div className="bg-brand-primary text-white">
       <div className="container relative flex min-h-10 flex-wrap items-center justify-center gap-x-3 gap-y-1 py-1.5 pr-12 pl-4">
-        <p className="text-center text-[13px] font-semibold md:text-sm">
-          <span className="sm:hidden">Instale o app Medicina de Abrigos</span>
+        <p className="text-center text-xs font-semibold whitespace-nowrap sm:text-[13px] md:text-sm">
+          <span className="sm:hidden">Instale o app Medicina de Abrigos Brasil</span>
           <span className="hidden sm:inline">
             Medicina de Abrigos Brasil a um toque: instale o app.
           </span>
