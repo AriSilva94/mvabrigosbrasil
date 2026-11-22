@@ -28,9 +28,9 @@ export default function Loading(): JSX.Element {
             <Bone className="h-8 w-8 animate-bounce delay-150" aria-hidden />
             <Cat className="h-8 w-8 animate-bounce delay-300" aria-hidden />
           </div>
-          <h1 className="mt-4 text-2xl font-semibold text-[#2f3b52]">
+          <p className="mt-4 text-2xl font-semibold text-[#2f3b52]">
             Preparando sua página
-          </h1>
+          </p>
           <p className="mt-2 max-w-xl text-sm text-[#536079]">
             Buscando seus dados, verificando seu perfil e deixando tudo pronto
             para você ajudar cães e gatos.
