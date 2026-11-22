@@ -153,10 +153,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  icons: {
-    icon: "/fav.png",
-    apple: "/icons/icon-192.png",
-  },
 };
 
 export const viewport: Viewport = {
