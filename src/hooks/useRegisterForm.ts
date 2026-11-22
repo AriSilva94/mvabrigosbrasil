@@ -61,8 +61,6 @@ export function useRegisterForm(registerType: RegisterType) {
           registerType,
         });
 
-        // O cadastro não abre sessão: o login só é liberado depois de
-        // confirmar o e-mail.
         toast.success("Cadastro realizado! Confirme seu e-mail para entrar.");
         rememberPendingVerificationEmail(formValues.email);
         router.push("/verificar-email");

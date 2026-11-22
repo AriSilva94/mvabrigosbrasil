@@ -1,16 +1,14 @@
 import { ApiError } from "@/lib/api/errors";
 
-// Mesmo intervalo do cooldown de reenvio da API.
 export const RESEND_VERIFICATION_COOLDOWN_SECONDS = 60;
 
 const PENDING_EMAIL_KEY = "mv:pending-verification-email";
 
-// O e-mail não vai na URL: a query string chega ao GTM/GA como page_location.
 export function rememberPendingVerificationEmail(email: string): void {
   try {
     sessionStorage.setItem(PENDING_EMAIL_KEY, email);
   } catch {
-    // Sem storage a tela só deixa de oferecer o reenvio.
+    return;
   }
 }
 

@@ -27,15 +27,12 @@ export default function ConfirmEmailStatus(): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordError, setPasswordError] = useState<string | undefined>();
 
-  // O token não pode ficar no histórico nem em capturas de tela.
   useEffect(() => {
     if (searchParams.has("token")) {
       window.history.replaceState(null, "", window.location.pathname);
     }
   }, [searchParams]);
 
-  // A senha é exigida para que o link, sozinho, não ative uma conta cadastrada
-  // por outra pessoa com o e-mail de quem o recebeu.
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (isSubmitting || !token) return;
