@@ -91,14 +91,15 @@ jobs:
         run: |
           set -euo pipefail
           case "$GITHUB_REF_NAME" in
-            develop) api_url="$DEVELOP_API_URL"; site_url="$DEVELOP_SITE_URL" ;;
-            main) api_url="$MAIN_API_URL"; site_url="$MAIN_SITE_URL" ;;
+            develop) api_url="$DEVELOP_API_URL"; site_url="$DEVELOP_SITE_URL"; deploy_env=development ;;
+            main) api_url="$MAIN_API_URL"; site_url="$MAIN_SITE_URL"; deploy_env=production ;;
             *) exit 1 ;;
           esac
           test -n "$api_url"
           test -n "$site_url"
           echo "INTERNAL_API_URL=$api_url" >> "$GITHUB_ENV"
           echo "NEXT_PUBLIC_SITE_URL=$site_url" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_DEPLOY_ENV=$deploy_env" >> "$GITHUB_ENV"
       - name: Normalize image name
         id: image
         run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
@@ -126,6 +127,7 @@ jobs:
           build-args: |
             INTERNAL_API_URL=${{ env.INTERNAL_API_URL }}
             NEXT_PUBLIC_SITE_URL=${{ env.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_DEPLOY_ENV=${{ env.NEXT_PUBLIC_DEPLOY_ENV }}
             APP_REVISION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
