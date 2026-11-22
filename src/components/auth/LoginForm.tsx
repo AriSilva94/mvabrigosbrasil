@@ -10,10 +10,13 @@ import { z } from "zod";
 import clsx from "clsx";
 
 import Input from "@/components/ui/Input";
+import Alert from "@/components/ui/Alert";
+import ResendVerificationButton from "@/components/auth/ResendVerificationButton";
 import FormError from "@/components/ui/FormError";
 import { refreshAuthUser } from "@/hooks/useAuth";
 import { apiClient } from "@/lib/api/client";
 import { ApiError } from "@/lib/api/errors";
+import { isEmailNotVerifiedError } from "@/lib/auth/emailVerification";
 import { resolvePostLoginRedirect } from "@/lib/auth/postLoginRedirect";
 
 type LoginFormProps = {
@@ -42,6 +45,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,6 +71,7 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       return;
     }
     setFieldErrors({});
+    setUnverifiedEmail(null);
 
     setIsSubmitting(true);
 
@@ -83,6 +88,11 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
       const redirectTo = await resolvePostLoginRedirect();
       router.push(redirectTo);
     } catch (error) {
+      if (isEmailNotVerifiedError(error)) {
+        setUnverifiedEmail(values.email);
+        return;
+      }
+
       const message =
         error instanceof Error ? error.message : "Nao foi possivel autenticar.";
 
@@ -162,6 +172,18 @@ export default function LoginForm({ className }: LoginFormProps): JSX.Element {
         </div>
         <FormError id="login-password-error" message={fieldErrors.password} />
       </div>
+
+      {unverifiedEmail ? (
+        <Alert variant="warning" title="Confirme seu e-mail para entrar">
+          <p>
+            Enviamos um link de confirmação para {unverifiedEmail}. Se não o
+            encontrar, peça um novo.
+          </p>
+          <div className="mt-3">
+            <ResendVerificationButton email={unverifiedEmail} />
+          </div>
+        </Alert>
+      ) : null}
 
       <div className="pt-2 text-center">
         <button
