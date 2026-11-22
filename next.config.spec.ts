@@ -71,7 +71,8 @@ describe("Next security headers", () => {
     expect(rule.source).toBe("/:path*");
     expect(headers).toMatchObject({
       "X-Frame-Options": "DENY",
-      "Content-Security-Policy": "frame-ancestors 'none'",
+      "Content-Security-Policy":
+        "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "strict-origin-when-cross-origin",
     });

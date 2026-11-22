@@ -6,11 +6,18 @@ if (process.env.NEXT_TURBOPACK_USE_WORKER === undefined) {
 }
 
 // O helmet só cobre as respostas da API; as páginas (login, redefinição de
-// senha) vêm do Next. Sem CSP completa: GTM/GA e embeds do YouTube exigiriam
-// uma lista de origens a manter; frame-ancestors já impede clickjacking.
+// senha) vêm do Next. Sem script-src/default-src: o Next injeta scripts inline
+// e GTM/GA e embeds do YouTube exigiriam nonce e uma lista de origens a manter.
+const CONTENT_SECURITY_POLICY = [
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+].join("; ");
+
 const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "DENY" },
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+  { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
   { key: "X-Content-Type-Options", value: "nosniff" },
   // O link de redefinição leva o token na URL: nunca enviá-lo a outra origem.
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -20,6 +27,7 @@ const SECURITY_HEADERS = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  poweredByHeader: false,
   turbopack: {},
 
   async headers() {

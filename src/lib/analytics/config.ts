@@ -4,7 +4,7 @@ export type AnalyticsConfig =
   | { mode: "ga"; gaId: string };
 
 export function getAnalyticsConfig(): AnalyticsConfig {
-  const isProductionDeploy = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+  const isProductionDeploy = process.env.NEXT_PUBLIC_DEPLOY_ENV === "production";
   const enabled =
     isProductionDeploy && process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
   if (!enabled) {

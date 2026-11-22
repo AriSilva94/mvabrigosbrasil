@@ -36,6 +36,7 @@ export default function Header() {
       "details",
     ) as HTMLDetailsElement | null;
     if (detailsEl) detailsEl.open = false;
+    setMobileOpen(false);
 
     try {
       await logout();
@@ -207,6 +208,7 @@ export default function Header() {
                         className={`whitespace-nowrap hover:text-brand-accent ${
                           isActive ? "text-brand-accent" : ""
                         }`}
+                        onClick={() => setMobileOpen(false)}
                       >
                         {item.label}
                       </Link>
@@ -262,7 +264,10 @@ export default function Header() {
                                     ? "bg-brand-primary text-white"
                                     : "hover:bg-brand-primary hover:text-white"
                                 }`}
-                                onClick={() => setInstitutionalOpen(false)}
+                                onClick={() => {
+                                  setInstitutionalOpen(false);
+                                  setMobileOpen(false);
+                                }}
                               >
                                 {subItem.label}
                               </Link>
@@ -297,6 +302,7 @@ export default function Header() {
                             "details",
                           ) as HTMLDetailsElement | null;
                           if (detailsEl) detailsEl.open = false;
+                          setMobileOpen(false);
                         }}
                       >
                         Painel
@@ -309,6 +315,7 @@ export default function Header() {
                             "details",
                           ) as HTMLDetailsElement | null;
                           if (detailsEl) detailsEl.open = false;
+                          setMobileOpen(false);
                         }}
                       >
                         Alterar Senha
@@ -327,6 +334,7 @@ export default function Header() {
                 <Link
                   href="/login"
                   className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white hover:bg-brand-secondary"
+                  onClick={() => setMobileOpen(false)}
                 >
                   Entrar/Cadastrar
                 </Link>

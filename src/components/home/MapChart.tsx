@@ -2,7 +2,7 @@
 
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
-import brMapData from "@highcharts/map-collection/countries/br/br-all.geo.json";
+import brMapData from "@highcharts/map-collection/countries/br/br-all.topo.json";
 
 export type MapPoint = {
   "hc-key": string;
@@ -58,7 +58,7 @@ export default function MapChart({ data, isLoading }: MapChartProps) {
         type: "map",
         name: "Abrigos",
         data: mapData,
-        mapData: brMapData as Highcharts.GeoJSON,
+        mapData: brMapData as unknown as Highcharts.TopoJSON,
         states: {
           hover: {
             color: "#bada55",
