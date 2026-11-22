@@ -23,7 +23,16 @@ const nextConfig: NextConfig = {
   turbopack: {},
 
   async headers() {
-    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      // Sem isso o navegador pode reutilizar um sw.js velho e atrasar atualizações.
+      {
+        source: "/sw.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+        ],
+      },
+    ];
   },
 
   async rewrites() {
