@@ -1,5 +1,3 @@
-// Só navegações têm fallback offline; nada mais é cacheado porque o site
-// serve dados autenticados que não podem ficar velhos nem vazar entre sessões.
 const CACHE = "mv-offline-v1";
 const OFFLINE_URL = "/offline.html";
 

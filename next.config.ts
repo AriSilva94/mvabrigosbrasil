@@ -25,7 +25,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
-      // Sem isso o navegador pode reutilizar um sw.js velho e atrasar atualizações.
       {
         source: "/sw.js",
         headers: [
